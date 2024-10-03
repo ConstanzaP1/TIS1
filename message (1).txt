@@ -1,0 +1,78 @@
+graph TD
+    A(("Inicio")) --> B["Usuario accede a la página de registro"]
+    B --> C["Usuario ingresa datos personales"]
+    C --> D{"Datos válidos?"}
+    D -->|Sí| E["Sistema registra al usuario"]
+    E --> F["Sistema envía email de confirmación"]
+    F --> G["Usuario confirma email"]
+    D -->|No| H["Sistema muestra mensaje de error"]
+    H --> C
+    G --> I["Usuario ingresa correo y contraseña"]
+    I --> J{"Credenciales correctas?"}
+    J -->|Sí| K["Sistema inicia sesión"]
+    K --> L["Sistema redirige a página principal"]
+    J -->|No| M["Sistema muestra mensaje de error"]
+    M --> I
+    L --> N["Usuario ingresa términos de búsqueda"]
+    N --> O["Sistema busca productos en la base de datos"]
+    O --> P["Sistema muestra resultados"]
+    P --> Q["Usuario aplica filtros (marca, precio, categoría)"]
+    Q --> R["Sistema actualiza resultados"]
+    R --> S["Usuario selecciona productos"]
+    S --> T["Usuario añade productos al carrito"]
+    T --> U["Usuario gestiona carrito"]
+    U --> V["Usuario modifica cantidad de productos"]
+    U --> W["Usuario elimina productos del carrito"]
+    V --> X["Usuario procede al pago"]
+    W --> X
+    X --> Y["Sistema verifica stock de productos"]
+    Y --> Z["Usuario selecciona método de pago"]
+    Z --> AA["Sistema procesa el pago"]
+    AA --> AB{"Pago exitoso?"}
+    AB -->|Sí| AC["Sistema genera boleta"]
+    AC --> AD["Sistema envía boleta por correo"]
+    AD --> AE["Sistema actualiza inventario"]
+    AB -->|No| AF["Sistema muestra error de pago"]
+    AF --> Z
+    AE --> AG["Usuario accede a su perfil"]
+    AG --> AH["Usuario modifica datos personales"]
+    AG --> AI["Usuario ve historial de compras"]
+    AG --> AJ["Usuario gestiona lista de deseos"]
+    AI --> AK["Usuario selecciona producto para reseñar"]
+    AK --> AL["Usuario escribe reseña y da calificación"]
+    AL --> AM["Sistema verifica que el usuario haya comprado el producto"]
+    AM --> AN["Sistema publica la reseña"]
+    AN --> AO["Usuario accede al sistema de atención post-venta"]
+    AO --> AP["Usuario ingresa detalles de la solicitud"]
+    AP --> AQ["Sistema genera un número de caso"]
+    AQ --> AR["Sistema asigna la solicitud a un agente"]
+    AR --> AS["Agente procesa la solicitud"]
+    AS --> AT["Sistema notifica al usuario sobre el estado de la solicitud"]
+    AT --> AU["Usuario selecciona 'Cerrar sesión'"]
+    AU --> AV["Sistema cierra la sesión del usuario"]
+    AV --> AW["Sistema redirige al usuario a la página de inicio"]
+    AW --> AX(("Fin"))
+
+    subgraph Registro y Login
+    A --> G
+    end
+
+    subgraph Búsqueda y Selección de Productos
+    N --> S
+    end
+
+    subgraph Gestión del Carrito y Pago
+    T --> AE
+    end
+
+    subgraph Gestión de Perfil y Reseñas
+    AG --> AN
+    end
+
+    subgraph Atención Post-venta
+    AO --> AT
+    end
+
+    subgraph Cierre de Sesión
+    AU --> AX
+    end
