@@ -21,11 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (mysqli_query($conexion, $queryConectividad)) {
                 echo "Conectividad agregada exitosamente.";
-                header('location: index.php');
             } else {
                 echo "Error al insertar datos de Conectividad: " . mysqli_error($conexion);   
             }
-            
+            header('location: index_mouse.php');
         } elseif ($tipo_periferico == 'sensor_mouse') {
             $sensor_mouse = $_POST['sensor_mouse'];
             // Insertar en las tablas asociadas
@@ -36,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_mouse.php');
         } elseif ($tipo_periferico == 'dpi_mouse') {
             $dpi_mouse = $_POST['dpi_mouse'];
             // Insertar en las tablas asociadas
@@ -47,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_mouse.php');
         } elseif ($tipo_periferico == 'categoria_teclado') {
             $categoria_teclado = $_POST['categoria_teclado'];
             // Insertar en las tablas asociadas
@@ -58,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_teclado.php');
         } elseif ($tipo_periferico == 'tipo_teclado') {
             $tipo_teclado = $_POST['tipo_teclado'];
             // Insertar en las tablas asociadas
@@ -68,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_teclado.php');
         } elseif ($tipo_periferico == 'tipo_audifono') {
             $tipo_audifono = $_POST['tipo_audifono'];
             // Insertar en las tablas asociadas
@@ -78,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_periferico.php');
         } elseif ($tipo_periferico == 'tipo_microfono') {
             $tipo_microfono = $_POST['tipo_microfono'];
             // Insertar en las tablas asociadas
@@ -88,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_periferico.php');
         } elseif ($tipo_periferico == 'tamanio_monitor') {
             $tamanio_monitor = $_POST['tamanio_monitor'];
             // Insertar en las tablas asociadas
@@ -98,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_monitor.php');
         } elseif ($tipo_periferico == 'resolucion_monitor') {
             $resolucion_monitor = $_POST['resolucion_monitor'];
             // Insertar en las tablas asociadas
@@ -108,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_monitor.php');
         } elseif ($tipo_periferico == 'tipo_curvatura') {
             $tipo_curvatura = $_POST['tipo_curvatura'];
             // Insertar en las tablas asociadas
@@ -118,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_monitor.php');
         }
         elseif ($tipo_periferico == 'tiempo_respuesta') {
             $tiempo_respuesta = $_POST['tiempo_respuesta'];
@@ -129,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_monitor.php');
         } elseif ($tipo_periferico == 'tipo_panel') {
             $tipo_panel = $_POST['tipo_panel'];
             // Insertar en las tablas asociadas
@@ -139,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index.php');
+            header('location: index_monitor.php');
         }
     } else {
         echo "Error al insertar ID de hardware: " . mysqli_error($conexion);
