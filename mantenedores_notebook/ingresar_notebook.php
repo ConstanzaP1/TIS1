@@ -1,5 +1,5 @@
 <?php
-require('conexion.php');
+require('../conexion.php');
 
 // Si se envía el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -25,7 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);   
             }
-            header('location: index_notebook.php');
+            header('location: cpu_notebook.php');
+            exit();
         } elseif ($tipo_notebook == 'gpu_notebook') {
             $gpu_notebook = $_POST['gpu_notebook'];
             // Insertar en las tablas asociadas para procesadores

@@ -1,5 +1,5 @@
 <?php
-require('conexion.php');
+require('../conexion.php');
 
 // Verifica si se recibió el ID del periférico
 if (isset($_GET['id_periferico'])) {
@@ -25,7 +25,7 @@ if (isset($_GET['id_periferico'])) {
 
     if (mysqli_query($conexion, $queryEliminarPeriferico)) {
         echo "Periférico eliminado exitosamente.";
-        header('location: index.php');
+        header('location: ../index.php');
         exit();
     } else {
         echo "Error al eliminar el periférico: " . mysqli_error($conexion);

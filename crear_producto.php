@@ -72,7 +72,7 @@ $resultTipo = mysqli_query($conexion, $queryTipo);
             </select>
         </div>
         <button type="submit" class="btn btn-success mt-3">Guardar</button>
-        <button class="btn btn-secondary mt-3" onclick="window.location.href='index.php';">Volver a Inicio</button>
+        <button type="button" class="btn btn-secondary mt-3" onclick="window.location.href='index.php';">Volver a Inicio</button>
     </form>
 </div>
 

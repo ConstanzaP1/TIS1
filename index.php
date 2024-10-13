@@ -24,35 +24,38 @@
                 </div>
             </div>
             <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                         data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                        <i class="lni lni-protection"></i>
-                        <span>Perifericos</span>
-                    </a>
-                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a href="index_teclado.php" class="sidebar-link">Teclado</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="index_mouse.php" class="sidebar-link">Mouse</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="index_monitor.php" class="sidebar-link">Monitor</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                    <i class="lni lni-protection"></i>
+                    <span>Teclado</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/categoria_teclado.php" class="sidebar-link">Categoria teclado</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tipo_teclado.php" class="sidebar-link">Tipo teclado</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                         data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                        <i class="lni lni-protection"></i>
-                        <span>Perifericos</span>
+                    <i class="lni lni-protection"></i>
+                    <span>Notebooks</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_notebook/cpu_notebook.php" class="sidebar-link">Cpu Notebook</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                    <a href="crear_producto.php" class="sidebar-link">
+                        <i class="lni lni-user"></i>
+                        <span>Crear producto</span>
                     </a>
-                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a href="crear_producto.php" class="sidebar-link">Crear producto</a>
-                        </li>
-                    </ul>
-                </li>
+            </li>
             <div class="sidebar-footer">
                 <a href="#" class="sidebar-link">
                     <i class="lni lni-exit"></i>

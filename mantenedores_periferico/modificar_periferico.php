@@ -1,5 +1,5 @@
 <?php
-require('conexion.php');
+require('../conexion.php');
 
 // Obtener el ID del periférico a modificar
 $id_periferico = $_GET['id_periferico'];
@@ -38,7 +38,7 @@ $row = mysqli_fetch_assoc($result);
 <body>
 
 <div class="container mt-5">
-    <h1 class="mb-4">Modificar Periférico</h1>
+    <h1 class="mb-4">Modificar mantenedores perifericos</h1>
 
     <!-- Formulario para modificar periférico -->
     <form action="actualizar_periferico.php" method="POST" class="mb-4">
@@ -46,7 +46,7 @@ $row = mysqli_fetch_assoc($result);
         <input type="hidden" name="id_periferico" value="<?php echo $id_periferico; ?>">
 
         <!-- Menú desplegable para seleccionar el tipo de periférico -->
-        <div class="mb-3">
+        <div class="mb-3" style="display: none;">
             <label for="tipo_periferico" class="form-label">Tipo de Periférico</label>
             <select name="tipo_periferico" id="tipo_periferico" class="form-select" required>
                 <option value="" selected disabled>Seleccione un tipo de periférico</option>
@@ -64,7 +64,7 @@ $row = mysqli_fetch_assoc($result);
                 <option value="tipo_panel" <?php if ($row['tipo_panel']) echo 'selected'; ?>>Tipo panel</option>
             </select>
         </div>
-                 <!-- Campos (Ocultos inicialmente) -->
+        <!-- Campos (Ocultos inicialmente) -->
         <div class="mb-3" id="campoConectividad" style="display: none;">       
             <label for="conectividad" class="form-label mt-3">Conectividad</label>
             <input type="text" name="conectividad" class="form-control" id="conectividad" value="<?php echo $row['conectividad']; ?>">
