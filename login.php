@@ -1,32 +1,42 @@
-<?php
-// Iniciar sesión
-session_start();
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<body>
+    <?php
+    require('db.php');
+    session_start();
+        if(isset($_POST['username'])){
+            //limipio los datos al insertar//
+            $username = stripslashes($_REQUEST['username']);
+            $username = mysqli_real_escape_string($con,$username);
 
-// Incluir el archivo de conexión a la base de datos
-require 'db.php';
-
-// Verificar si se enviaron los datos del formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Preparar y ejecutar la consulta para verificar el usuario
-    $stmt = $conn->prepare("SELECT * FROM usuarios WHERE username = :username");
-    $stmt->bindParam(':username', $username);
-    $stmt->execute();
-    $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Verificar si se encontró el usuario y si la contraseña es correcta
-    if ($usuario && password_verify($password, $usuario['password'])) {
-        // Guardar la información de usuario en la sesión
-        $_SESSION['username'] = $usuario['username'];
-        echo "Login exitoso. Bienvenido, " . $usuario['username'] . "!";
-        // Redirigir a una página protegida
-        // header("Location: dashboard.php");
-    } else {
-        echo "Nombre de usuario o contraseña incorrectos.";
-    }
-} else {
-    echo "Método de solicitud no válido.";
-}
-?>
+            $password = stripslashes($_REQUEST['password']);
+            $password = mysqli_real_escape_string($con,$password);
+        //chequeo si el usuario esta en la abse de datos//    
+        $query = "SELECT * FROM users WHERE username='$username' and password='".md5($password)."'";
+        $result = mysqli_query($con,$query) or die(mysql_error());
+        $row = mysqli_num_rows($result);
+        if($row==1){//el usuario existe podria preguntarse que tipo de usuario es y hacer el cambio de mandarlo a index clien, admin, bla bla bla//
+            $_SESSION['username']  = $username;
+            header("Location: index.php"); // redirigir a index.php
+        }else{
+      		echo "<div class='form'><h3>Usuario/Contraseña Incorrecto</h3><br/>Haz click aquí para <a href='login.php'>Logearte</a></div>";
+      	}
+        }else{
+        ?>
+	    <div class="form">
+	      <h1>Inicia Sesión</h1>
+	      <form action="" method="post" name="login">
+	        <input type="text" name="username" placeholder="Usuario" required />
+	        <input type="password" name="password" placeholder="Contraseña" required />
+	        <input name="submit" type="submit" value="Entrar" />
+	      </form>
+	      <p>No estas registrado aún? <a href='registration.php'>Registrate Aquí</a></p>
+	    </div>
+    <?php } ?>
+  </body>
+</html>
