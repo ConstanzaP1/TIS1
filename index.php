@@ -42,6 +42,21 @@
                 <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                         data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
                     <i class="lni lni-protection"></i>
+                    <span>Audifonos</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tipo_audifono.php" class="sidebar-link">Tipo Audifono</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tipo_microfono.php" class="sidebar-link">Tipo Microfono</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
                     <span>Notebooks</span>
                 </a>
                 <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -56,6 +71,24 @@
                     </li>
                     <li class="sidebar-item">
                             <a href="mantenedores_notebook/bateria_notebook.php" class="sidebar-link">Batería Notebook</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Monitores</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tamanio_monitor.php" class="sidebar-link">Tamaño Monitor</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/resolucion_monitor.php" class="sidebar-link">Resolución Monitor</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tipo_curvatura.php" class="sidebar-link">Tipo de Curvatura</a>      
                     </li>
                 </ul>
             </li>

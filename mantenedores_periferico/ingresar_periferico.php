@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_periferico.php');
+            header('location: tipo_audifono.php');
         } elseif ($tipo_periferico == 'tipo_microfono') {
             $tipo_microfono = $_POST['tipo_microfono'];
             // Insertar en las tablas asociadas
@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_periferico.php');
+            header('location: tipo_microfono.php');
         } elseif ($tipo_periferico == 'tamanio_monitor') {
             $tamanio_monitor = $_POST['tamanio_monitor'];
             // Insertar en las tablas asociadas
@@ -102,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_monitor.php');
+            header('location: tamanio_monitor.php');
         } elseif ($tipo_periferico == 'resolucion_monitor') {
             $resolucion_monitor = $_POST['resolucion_monitor'];
             // Insertar en las tablas asociadas
@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_monitor.php');
+            header('location: resolucion_monitor.php');
         } elseif ($tipo_periferico == 'tipo_curvatura') {
             $tipo_curvatura = $_POST['tipo_curvatura'];
             // Insertar en las tablas asociadas
@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_monitor.php');
+            header('location: tipo_curvatura.php');
         }
         elseif ($tipo_periferico == 'tiempo_respuesta') {
             $tiempo_respuesta = $_POST['tiempo_respuesta'];
