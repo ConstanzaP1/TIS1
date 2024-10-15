@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_notebook.php');
+            header('location: gpu_notebook.php');
         } 
 
         elseif ($tipo_notebook == 'pantalla_notebook') {
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_notebook.php');
+            header('location: pantalla_notebook.php');
         } 
 
         elseif ($tipo_notebook == 'bateria_notebook') {
@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_notebook.php');
+            header('location: bateria_notebook.php');
         } 
 
 

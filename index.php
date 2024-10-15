@@ -48,6 +48,15 @@
                     <li class="sidebar-item">
                             <a href="mantenedores_notebook/cpu_notebook.php" class="sidebar-link">Cpu Notebook</a>      
                     </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_notebook/gpu_notebook.php" class="sidebar-link">Gpu Notebook</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_notebook/pantalla_notebook.php" class="sidebar-link">Pantalla Notebook</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_notebook/bateria_notebook.php" class="sidebar-link">Batería Notebook</a>      
+                    </li>
                 </ul>
             </li>
             <li class="sidebar-item">
