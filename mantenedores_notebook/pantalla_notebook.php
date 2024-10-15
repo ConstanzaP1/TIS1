@@ -38,7 +38,7 @@ $result = mysqli_query($conexion, $query);
         <div class="row">
             <div class="col">
                 <h2>Pantalla notebook</h2>
-                <table class="table table-bordered">
+                <table class="table table-bordered mt-4">
                     <thead>
                         <tr>
                             <th>Pantalla notebook</th>
@@ -61,7 +61,7 @@ $result = mysqli_query($conexion, $query);
         </div>
     </div>
     
-    <button type="button" id="botonAgregar" class="btn btn-primary" onclick="mostrarFormulario()">Agregar Pantalla Notebook</button>
+    <button type="button" id="botonAgregar" class="btn btn-primary" onclick="mostrarFormulario()">Agregar</button>
 
     <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>
 
@@ -79,7 +79,7 @@ $result = mysqli_query($conexion, $query);
         <!-- Contenedor para alinear los botones -->
         <div class="d-flex justify-content-between mt-3">
             <!-- Botón de guardar -->
-            <button type="submit" class="btn btn-success">Guardar Pantalla notebook</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
             
             <!-- Botón para volver al inicio al lado del botón de guardar -->
             <button type="button" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>

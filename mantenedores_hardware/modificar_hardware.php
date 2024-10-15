@@ -1,5 +1,5 @@
 <?php
-require('conexion.php');
+require('../conexion.php');
 
 // Obtener el ID del periférico a modificar
 $id_hardware = $_GET['id_hardware'];
@@ -53,7 +53,7 @@ $row = mysqli_fetch_assoc($result);
         <input type="hidden" name="id_hardware" value="<?php echo $id_hardware; ?>">
 
         <!-- Menú desplegable para seleccionar el tipo de periférico -->
-        <div class="mb-3">
+        <div class="mb-3" style="display: none;">
             <label for="tipo_hardware" class="form-label">Tipo de Hardware</label>
             <select name="tipo_hardware" id="tipo_hardware" class="form-select" required>
                 <option value="" selected disabled>Seleccione un tipo de Hardware</option>

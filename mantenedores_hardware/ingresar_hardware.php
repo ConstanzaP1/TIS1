@@ -1,5 +1,5 @@
 <?php
-require('conexion.php');
+require('../conexion.php');
 
 // Si se envía el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: memoria_gpu.php');
 
         }
 
@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: frecuencia_gpu.php');
         } 
         
         elseif ($tipo_hardware == 'frecuencia_cpu') {
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: frecuencia_cpu.php');
         } 
         
         elseif ($tipo_hardware == 'socket_cpu') {
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: socket_cpu.php');
         } 
 
         elseif ($tipo_hardware == 'nucleo_hilo_cpu') {
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: nucleo_hilo_cpu.php');
         } 
 
         elseif ($tipo_hardware == 'socket_placa') {
@@ -104,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: socket_placa.php');
         } 
 
         elseif ($tipo_hardware == 'slot_memoria_placa') {
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: slot_memoria_placa.php');
         } 
 
         elseif ($tipo_hardware == 'voltaje_ram') {
@@ -130,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: voltaje_ram.php');
         } 
         
         elseif ($tipo_hardware == 'velocidad_ram') {
@@ -143,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: velocidad_ram.php');
         } 
 
         elseif ($tipo_hardware == 'capacidad_almacenamiento') {

@@ -1,5 +1,5 @@
 <?php
-require('conexion.php');
+require('../conexion.php');
 
 // Obtener los datos del formulario
 $id_hardware = $_POST['id_hardware'];
@@ -96,7 +96,7 @@ mysqli_query($conexion, $query);
 // Verificar si la consulta se ejecutó correctamente
 if (mysqli_affected_rows($conexion) > 0) {
     // Redireccionar a la página de inicio
-    header('Location: index_hardware.php');
+    header('Location: ../index.php');
     exit;
 } else {
     // Mostrar un mensaje de error

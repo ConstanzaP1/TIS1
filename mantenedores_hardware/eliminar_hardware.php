@@ -1,5 +1,5 @@
 <?php
-require('conexion.php');
+require('../conexion.php');
 
 // Verifica si se recibió el ID del periférico
 if (isset($_GET['id_hardware'])) {
@@ -28,7 +28,7 @@ if (isset($_GET['id_hardware'])) {
 
     if (mysqli_query($conexion, $queryEliminarHardware)) {
         echo "Hardware eliminado exitosamente.";
-        header('location: index_hardware.php');
+        header('location: ../index.php');
         exit();
     } else {
         echo "Error al eliminar el hardware: " . mysqli_error($conexion);
