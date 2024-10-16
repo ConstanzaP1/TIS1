@@ -147,7 +147,7 @@ $row = mysqli_fetch_assoc($result);
             <input type="text" name="tipo_cableado" class="form-control" id="tipo_cableado" value="<?php echo $row['tipo_cableado']; ?>">
         </div>
         <div class="mb-3" id="camposTamanio_fuente" style="display: none;">       
-            <label for="tamanio_fuente" class="form-label mt-3">Tamanio Fuente</label>
+            <label for="tamanio_fuente" class="form-label mt-3">Tamaño Fuente</label>
             <input type="text" name="tamanio_fuente" class="form-control" id="tamanio_fuente" value="<?php echo $row['tamanio_fuente']; ?>">
         </div>
         <div class="mb-3" id="camposPotencia_fuente" style="display: none;">       

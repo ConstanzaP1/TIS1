@@ -156,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: capacidad_almacenamiento.php');
         } 
 
         elseif ($tipo_hardware == 'formato_placa') {
@@ -169,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: formato_placa.php');
         } 
 
         elseif ($tipo_hardware == 'capacidad_ram') {
@@ -182,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: capacidad_ram.php');
         } 
 
         elseif ($tipo_hardware == 'tipo_ram') {
@@ -195,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: tipo_ram.php');
         } 
 
         elseif ($tipo_hardware == 'certificacion_fuente') {
@@ -208,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: certificacion_fuente.php');
         } 
 
         elseif ($tipo_hardware == 'tipo_cableado') {
@@ -221,7 +221,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: tipo_cableado.php');
         } 
 
         elseif ($tipo_hardware == 'tamanio_fuente') {
@@ -234,7 +234,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: tamanio_fuente.php');
         } 
 
         elseif ($tipo_hardware == 'potencia_fuente') {
@@ -247,7 +247,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: potencia_fuente.php');
         } 
 
         elseif ($tipo_hardware == 'tamanio_placa') {
@@ -260,7 +260,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_hardware.php');
+            header('location: tamanio_placa.php');
         } 
 
 

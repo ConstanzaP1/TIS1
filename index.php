@@ -69,6 +69,12 @@
                     <li class="sidebar-item">
                             <a href="mantenedores_hardware/slot_memoria_placa.php" class="sidebar-link">Slot memoria</a>      
                     </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/formato_placa.php" class="sidebar-link">Formato</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/tamanio_placa.php" class="sidebar-link">Tamaño</a>      
+                    </li>
                 </ul>
             </li>
             <li class="sidebar-item">
@@ -83,6 +89,12 @@
                     </li>
                     <li class="sidebar-item">
                             <a href="mantenedores_hardware/velocidad_ram.php" class="sidebar-link">Velocidad</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/capacidad_ram.php" class="sidebar-link">Capacidad</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/tipo_ram.php" class="sidebar-link">Tipo</a>      
                     </li>
                 </ul>
             </li>
@@ -135,49 +147,6 @@
                     <li class="sidebar-item">
                             <a href="mantenedores_notebook/bateria_notebook.php" class="sidebar-link">Batería</a>      
                     </li>
-                </ul>
-            </li>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="lni lni-protection"></i>
-                    <span>Monitores</span>
-                </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                            <a href="mantenedores_periferico/tamanio_monitor.php" class="sidebar-link">Tamaño Monitor</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_periferico/resolucion_monitor.php" class="sidebar-link">Resolución Monitor</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_periferico/tipo_curvatura.php" class="sidebar-link">Tipo de Curvatura</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_periferico/tiempo_respuesta.php" class="sidebar-link">Tiempo de Respuesta</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_periferico/tiempo_respuesta.php" class="sidebar-link">Tipo de Panel</a>      
-                    </li>
-                </ul>
-            </li>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="lni lni-protection"></i>
-                    <span>Mouse</span>
-                </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                            <a href="mantenedores_periferico/conectividad.php" class="sidebar-link">Conectividad</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_periferico/sensor_mouse.php" class="sidebar-link">Sensor Mouse</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_periferico/dpi_mouse.php" class="sidebar-link">Dpi Mouse</a>      
-                    </li>
-
                 </ul>
             </li>
             <li class="sidebar-item">
