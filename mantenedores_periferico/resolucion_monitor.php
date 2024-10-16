@@ -37,7 +37,7 @@ $result = mysqli_query($conexion, $query);
     <div class="container mt-5" id="tabla">
         <div class="row">
             <div class="col">
-                <h2>Resolución Monitor</h2>
+                <h2>Resolución</h2>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -62,7 +62,7 @@ $result = mysqli_query($conexion, $query);
     </div>
 
     <!-- Botón para mostrar el formulario -->
-    <button type="button" id="botonAgregar" class="btn btn-primary" onclick="mostrarFormulario()">Agregar Resolución Monitor</button>
+    <button type="button" id="botonAgregar" class="btn btn-primary" onclick="mostrarFormulario()">Agregar</button>
 
     <!-- Botón para volver al inicio que siempre aparece cuando la tabla está visible -->
     <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>                        
@@ -70,7 +70,7 @@ $result = mysqli_query($conexion, $query);
     
     <!-- Formulario para insertar -->
     <form action="ingresar_periferico.php" method="POST" id="formulario" style="display: none;" class="mt-4">
-        <h1 class="mb-4">Ingreso de tipos Audifono</h1>
+        <h1 class="mb-4">Ingreso de resolución monitor</h1>
         <!-- Campo oculto para seleccionar automaticamente -->
         <input type="hidden" name="tipo_periferico" value="resolucion_monitor">
 

@@ -70,7 +70,7 @@ $result = mysqli_query($conexion, $query);
     
     <!-- Formulario para insertar -->
     <form action="ingresar_periferico.php" method="POST" id="formulario" style="display: none;" class="mt-4">
-        <h1 class="mb-4">Ingreso de tipos Audifono</h1>
+        <h1 class="mb-4">Ingreso de tipos de microfono</h1>
         <!-- Campo oculto para seleccionar automaticamente -->
         <input type="hidden" name="tipo_periferico" value="tipo_microfono">
 

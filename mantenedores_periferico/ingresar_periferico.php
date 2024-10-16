@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar datos de Conectividad: " . mysqli_error($conexion);   
             }
-            header('location: index_mouse.php');
+            header('location: conectividad.php');
         } elseif ($tipo_periferico == 'sensor_mouse') {
             $sensor_mouse = $_POST['sensor_mouse'];
             // Insertar en las tablas asociadas
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_mouse.php');
+            header('location: sensor_mouse.php');
         } elseif ($tipo_periferico == 'dpi_mouse') {
             $dpi_mouse = $_POST['dpi_mouse'];
             // Insertar en las tablas asociadas
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_mouse.php');
+            header('location: dpi_mouse.php');
         } elseif ($tipo_periferico == 'categoria_teclado') {
             $categoria_teclado = $_POST['categoria_teclado'];
             // Insertar en las tablas asociadas
@@ -133,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_monitor.php');
+            header('location: tiempo_respuesta.php');
         } elseif ($tipo_periferico == 'tipo_panel') {
             $tipo_panel = $_POST['tipo_panel'];
             // Insertar en las tablas asociadas
@@ -143,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_monitor.php');
+            header('location: tipo_panel.php');
         }
     } else {
         echo "Error al insertar ID de hardware: " . mysqli_error($conexion);

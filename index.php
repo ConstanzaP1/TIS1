@@ -153,6 +153,31 @@
                     <li class="sidebar-item">
                             <a href="mantenedores_periferico/tipo_curvatura.php" class="sidebar-link">Tipo de Curvatura</a>      
                     </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tiempo_respuesta.php" class="sidebar-link">Tiempo de Respuesta</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tiempo_respuesta.php" class="sidebar-link">Tipo de Panel</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Mouse</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/conectividad.php" class="sidebar-link">Conectividad</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/sensor_mouse.php" class="sidebar-link">Sensor Mouse</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/dpi_mouse.php" class="sidebar-link">Dpi Mouse</a>      
+                    </li>
+
                 </ul>
             </li>
             <li class="sidebar-item">
