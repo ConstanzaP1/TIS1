@@ -69,6 +69,12 @@
                     <li class="sidebar-item">
                             <a href="mantenedores_hardware/slot_memoria_placa.php" class="sidebar-link">Slot memoria</a>      
                     </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/formato_placa.php" class="sidebar-link">Formato</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/tamanio_placa.php" class="sidebar-link">Tamaño</a>      
+                    </li>
                 </ul>
             </li>
             <li class="sidebar-item">
@@ -83,6 +89,12 @@
                     </li>
                     <li class="sidebar-item">
                             <a href="mantenedores_hardware/velocidad_ram.php" class="sidebar-link">Velocidad</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/capacidad_ram.php" class="sidebar-link">Capacidad</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/tipo_ram.php" class="sidebar-link">Tipo</a>      
                     </li>
                 </ul>
             </li>
@@ -120,6 +132,28 @@
                     <li class="sidebar-item">
                             <a href="mantenedores_notebook/bateria_notebook.php" class="sidebar-link">Batería</a>      
                     </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Fuente de Poder</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/certificacion_fuente.php" class="sidebar-link">Certificacion</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/tipo_cableado.php" class="sidebar-link">Tipo Cableado</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/tamanio_fuente.php" class="sidebar-link">Tamaño</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/potencia_fuente.php" class="sidebar-link">Potencia</a>      
+                    </li>
+                    
                 </ul>
             </li>
             <li class="sidebar-item">
