@@ -1,13 +1,13 @@
 <?php
 require('../conexion.php');
 
-// Consulta para obtener datos de la tabla cpu_notebook que no sean NULL
+// Consulta para obtener datos de la tabla frecuencia_cpu que no sean NULL
 $query = "
-    SELECT p.id_notebook, 
-           cn.cpu_notebook
-    FROM notebook p
-    LEFT JOIN cpu_notebook cn ON p.id_notebook = cn.id_notebook
-    WHERE cn.cpu_notebook IS NOT NULL
+    SELECT p.id_hardware, 
+           fc.frecuencia_cpu
+    FROM hardware p
+    LEFT JOIN frecuencia_cpu fc ON p.id_hardware = fc.id_hardware
+    WHERE fc.frecuencia_cpu IS NOT NULL
 ";
 
 $result = mysqli_query($conexion, $query);
@@ -34,24 +34,25 @@ $result = mysqli_query($conexion, $query);
 <body>
 
 <div class="container mt-5">
-    <div class="container" id="tabla">
+    <!-- Tabla de categorías, visible por defecto, pero se oculta al agregar una nueva categoría -->
+    <div class="container mt-5" id="tabla">
         <div class="row">
             <div class="col">
-                <h2>Cpu notebook</h2>
+                <h2>Frecuencia CPU</h2>
                 <table class="table table-bordered mt-4">
                     <thead>
                         <tr>
-                            <th>Cpu notebook</th>
+                            <th>Frecuencia CPU</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($rowCategoria = mysqli_fetch_assoc($result)) : ?>
+                        <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                             <tr>
-                                <td><?php echo $rowCategoria['cpu_notebook']; ?></td>
+                                <td><?php echo $row['frecuencia_cpu']; ?></td>
                                 <td>
-                                    <button class="btn btn-primary" onclick="window.location.href='modificar_notebook.php?id_notebook=<?php echo $rowCategoria['id_notebook']; ?>';">Modificar</button>
-                                    <button class="btn btn-danger" onclick="window.location.href='eliminar_notebook.php?id_notebook=<?php echo $rowCategoria['id_notebook']; ?>';">Eliminar</button>
+                                    <button class="btn btn-primary" onclick="window.location.href='modificar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Modificar</button>
+                                    <button class="btn btn-danger" onclick="window.location.href='eliminar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Eliminar</button>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -60,22 +61,24 @@ $result = mysqli_query($conexion, $query);
             </div>
         </div>
     </div>
-    
+
+    <!-- Botón para mostrar el formulario -->
     <button type="button" id="botonAgregar" class="btn btn-primary" onclick="mostrarFormulario()">Agregar</button>
 
+    <!-- Botón para volver al inicio que siempre aparece cuando la tabla está visible -->
     <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>
 
-    <!-- Formulario para insertar -->
-    <form action="ingresar_notebook.php" method="POST" id="formulario" style="display: none;" class="mt-4">
-        <h1 class="mb-4">Ingreso de cpu notebook</h1>
-        <!-- Campo oculto para seleccionar automaticamente "Cpu notebook" -->
-        <input type="hidden" name="tipo_notebook" value="cpu_notebook">
+    <!-- Formulario oculto inicialmente -->
+    <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
+        <h1 class="mb-4">Ingreso de Frecuencia CPU</h1>
+        <!-- Campo oculto para seleccionar automáticamente-->
+        <input type="hidden" name="tipo_hardware" value="frecuencia_cpu">
 
-        <div class="mb-3">       
-            <label for="cpu_notebook" class="form-label mt-3">Cpu notebook</label>
-            <input type="text" name="cpu_notebook" class="form-control" id="cpu_notebook" required>
+        <div class="mb-3">
+            <label for="frecuencia_cpu" class="form-label">Frecuencia CPU</label>
+            <input type="text" name="frecuencia_cpu" class="form-control" id="frecuencia_cpu" required>
         </div>
-
+        
         <!-- Contenedor para alinear los botones -->
         <div class="d-flex justify-content-between mt-3">
             <!-- Botón de guardar -->

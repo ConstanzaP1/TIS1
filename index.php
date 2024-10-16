@@ -27,14 +27,77 @@
                 <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                         data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
                     <i class="lni lni-protection"></i>
+                    <span>Tarjetas de video</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/memoria_gpu.php" class="sidebar-link">Memoria</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/frecuencia_gpu.php" class="sidebar-link">Frecuencia</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Procesador</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/frecuencia_cpu.php" class="sidebar-link">Frecuencia</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/nucleo_hilo_cpu.php" class="sidebar-link">Nucleo / Hilo</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/socket_cpu.php" class="sidebar-link">Socket</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Placa madre</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/socket_placa.php" class="sidebar-link">Socket</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/slot_memoria_placa.php" class="sidebar-link">Slot memoria</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Memoria RAM</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/voltaje_ram.php" class="sidebar-link">Voltaje</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/velocidad_ram.php" class="sidebar-link">Velocidad</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
                     <span>Teclado</span>
                 </a>
                 <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
-                            <a href="mantenedores_periferico/categoria_teclado.php" class="sidebar-link">Categoria teclado</a>      
+                            <a href="mantenedores_periferico/categoria_teclado.php" class="sidebar-link">Categoria</a>      
                     </li>
                     <li class="sidebar-item">
-                            <a href="mantenedores_periferico/tipo_teclado.php" class="sidebar-link">Tipo teclado</a>      
+                            <a href="mantenedores_periferico/tipo_teclado.php" class="sidebar-link">Tipo</a>      
                     </li>
                 </ul>
             </li>
@@ -61,16 +124,16 @@
                 </a>
                 <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
-                            <a href="mantenedores_notebook/cpu_notebook.php" class="sidebar-link">Cpu Notebook</a>      
+                            <a href="mantenedores_notebook/cpu_notebook.php" class="sidebar-link">Cpu</a>      
                     </li>
                     <li class="sidebar-item">
-                            <a href="mantenedores_notebook/gpu_notebook.php" class="sidebar-link">Gpu Notebook</a>      
+                            <a href="mantenedores_notebook/gpu_notebook.php" class="sidebar-link">Gpu</a>      
                     </li>
                     <li class="sidebar-item">
-                            <a href="mantenedores_notebook/pantalla_notebook.php" class="sidebar-link">Pantalla Notebook</a>      
+                            <a href="mantenedores_notebook/pantalla_notebook.php" class="sidebar-link">Pantalla</a>      
                     </li>
                     <li class="sidebar-item">
-                            <a href="mantenedores_notebook/bateria_notebook.php" class="sidebar-link">Batería Notebook</a>      
+                            <a href="mantenedores_notebook/bateria_notebook.php" class="sidebar-link">Batería</a>      
                     </li>
                 </ul>
             </li>
