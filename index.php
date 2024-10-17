@@ -85,7 +85,7 @@
                 </a>
                 <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
-                            <a href="mantenedores_hardware/voltaje_ram.php" class="sidebar-link">Voltaje</a>      
+                            <a href="mantenedores_hardware/formato_ram.php" class="sidebar-link">Formato</a>      
                     </li>
                     <li class="sidebar-item">
                             <a href="mantenedores_hardware/velocidad_ram.php" class="sidebar-link">Velocidad</a>      
@@ -102,6 +102,60 @@
                 <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                         data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
                     <i class="lni lni-protection"></i>
+                    <span>Disco duro</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/capacidad_almacenamiento.php" class="sidebar-link">Almacenamiento</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>SSD</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/capacidad_almacenamiento.php" class="sidebar-link">Almacenamiento</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Fuente de poder</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/certificacion_fuente.php" class="sidebar-link">Certificacion</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/potencia_fuente.php" class="sidebar-link">Potencia</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/tamanio_fuente.php" class="sidebar-link">Tamaño</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Gabinete</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_hardware/capacidad_almacenamiento.php" class="sidebar-link">POR HACER!</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
                     <span>Teclado</span>
                 </a>
                 <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -110,6 +164,33 @@
                     </li>
                     <li class="sidebar-item">
                             <a href="mantenedores_periferico/tipo_teclado.php" class="sidebar-link">Tipo</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/conectividad.php" class="sidebar-link">Conectividad</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/iluminacion.php" class="sidebar-link">Iluminacion</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tipo_switch.php" class="sidebar-link">Tipo switch</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Mouse</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/sensor_mouse.php" class="sidebar-link">Sensor</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/dpi_mouse.php" class="sidebar-link">Dpi</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/peso_mouse.php" class="sidebar-link">Peso</a>      
                     </li>
                 </ul>
             </li>
@@ -121,10 +202,43 @@
                 </a>
                 <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
-                            <a href="mantenedores_periferico/tipo_audifono.php" class="sidebar-link">Tipo Audifono</a>      
+                            <a href="mantenedores_periferico/tipo_audifono.php" class="sidebar-link">Tipo</a>      
                     </li>
                     <li class="sidebar-item">
                             <a href="mantenedores_periferico/tipo_microfono.php" class="sidebar-link">Tipo Microfono</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/conectividad.php" class="sidebar-link">Conectividad</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/iluminacion.php" class="sidebar-link">Iluminacion</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/anc.php" class="sidebar-link">ANC</a>      
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Monitor</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tamanio_monitor.php" class="sidebar-link">Tamaño</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tipo_curvatura.php" class="sidebar-link">Tipo curvatura</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tipo_panel.php" class="sidebar-link">Tipo panel</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/tasa_refresco.php" class="sidebar-link">Tasa refresco</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/soporte_monitor.php" class="sidebar-link">Soporte monitor</a>      
                     </li>
                 </ul>
             </li>

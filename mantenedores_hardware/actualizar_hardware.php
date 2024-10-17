@@ -38,9 +38,9 @@ if ($tipo_hardware == 'memoria') {
     $slot_memoria_placa = $_POST['slot_memoria_placa'];
     $query = "UPDATE slot_memoria_placa SET slot_memoria_placa = '$slot_memoria_placa' WHERE id_hardware = '$id_hardware'";
 
-} elseif ($tipo_hardware == 'voltaje_ram') {
-    $voltaje_ram = $_POST['voltaje_ram'];
-    $query = "UPDATE voltaje_ram SET voltaje_ram = '$voltaje_ram' WHERE id_hardware = '$id_hardware'";
+} elseif ($tipo_hardware == 'formato_ram') {
+    $formato_ram = $_POST['formato_ram'];
+    $query = "UPDATE formato_ram SET formato_ram = '$formato_ram' WHERE id_hardware = '$id_hardware'";
 
 } elseif ($tipo_hardware == 'velocidad_ram') {
     $velocidad_ram = $_POST['velocidad_ram'];
@@ -52,13 +52,11 @@ elseif ($tipo_hardware == 'capacidad_almacenamiento') {
     $query = "UPDATE capacidad_almacenamiento SET capacidad_almacenamiento = '$capacidad_almacenamiento' WHERE id_hardware = '$id_hardware'";
 
 }
-
 elseif ($tipo_hardware == 'formato_placa') {
     $formato_placa = $_POST['formato_placa'];
     $query = "UPDATE formato_placa SET formato_placa = '$formato_placa' WHERE id_hardware = '$id_hardware'";
 
 }
-
 elseif ($tipo_hardware == 'capacidad_ram') {
     $capacidad_ram = $_POST['capacidad_ram'];
     $query = "UPDATE capacidad_ram SET capacidad_ram = '$capacidad_ram' WHERE id_hardware = '$id_hardware'";

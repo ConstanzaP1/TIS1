@@ -120,17 +120,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('location: slot_memoria_placa.php');
         } 
 
-        elseif ($tipo_hardware == 'voltaje_ram') {
-            $voltaje_ram = $_POST['voltaje_ram'];
+        elseif ($tipo_hardware == 'formato_ram') {
+            $formato_ram = $_POST['formato_ram'];
             // Insertar en las tablas asociadas para procesadores
-            $queryVoltaje_ram = "INSERT INTO voltaje_ram (id_hardware, voltaje_ram) VALUES ('$id_hardware', '$voltaje_ram')";
+            $queryFormato_ram = "INSERT INTO formato_ram (id_hardware, formato_ram) VALUES ('$id_hardware', '$formato_ram')";
 
-            if (mysqli_query($conexion, $queryVoltaje_ram)) {
+            if (mysqli_query($conexion, $queryFormato_ram)) {
                 echo "Ingreso exitoso.";
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: voltaje_ram.php');
+            header('location: formato_ram.php');
         } 
         
         elseif ($tipo_hardware == 'velocidad_ram') {

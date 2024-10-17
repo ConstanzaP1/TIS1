@@ -144,7 +144,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
             header('location: tipo_panel.php');
-        }
+        } elseif ($tipo_periferico == 'iluminacion') {
+            $iluminacion = $_POST['iluminacion'];
+            // Insertar en las tablas asociadas
+            $queryIluminacion = "INSERT INTO iluminacion (id_periferico, iluminacion) VALUES ('$id_periferico', '$iluminacion')";
+            if (mysqli_query($conexion, $queryIluminacion)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: iluminacion.php');
+        } elseif ($tipo_periferico == 'tipo_switch') {
+            $tipo_switch = $_POST['tipo_switch'];
+            // Insertar en las tablas asociadas
+            $queryTipo_switch = "INSERT INTO tipo_switch (id_periferico, tipo_switch) VALUES ('$id_periferico', '$tipo_switch')";
+            if (mysqli_query($conexion, $queryTipo_switch)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: tipo_switch.php');
+        } elseif ($tipo_periferico == 'peso_mouse') {
+            $peso_mouse = $_POST['peso_mouse'];
+            // Insertar en las tablas asociadas
+            $queryPeso_mouse = "INSERT INTO peso_mouse (id_periferico, peso_mouse) VALUES ('$id_periferico', '$peso_mouse')";
+            if (mysqli_query($conexion, $queryPeso_mouse)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: peso_mouse.php');
+        } elseif ($tipo_periferico == 'anc') {
+            $anc = $_POST['anc'];
+            // Insertar en las tablas asociadas
+            $queryAnc = "INSERT INTO anc (id_periferico, anc) VALUES ('$id_periferico', '$anc')";
+            if (mysqli_query($conexion, $queryAnc)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: anc.php');
+        } elseif ($tipo_periferico == 'tasa_refresco') {
+            $tasa_refresco = $_POST['tasa_refresco'];
+            // Insertar en las tablas asociadas
+            $queryTasa_refresco = "INSERT INTO tasa_refresco (id_periferico, tasa_refresco) VALUES ('$id_periferico', '$tasa_refresco')";
+            if (mysqli_query($conexion, $queryTasa_refresco)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: tasa_refresco.php');
+        } elseif ($tipo_periferico == 'soporte_monitor') {
+            $soporte_monitor = $_POST['soporte_monitor'];
+            // Insertar en las tablas asociadas
+            $querySoporte_monitor = "INSERT INTO soporte_monitor (id_periferico, soporte_monitor) VALUES ('$id_periferico', '$soporte_monitor')";
+            if (mysqli_query($conexion, $querySoporte_monitor)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: soporte_monitor.php');
+        } 
+        
     } else {
         echo "Error al insertar ID de hardware: " . mysqli_error($conexion);
     }

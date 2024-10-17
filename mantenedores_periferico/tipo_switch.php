@@ -1,13 +1,13 @@
 <?php
 require('../conexion.php');
 
-// Consulta para obtener datos de la tabla certificacion_fuente que no sean NULL
+// Consulta para obtener datos de la tabla tipo_switch que no sean NULL
 $query = "
-    SELECT p.id_hardware, 
-           cf.certificacion_fuente
-    FROM hardware p
-    LEFT JOIN certificacion_fuente cf ON p.id_hardware = cf.id_hardware
-    WHERE cf.certificacion_fuente IS NOT NULL
+    SELECT p.id_periferico, 
+           ts.tipo_switch
+    FROM periferico p
+    LEFT JOIN tipo_switch ts ON p.id_periferico = ts.id_periferico
+    WHERE ts.tipo_switch IS NOT NULL
 ";
 
 $result = mysqli_query($conexion, $query);
@@ -34,25 +34,24 @@ $result = mysqli_query($conexion, $query);
 <body>
 
 <div class="container mt-5">
-    <!-- Tabla de categorías, visible por defecto, pero se oculta al agregar una nueva categoría -->
     <div id="tabla">
         <div class="row">
             <div class="col">
-                <h2>Certificacion Fuente</h2>
+                <h2>tipo switch</h2>
                 <table class="table table-bordered mt-4">
                     <thead>
                         <tr>
-                            <th>Certificacion Fuente</th>
+                            <th>Tipo switch</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+                        <?php while ($rowCategoria = mysqli_fetch_assoc($result)) : ?>
                             <tr>
-                                <td><?php echo $row['certificacion_fuente']; ?></td>
+                                <td><?php echo $rowCategoria['tipo_switch']; ?></td>
                                 <td>
-                                    <button class="btn btn-primary" onclick="window.location.href='modificar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Modificar</button>
-                                    <button class="btn btn-danger" onclick="window.location.href='eliminar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Eliminar</button>
+                                    <button class="btn btn-primary" onclick="window.location.href='modificar_periferico.php?id_periferico=<?php echo $rowCategoria['id_periferico']; ?>';">Modificar</button>
+                                    <button class="btn btn-danger" onclick="window.location.href='eliminar_periferico.php?id_periferico=<?php echo $rowCategoria['id_periferico']; ?>';">Eliminar</button>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -66,19 +65,20 @@ $result = mysqli_query($conexion, $query);
     <button type="button" id="botonAgregar" class="btn btn-primary" onclick="mostrarFormulario()">Agregar</button>
 
     <!-- Botón para volver al inicio que siempre aparece cuando la tabla está visible -->
-    <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>
+    <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>                        
 
-    <!-- Formulario oculto inicialmente -->
-    <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
-        <h1 class="mb-4">Ingreso de Certificacion Fuente</h1>
-        <!-- Campo oculto para seleccionar automáticamente-->
-        <input type="hidden" name="tipo_hardware" value="certificacion_fuente">
+    
+    <!-- Formulario para insertar -->
+    <form action="ingresar_periferico.php" method="POST" id="formulario" style="display: none;" class="mt-4">
+        <h1 class="mb-4">Ingreso tipo switch</h1>
+        <!-- Campo oculto para seleccionar automaticamente -->
+        <input type="hidden" name="tipo_periferico" value="tipo_switch">
 
-        <div class="mb-3">
-            <label for="certificacion_fuente" class="form-label">Certificacion Fuente</label>
-            <input type="text" name="certificacion_fuente" class="form-control" id="certificacion_fuente" required>
+        <div class="mb-3">       
+            <label for="tipo_switch" class="form-label mt-3">tipo switch</label>
+            <input type="text" name="tipo_switch" class="form-control" id="tipo_switch" required>
         </div>
-        
+
         <!-- Contenedor para alinear los botones -->
         <div class="d-flex justify-content-between mt-3">
             <!-- Botón de guardar -->

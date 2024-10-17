@@ -42,6 +42,24 @@ if ($tipo_periferico == 'conectividad') {
 } elseif ($tipo_periferico == 'tipo_panel') {
     $tipo_panel = $_POST['tipo_panel'];
     $query = "UPDATE tipo_panel SET tipo_panel = '$tipo_panel' WHERE id_periferico = '$id_periferico'";
+} elseif ($tipo_periferico == 'iluminacion') {
+    $iluminacion = $_POST['iluminacion'];
+    $query = "UPDATE iluminacion SET iluminacion = '$iluminacion' WHERE id_periferico = '$id_periferico'";
+} elseif ($tipo_periferico == 'tipo_switch') {
+    $iluminacion = $_POST['tipo_switch'];
+    $query = "UPDATE tipo_switch SET tipo_switch = '$tipo_switch' WHERE id_periferico = '$id_periferico'";
+} elseif ($tipo_periferico == 'peso_mouse') {
+    $peso_mouse = $_POST['peso_mouse'];
+    $query = "UPDATE peso_mouse SET peso_mouse = '$peso_mouse' WHERE id_periferico = '$id_periferico'";
+} elseif ($tipo_periferico == 'anc') {
+    $anc = $_POST['anc'];
+    $query = "UPDATE anc SET anc = '$anc' WHERE id_periferico = '$id_periferico'";
+} elseif ($tipo_periferico == 'tasa_refresco') {
+    $tasa_refresco = $_POST['tasa_refresco'];
+    $query = "UPDATE tasa_refresco SET tasa_refresco = '$tasa_refresco' WHERE id_periferico = '$id_periferico'";
+} elseif ($tipo_periferico == 'soporte_monitor') {
+    $soporte_monitor = $_POST['soporte_monitor'];
+    $query = "UPDATE soporte_monitor SET soporte_monitor = '$soporte_monitor' WHERE id_periferico = '$id_periferico'";
 }
 
 // Ejecutar la consulta

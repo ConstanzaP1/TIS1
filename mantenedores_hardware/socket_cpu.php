@@ -35,7 +35,7 @@ $result = mysqli_query($conexion, $query);
 
 <div class="container mt-5">
     <!-- Tabla de categorías, visible por defecto, pero se oculta al agregar una nueva categoría -->
-    <div class="container mt-5" id="tabla">
+    <div id="tabla">
         <div class="row">
             <div class="col">
                 <h2>Socket CPU</h2>

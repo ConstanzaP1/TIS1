@@ -10,7 +10,9 @@ if (isset($_GET['id_periferico'])) {
         'conectividad', 'sensor_mouse', 'dpi_mouse', 
         'categoria_teclado', 'tipo_teclado', 'tipo_audifono', 
         'tipo_microfono', 'tamanio_monitor', 'resolucion_monitor', 
-        'tipo_curvatura', 'tiempo_respuesta', 'tipo_panel'
+        'tipo_curvatura', 'tiempo_respuesta', 'tipo_panel',
+        'iluminacion', 'tipo_switch', 'peso_mouse',
+        'anc', 'tasa_refresco', 'soporte_monitor'
     ];
 
     foreach ($tablas as $tabla) {

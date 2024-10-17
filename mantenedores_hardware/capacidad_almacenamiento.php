@@ -1,13 +1,13 @@
 <?php
 require('../conexion.php');
 
-// Consulta para obtener datos de la tabla certificacion_fuente que no sean NULL
+// Consulta para obtener datos de la tabla capacidad_almacenamiento que no sean NULL
 $query = "
     SELECT p.id_hardware, 
-           cf.certificacion_fuente
+           ca.capacidad_almacenamiento
     FROM hardware p
-    LEFT JOIN certificacion_fuente cf ON p.id_hardware = cf.id_hardware
-    WHERE cf.certificacion_fuente IS NOT NULL
+    LEFT JOIN capacidad_almacenamiento ca ON p.id_hardware = ca.id_hardware
+    WHERE ca.capacidad_almacenamiento IS NOT NULL
 ";
 
 $result = mysqli_query($conexion, $query);
@@ -38,18 +38,18 @@ $result = mysqli_query($conexion, $query);
     <div id="tabla">
         <div class="row">
             <div class="col">
-                <h2>Certificacion Fuente</h2>
+                <h2>Capacidad Almacenamiento</h2>
                 <table class="table table-bordered mt-4">
                     <thead>
                         <tr>
-                            <th>Certificacion Fuente</th>
+                            <th>Capacidad Almacenamiento</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                             <tr>
-                                <td><?php echo $row['certificacion_fuente']; ?></td>
+                                <td><?php echo $row['capacidad_almacenamiento']; ?></td>
                                 <td>
                                     <button class="btn btn-primary" onclick="window.location.href='modificar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Modificar</button>
                                     <button class="btn btn-danger" onclick="window.location.href='eliminar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Eliminar</button>
@@ -70,13 +70,13 @@ $result = mysqli_query($conexion, $query);
 
     <!-- Formulario oculto inicialmente -->
     <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
-        <h1 class="mb-4">Ingreso de Certificacion Fuente</h1>
+        <h1 class="mb-4">Ingreso de Capacidad Almacenamiento</h1>
         <!-- Campo oculto para seleccionar automáticamente-->
-        <input type="hidden" name="tipo_hardware" value="certificacion_fuente">
+        <input type="hidden" name="tipo_hardware" value="capacidad_almacenamiento">
 
         <div class="mb-3">
-            <label for="certificacion_fuente" class="form-label">Certificacion Fuente</label>
-            <input type="text" name="certificacion_fuente" class="form-control" id="certificacion_fuente" required>
+            <label for="capacidad_almacenamiento" class="form-label">Capacidad Almacenamiento</label>
+            <input type="text" name="capacidad_almacenamiento" class="form-control" id="capacidad_almacenamiento" required>
         </div>
         
         <!-- Contenedor para alinear los botones -->

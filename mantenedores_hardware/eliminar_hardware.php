@@ -9,7 +9,7 @@ if (isset($_GET['id_hardware'])) {
     $tablas = [
         'memoria', 'memoria_gpu', 'frecuencia_gpu', 
         'frecuencia_cpu','socket_cpu','nucleo_hilo_cpu',
-        'socket_placa','slot_memoria_placa','voltaje_ram',
+        'socket_placa','slot_memoria_placa','formato_ram',
         'velocidad_ram','capacidad_almacenamiento','formato_placa',
         'capacidad_ram','tipo_ram','certificacion_fuente',
         'tipo_cableado','tamanio_fuente','potencia_fuente',

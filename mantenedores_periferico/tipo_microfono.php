@@ -34,7 +34,7 @@ $result = mysqli_query($conexion, $query);
 <body>
 
 <div class="container mt-5">
-    <div class="container mt-5" id="tabla">
+    <div id="tabla">
         <div class="row">
             <div class="col">
                 <h2>Tipos de Micrófono</h2>
@@ -60,7 +60,6 @@ $result = mysqli_query($conexion, $query);
             </div>
         </div>
     </div>
-
     <!-- Botón para mostrar el formulario -->
     <button type="button" id="botonAgregar" class="btn btn-primary" onclick="mostrarFormulario()">Agregar Tipo Micrófono</button>
 
@@ -87,7 +86,8 @@ $result = mysqli_query($conexion, $query);
             <!-- Botón para volver al inicio al lado del botón de guardar -->
             <button type="button" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>
         </div>
-    </form>
+    </form>                      
+    
 </div>
 </body>
 </html>

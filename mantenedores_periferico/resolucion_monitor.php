@@ -34,7 +34,7 @@ $result = mysqli_query($conexion, $query);
 <body>
 
 <div class="container mt-5">
-    <div class="container mt-5" id="tabla">
+    <div id="tabla">
         <div class="row">
             <div class="col">
                 <h2>Resolución</h2>
