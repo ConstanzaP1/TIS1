@@ -8,7 +8,7 @@
 <body>
 <?php
 /*conectar la base de datos */
-    require('db.php');
+    require('conexion.php');
         if(isset($_REQUEST['username'])){
             $username = stripcslashes($_REQUEST['username']);
             $username = mysqli_real_escape_string($con,$username);

@@ -7,7 +7,7 @@
 </head>
 <body>
     <?php
-    require('db.php');
+    require('conexion.php');
     session_start();
         if(isset($_POST['username'])){
             //limipio los datos al insertar//
@@ -18,7 +18,7 @@
             $password = mysqli_real_escape_string($con,$password);
         //chequeo si el usuario esta en la abse de datos//    
         $query = "SELECT * FROM users WHERE username='$username' and password='".md5($password)."'";
-        $result = mysqli_query($con,$query) or die(mysql_error());
+        $result = mysqli_query($con,$query) ;
         $row = mysqli_num_rows($result);
         if($row==1){//el usuario existe podria preguntarse que tipo de usuario es y hacer el cambio de mandarlo a index clien, admin, bla bla bla//
             $_SESSION['username']  = $username;
