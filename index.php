@@ -148,7 +148,10 @@
                 </a>
                 <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
-                            <a href="mantenedores_hardware/capacidad_almacenamiento.php" class="sidebar-link">POR HACER!</a>      
+                            <a href="mantenedores_hardware/tamanio_max_gabinete.php" class="sidebar-link">Tamaño maximo placa</a>      
+                    </li>
+                    <li class="sidebar-item">
+                            <a href="mantenedores_periferico/iluminacion.php" class="sidebar-link">Iluminacion</a>      
                     </li>
                 </ul>
             </li>
@@ -264,7 +267,7 @@
                 </ul>
             </li>
             <li class="sidebar-item">
-                    <a href="crear_producto.php" class="sidebar-link">
+                    <a href="creacion_productos/index_crear_producto.php" class="sidebar-link">
                         <i class="lni lni-user"></i>
                         <span>Crear producto</span>
                     </a>
