@@ -174,88 +174,111 @@ $result_users = mysqli_query($conexion, $sql_users);
 <body>
     <aside id="sidebar">
         <h2>Tisnology</h2>
-        <div class="accordion">
-            <div class="accordion-item">
-                <div class="accordion-header">Tarjetas de video</div>
+        
+        <div class="accordion-item">
+                <div class="accordion-header">Hardware</div>
                 <div class="accordion-content">
                     <ul>
-                        <li><a href="../mantenedores_hardware/memoria_gpu.php">Memoria</a></li>
-                        <li><a href="../mantenedores_hardware/frecuencia_gpu.php">Frecuencia</a></li>
+                        <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
+                        <li><a href="../mantenedores_hardware/capacidad_ram.php">Capacidad RAM</a></li>
+                        <li><a href="../mantenedores_hardware/certificacion_fuente.php">Certificación Fuente</a></li>
+                        <li><a href="../mantenedores_hardware/formato_placa.php">Formato Placa</a></li>
+                        <li><a href="../mantenedores_hardware/formato_ram.php">Formato RAM</a></li>
+                        <li><a href="../mantenedores_hardware/frecuencia_cpu.php">Frecuencia CPU</a></li>
+                        <li><a href="../mantenedores_hardware/frecuencia_gpu.php">Frecuencia GPU</a></li>
+                        <li><a href="../mantenedores_hardware/memoria_gpu.php">Memoria GPU</a></li>
+                        <li><a href="../mantenedores_hardware/nucleo_hilo_cpu.php">Núcleo/Hilo CPU</a></li>
+                        <li><a href="../mantenedores_hardware/potencia_fuente.php">Potencia Fuente</a></li>
+                        <li><a href="../mantenedores_hardware/slot_memoria_placa.php">Slot Memoria Placa</a></li>
+                        <li><a href="../mantenedores_hardware/socket_cpu.php">Socket CPU</a></li>
+                        <li><a href="../mantenedores_hardware/socket_placa.php">Socket Placa</a></li>
+                        <li><a href="../mantenedores_hardware/tamanio_fuente.php">Tamaño Fuente</a></li>
+                        <li><a href="../mantenedores_hardware/tamanio_max_gabinete.php">Tamaño Max Gabinete</a></li>
+                        <li><a href="../mantenedores_hardware/tamanio_placa.php">Tamaño Placa</a></li>
+                        <li><a href="../mantenedores_hardware/tipo_cableado.php">Tipo Cableado</a></li>
+                        <li><a href="../mantenedores_hardware/tipo_ram.php">Tipo RAM</a></li>
+                        <li><a href="../mantenedores_hardware/velocidad_ram.php">Velocidad RAM</a></li>
                     </ul>
                 </div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-header">Procesador</div>
+                <div class="accordion-header">Periféricos</div>
                 <div class="accordion-content">
                     <ul>
-                        <li><a href="../mantenedores_hardware/frecuencia_cpu.php">Frecuencia</a></li>
-                        <li><a href="../mantenedores_hardware/nucleo_hilo_cpu.php">Nucleo / Hilo</a></li>
-                        <li><a href="../mantenedores_hardware/socket_cpu.php">Socket</a></li>
+                        <li><a href="../mantenedores_periferico/anc.php">ANC</a></li>
+                        <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
+                        <li><a href="../mantenedores_periferico/dpi_mouse.php">DPI Mouse</a></li>
+                        <li><a href="../mantenedores_periferico/iluminacion.php">Iluminación</a></li>
+                        <li><a href="../mantenedores_periferico/peso_mouse.php">Peso Mouse</a></li>
+                        <li><a href="../mantenedores_periferico/resolucion_monitor.php">Resolución Monitor</a></li>
+                        <li><a href="../mantenedores_periferico/sensor_mouse.php">Sensor Mouse</a></li>
+                        <li><a href="../mantenedores_periferico/soporte_monitor.php">Soporte Monitor</a></li>
+                        <li><a href="../mantenedores_periferico/tamano_monitor.php">Tamaño Monitor</a></li>
+                        <li><a href="../mantenedores_periferico/tasa_refresco.php">Tasa de Refresco</a></li>
+                        <li><a href="../mantenedores_periferico/tiempo_respuesta.php">Tiempo de Respuesta</a></li>
+                        <li><a href="../mantenedores_periferico/tipo_audifono.php">Tipo Audífono</a></li>
+                        <li><a href="../mantenedores_periferico/tipo_curvatura.php">Tipo Curvatura</a></li>
+                        <li><a href="../mantenedores_periferico/tipo_microfono.php">Tipo Micrófono</a></li>
+                        <li><a href="../mantenedores_periferico/tipo_panel.php">Tipo Panel</a></li>
+                        <li><a href="../mantenedores_periferico/tipo_switch.php">Tipo Switch</a></li>
+                        <li><a href="../mantenedores_periferico/tipo_teclado.php">Tipo Teclado</a></li>
                     </ul>
                 </div>
             </div>
             <div class="accordion-item">
-                <div class="accordion-header">Placa madre</div>
+                <div class="accordion-header">Notebook</div>
                 <div class="accordion-content">
                     <ul>
-                        <li><a href="../mantenedores_hardware/socket_placa.php">Socket</a></li>
-                        <li><a href="../mantenedores_hardware/slot_memoria_placa.php">Slot memoria</a></li>
-                        <li><a href="../mantenedores_hardware/formato_placa.php">Formato</a></li>
-                        <li><a href="../mantenedores_hardware/tamanio_placa.php">Tamaño</a></li>
+                        <li><a href="../mantenedores_notebook/bateria_notebook.php">Batería Notebook</a></li>
+                        <li><a href="../mantenedores_notebook/cpu_notebook.php">CPU Notebook</a></li>
+                        <li><a href="../mantenedores_notebook/gpu_notebook.php">GPU Notebook</a></li>
+                        <li><a href="../mantenedores_notebook/pantalla_notebook.php">Pantalla Notebook</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="accordion-item">
-                <div class="accordion-header">Memoria RAM</div>
-                <div class="accordion-content">
-                    <ul>
-                        <li><a href="../mantenedores_hardware/formato_ram.php">Formato</a></li>
-                        <li><a href="../mantenedores_hardware/velocidad_ram.php">Velocidad</a></li>
-                        <li><a href="../mantenedores_hardware/capacidad_ram.php">Capacidad</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <div class="accordion-header">Almacenamiento</div>
-                <div class="accordion-content">
-                    <ul>
-                        <li><a href="../mantenedores_hardware/tamanio_hdd.php">Tamaño HDD</a></li>
-                        <li><a href="../mantenedores_hardware/tamanio_ssd.php">Tamaño SSD</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="logout">
-            <a href="?logout=true" class="btn btn-danger">Cerrar sesión</a> <!-- Botón de cerrar sesión -->
-        </div>
+
+        <a href="?logout" class="btn btn-danger logout">Cerrar Sesión</a>
     </aside>
 
     <div id="content">
-        <h1>Panel de Administración - Usuarios</h1>
-
-        <?php if ($message): ?>
-            <div class="alert alert-success message"><?php echo $message; ?></div>
-        <?php endif; ?>
-        <?php if ($error_message): ?>
-            <div class="alert alert-danger message"><?php echo $error_message; ?></div>
-        <?php endif; ?>
-
+        <h1>Panel de Administración</h1>
+        
         <div class="registro">
             <h2>Registrar Usuario</h2>
-            <form action="" method="post">
-                <input type="text" name="username" placeholder="Nombre de usuario" required>
-                <input type="email" name="email" placeholder="Correo electrónico" required>
-                <input type="password" name="password" placeholder="Contraseña" required>
-                <select name="role" required>
-                    <option value="admin">Administrador</option>
-                    <option value="user">Usuario</option>
-                </select>
-                <button type="submit" class="btn btn-success">Registrar</button> <!-- Estilo uniforme -->
+            <form method="POST" action="">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nombre de Usuario</label>
+                    <input type="text" class="form-control" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="role" class="form-label">Rol</label>
+                    <select name="role" class="form-select">
+                        <option value="user">Usuario</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrar</button>
             </form>
+            <div class="message">
+                <?php if (!empty($message)): ?>
+                    <div class="alert alert-success"><?php echo $message; ?></div>
+                <?php endif; ?>
+                <?php if (!empty($error_message)): ?>
+                    <div class="alert alert-danger"><?php echo $error_message; ?></div>
+                <?php endif; ?>
+            </div>
         </div>
 
         <h2>Lista de Usuarios</h2>
-        <table class="table table-bordered">
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -266,74 +289,32 @@ $result_users = mysqli_query($conexion, $sql_users);
                 </tr>
             </thead>
             <tbody>
-                <?php while ($user = mysqli_fetch_assoc($result_users)): ?>
+                <?php while ($row = mysqli_fetch_assoc($result_users)): ?>
                     <tr>
-                        <td><?php echo $user['id']; ?></td>
-                        <td><?php echo $user['username']; ?></td>
-                        <td><?php echo $user['email']; ?></td>
-                        <td><?php echo $user['role']; ?></td>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row['username']; ?></td>
+                        <td><?php echo $row['email']; ?></td>
+                        <td><?php echo $row['role']; ?></td>
                         <td>
-                            <!-- Cambiar a un botón que activa el modal -->
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editUserModal<?php echo $user['id']; ?>">
-                                Modificar
-                            </button>
-                            |
-                            <a href="admin_panel.php?delete=<?php echo $user['id']; ?>" onclick="return confirm('¿Estás seguro de que quieres eliminar este usuario?');" class="btn btn-danger">Eliminar</a>
+                            <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</a>
                         </td>
                     </tr>
-                    
-                    <!-- Modal para editar usuario -->
-                    <div class="modal fade" id="editUserModal<?php echo $user['id']; ?>" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg"> <!-- Cambiar aquí a modal-lg para un modal más grande -->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editUserModalLabel">Modificar Usuario</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="" method="post">
-                                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                        <div class="row mb-3">
-                                            <div class="col">
-                                                <input type="text" name="username" class="form-control" placeholder="Nombre de usuario" value="<?php echo $user['username']; ?>" required>
-                                            </div>
-                                            <div class="col">
-                                                <input type="email" name="email" class="form-control" placeholder="Correo electrónico" value="<?php echo $user['email']; ?>" required>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col">
-                                                <select name="role" class="form-select" required>
-                                                    <option value="admin" <?php echo ($user['role'] == 'admin') ? 'selected' : ''; ?>>Administrador</option>
-                                                    <option value="user" <?php echo ($user['role'] == 'user') ? 'selected' : ''; ?>>Usuario</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-auto">
-                                                <button type="submit" name="update" class="btn btn-primary">Modificar</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
                 <?php endwhile; ?>
             </tbody>
         </table>
     </div>
 
     <script>
-        $(document).ready(function() {
-            $('.accordion-header').on('click', function() {
-                $(this).toggleClass('active');
-                $(this).next('.accordion-content').slideToggle();
+        // Script para manejar el acordeón
+        const headers = document.querySelectorAll('.accordion-header');
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                header.classList.toggle('active');
             });
         });
     </script>
-
-    <!-- Agregar el JS de Bootstrap para manejar los modales -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
 </body>
 </html>
