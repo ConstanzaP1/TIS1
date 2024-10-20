@@ -23,7 +23,7 @@ if (isset($_GET['id_notebook'])) {
 
     if (mysqli_query($conexion, $queryEliminarNotebook)) {
         echo "Periférico eliminado exitosamente.";
-        header('location: ../admin_panel.php');
+        header('location: ../index.php');
         exit();
     } else {
         echo "Error al eliminar el notebook: " . mysqli_error($conexion);

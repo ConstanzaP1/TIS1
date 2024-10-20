@@ -13,7 +13,7 @@ if (isset($_GET['id_hardware'])) {
         'velocidad_ram','capacidad_almacenamiento','formato_placa',
         'capacidad_ram','tipo_ram','certificacion_fuente',
         'tipo_cableado','tamanio_fuente','potencia_fuente',
-        'tamanio_placa'
+        'tamanio_placa', 'tamanio_max_gabinete'
     ];
 
     foreach ($tablas as $tabla) {
@@ -28,7 +28,7 @@ if (isset($_GET['id_hardware'])) {
 
     if (mysqli_query($conexion, $queryEliminarHardware)) {
         echo "Hardware eliminado exitosamente.";
-        header('location: ../admin_panel.php');
+        header('location: ../index.php');
         exit();
     } else {
         echo "Error al eliminar el hardware: " . mysqli_error($conexion);

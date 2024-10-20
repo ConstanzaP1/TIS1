@@ -84,6 +84,9 @@ elseif ($tipo_hardware == 'certificacion_fuente') {
 }elseif ($tipo_hardware == 'tamanio_placa') {
     $tamanio_placa = $_POST['tamanio_placa'];
     $query = "UPDATE tamanio_placa SET tamanio_placa = '$tamanio_placa' WHERE id_hardware = '$id_hardware'";
+}elseif ($tipo_hardware == 'tamanio_max_gabinete') {
+    $tamanio_max_gabinete = $_POST['tamanio_max_gabinete'];
+    $query = "UPDATE tamanio_max_gabinete SET tamanio_max_gabinete = '$tamanio_max_gabinete' WHERE id_hardware = '$id_hardware'";
 }
 
 
@@ -94,7 +97,7 @@ mysqli_query($conexion, $query);
 // Verificar si la consulta se ejecutó correctamente
 if (mysqli_affected_rows($conexion) > 0) {
     // Redireccionar a la página de inicio
-    header('Location: ../admin_panel.php');
+    header('Location: ../index.php');
     exit;
 } else {
     // Mostrar un mensaje de error
