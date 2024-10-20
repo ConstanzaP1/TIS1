@@ -85,7 +85,7 @@ $result = mysqli_query($conexion, $query);
             <button type="submit" class="btn btn-success">Guardar</button>
             
             <!-- Botón para volver al inicio al lado del botón de guardar -->
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='../admin_panel.php.php';">Volver a Inicio</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='../admin_panel.php';">Volver a Inicio</button>
         </div>
     </form>
 </div>

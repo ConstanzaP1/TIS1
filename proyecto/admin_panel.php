@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require_once 'conexion.php'; // Asegúrate de que el archivo conexion.php esté en la misma carpeta o proporciona la ruta correcta
+
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     // Redirigir al login si no está autenticado o no es admin
