@@ -16,49 +16,6 @@ if (isset($_SESSION['error_message'])) {
     $error_message = $_SESSION['error_message'];
     unset($_SESSION['error_message']); // Elimina el mensaje de error de la sesión
 }
-
-// Manejar la acción de registro
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    // Validar si el usuario ya existe
-    $sql_check = "SELECT * FROM users WHERE username = ? OR email = ?";
-    $stmt_check = mysqli_prepare($conexion, $sql_check);
-    mysqli_stmt_bind_param($stmt_check, 'ss', $username, $email);
-    mysqli_stmt_execute($stmt_check);
-    mysqli_stmt_store_result($stmt_check);
-
-    if (mysqli_stmt_num_rows($stmt_check) > 0) {
-        $_SESSION['error_message'] = 'El usuario o correo electrónico ya existe.';
-    } else {
-        // Insertar el nuevo usuario como "normal"
-        $sql_insert = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, 'normal')";
-        $stmt_insert = mysqli_prepare($conexion, $sql_insert);
-        
-        // Verificar si la preparación fue exitosa
-        if ($stmt_insert) {
-            // Hashear la contraseña antes de almacenarla
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            mysqli_stmt_bind_param($stmt_insert, 'sss', $username, $email, $hashed_password);
-            
-            // Ejecutar la consulta
-            if (mysqli_stmt_execute($stmt_insert)) {
-                $_SESSION['message'] = 'Usuario registrado exitosamente.'; // Almacena en la sesión
-                header('Location: index.php'); // Redirigir a index.php
-                exit; // Salir para evitar que se ejecute el resto del código
-            } else {
-                $_SESSION['error_message'] = 'Error al registrar el usuario. Inténtalo de nuevo.';
-            }
-            mysqli_stmt_close($stmt_insert); // Cerrar la declaración solo si fue creada
-        } else {
-            $_SESSION['error_message'] = 'Error al preparar la consulta de inserción.';
-        }
-    }
-    
-    mysqli_stmt_close($stmt_check);
-}
 ?>
 
 <!DOCTYPE html>
@@ -93,14 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             margin-bottom: 20px;
             display: flex;
+            justify-content: center;
             align-items: center;
-        }
-        .formulario-registro input {
-            margin-right: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            flex: 1;
         }
         .formulario-registro button {
             padding: 10px 15px;
@@ -109,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-right: 5px;
+            margin: 0 5px; /* Espaciado entre botones */
         }
         .product {
             background-color: white;
@@ -120,10 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         .product h3 {
             margin: 0 0 10px;
-        }
-        .button-container {
-            display: flex;
-            align-items: center;
         }
         .message {
             margin-top: 10px;
@@ -137,17 +84,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <div class="container">
-        <!-- Formulario de registro -->
+        <!-- Botones de Iniciar Sesión y Registrarse -->
         <div class="formulario-registro">
-            <form method="post" action="" style="flex: 1;">
-                <input type="text" name="username" placeholder="Usuario" required>
-                <input type="email" name="email" placeholder="Correo electrónico" required>
-                <input type="password" name="password" placeholder="Contraseña" required>
-                <button type="submit">Registrarse</button>
-            </form>
             <div class="button-container">
                 <a href="login/login.php">
                     <button type="button">Iniciar Sesión</button>
+                </a>
+                <a href="login/login.php">
+                    <button type="button">Registrarse</button>
                 </a>
             </div>
         </div>
