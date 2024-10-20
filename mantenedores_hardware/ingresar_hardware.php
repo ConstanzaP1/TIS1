@@ -261,17 +261,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
             header('location: tamanio_placa.php');
-        } elseif ($tipo_hardware == 'tamanio_max_gabinete') {
-            $tamanio_max_gabinete  = $_POST['tamanio_max_gabinete'];
-            // Insertar en las tablas asociadas para procesadores
-            $queryTamanio_max_gabinete = "INSERT INTO tamanio_max_gabinete (id_hardware, tamanio_max_gabinete) VALUES ('$id_hardware', '$tamanio_max_gabinete')";
-
-            if (mysqli_query($conexion, $queryTamanio_max_gabinete)) {
-                echo "Ingreso exitoso.";
-            } else {
-                echo "Error al insertar." . mysqli_error($conexion);
-            }
-            header('location: tamanio_max_gabinete.php');
         } 
 
 

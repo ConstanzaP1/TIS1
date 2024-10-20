@@ -79,7 +79,6 @@ $row = mysqli_fetch_assoc($result);
                 <option value="potencia_fuente" <?php if ($row['potencia_fuente']) echo 'selected'; ?>>Potencia Fuente</option>
                 <option value="tamanio_placa" <?php if ($row['tamanio_placa']) echo 'selected'; ?>>Tamaño Placa</option>
                 <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo RAM</option>
-                <option value="tamanio_max_gabinete" <?php if ($row['tamanio_max_gabinete']) echo 'selected'; ?>>Tipo RAM</option>
                 
 
             </select>
@@ -160,10 +159,6 @@ $row = mysqli_fetch_assoc($result);
         <div class="mb-3" id="camposTipo_ram" style="display: none;">       
             <label for="tipo_ram" class="form-label mt-3">Tipo RAM</label>
             <input type="text" name="tipo_ram" class="form-control" id="tipo_ram" value="<?php echo $row['tipo_ram']; ?>">
-        </div>
-        <div class="mb-3" id="camposTamanio_max_gabinete" style="display: none;">       
-            <label for="tamanio_max_gabinete" class="form-label mt-3">Tamaño Max placa</label>
-            <input type="text" name="tamanio_max_gabinete" class="form-control" id="tamanio_max_gabinete" value="<?php echo $row['tamanio_max_gabinete']; ?>">
         </div>
 
         <button type="submit" class="btn btn-primary mt-3">Guardar cambios</button>
@@ -262,9 +257,6 @@ $row = mysqli_fetch_assoc($result);
 
         else if (tipoHardware === "tipo_ram") {
             document.getElementById("camposTipo_ram").style.display = "block";
-        }
-        else if (tipoHardware === "tamanio_max_gabinete") {
-            document.getElementById("camposTamanio_max_gabinete").style.display = "block";
         }
         
     }

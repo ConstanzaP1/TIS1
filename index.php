@@ -1,26 +1,5 @@
-<?php
-session_start();
-
-require_once 'conexion.php'; // Asegúrate de que el archivo conexion.php esté en la misma carpeta o proporciona la ruta correcta
-
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    // Redirigir al login si no está autenticado o no es admin
-    header('Location: login.php');
-    exit;
-}
-
-// Manejar la acción de logout
-if (isset($_GET['logout'])) {
-    // Cerrar sesión
-    session_destroy();
-    header('Location: login.php');
-    exit;
-}
-?>
-
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +20,7 @@ if (isset($_GET['logout'])) {
                     <i class="lni lni-grid-alt"></i>
                 </button>
                 <div class="sidebar-logo">
-                <a href="#">Tisnology</a>
+                    <a href="#">Tisnology</a>
                 </div>
             </div>
             <li class="sidebar-item">
@@ -288,13 +267,13 @@ if (isset($_GET['logout'])) {
                 </ul>
             </li>
             <li class="sidebar-item">
-                    <a href="creacion_productos/admin_panel_crear_producto.php" class="sidebar-link">
+                    <a href="creacion_productos/index_crear_producto.php" class="sidebar-link">
                         <i class="lni lni-user"></i>
                         <span>Crear producto</span>
                     </a>
             </li>
             <div class="sidebar-footer">
-                <a href="?logout=true" class="sidebar-link">
+                <a href="#" class="sidebar-link">
                     <i class="lni lni-exit"></i>
                     <span>Logout</span>
                 </a>
@@ -303,7 +282,7 @@ if (isset($_GET['logout'])) {
         <div class="main p-3">
             <div class="text-center">
                 <h1>
-                    Tisnology - Panel de Administración
+                    Tisnology
                 </h1>
             </div>
         </div>

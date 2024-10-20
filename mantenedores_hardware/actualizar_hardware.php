@@ -84,9 +84,6 @@ elseif ($tipo_hardware == 'certificacion_fuente') {
 }elseif ($tipo_hardware == 'tamanio_placa') {
     $tamanio_placa = $_POST['tamanio_placa'];
     $query = "UPDATE tamanio_placa SET tamanio_placa = '$tamanio_placa' WHERE id_hardware = '$id_hardware'";
-}elseif ($tipo_hardware == 'tamanio_max_gabinete') {
-    $tamanio_max_gabinete = $_POST['tamanio_max_gabinete'];
-    $query = "UPDATE tamanio_max_gabinete SET tamanio_max_gabinete = '$tamanio_max_gabinete' WHERE id_hardware = '$id_hardware'";
 }
 
 
