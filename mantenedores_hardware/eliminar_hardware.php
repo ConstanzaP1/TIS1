@@ -28,7 +28,7 @@ if (isset($_GET['id_hardware'])) {
 
     if (mysqli_query($conexion, $queryEliminarHardware)) {
         echo "Hardware eliminado exitosamente.";
-        header('location: ../admin_panel.php');
+        header('location: panel_admin/admin_panel.php');
         exit();
     } else {
         echo "Error al eliminar el hardware: " . mysqli_error($conexion);

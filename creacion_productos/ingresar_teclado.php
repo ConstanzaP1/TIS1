@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_query($conexion, $queryCategoriaTeclado)) {
             echo "Teclado agregado exitosamente.";
-            header('location: admin_panel_producto.php');
+            header('location: index_producto.php');
         } else {
             echo "Error al insertar en la categoría de teclado: " . mysqli_error($conexion);
         }

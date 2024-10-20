@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('conexion.php'); // Conexión a la base de datos
+include('../conexion.php'); // Conexión a la base de datos
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   VALUES ('$username', '$email', '$hashedPassword', '$role')";
         if (mysqli_query($conn, $query)) {
             $_SESSION['success'] = "Registro exitoso. Ahora puedes iniciar sesión.";
-            header('Location: login.php');
+            header('Location: login/login.php');
         } else {
             echo "Error al registrar.";
         }

@@ -1,12 +1,12 @@
 <?php
 session_start();
 
-require_once 'conexion.php'; // Asegúrate de que el archivo conexion.php esté en la misma carpeta o proporciona la ruta correcta
+require_once '../conexion.php'; // Asegúrate de que el archivo conexion.php esté en la misma carpeta o proporciona la ruta correcta
 
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     // Redirigir al login si no está autenticado o no es admin
-    header('Location: login.php');
+    header('Location: ../login/login.php');
     exit;
 }
 
@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 if (isset($_GET['logout'])) {
     // Cerrar sesión
     session_destroy();
-    header('Location: login.php');
+    header('Location: ../login/login.php');
     exit;
 }
 ?>
@@ -288,7 +288,7 @@ if (isset($_GET['logout'])) {
                 </ul>
             </li>
             <li class="sidebar-item">
-                    <a href="creacion_productos/admin_panel_crear_producto.php" class="sidebar-link">
+                    <a href="creacion_productos/index_crear_producto.php" class="sidebar-link">
                         <i class="lni lni-user"></i>
                         <span>Crear producto</span>
                     </a>

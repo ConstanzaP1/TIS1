@@ -97,7 +97,7 @@ mysqli_query($conexion, $query);
 // Verificar si la consulta se ejecutó correctamente
 if (mysqli_affected_rows($conexion) > 0) {
     // Redireccionar a la página de inicio
-    header('Location: ../admin_panel.php');
+    header('Location: panel_admin/admin_panel.php');
     exit;
 } else {
     // Mostrar un mensaje de error

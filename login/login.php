@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('conexion.php'); // Asegúrate de incluir tu archivo de conexión a la base de datos
+include('../conexion.php'); // Asegúrate de incluir tu archivo de conexión a la base de datos
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -20,9 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Redirigir según el rol del usuario
             if ($user['role'] == 'admin') {
-                header('Location: admin_panel.php');
+                header('Location: /TIS1/panel_admin/admin_panel.php');
+
             } else {
-                header('Location: user_panel.php');
+                header( 'Location: user_panel.php');
             }
             exit();
         } else {
@@ -35,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php if (isset($error_message)) : ?>
             <div class="alert alert-danger"><?= $error_message ?></div>
         <?php endif; ?>
-        <form action="login.php" method="POST">
+        <form action="login/login.php" method="POST">
             <div class="mb-3">
                 <label for="username" class="form-label">Usuario</label>
                 <input type="text" class="form-control" name="username" required>
