@@ -25,6 +25,8 @@ $query = "SELECT * FROM periferico p
           LEFT JOIN tasa_refresco tre ON p.id_periferico = tre.id_periferico
           LEFT JOIN soporte_monitor smr ON p.id_periferico = smr.id_periferico
           
+
+          
           WHERE p.id_periferico = '$id_periferico'";
 
 $result = mysqli_query($conexion, $query);

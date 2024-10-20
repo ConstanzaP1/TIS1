@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 07, 2024 at 07:57 PM
+-- Generation Time: Oct 20, 2024 at 02:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,8 +18,27 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `prueba2`
+-- Database: `presentacion`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `anc`
+--
+
+CREATE TABLE `anc` (
+  `id_periferico` int(11) NOT NULL,
+  `anc` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `anc`
+--
+
+INSERT INTO `anc` (`id_periferico`, `anc`) VALUES
+(163, 'a'),
+(164, 'vbaa');
 
 -- --------------------------------------------------------
 
@@ -54,6 +73,14 @@ CREATE TABLE `capacidad_almacenamiento` (
   `capacidad_almacenamiento` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `capacidad_almacenamiento`
+--
+
+INSERT INTO `capacidad_almacenamiento` (`id_hardware`, `capacidad_almacenamiento`) VALUES
+(40, '1gb'),
+(41, '2gb');
+
 -- --------------------------------------------------------
 
 --
@@ -75,6 +102,15 @@ CREATE TABLE `categoria_teclado` (
   `id_periferico` int(11) NOT NULL,
   `categoria_teclado` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `categoria_teclado`
+--
+
+INSERT INTO `categoria_teclado` (`id_periferico`, `categoria_teclado`) VALUES
+(98, '100%'),
+(99, '80%'),
+(152, '60%');
 
 -- --------------------------------------------------------
 
@@ -98,6 +134,14 @@ CREATE TABLE `conectividad` (
   `conectividad` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `conectividad`
+--
+
+INSERT INTO `conectividad` (`id_periferico`, `conectividad`) VALUES
+(76, 'Bluetooth'),
+(141, 'Analogaaaa');
+
 -- --------------------------------------------------------
 
 --
@@ -109,6 +153,13 @@ CREATE TABLE `cpu_notebook` (
   `cpu_notebook` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `cpu_notebook`
+--
+
+INSERT INTO `cpu_notebook` (`id_notebook`, `cpu_notebook`) VALUES
+(18, 'prueba');
+
 -- --------------------------------------------------------
 
 --
@@ -119,6 +170,13 @@ CREATE TABLE `dpi_mouse` (
   `id_periferico` int(11) NOT NULL,
   `dpi_mouse` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `dpi_mouse`
+--
+
+INSERT INTO `dpi_mouse` (`id_periferico`, `dpi_mouse`) VALUES
+(77, '16000DPI');
 
 -- --------------------------------------------------------
 
@@ -134,6 +192,24 @@ CREATE TABLE `formato_placa` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `formato_ram`
+--
+
+CREATE TABLE `formato_ram` (
+  `id_hardware` int(11) NOT NULL,
+  `formato_ram` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `formato_ram`
+--
+
+INSERT INTO `formato_ram` (`id_hardware`, `formato_ram`) VALUES
+(45, 'DIMMa');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `frecuencia_cpu`
 --
 
@@ -141,6 +217,13 @@ CREATE TABLE `frecuencia_cpu` (
   `id_hardware` int(11) NOT NULL,
   `frecuencia_cpu` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `frecuencia_cpu`
+--
+
+INSERT INTO `frecuencia_cpu` (`id_hardware`, `frecuencia_cpu`) VALUES
+(24, '1000');
 
 -- --------------------------------------------------------
 
@@ -153,6 +236,13 @@ CREATE TABLE `frecuencia_gpu` (
   `frecuencia_gpu` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `frecuencia_gpu`
+--
+
+INSERT INTO `frecuencia_gpu` (`id_hardware`, `frecuencia_gpu`) VALUES
+(18, '3600A');
+
 -- --------------------------------------------------------
 
 --
@@ -163,6 +253,13 @@ CREATE TABLE `gpu_notebook` (
   `id_notebook` int(11) NOT NULL,
   `gpu_notebook` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `gpu_notebook`
+--
+
+INSERT INTO `gpu_notebook` (`id_notebook`, `gpu_notebook`) VALUES
+(20, 'asdasda');
 
 -- --------------------------------------------------------
 
@@ -175,6 +272,25 @@ CREATE TABLE `hardware` (
   `id_producto` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `hardware`
+--
+
+INSERT INTO `hardware` (`id_hardware`, `id_producto`) VALUES
+(18, NULL),
+(20, NULL),
+(24, NULL),
+(32, NULL),
+(34, NULL),
+(39, NULL),
+(40, NULL),
+(41, NULL),
+(44, NULL),
+(45, NULL),
+(47, NULL),
+(48, NULL),
+(49, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -185,6 +301,24 @@ CREATE TABLE `historial_compra` (
   `id_historal` int(11) NOT NULL,
   `estado` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `iluminacion`
+--
+
+CREATE TABLE `iluminacion` (
+  `id_periferico` int(11) NOT NULL,
+  `iluminacion` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `iluminacion`
+--
+
+INSERT INTO `iluminacion` (`id_periferico`, `iluminacion`) VALUES
+(155, 'RGB');
 
 -- --------------------------------------------------------
 
@@ -229,6 +363,13 @@ CREATE TABLE `memoria_gpu` (
   `memoria_gpu` varchar(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `memoria_gpu`
+--
+
+INSERT INTO `memoria_gpu` (`id_hardware`, `memoria_gpu`) VALUES
+(20, '8GB');
+
 -- --------------------------------------------------------
 
 --
@@ -240,6 +381,14 @@ CREATE TABLE `notebook` (
   `id_producto` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `notebook`
+--
+
+INSERT INTO `notebook` (`id_notebook`, `id_producto`) VALUES
+(18, NULL),
+(20, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -250,6 +399,14 @@ CREATE TABLE `nucleo_hilo_cpu` (
   `id_hardware` int(11) NOT NULL,
   `nucleo_hilo_cpu` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `nucleo_hilo_cpu`
+--
+
+INSERT INTO `nucleo_hilo_cpu` (`id_hardware`, `nucleo_hilo_cpu`) VALUES
+(39, '2 Nucleos / 2 Hilos'),
+(47, '4 Nucleos / 4 Hilos');
 
 -- --------------------------------------------------------
 
@@ -289,17 +446,34 @@ CREATE TABLE `periferico` (
   `id_producto` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `perifericos`
+-- Dumping data for table `periferico`
 --
 
-CREATE TABLE `perifericos` (
-  `id` int(11) NOT NULL,
-  `tipo_periferico` varchar(255) DEFAULT NULL,
-  `valor` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `periferico` (`id_periferico`, `id_producto`) VALUES
+(66, NULL),
+(75, NULL),
+(76, NULL),
+(77, NULL),
+(78, NULL),
+(79, NULL),
+(80, NULL),
+(81, NULL),
+(82, NULL),
+(86, NULL),
+(141, NULL),
+(154, NULL),
+(155, NULL),
+(156, NULL),
+(158, NULL),
+(159, NULL),
+(161, NULL),
+(162, NULL),
+(163, NULL),
+(164, NULL),
+(168, NULL),
+(169, NULL),
+(170, NULL);
 
 -- --------------------------------------------------------
 
@@ -311,6 +485,25 @@ CREATE TABLE `pertenece` (
   `nombre_lista` varchar(255) NOT NULL,
   `id_producto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `peso_mouse`
+--
+
+CREATE TABLE `peso_mouse` (
+  `id_periferico` int(11) NOT NULL,
+  `peso_mouse` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `peso_mouse`
+--
+
+INSERT INTO `peso_mouse` (`id_periferico`, `peso_mouse`) VALUES
+(161, '120g'),
+(162, 'dasdasaaa');
 
 -- --------------------------------------------------------
 
@@ -364,6 +557,13 @@ CREATE TABLE `resolucion_monitor` (
   `resolucion_monitor` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `resolucion_monitor`
+--
+
+INSERT INTO `resolucion_monitor` (`id_periferico`, `resolucion_monitor`) VALUES
+(81, 'Full HD (1920x1080)');
+
 -- --------------------------------------------------------
 
 --
@@ -375,6 +575,13 @@ CREATE TABLE `sensor_mouse` (
   `sensor_mouse` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `sensor_mouse`
+--
+
+INSERT INTO `sensor_mouse` (`id_periferico`, `sensor_mouse`) VALUES
+(75, 'Optico');
+
 -- --------------------------------------------------------
 
 --
@@ -385,6 +592,13 @@ CREATE TABLE `slot_memoria_placa` (
   `id_hardware` int(11) NOT NULL,
   `slot_memoria_placa` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `slot_memoria_placa`
+--
+
+INSERT INTO `slot_memoria_placa` (`id_hardware`, `slot_memoria_placa`) VALUES
+(34, '4');
 
 -- --------------------------------------------------------
 
@@ -408,6 +622,31 @@ CREATE TABLE `socket_placa` (
   `socket_placa` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `socket_placa`
+--
+
+INSERT INTO `socket_placa` (`id_hardware`, `socket_placa`) VALUES
+(32, 'atx');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `soporte_monitor`
+--
+
+CREATE TABLE `soporte_monitor` (
+  `id_periferico` int(11) NOT NULL,
+  `soporte_monitor` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `soporte_monitor`
+--
+
+INSERT INTO `soporte_monitor` (`id_periferico`, `soporte_monitor`) VALUES
+(170, 'G-Sync / FreeSync');
+
 -- --------------------------------------------------------
 
 --
@@ -422,6 +661,17 @@ CREATE TABLE `tamanio_fuente` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tamanio_max_gabinete`
+--
+
+CREATE TABLE `tamanio_max_gabinete` (
+  `id_hardware` int(11) NOT NULL,
+  `tamanio_max_gabinete` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tamanio_monitor`
 --
 
@@ -429,6 +679,13 @@ CREATE TABLE `tamanio_monitor` (
   `id_periferico` int(11) NOT NULL,
   `tamanio_monitor` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tamanio_monitor`
+--
+
+INSERT INTO `tamanio_monitor` (`id_periferico`, `tamanio_monitor`) VALUES
+(78, '24.0\"');
 
 -- --------------------------------------------------------
 
@@ -438,8 +695,26 @@ CREATE TABLE `tamanio_monitor` (
 
 CREATE TABLE `tamanio_placa` (
   `id_hardware` int(11) NOT NULL,
-  `tamanio_max_placa` varchar(255) DEFAULT NULL
+  `tamanio_placa` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tasa_refresco`
+--
+
+CREATE TABLE `tasa_refresco` (
+  `id_periferico` int(11) NOT NULL,
+  `tasa_refresco` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tasa_refresco`
+--
+
+INSERT INTO `tasa_refresco` (`id_periferico`, `tasa_refresco`) VALUES
+(168, '60hz');
 
 -- --------------------------------------------------------
 
@@ -451,6 +726,13 @@ CREATE TABLE `tiempo_respuesta` (
   `id_periferico` int(11) NOT NULL,
   `tiempo_respuesta` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tiempo_respuesta`
+--
+
+INSERT INTO `tiempo_respuesta` (`id_periferico`, `tiempo_respuesta`) VALUES
+(80, '5 ms');
 
 -- --------------------------------------------------------
 
@@ -485,6 +767,13 @@ CREATE TABLE `tipo_curvatura` (
   `tipo_curvatura` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `tipo_curvatura`
+--
+
+INSERT INTO `tipo_curvatura` (`id_periferico`, `tipo_curvatura`) VALUES
+(79, 'Si');
+
 -- --------------------------------------------------------
 
 --
@@ -495,6 +784,13 @@ CREATE TABLE `tipo_microfono` (
   `id_periferico` int(11) NOT NULL,
   `tipo_microfono` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tipo_microfono`
+--
+
+INSERT INTO `tipo_microfono` (`id_periferico`, `tipo_microfono`) VALUES
+(156, 'asdasd');
 
 -- --------------------------------------------------------
 
@@ -507,6 +803,13 @@ CREATE TABLE `tipo_panel` (
   `tipo_panel` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `tipo_panel`
+--
+
+INSERT INTO `tipo_panel` (`id_periferico`, `tipo_panel`) VALUES
+(82, 'LED');
+
 -- --------------------------------------------------------
 
 --
@@ -515,8 +818,33 @@ CREATE TABLE `tipo_panel` (
 
 CREATE TABLE `tipo_ram` (
   `id_hardware` int(11) NOT NULL,
-  `tipo_ram` varchar(255) DEFAULT NULL
+  `tipo_ram` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tipo_ram`
+--
+
+INSERT INTO `tipo_ram` (`id_hardware`, `tipo_ram`) VALUES
+(44, 'ddr5');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tipo_switch`
+--
+
+CREATE TABLE `tipo_switch` (
+  `id_periferico` int(11) NOT NULL,
+  `tipo_switch` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tipo_switch`
+--
+
+INSERT INTO `tipo_switch` (`id_periferico`, `tipo_switch`) VALUES
+(159, 'Azul');
 
 -- --------------------------------------------------------
 
@@ -528,6 +856,15 @@ CREATE TABLE `tipo_teclado` (
   `id_periferico` int(11) NOT NULL,
   `tipo_teclado` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tipo_teclado`
+--
+
+INSERT INTO `tipo_teclado` (`id_periferico`, `tipo_teclado`) VALUES
+(66, 'Mecanico'),
+(86, 'Membrana'),
+(154, 'brazo de 35');
 
 -- --------------------------------------------------------
 
@@ -570,6 +907,12 @@ CREATE TABLE `voltaje_ram` (
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `anc`
+--
+ALTER TABLE `anc`
+  ADD PRIMARY KEY (`id_periferico`);
 
 --
 -- Indexes for table `asocia`
@@ -633,6 +976,12 @@ ALTER TABLE `formato_placa`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
+-- Indexes for table `formato_ram`
+--
+ALTER TABLE `formato_ram`
+  ADD PRIMARY KEY (`id_hardware`);
+
+--
 -- Indexes for table `frecuencia_cpu`
 --
 ALTER TABLE `frecuencia_cpu`
@@ -662,6 +1011,12 @@ ALTER TABLE `hardware`
 --
 ALTER TABLE `historial_compra`
   ADD PRIMARY KEY (`id_historal`);
+
+--
+-- Indexes for table `iluminacion`
+--
+ALTER TABLE `iluminacion`
+  ADD PRIMARY KEY (`id_periferico`);
 
 --
 -- Indexes for table `lista_deseo`
@@ -721,17 +1076,17 @@ ALTER TABLE `periferico`
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indexes for table `perifericos`
---
-ALTER TABLE `perifericos`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `pertenece`
 --
 ALTER TABLE `pertenece`
   ADD PRIMARY KEY (`nombre_lista`,`id_producto`),
   ADD KEY `id_producto` (`id_producto`);
+
+--
+-- Indexes for table `peso_mouse`
+--
+ALTER TABLE `peso_mouse`
+  ADD PRIMARY KEY (`id_periferico`);
 
 --
 -- Indexes for table `potencia_fuente`
@@ -784,9 +1139,21 @@ ALTER TABLE `socket_placa`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
+-- Indexes for table `soporte_monitor`
+--
+ALTER TABLE `soporte_monitor`
+  ADD PRIMARY KEY (`id_periferico`);
+
+--
 -- Indexes for table `tamanio_fuente`
 --
 ALTER TABLE `tamanio_fuente`
+  ADD PRIMARY KEY (`id_hardware`);
+
+--
+-- Indexes for table `tamanio_max_gabinete`
+--
+ALTER TABLE `tamanio_max_gabinete`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
@@ -800,6 +1167,12 @@ ALTER TABLE `tamanio_monitor`
 --
 ALTER TABLE `tamanio_placa`
   ADD PRIMARY KEY (`id_hardware`);
+
+--
+-- Indexes for table `tasa_refresco`
+--
+ALTER TABLE `tasa_refresco`
+  ADD PRIMARY KEY (`id_periferico`);
 
 --
 -- Indexes for table `tiempo_respuesta`
@@ -844,6 +1217,12 @@ ALTER TABLE `tipo_ram`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
+-- Indexes for table `tipo_switch`
+--
+ALTER TABLE `tipo_switch`
+  ADD PRIMARY KEY (`id_periferico`);
+
+--
 -- Indexes for table `tipo_teclado`
 --
 ALTER TABLE `tipo_teclado`
@@ -875,7 +1254,7 @@ ALTER TABLE `voltaje_ram`
 -- AUTO_INCREMENT for table `hardware`
 --
 ALTER TABLE `hardware`
-  MODIFY `id_hardware` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_hardware` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `historial_compra`
@@ -893,7 +1272,7 @@ ALTER TABLE `marca`
 -- AUTO_INCREMENT for table `notebook`
 --
 ALTER TABLE `notebook`
-  MODIFY `id_notebook` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_notebook` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `orden_compra`
@@ -905,13 +1284,7 @@ ALTER TABLE `orden_compra`
 -- AUTO_INCREMENT for table `periferico`
 --
 ALTER TABLE `periferico`
-  MODIFY `id_periferico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
-
---
--- AUTO_INCREMENT for table `perifericos`
---
-ALTER TABLE `perifericos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_periferico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
 
 --
 -- AUTO_INCREMENT for table `producto`
@@ -928,6 +1301,12 @@ ALTER TABLE `resena_valoracion`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `anc`
+--
+ALTER TABLE `anc`
+  ADD CONSTRAINT `anc_ibfk_1` FOREIGN KEY (`id_periferico`) REFERENCES `periferico` (`id_periferico`);
 
 --
 -- Constraints for table `asocia`
@@ -985,6 +1364,12 @@ ALTER TABLE `formato_placa`
   ADD CONSTRAINT `formato_placa_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
 
 --
+-- Constraints for table `formato_ram`
+--
+ALTER TABLE `formato_ram`
+  ADD CONSTRAINT `formato_ram_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
+
+--
 -- Constraints for table `frecuencia_cpu`
 --
 ALTER TABLE `frecuencia_cpu`
@@ -1007,6 +1392,12 @@ ALTER TABLE `gpu_notebook`
 --
 ALTER TABLE `hardware`
   ADD CONSTRAINT `hardware_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
+
+--
+-- Constraints for table `iluminacion`
+--
+ALTER TABLE `iluminacion`
+  ADD CONSTRAINT `iluminacion_ibfk_1` FOREIGN KEY (`id_periferico`) REFERENCES `periferico` (`id_periferico`);
 
 --
 -- Constraints for table `memoria`
@@ -1052,6 +1443,12 @@ ALTER TABLE `pertenece`
   ADD CONSTRAINT `pertenece_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `peso_mouse`
+--
+ALTER TABLE `peso_mouse`
+  ADD CONSTRAINT `peso_mouse_ibfk_1` FOREIGN KEY (`id_periferico`) REFERENCES `periferico` (`id_periferico`);
+
+--
 -- Constraints for table `potencia_fuente`
 --
 ALTER TABLE `potencia_fuente`
@@ -1095,10 +1492,22 @@ ALTER TABLE `socket_placa`
   ADD CONSTRAINT `socket_placa_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
 
 --
+-- Constraints for table `soporte_monitor`
+--
+ALTER TABLE `soporte_monitor`
+  ADD CONSTRAINT `soporte_monitor_ibfk_1` FOREIGN KEY (`id_periferico`) REFERENCES `periferico` (`id_periferico`);
+
+--
 -- Constraints for table `tamanio_fuente`
 --
 ALTER TABLE `tamanio_fuente`
   ADD CONSTRAINT `tamanio_fuente_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
+
+--
+-- Constraints for table `tamanio_max_gabinete`
+--
+ALTER TABLE `tamanio_max_gabinete`
+  ADD CONSTRAINT `tamanio_max_gabinete_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
 
 --
 -- Constraints for table `tamanio_monitor`
@@ -1111,6 +1520,12 @@ ALTER TABLE `tamanio_monitor`
 --
 ALTER TABLE `tamanio_placa`
   ADD CONSTRAINT `tamanio_placa_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
+
+--
+-- Constraints for table `tasa_refresco`
+--
+ALTER TABLE `tasa_refresco`
+  ADD CONSTRAINT `tasa_refresco_ibfk_1` FOREIGN KEY (`id_periferico`) REFERENCES `periferico` (`id_periferico`);
 
 --
 -- Constraints for table `tiempo_respuesta`
@@ -1153,6 +1568,12 @@ ALTER TABLE `tipo_panel`
 --
 ALTER TABLE `tipo_ram`
   ADD CONSTRAINT `tipo_ram_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
+
+--
+-- Constraints for table `tipo_switch`
+--
+ALTER TABLE `tipo_switch`
+  ADD CONSTRAINT `tipo_switch_ibfk_1` FOREIGN KEY (`id_periferico`) REFERENCES `periferico` (`id_periferico`);
 
 --
 -- Constraints for table `tipo_teclado`

@@ -26,6 +26,8 @@ $query = "SELECT * FROM hardware p
           LEFT JOIN tamanio_placa tp ON p.id_hardware = tp.id_hardware
           LEFT JOIN tipo_ram tr ON p.id_hardware = tr.id_hardware
           LEFT JOIN tamanio_max_gabinete tmg ON p.id_hardware = tmg.id_hardware
+         
+
           WHERE p.id_hardware = '$id_hardware'";
 
 $result = mysqli_query($conexion, $query);
