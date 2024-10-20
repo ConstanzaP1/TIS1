@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = mysqli_fetch_assoc($result);
 
         // Verificar si el usuario existe y la contraseña coincide
-        if ($user && password_verify($password, $user['password'])) { // Cambiado a password_verify
+        if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['role'] = $user['role'];
 
@@ -60,13 +60,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label for="password" class="form-label">Contraseña</label>
                 <input type="password" class="form-control" name="password" required>
             </div>
-            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            <div class="d-flex justify-content-between"> <!-- Contenedor flex para los botones -->
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                <a href="../index.php" class="btn btn-secondary">Volver al Inicio</a>
+            </div>
         </form>
-
-        <!-- Botón para volver al inicio -->
-        <div class="text-center mt-3">
-            <a href="../index.php" class="btn btn-secondary">Volver al Inicio</a>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
