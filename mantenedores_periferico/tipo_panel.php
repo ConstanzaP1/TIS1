@@ -65,7 +65,7 @@ $result = mysqli_query($conexion, $query);
     <button type="button" id="botonAgregar" class="btn btn-primary" onclick="mostrarFormulario()">Agregar</button>
 
     <!-- Botón para volver al inicio que siempre aparece cuando la tabla está visible -->
-    <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>                        
+    <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../admin_panel.php';">Volver a Inicio</button>                        
 
     
     <!-- Formulario para insertar -->
@@ -85,7 +85,7 @@ $result = mysqli_query($conexion, $query);
             <button type="submit" class="btn btn-success">Guardar</button>
             
             <!-- Botón para volver al inicio al lado del botón de guardar -->
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='../admin_panel.php';">Volver a Inicio</button>
         </div>
     </form>
 </div>

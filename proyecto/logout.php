@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(session_destroy()){
-    header("Location: login.php");
-}
+session_destroy(); // Destruir todas las sesiones activas
+header('Location: login.php'); // Redirigir al login
+exit();
 ?>

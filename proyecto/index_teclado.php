@@ -60,7 +60,7 @@ $resultTipo = mysqli_query($conexion, $queryTipo);
             <input type="text" name="tipo_teclado" class="form-control" id="tipo_teclado">
         </div>
         <button type="submit" class="btn btn-success mt-3">Guardar tipo teclado</button>
-        <button class="btn btn-secondary mt-3" onclick="window.location.href='index.php';">Volver a Inicio</button>
+        <button class="btn btn-secondary mt-3" onclick="window.location.href='admin_panel.php';">Volver a Inicio</button>
     </form>
 
     <div class="container">

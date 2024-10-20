@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (mysqli_query($conexion, $queryCpu_notebook)) {
                 echo "Ingreso exitoso.";
-                header('location: index_notebook.php');
+                header('location: admin_panel_notebook.php');
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);   
             }

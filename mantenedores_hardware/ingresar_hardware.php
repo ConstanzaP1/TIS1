@@ -21,11 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (mysqli_query($conexion, $queryMemoria)) {
                 echo "Ingreso exitoso.";
-                header('location: index_hardware.php');
+                header('location: admin_panel_hardware.php');
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);   
             }
-            header('location: index_hardware.php');
+            header('location: admin_panel_hardware.php');
         } 
 
         elseif ($tipo_hardware == 'memoria_gpu') {

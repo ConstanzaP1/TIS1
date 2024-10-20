@@ -1,12 +1,14 @@
 <?php
-$host = "localhost"; // Cambia según tu configuración
-$usuario = "root"; // Cambia según tu configuración
-$contrasena = ""; // Cambia según tu configuración
-$base_de_datos = "proyecto_tis1"; // Cambia según tu base de datos
+$servername = "localhost"; // O el nombre de tu servidor
+$username = "root";    // Cambia esto por tu usuario de base de datos
+$password = "";  // Cambia esto por tu contraseña de base de datos
+$dbname = "proyecto_tis1"; // Cambia esto por el nombre de tu base de datos
 
-$conexion = mysqli_connect($host, $usuario, $contrasena, $base_de_datos);
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-if (!$conexion) {
-    die("Error de conexión: " . mysqli_connect_error());
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>

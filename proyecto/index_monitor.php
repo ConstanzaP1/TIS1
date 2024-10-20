@@ -108,7 +108,7 @@ $resultTipo_panel = mysqli_query($conexion, $queryTipo_panel);
             <input type="text" name="tipo_panel" class="form-control" id="tipo_panel">
         </div>
         <button type="submit" class="btn btn-success mt-3">Guardar</button>
-        <button class="btn btn-secondary mt-3" onclick="window.location.href='index.php';">Volver a Inicio</button>
+        <button class="btn btn-secondary mt-3" onclick="window.location.href='admin_panel.php';">Volver a Inicio</button>
     </form>
 
     <div class="container">

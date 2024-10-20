@@ -17,10 +17,10 @@ if (isset($_POST['categoria_producto'])) {
         header('Location: crear_auricular.php');
     } else {
         // Si no se seleccionó ninguna categoría válida, redirigir de nuevo
-        header('Location: index_crear_producto.php');
+        header('Location: admin_panel_crear_producto.php');
     }
 } else {
     // Si no se envió la categoría, redirigir de nuevo al formulario
-    header('Location: index_crear_producto.php');
+    header('Location: admin_panel_crear_producto.php');
 }
 exit();

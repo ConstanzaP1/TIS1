@@ -1,42 +1,70 @@
+<?php
+session_start();
+include('conexion.php'); // Asegúrate de incluir tu archivo de conexión a la base de datos
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Consulta a la base de datos
+    $query = "SELECT * FROM users WHERE username = '$username'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        $user = mysqli_fetch_assoc($result);
+
+        // Verificar si el usuario existe y la contraseña coincide
+        if ($user && $user['password'] == $password) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['role'] = $user['role'];
+
+            // Redirigir según el rol del usuario
+            if ($user['role'] == 'admin') {
+                header('Location: admin_panel.php');
+            } else {
+                header('Location: user_panel.php');
+            }
+            exit();
+        } else {
+            $error_message = 'Usuario o contraseña incorrectos.';
+        }
+    } else {
+        $error_message = 'Error en la consulta a la base de datos.';
+    }
+}
+?>
+
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <?php
-    require('conexion.php');
-    session_start();
-        if(isset($_POST['username'])){
-            //limipio los datos al insertar//
-            $username = stripslashes($_REQUEST['username']);
-            $username = mysqli_real_escape_string($con,$username);
 
-            $password = stripslashes($_REQUEST['password']);
-            $password = mysqli_real_escape_string($con,$password);
-        //chequeo si el usuario esta en la abse de datos//    
-        $query = "SELECT * FROM users WHERE username='$username' and password='".md5($password)."'";
-        $result = mysqli_query($con,$query) ;
-        $row = mysqli_num_rows($result);
-        if($row==1){//el usuario existe podria preguntarse que tipo de usuario es y hacer el cambio de mandarlo a index clien, admin, bla bla bla//
-            $_SESSION['username']  = $username;
-            header("Location: index.php"); // redirigir a index.php
-        }else{
-      		echo "<div class='form'><h3>Usuario/Contraseña Incorrecto</h3><br/>Haz click aquí para <a href='login.php'>Logearte</a></div>";
-      	}
-        }else{
-        ?>
-	    <div class="form">
-	      <h1>Inicia Sesión</h1>
-	      <form action="" method="post" name="login">
-	        <input type="text" name="username" placeholder="Usuario" required />
-	        <input type="password" name="password" placeholder="Contraseña" required />
-	        <input name="submit" type="submit" value="Entrar" />
-	      </form>
-	      <p>No estas registrado aún? <a href='registration.php'>Registrate Aquí</a></p>
-	    </div>
-    <?php } ?>
-  </body>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Iniciar Sesión</h2>
+        <?php if (isset($error_message)) : ?>
+            <div class="alert alert-danger"><?= $error_message ?></div>
+        <?php endif; ?>
+        <form action="login.php" method="POST">
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" class="form-control" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

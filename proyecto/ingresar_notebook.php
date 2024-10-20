@@ -21,11 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (mysqli_query($conexion, $queryCpu_notebook)) {
                 echo "Ingreso exitoso.";
-                header('location: index_notebook.php');
+                header('location: admin_panel_notebook.php');
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);   
             }
-            header('location: index_notebook.php');
+            header('location: admin_panel_notebook.php');
         } elseif ($tipo_notebook == 'gpu_notebook') {
             $gpu_notebook = $_POST['gpu_notebook'];
             // Insertar en las tablas asociadas para procesadores
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_notebook.php');
+            header('location: admin_panel_notebook.php');
         } 
 
         elseif ($tipo_notebook == 'pantalla_notebook') {
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_notebook.php');
+            header('location: admin_panel_notebook.php');
         } 
 
         elseif ($tipo_notebook == 'bateria_notebook') {
@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: index_notebook.php');
+            header('location: admin_panel_notebook.php');
         } 
 
 

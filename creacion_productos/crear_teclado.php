@@ -71,7 +71,7 @@ $resultTipo_switch = mysqli_query($conexion, $queryTipo_switch);
         <!-- Otros campos adicionales para el teclado, como tipo de teclado, conectividad, etc. -->
         
         <button type="submit" class="btn btn-success mt-3">Guardar</button>
-        <button type="button" class="btn btn-secondary mt-3" onclick="window.location.href='index_crear_producto.php';">Volver</button>
+        <button type="button" class="btn btn-secondary mt-3" onclick="window.location.href='admin_panel_crear_producto.php';">Volver</button>
     </form>
 </div>
 

@@ -63,7 +63,7 @@ $result = mysqli_query($conexion, $query);
         </div>
 
         <button type="submit" class="btn btn-primary mt-3">Guardar Notebook</button>
-        <button class="btn btn-secondary mt-3" onclick="window.location.href='index.php';">Volver a Inicio</button>
+        <button class="btn btn-secondary mt-3" onclick="window.location.href='admin_panel.php';">Volver a Inicio</button>
     </form>
 
     <!-- Tabla para mostrar los datos guardados -->
