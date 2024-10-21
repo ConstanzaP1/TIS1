@@ -176,66 +176,214 @@ $result_users = mysqli_query($conexion, $sql_users);
         <h2>Panel de Administración</h2>
         
         <div class="accordion-item">
-                <div class="accordion-header">Hardware</div>
-                <div class="accordion-content">
-                    <ul>
-                        <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
-                    <li><a href="../mantenedores_hardware/capacidad_ram.php">Capacidad RAM</a></li>
-                    <li><a href="../mantenedores_hardware/certificacion_fuente.php">Certificación Fuente</a></li>
-                    <li><a href="../mantenedores_hardware/formato_placa.php">Formato Placa</a></li>
-                    <li><a href="../mantenedores_hardware/formato_ram.php">Formato RAM</a></li>
-                    <li><a href="../mantenedores_hardware/frecuencia_cpu.php">Frecuencia CPU</a></li>
-                    <li><a href="../mantenedores_hardware/frecuencia_gpu.php">Frecuencia GPU</a></li>
-                    <li><a href="../mantenedores_hardware/memoria_gpu.php">Memoria GPU</a></li>
-                    <li><a href="../mantenedores_hardware/nucleo_hilo_cpu.php">Núcleo/Hilo CPU</a></li>
-                    <li><a href="../mantenedores_hardware/potencia_fuente.php">Potencia Fuente</a></li>
-                    <li><a href="../mantenedores_hardware/slot_memoria_placa.php">Slot Memoria Placa</a></li>
-                    <li><a href="../mantenedores_hardware/socket_cpu.php">Socket CPU</a></li>
-                    <li><a href="../mantenedores_hardware/socket_placa.php">Socket Placa</a></li>
-                    <li><a href="../mantenedores_hardware/tamanio_fuente.php">Tamaño Fuente</a></li>
-                    <li><a href="../mantenedores_hardware/tamanio_max_gabinete.php">Tamaño Max Gabinete</a></li>
-                    <li><a href="../mantenedores_hardware/tamanio_placa.php">Tamaño Placa</a></li>
-                    <li><a href="../mantenedores_hardware/tipo_cableado.php">Tipo Cableado</a></li>
+    <div class="accordion-header">Hardware</div>
+    <div class="accordion-content">
+        <ul>
+            <!-- Subcategoría: Almacenamiento -->
+            <li>
+                <a href="#" class="sub-category-header">Almacenamiento</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: RAM -->
+            <li>
+                <a href="#" class="sub-category-header">RAM</a>
+                <ul class="sub-category-content" style="display: none;">
                     <li><a href="../mantenedores_hardware/tipo_ram.php">Tipo RAM</a></li>
                     <li><a href="../mantenedores_hardware/velocidad_ram.php">Velocidad RAM</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <div class="accordion-header">Periféricos</div>
-                <div class="accordion-content">
-                    <ul>
-                        <li><a href="../mantenedores_periferico/anc.php">ANC</a></li>
-                        <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
-                        <li><a href="../mantenedores_periferico/dpi_mouse.php">DPI Mouse</a></li>
-                        <li><a href="../mantenedores_periferico/iluminacion.php">Iluminación</a></li>
-                        <li><a href="../mantenedores_periferico/peso_mouse.php">Peso Mouse</a></li>
-                        <li><a href="../mantenedores_periferico/resolucion_monitor.php">Resolución Monitor</a></li>
-                        <li><a href="../mantenedores_periferico/sensor_mouse.php">Sensor Mouse</a></li>
-                        <li><a href="../mantenedores_periferico/soporte_monitor.php">Soporte Monitor</a></li>
-                        <li><a href="../mantenedores_periferico/tamano_monitor.php">Tamaño Monitor</a></li>
-                        <li><a href="../mantenedores_periferico/tasa_refresco.php">Tasa de Refresco</a></li>
-                        <li><a href="../mantenedores_periferico/tiempo_respuesta.php">Tiempo de Respuesta</a></li>
-                        <li><a href="../mantenedores_periferico/tipo_audifono.php">Tipo Audífono</a></li>
-                        <li><a href="../mantenedores_periferico/tipo_curvatura.php">Tipo Curvatura</a></li>
-                        <li><a href="../mantenedores_periferico/tipo_microfono.php">Tipo Micrófono</a></li>
-                        <li><a href="../mantenedores_periferico/tipo_panel.php">Tipo Panel</a></li>
-                        <li><a href="../mantenedores_periferico/tipo_switch.php">Tipo Switch</a></li>
-                        <li><a href="../mantenedores_periferico/tipo_teclado.php">Tipo Teclado</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <div class="accordion-header">Notebook</div>
-                <div class="accordion-content">
-                    <ul>
-                        <li><a href="../mantenedores_notebook/bateria_notebook.php">Batería Notebook</a></li>
-                        <li><a href="../mantenedores_notebook/cpu_notebook.php">CPU Notebook</a></li>
-                        <li><a href="../mantenedores_notebook/gpu_notebook.php">GPU Notebook</a></li>
-                        <li><a href="../mantenedores_notebook/pantalla_notebook.php">Pantalla Notebook</a></li>
-                    </ul>
-                </div>
-            </div>
+                    <li><a href="../mantenedores_hardware/capacidad_ram.php">Capacidad RAM</a></li>
+                    <li><a href="../mantenedores_hardware/formato_ram.php">Formato RAM</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: CPU -->
+            <li>
+                <a href="#" class="sub-category-header">CPU</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_hardware/frecuencia_cpu.php">Frecuencia CPU</a></li>
+                    <li><a href="../mantenedores_hardware/nucleo_hilo_cpu.php">Núcleo/Hilo CPU</a></li>
+                    <li><a href="../mantenedores_hardware/socket_cpu.php">Socket CPU</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: GPU -->
+            <li>
+                <a href="#" class="sub-category-header">GPU</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_hardware/frecuencia_gpu.php">Frecuencia GPU</a></li>
+                    <li><a href="../mantenedores_hardware/memoria_gpu.php">Memoria GPU</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Placas -->
+            <li>
+                <a href="#" class="sub-category-header">Placas</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_hardware/formato_placa.php">Formato Placa</a></li>
+                    <li><a href="../mantenedores_hardware/slot_memoria_placa.php">Slot Memoria Placa</a></li>
+                    <li><a href="../mantenedores_hardware/socket_placa.php">Socket Placa</a></li>
+                    <li><a href="../mantenedores_hardware/tamanio_placa.php">Tamaño Placa</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Fuentes -->
+            <li>
+                <a href="#" class="sub-category-header">Fuentes</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_hardware/certificacion_fuente.php">Certificación Fuente</a></li>
+                    <li><a href="../mantenedores_hardware/potencia_fuente.php">Potencia Fuente</a></li>
+                    <li><a href="../mantenedores_hardware/tamanio_fuente.php">Tamaño Fuente</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Gabinetes -->
+            <li>
+                <a href="#" class="sub-category-header">Gabinetes</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_hardware/tamanio_max_gabinete.php">Tamaño Max Gabinete</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Cableado -->
+            <li>
+                <a href="#" class="sub-category-header">Cableado</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_hardware/tipo_cableado.php">Tipo Cableado</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<style>
+    .sub-category-header {
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .sub-category-content {
+        padding-left: 20px; /* Indentación para la subcategoría */
+    }
+</style>
+
+</script>
+</script>
+<div class="accordion-item">
+    <div class="accordion-header">Periféricos</div>
+    <div class="accordion-content">
+        <ul>
+            <!-- Subcategoría: Monitores -->
+            <li>
+                <a href="#" class="sub-category-header">Monitores</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_periferico/resolucion_monitor.php">Resolución Monitor</a></li>
+                    <li><a href="../mantenedores_periferico/tamano_monitor.php">Tamaño Monitor</a></li>
+                    <li><a href="../mantenedores_periferico/tasa_refresco.php">Tasa de Refresco</a></li>
+                    <li><a href="../mantenedores_periferico/tiempo_respuesta.php">Tiempo de Respuesta</a></li>
+                    <li><a href="../mantenedores_periferico/soporte_monitor.php">Soporte Monitor</a></li>
+                    <li><a href="../mantenedores_periferico/tipo_panel.php">Tipo Panel</a></li>
+                    <li><a href="../mantenedores_periferico/tipo_curvatura.php">Tipo Curvatura</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Mouse -->
+            <li>
+                <a href="#" class="sub-category-header">Mouse</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_periferico/dpi_mouse.php">DPI Mouse</a></li>
+                    <li><a href="../mantenedores_periferico/peso_mouse.php">Peso Mouse</a></li>
+                    <li><a href="../mantenedores_periferico/sensor_mouse.php">Sensor Mouse</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Audio -->
+            <li>
+                <a href="#" class="sub-category-header">Audio</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_periferico/tipo_audifono.php">Tipo Audífono</a></li>
+                    <li><a href="../mantenedores_periferico/tipo_microfono.php">Tipo Micrófono</a></li>
+                    <li><a href="../mantenedores_periferico/anc.php">ANC</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Conectividad -->
+            <li>
+                <a href="#" class="sub-category-header">Conectividad</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
+                    <li><a href="../mantenedores_periferico/tipo_switch.php">Tipo Switch</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Teclados -->
+            <li>
+                <a href="#" class="sub-category-header">Teclados</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_periferico/tipo_teclado.php">Tipo Teclado</a></li>
+                    <li><a href="../mantenedores_periferico/iluminacion.php">Iluminación</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Otros Periféricos -->
+
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="accordion-item">
+    <div class="accordion-header">Notebook</div>
+    <div class="accordion-content">
+        <ul>
+            <!-- Subcategoría: Batería -->
+            <li>
+                <a href="#" class="sub-category-header">Batería</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_notebook/bateria_notebook.php">Batería Notebook</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Procesador -->
+            <li>
+                <a href="#" class="sub-category-header">Procesador</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_notebook/cpu_notebook.php">CPU Notebook</a></li>
+                    <li><a href="../mantenedores_notebook/gpu_notebook.php">GPU Notebook</a></li>
+                </ul>
+            </li>
+
+            <!-- Subcategoría: Pantalla -->
+            <li>
+                <a href="#" class="sub-category-header">Pantalla</a>
+                <ul class="sub-category-content" style="display: none;">
+                    <li><a href="../mantenedores_notebook/pantalla_notebook.php">Pantalla Notebook</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<style>
+    .sub-category-header {
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .sub-category-content {
+        padding-left: 20px; /* Indentación para la subcategoría */
+    }
+</style>
+
+<script>
+    document.querySelectorAll('.sub-category-header').forEach(header => {
+        header.addEventListener('click', function () {
+            const subCategory = this.nextElementSibling;
+            subCategory.style.display = subCategory.style.display === 'none' ? 'block' : 'none';
+        });
+    });
+</script>
+
 
         <a href="?logout" class="btn btn-danger logout">Cerrar Sesión</a>
     </aside>
@@ -313,32 +461,52 @@ $result_users = mysqli_query($conexion, $sql_users);
 <div class="usuarios-container">
 <h2>Lista de Usuarios</h2>
 
-    <table class="table">
-        <thead>
+<!-- Formulario de búsqueda -->
+<form method="GET" action="">
+    <input type="text" name="search" placeholder="Buscar por ID, Nombre de Usuario o Correo Electrónico" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+    <button type="submit">Buscar</button>
+    <a href="admin_panel.php" class="btn btn-secondary">Cancelar</a> <!-- Botón de cancelar -->
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre de Usuario</th>
+            <th>Correo Electrónico</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        // Modifica la consulta SQL para buscar por ID, Nombre de Usuario o Correo Electrónico
+        $search = isset($_GET['search']) ? mysqli_real_escape_string($conexion, $_GET['search']) : '';
+        $query = "SELECT * FROM users";
+
+        if ($search) {
+            // Buscar en las columnas 'id', 'username' o 'email'
+            $query .= " WHERE id LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
+        }
+
+        $result_users = mysqli_query($conexion, $query);
+
+        // Renderiza los resultados de la consulta
+        while ($row = mysqli_fetch_assoc($result_users)):
+        ?>
             <tr>
-                <th>ID</th>
-                <th>Nombre de Usuario</th>
-                <th>Correo Electrónico</th>
-                <th>Rol</th>
-                <th>Acciones</th>
+                <td><?php echo $row['id']; ?></td>
+                <td><?php echo $row['username']; ?></td>
+                <td><?php echo $row['email']; ?></td>
+                <td><?php echo $row['role']; ?></td>
+                <td>
+                    <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = mysqli_fetch_assoc($result_users)): ?>
-                <tr>
-                    <td><?php echo $row['id']; ?></td>
-                    <td><?php echo $row['username']; ?></td>
-                    <td><?php echo $row['email']; ?></td>
-                    <td><?php echo $row['role']; ?></td>
-                    <td>
-                        <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</a>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
-</div>
+        <?php endwhile; ?>
+    </tbody>
+</table>
 
 <style>
     .usuarios-container {

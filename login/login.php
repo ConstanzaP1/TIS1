@@ -68,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
     if (mysqli_stmt_num_rows($stmt_check) > 0) {
         $_SESSION['error_message'] = 'El correo electrónico ya está registrado.';
-        header('Location: login.php');
+        mysqli_stmt_close($stmt_check); // Cerrar aquí
+        header('Location: ../login/login.php');
         exit();
     } else {
         // Insertar el nuevo usuario con el rol 'user'
@@ -82,23 +83,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
             if (mysqli_stmt_execute($stmt_insert)) {
                 $_SESSION['message'] = 'Usuario registrado exitosamente.';
+                mysqli_stmt_close($stmt_insert); // Cerrar aquí
                 header('Location: login.php'); // Redirigir al login después del registro
                 exit();
             } else {
                 $_SESSION['error_message'] = 'Error al registrar el usuario. Inténtalo de nuevo.';
+                mysqli_stmt_close($stmt_insert); // Cerrar aquí
                 header('Location: login.php');
                 exit();
             }
-            mysqli_stmt_close($stmt_insert);
         } else {
             $_SESSION['error_message'] = 'Error al preparar la consulta de inserción.';
+            mysqli_stmt_close($stmt_check); // Cerrar aquí
             header('Location: login.php');
             exit();
         }
     }
 
-    mysqli_stmt_close($stmt_check);
+    mysqli_stmt_close($stmt_check); // Cerrar aquí también, si no se ha llamado a exit
 }
+
 ?>
 
 <!DOCTYPE html>
