@@ -26,7 +26,8 @@ $query = "SELECT * FROM hardware p
           LEFT JOIN tamanio_placa tp ON p.id_hardware = tp.id_hardware
           LEFT JOIN tipo_ram tr ON p.id_hardware = tr.id_hardware
           LEFT JOIN tamanio_max_gabinete tmg ON p.id_hardware = tmg.id_hardware
-         
+          LEFT JOIN chipset_gpu cg ON p.id_hardware = cg.id_hardware
+
 
           WHERE p.id_hardware = '$id_hardware'";
 
@@ -80,7 +81,8 @@ $row = mysqli_fetch_assoc($result);
                 <option value="tamanio_placa" <?php if ($row['tamanio_placa']) echo 'selected'; ?>>Tamaño Placa</option>
                 <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo RAM</option>
                 <option value="tamanio_max_gabinete" <?php if ($row['tamanio_max_gabinete']) echo 'selected'; ?>>Tipo RAM</option>
-                
+                <option value="chipset_gpu" <?php if ($row['chipset_gpu']) echo 'selected'; ?>>chipset gpu</option>
+
 
             </select>
         </div>
@@ -165,6 +167,11 @@ $row = mysqli_fetch_assoc($result);
             <label for="tamanio_max_gabinete" class="form-label mt-3">Tamaño Max placa</label>
             <input type="text" name="tamanio_max_gabinete" class="form-control" id="tamanio_max_gabinete" value="<?php echo $row['tamanio_max_gabinete']; ?>">
         </div>
+        <div class="mb-3" id="camposChipset_gpu" style="display: none;">       
+            <label for="chipset_gpu" class="form-label mt-3">Chipset gpu</label>
+            <input type="text" name="chipset_gpu" class="form-control" id="chipset_gpu" value="<?php echo $row['chipset_gpu']; ?>">
+        </div>
+
 
         <button type="submit" class="btn btn-primary mt-3">Guardar cambios</button>
     </form>
@@ -192,6 +199,7 @@ $row = mysqli_fetch_assoc($result);
         document.getElementById("camposTamanio_fuente").style.display = "none";
         document.getElementById("camposPotencia_fuente").style.display = "none";
         document.getElementById("camposTamanio_placa").style.display = "none";
+        document.getElementById("camposChipset_gpu").style.display = "none";
 
 
         if (tipoHardware === "memoria") {
@@ -265,6 +273,9 @@ $row = mysqli_fetch_assoc($result);
         }
         else if (tipoHardware === "tamanio_max_gabinete") {
             document.getElementById("camposTamanio_max_gabinete").style.display = "block";
+        }
+        else if (tipoHardware === "chipset_gpu") {
+            document.getElementById("camposChipset_gpu").style.display = "block";
         }
         
     }
