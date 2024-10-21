@@ -198,6 +198,8 @@ $result_users = mysqli_query($conexion, $sql_users);
                     <li><a href="../mantenedores_hardware/tipo_cableado.php">Tipo Cableado</a></li>
                     <li><a href="../mantenedores_hardware/tipo_ram.php">Tipo RAM</a></li>
                     <li><a href="../mantenedores_hardware/velocidad_ram.php">Velocidad RAM</a></li>
+                    <li><a href="../mantenedores_hardware/chipset_gpu.php">Chipset Gpu</a></li>
+
                     </ul>
                 </div>
             </div>
