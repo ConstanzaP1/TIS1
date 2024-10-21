@@ -173,31 +173,31 @@ $result_users = mysqli_query($conexion, $sql_users);
 
 <body>
     <aside id="sidebar">
-        <h2>Tisnology</h2>
+        <h2>Panel de Administración</h2>
         
         <div class="accordion-item">
                 <div class="accordion-header">Hardware</div>
                 <div class="accordion-content">
                     <ul>
                         <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
-                        <li><a href="../mantenedores_hardware/capacidad_ram.php">Capacidad RAM</a></li>
-                        <li><a href="../mantenedores_hardware/certificacion_fuente.php">Certificación Fuente</a></li>
-                        <li><a href="../mantenedores_hardware/formato_placa.php">Formato Placa</a></li>
-                        <li><a href="../mantenedores_hardware/formato_ram.php">Formato RAM</a></li>
-                        <li><a href="../mantenedores_hardware/frecuencia_cpu.php">Frecuencia CPU</a></li>
-                        <li><a href="../mantenedores_hardware/frecuencia_gpu.php">Frecuencia GPU</a></li>
-                        <li><a href="../mantenedores_hardware/memoria_gpu.php">Memoria GPU</a></li>
-                        <li><a href="../mantenedores_hardware/nucleo_hilo_cpu.php">Núcleo/Hilo CPU</a></li>
-                        <li><a href="../mantenedores_hardware/potencia_fuente.php">Potencia Fuente</a></li>
-                        <li><a href="../mantenedores_hardware/slot_memoria_placa.php">Slot Memoria Placa</a></li>
-                        <li><a href="../mantenedores_hardware/socket_cpu.php">Socket CPU</a></li>
-                        <li><a href="../mantenedores_hardware/socket_placa.php">Socket Placa</a></li>
-                        <li><a href="../mantenedores_hardware/tamanio_fuente.php">Tamaño Fuente</a></li>
-                        <li><a href="../mantenedores_hardware/tamanio_max_gabinete.php">Tamaño Max Gabinete</a></li>
-                        <li><a href="../mantenedores_hardware/tamanio_placa.php">Tamaño Placa</a></li>
-                        <li><a href="../mantenedores_hardware/tipo_cableado.php">Tipo Cableado</a></li>
-                        <li><a href="../mantenedores_hardware/tipo_ram.php">Tipo RAM</a></li>
-                        <li><a href="../mantenedores_hardware/velocidad_ram.php">Velocidad RAM</a></li>
+                    <li><a href="../mantenedores_hardware/capacidad_ram.php">Capacidad RAM</a></li>
+                    <li><a href="../mantenedores_hardware/certificacion_fuente.php">Certificación Fuente</a></li>
+                    <li><a href="../mantenedores_hardware/formato_placa.php">Formato Placa</a></li>
+                    <li><a href="../mantenedores_hardware/formato_ram.php">Formato RAM</a></li>
+                    <li><a href="../mantenedores_hardware/frecuencia_cpu.php">Frecuencia CPU</a></li>
+                    <li><a href="../mantenedores_hardware/frecuencia_gpu.php">Frecuencia GPU</a></li>
+                    <li><a href="../mantenedores_hardware/memoria_gpu.php">Memoria GPU</a></li>
+                    <li><a href="../mantenedores_hardware/nucleo_hilo_cpu.php">Núcleo/Hilo CPU</a></li>
+                    <li><a href="../mantenedores_hardware/potencia_fuente.php">Potencia Fuente</a></li>
+                    <li><a href="../mantenedores_hardware/slot_memoria_placa.php">Slot Memoria Placa</a></li>
+                    <li><a href="../mantenedores_hardware/socket_cpu.php">Socket CPU</a></li>
+                    <li><a href="../mantenedores_hardware/socket_placa.php">Socket Placa</a></li>
+                    <li><a href="../mantenedores_hardware/tamanio_fuente.php">Tamaño Fuente</a></li>
+                    <li><a href="../mantenedores_hardware/tamanio_max_gabinete.php">Tamaño Max Gabinete</a></li>
+                    <li><a href="../mantenedores_hardware/tamanio_placa.php">Tamaño Placa</a></li>
+                    <li><a href="../mantenedores_hardware/tipo_cableado.php">Tipo Cableado</a></li>
+                    <li><a href="../mantenedores_hardware/tipo_ram.php">Tipo RAM</a></li>
+                    <li><a href="../mantenedores_hardware/velocidad_ram.php">Velocidad RAM</a></li>
                     </ul>
                 </div>
             </div>
@@ -241,80 +241,122 @@ $result_users = mysqli_query($conexion, $sql_users);
     </aside>
 
     <div id="content">
-        <h1>Panel de Administración</h1>
         
         <div class="registro">
-            <h2>Registrar Usuario</h2>
-            <form method="POST" action="">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Nombre de Usuario</label>
-                    <input type="text" class="form-control" name="username" required>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Correo Electrónico</label>
-                    <input type="email" class="form-control" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" name="password" required>
-                </div>
-                <div class="mb-3">
-                    <label for="role" class="form-label">Rol</label>
-                    <select name="role" class="form-select">
-                        <option value="user">Usuario</option>
-                        <option value="admin">Administrador</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Registrar</button>
-            </form>
-            <div class="message">
-                <?php if (!empty($message)): ?>
-                    <div class="alert alert-success"><?php echo $message; ?></div>
-                <?php endif; ?>
-                <?php if (!empty($error_message)): ?>
-                    <div class="alert alert-danger"><?php echo $error_message; ?></div>
-                <?php endif; ?>
-            </div>
+    <h2>Registrar Usuario</h2>
+    <form method="POST" action="">
+        <div class="mb-1 mt-1">
+            <label for="username" class="form-label">Nombre de Usuario</label>
+            <input type="text" class="form-control" name="username" required>
         </div>
-
-        <h2>Lista de Usuarios</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre de Usuario</th>
-                    <th>Correo Electrónico</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = mysqli_fetch_assoc($result_users)): ?>
-                    <tr>
-                        <td><?php echo $row['id']; ?></td>
-                        <td><?php echo $row['username']; ?></td>
-                        <td><?php echo $row['email']; ?></td>
-                        <td><?php echo $row['role']; ?></td>
-                        <td>
-                            <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</a>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+        <div class="mb-1 mt-1">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" name="email" required>
+        </div>
+        <div class="mb-1 mt-1">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="password" required>
+        </div>
+        <div class="mb-1 mt-1">
+            <label for="role" class="form-label">Rol</label>
+            <select name="role" class="form-select">
+                <option value="user">Usuario</option>
+                <option value="admin">Administrador</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrar</button>
+    </form>
+    <div class="message">
+        <?php if (!empty($message)): ?>
+            <div class="alert alert-success"><?php echo $message; ?></div>
+        <?php endif; ?>
+        <?php if (!empty($error_message)): ?>
+            <div class="alert alert-danger"><?php echo $error_message; ?></div>
+        <?php endif; ?>
     </div>
+</div>
 
-    <script>
-        // Script para manejar el acordeón
-        const headers = document.querySelectorAll('.accordion-header');
-        headers.forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                content.style.display = content.style.display === 'block' ? 'none' : 'block';
-                header.classList.toggle('active');
-            });
+<style>
+    .registro {
+        max-height: 55vh; /* Ajustar la altura máxima */
+        overflow-y: auto; /* Habilitar scroll vertical */
+        padding: 5px; /* Espaciado interno */
+        border: 1px solid #ccc; /* Borde para el contenedor */
+        background-color: #f9f9f9; /* Color de fondo */
+        box-sizing: border-box; /* Incluir padding y borde en el tamaño total */
+    }
+
+    .mb-3 {
+        margin-bottom: 1px; /* Espacio entre los elementos */
+    }
+
+    .form-control, .form-select {
+        width: 100%; /* Hacer los campos de formulario ocupar el ancho completo */
+    }
+
+    .message {
+        margin-top: 1px; /* Espacio superior para el mensaje */
+    }
+
+    /* Limitar la altura del contenedor de mensajes */
+    .message .alert {
+        max-height: 50px; /* Altura máxima para los mensajes */
+        overflow: hidden; /* Ocultar contenido que se salga */
+    }
+</style>
+
+
+
+
+
+
+<div class="usuarios-container">
+<h2>Lista de Usuarios</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre de Usuario</th>
+                <th>Correo Electrónico</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = mysqli_fetch_assoc($result_users)): ?>
+                <tr>
+                    <td><?php echo $row['id']; ?></td>
+                    <td><?php echo $row['username']; ?></td>
+                    <td><?php echo $row['email']; ?></td>
+                    <td><?php echo $row['role']; ?></td>
+                    <td>
+                        <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</a>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .usuarios-container {
+        max-height: 50vh; /* Altura máxima de media pantalla */
+        overflow-y: auto; /* Habilitar scroll vertical */
+        border: 1px solid #ccc; /* Opcional: borde para el contenedor */
+        padding: 10px; /* Opcional: padding para el contenedor */
+    }
+</style>
+
+<script>
+    // Script para manejar el acordeón
+    const headers = document.querySelectorAll('.accordion-header');
+    headers.forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            header.classList.toggle('active');
         });
-    </script>
-</body>
-</html>
+    });
+</script>
