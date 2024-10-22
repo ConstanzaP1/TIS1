@@ -304,24 +304,21 @@ $result_users = mysqli_query($conexion, $sql_users);
                     <li><a href="../mantenedores_periferico/tipo_audifono.php">Tipo Audífono</a></li>
                     <li><a href="../mantenedores_periferico/tipo_microfono.php">Tipo Micrófono</a></li>
                     <li><a href="../mantenedores_periferico/anc.php">ANC</a></li>
+                    <li><a href="../mantenedores_periferico/iluminacion.php">Iluminación</a></li>
+                    <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
                 </ul>
             </li>
 
-            <!-- Subcategoría: Conectividad -->
-            <li>
-                <a href="#" class="sub-category-header">Conectividad</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
-                    <li><a href="../mantenedores_periferico/tipo_switch.php">Tipo Switch</a></li>
-                </ul>
-            </li>
 
             <!-- Subcategoría: Teclados -->
             <li>
                 <a href="#" class="sub-category-header">Teclados</a>
                 <ul class="sub-category-content" style="display: none;">
                     <li><a href="../mantenedores_periferico/tipo_teclado.php">Tipo Teclado</a></li>
+                    <li><a href="../mantenedores_periferico/tipo_switch.php">Tipo Switch</a></li>
+                    <li><a href="../mantenedores_periferico/categoria_teclado.php">Categoria</a></li>
                     <li><a href="../mantenedores_periferico/iluminacion.php">Iluminación</a></li>
+                    <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
                 </ul>
             </li>
 
@@ -374,6 +371,15 @@ $result_users = mysqli_query($conexion, $sql_users);
         padding-left: 20px; /* Indentación para la subcategoría */
     }
 </style>
+
+
+<div class="accordion-header">Crear producto</div>
+    <div class="accordion-content">
+        <ul>
+            <li><a href="../creacion_productos/index_crear_producto.php">Crear producto</a></li>
+        </ul>
+    </div>
+</div>
 
 <script>
     document.querySelectorAll('.sub-category-header').forEach(header => {
