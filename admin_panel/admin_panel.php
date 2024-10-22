@@ -377,6 +377,7 @@ $result_users = mysqli_query($conexion, $sql_users);
     <div class="accordion-content">
         <ul>
             <li><a href="../creacion_productos/index_crear_producto.php">Crear producto</a></li>
+            <li><a href="../creacion_productos/catalogo_productos.php">Catalogo productos</a></li>
         </ul>
     </div>
 </div>

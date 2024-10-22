@@ -24,6 +24,7 @@
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Continuar</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver</button>
     </form>
 </div>
 
