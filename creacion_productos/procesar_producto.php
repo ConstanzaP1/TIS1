@@ -5,40 +5,45 @@ require('../conexion.php');
 $nombre_producto = $_POST['nombre_producto'];
 $precio = $_POST['precio'];
 $cantidad = $_POST['cantidad'];
-$categoria_producto = $_POST['categoria_producto']; // Debe ser 'teclado' en este caso
+$categoria_producto = $_POST['categoria_producto']; // Ejemplo: 'teclado', 'monitor', 'audifono', etc.
 
 // Insertar los datos generales del producto en la tabla producto
-$query_producto = "INSERT INTO producto (nombre_producto, precio, cantidad, tipo_producto) VALUES ('$nombre_producto', '$precio', '$cantidad', '$categoria_producto')";
+$query_producto = "INSERT INTO producto (nombre_producto, precio, cantidad, tipo_producto) 
+                   VALUES ('$nombre_producto', '$precio', '$cantidad', '$categoria_producto')";
 if (mysqli_query($conexion, $query_producto)) {
     // Obtener el id del último producto insertado
     $id_producto = mysqli_insert_id($conexion);
 
-    // Verificar si el producto es un teclado y tiene atributos seleccionados
-    if (isset($_POST['tipo_teclado']) && isset($_POST['tipo_switch']) && isset($_POST['conectividad']) && isset($_POST['iluminacion'])) {
-        
-        // Capturamos los valores seleccionados en el formulario
-        $tipo_teclado = $_POST['tipo_teclado'];    // Valor seleccionado del campo 'tipo_teclado' (por ejemplo: "Mecánico")
-        $tipo_switch = $_POST['tipo_switch'];      // Valor seleccionado del campo 'tipo_switch' (por ejemplo: "Cherry MX")
-        $conectividad = $_POST['conectividad'];    // Valor seleccionado del campo 'conectividad' (por ejemplo: "Inalámbrica")
-        $iluminacion = $_POST['iluminacion'];      // Valor seleccionado del campo 'iluminacion' (por ejemplo: "RGB")
+    // Crear un array vacío para almacenar los atributos
+    $caracteristicas = [];
 
-        // Crear un array de los atributos y sus valores correspondientes
-        $atributos = [
-            'tipo_teclado' => $tipo_teclado,  // "Mecánico"
-            'tipo_switch' => $tipo_switch,    // "Cherry MX"
-            'conectividad' => $conectividad,  // "Inalámbrica"
-            'iluminacion' => $iluminacion     // "RGB"
-        ];
+    // Verificar los atributos dependiendo de la categoría del producto
+    if ($categoria_producto == 'teclado') {
+        if (isset($_POST['tipo_teclado'])) $caracteristicas['tipo_teclado'] = $_POST['tipo_teclado'];
+        if (isset($_POST['tipo_switch'])) $caracteristicas['tipo_switch'] = $_POST['tipo_switch'];
+        if (isset($_POST['conectividad'])) $caracteristicas['conectividad'] = $_POST['conectividad'];
+        if (isset($_POST['iluminacion'])) $caracteristicas['iluminacion'] = $_POST['iluminacion'];
+        if (isset($_POST['categoria_teclado'])) $caracteristicas['categoria_teclado'] = $_POST['categoria_teclado'];
 
-        // Insertar cada atributo y su valor en la tabla producto_atributo
-        foreach ($atributos as $atributo => $valor_atributo) {
-            $query_atributo = "INSERT INTO producto_atributo (id_producto, atributo, valor_atributo) 
-                               VALUES ('$id_producto', '$atributo', '$valor_atributo')";
-            mysqli_query($conexion, $query_atributo);
-        }
+    } elseif ($categoria_producto == 'monitor') {
+        if (isset($_POST['resolucion_monitor'])) $caracteristicas['resolucion_monitor'] = $_POST['resolucion_monitor'];
+        if (isset($_POST['tamanio_monitor'])) $atribcaracteristicasutos['tamanio_monitor'] = $_POST['tamanio_monitor'];
+        if (isset($_POST['tasa_refresco'])) $caracteristicas['frecuencia_actualizacion'] = $_POST['tasa_refresco'];
+        if (isset($_POST['tiempo_respuesta'])) $caracteristicas['tiempo_respuesta'] = $_POST['tiempo_respuesta'];
+        if (isset($_POST['soporte_monitor'])) $caracteristicas['soporte_monitor'] = $_POST['soporte_monitor'];
+        if (isset($_POST['tipo_panel'])) $caracteristicas['tipo_panel'] = $_POST['tipo_panel'];
+        if (isset($_POST['tipo_curvatura'])) $caracteristicas['tipo_curvatura'] = $_POST['tipo_curvatura'];
+
     }
 
-    echo "Producto y atributos insertados correctamente.";
+    // Insertar cada atributo y su valor en la tabla producto_atributo
+    foreach ($caracteristicas as $caracteristica => $valor_caracteristica) {
+        $query_caracteristica = "INSERT INTO producto_caracteristica (id_producto, caracteristica, valor_caracteristica) 
+                           VALUES ('$id_producto', '$caracteristica', '$valor_caracteristica')";
+        mysqli_query($conexion, $query_caracteristica);
+    }
+
+    echo "Producto y caracteristicas insertados correctamente.";
     ?>
 
     <button type="button" class="btn btn-primary" onclick="window.location.href='../admin_panel/admin_panel.php';">Aceptar</button>
