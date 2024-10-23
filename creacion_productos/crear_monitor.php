@@ -22,6 +22,9 @@ $resultTipoPanel = mysqli_query($conexion, $queryTipoPanel);
 
 $queryTipoCurvatura = "SELECT id_periferico, tipo_curvatura FROM tipo_curvatura";
 $resultTipoCurvatura = mysqli_query($conexion, $queryTipoCurvatura);
+
+$queryMarca = "SELECT id_marca, nombre_marca FROM marca";
+$resultMarca = mysqli_query($conexion, $queryMarca);
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +44,16 @@ $resultTipoCurvatura = mysqli_query($conexion, $queryTipoCurvatura);
         <div class="mb-3">
             <label for="nombre_producto" class="form-label">Nombre del Producto</label>
             <input type="text" name="nombre_producto" class="form-control" id="nombre_producto" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="nombre_marca" class="form-label">Marca</label>
+            <select name="nombre_marca" class="form-select" required>
+                <option value="" selected disabled>Seleccione una marca</option>
+                <?php while ($row = mysqli_fetch_assoc($resultMarca)): ?>
+                    <option value="<?= $row['id_marca'] ?>"><?= $row['nombre_marca'] ?></option>
+                <?php endwhile; ?>
+            </select>
         </div>
 
         <div class="mb-3">

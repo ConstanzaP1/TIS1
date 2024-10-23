@@ -12,9 +12,9 @@ if (isset($_POST['categoria_producto'])) {
     } elseif ($categoria == 'mouse') {
         // Aquí puedes redirigir a una página para crear un mouse
         header('Location: crear_mouse.php');
-    } elseif ($categoria == 'auricular') {
-        // Aquí puedes redirigir a una página para crear un auricular
-        header('Location: crear_auricular.php');
+    } elseif ($categoria == 'audifono') {
+        // Aquí puedes redirigir a una página para crear un audifono
+        header('Location: crear_audifono.php');
     } else {
         // Si no se seleccionó ninguna categoría válida, redirigir de nuevo
         header('Location: index_crear_producto.php');

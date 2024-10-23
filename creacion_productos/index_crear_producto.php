@@ -19,8 +19,8 @@
                 <option value="" selected disabled>Seleccione una categoría</option>
                 <option value="teclado">Teclado</option>
                 <option value="monitor">Monitor</option>
+                <option value="audifono">Audifono</option>
                 <option value="mouse">Mouse</option>
-                <option value="auricular">Auricular</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Continuar</button>

@@ -61,7 +61,7 @@ $result = mysqli_query($conexion, $query);
     
     <button type="button" id="botonAgregar" class="btn btn-primary" onclick="mostrarFormulario()">Agregar</button>
 
-    <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>
+    <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver</button>
 
     <!-- Formulario para insertar -->
     <form action="ingresar_marcas.php" method="POST" id="formulario" style="display: none;" class="mt-4">

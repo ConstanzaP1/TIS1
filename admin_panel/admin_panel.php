@@ -361,16 +361,27 @@ $result_users = mysqli_query($conexion, $sql_users);
         </ul>
     </div>
 </div>
-
-<div class="accordion-header">Marcas</div>
-    <div class="accordion-content">
-        <ul>
-            <li><a href="../mantenedores_marcas/nombres_marcas.php">Agregar Marcas</a></li>
+<div class="accordion-item">
+    <div class="accordion-header">Marcas</div>
+        <div class="accordion-content">
+            <ul>
+                <li><a href="../mantenedores_marcas/nombres_marcas.php">Agregar Marcas</a></li>
             
-        </ul>
+            </ul>
+        </div>
     </div>
 </div>
 
+<div class="acordion-item">
+    <div class="accordion-header">Crear producto</div>
+        <div class="accordion-content">
+            <ul>
+                <li><a href="../creacion_productos/index_crear_producto.php">Crear producto</a></li>
+                <li><a href="../creacion_productos/catalogo_productos.php">Catalogo productos</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 <style>
     .sub-category-header {
         cursor: pointer;
@@ -382,14 +393,7 @@ $result_users = mysqli_query($conexion, $sql_users);
 </style>
 
 
-<div class="accordion-header">Crear producto</div>
-    <div class="accordion-content">
-        <ul>
-            <li><a href="../creacion_productos/index_crear_producto.php">Crear producto</a></li>
-            <li><a href="../creacion_productos/catalogo_productos.php">Catalogo productos</a></li>
-        </ul>
-    </div>
-</div>
+
 
 <script>
     document.querySelectorAll('.sub-category-header').forEach(header => {
