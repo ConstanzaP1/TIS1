@@ -299,7 +299,7 @@ $result_users = mysqli_query($conexion, $sql_users);
 
             <!-- Subcategoría: Audio -->
             <li>
-                <a href="#" class="sub-category-header">Audio</a>
+                <a href="#" class="sub-category-header">Audifonos</a>
                 <ul class="sub-category-content" style="display: none;">
                     <li><a href="../mantenedores_periferico/tipo_audifono.php">Tipo Audífono</a></li>
                     <li><a href="../mantenedores_periferico/tipo_microfono.php">Tipo Micrófono</a></li>
