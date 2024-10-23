@@ -272,7 +272,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
             header('location: tamanio_max_gabinete.php');
-        } 
+        } elseif ($tipo_hardware == 'chipset_gpu') {
+            $chipset_gpu  = $_POST['chipset_gpu'];
+            // Insertar en las tablas asociadas para procesadores
+            $queryChipset_gpu = "INSERT INTO chipset_gpu (id_hardware, chipset_gpu) VALUES ('$id_hardware', '$chipset_gpu')";
+
+            if (mysqli_query($conexion, $queryChipset_gpu)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: chipset_gpu.php');
+        }
 
 
         

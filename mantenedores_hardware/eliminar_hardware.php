@@ -13,7 +13,7 @@ if (isset($_GET['id_hardware'])) {
         'velocidad_ram','capacidad_almacenamiento','formato_placa',
         'capacidad_ram','tipo_ram','certificacion_fuente',
         'tipo_cableado','tamanio_fuente','potencia_fuente',
-        'tamanio_placa', 'tamanio_max_gabinete'
+        'tamanio_placa', 'tamanio_max_gabinete', 'chipset_gpu'
     ];
 
     foreach ($tablas as $tabla) {

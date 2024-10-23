@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['update'])) {
     // Validar si el correo electrónico ya existe
     $sql_check_email = "SELECT * FROM users WHERE email = ?";
     $stmt_check_email = mysqli_prepare($conexion, $sql_check_email);
-    mysqli_stmt_bind_param($stmt_check_email, 's', $email);
+    mysqli_stmt_bind_param($stmt_check_email, 's', $email); 
     mysqli_stmt_execute($stmt_check_email);
     mysqli_stmt_store_result($stmt_check_email);
     
@@ -214,6 +214,8 @@ $result_users = mysqli_query($conexion, $sql_users);
                 <ul class="sub-category-content" style="display: none;">
                     <li><a href="../mantenedores_hardware/frecuencia_gpu.php">Frecuencia GPU</a></li>
                     <li><a href="../mantenedores_hardware/memoria_gpu.php">Memoria GPU</a></li>
+                    <li><a href="../mantenedores_hardware/chipset_gpu.php">Chipset GPU</a></li>
+
                 </ul>
             </li>
 

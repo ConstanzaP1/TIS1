@@ -1,13 +1,13 @@
 <?php
 require('../conexion.php');
 
-// Consulta para obtener datos de la tabla frecuencia_gpu que no sean NULL
+// Consulta para obtener datos de la tabla chipset_gpu que no sean NULL
 $query = "
     SELECT p.id_hardware, 
-           fg.frecuencia_gpu
+           cg.chipset_gpu
     FROM hardware p
-    LEFT JOIN frecuencia_gpu fg ON p.id_hardware = fg.id_hardware
-    WHERE fg.frecuencia_gpu IS NOT NULL
+    LEFT JOIN chipset_gpu cg ON p.id_hardware = cg.id_hardware
+    WHERE cg.chipset_gpu IS NOT NULL
 ";
 
 $result = mysqli_query($conexion, $query);
@@ -38,18 +38,18 @@ $result = mysqli_query($conexion, $query);
     <div id="tabla">
         <div class="row">
             <div class="col">
-                <h2>Frecuencia GPU</h2>
+                <h2>chipset GPU</h2>
                 <table class="table table-bordered mt-4">
                     <thead>
                         <tr>
-                            <th>Frecuencia GPU</th>
+                            <th>chipset GPU</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                             <tr>
-                                <td><?php echo $row['frecuencia_gpu']; ?></td>
+                                <td><?php echo $row['chipset_gpu']; ?></td>
                                 <td>
                                     <button class="btn btn-primary" onclick="window.location.href='modificar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Modificar</button>
                                     <button class="btn btn-danger" onclick="window.location.href='eliminar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Eliminar</button>
@@ -70,13 +70,13 @@ $result = mysqli_query($conexion, $query);
 
     <!-- Formulario oculto inicialmente -->
     <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
-        <h1 class="mb-4">Ingreso de frecuencia GPU</h1>
+        <h1 class="mb-4">Ingreso de chipset GPU</h1>
         <!-- Campo oculto para seleccionar automáticamente-->
-        <input type="hidden" name="tipo_hardware" value="frecuencia_gpu">
+        <input type="hidden" name="tipo_hardware" value="chipset_gpu">
 
         <div class="mb-3">
-            <label for="frecuencia_gpu" class="form-label">frecuencia GPU</label>
-            <input type="text" name="frecuencia_gpu" class="form-control" id="frecuencia_gpu" required>
+            <label for="chipset_gpu" class="form-label">chipset GPU</label>
+            <input type="text" name="chipset_gpu" class="form-control" id="chipset_gpu" required>
         </div>
         
         <!-- Contenedor para alinear los botones -->

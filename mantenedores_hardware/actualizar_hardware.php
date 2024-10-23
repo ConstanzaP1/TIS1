@@ -87,6 +87,9 @@ elseif ($tipo_hardware == 'certificacion_fuente') {
 }elseif ($tipo_hardware == 'tamanio_max_gabinete') {
     $tamanio_max_gabinete = $_POST['tamanio_max_gabinete'];
     $query = "UPDATE tamanio_max_gabinete SET tamanio_max_gabinete = '$tamanio_max_gabinete' WHERE id_hardware = '$id_hardware'";
+}elseif ($tipo_hardware == 'chipset_gpu') {
+    $chipset_gpu = $_POST['chipset_gpu'];
+    $query = "UPDATE chipset_gpu SET chipset_gpu = '$chipset_gpu' WHERE id_hardware = '$id_hardware'";
 }
 
 
