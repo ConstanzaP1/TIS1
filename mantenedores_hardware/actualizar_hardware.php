@@ -38,9 +38,9 @@ if ($tipo_hardware == 'memoria') {
     $slot_memoria_placa = $_POST['slot_memoria_placa'];
     $query = "UPDATE slot_memoria_placa SET slot_memoria_placa = '$slot_memoria_placa' WHERE id_hardware = '$id_hardware'";
 
-} elseif ($tipo_hardware == 'voltaje_ram') {
-    $voltaje_ram = $_POST['voltaje_ram'];
-    $query = "UPDATE voltaje_ram SET voltaje_ram = '$voltaje_ram' WHERE id_hardware = '$id_hardware'";
+} elseif ($tipo_hardware == 'formato_ram') {
+    $formato_ram = $_POST['formato_ram'];
+    $query = "UPDATE formato_ram SET formato_ram = '$formato_ram' WHERE id_hardware = '$id_hardware'";
 
 } elseif ($tipo_hardware == 'velocidad_ram') {
     $velocidad_ram = $_POST['velocidad_ram'];
@@ -52,13 +52,11 @@ elseif ($tipo_hardware == 'capacidad_almacenamiento') {
     $query = "UPDATE capacidad_almacenamiento SET capacidad_almacenamiento = '$capacidad_almacenamiento' WHERE id_hardware = '$id_hardware'";
 
 }
-
 elseif ($tipo_hardware == 'formato_placa') {
     $formato_placa = $_POST['formato_placa'];
     $query = "UPDATE formato_placa SET formato_placa = '$formato_placa' WHERE id_hardware = '$id_hardware'";
 
 }
-
 elseif ($tipo_hardware == 'capacidad_ram') {
     $capacidad_ram = $_POST['capacidad_ram'];
     $query = "UPDATE capacidad_ram SET capacidad_ram = '$capacidad_ram' WHERE id_hardware = '$id_hardware'";
@@ -86,6 +84,9 @@ elseif ($tipo_hardware == 'certificacion_fuente') {
 }elseif ($tipo_hardware == 'tamanio_placa') {
     $tamanio_placa = $_POST['tamanio_placa'];
     $query = "UPDATE tamanio_placa SET tamanio_placa = '$tamanio_placa' WHERE id_hardware = '$id_hardware'";
+}elseif ($tipo_hardware == 'tamanio_max_gabinete') {
+    $tamanio_max_gabinete = $_POST['tamanio_max_gabinete'];
+    $query = "UPDATE tamanio_max_gabinete SET tamanio_max_gabinete = '$tamanio_max_gabinete' WHERE id_hardware = '$id_hardware'";
 }
 
 
@@ -96,7 +97,7 @@ mysqli_query($conexion, $query);
 // Verificar si la consulta se ejecutó correctamente
 if (mysqli_affected_rows($conexion) > 0) {
     // Redireccionar a la página de inicio
-    header('Location: ../index.php');
+    header('Location: ../panel_admin/admin_panel.php');
     exit;
 } else {
     // Mostrar un mensaje de error

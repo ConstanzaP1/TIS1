@@ -14,17 +14,20 @@ $query = "SELECT * FROM hardware p
           LEFT JOIN nucleo_hilo_cpu nhc ON p.id_hardware = nhc.id_hardware
           LEFT JOIN socket_placa sp ON p.id_hardware = sp.id_hardware
           LEFT JOIN slot_memoria_placa smp ON p.id_hardware = smp.id_hardware
-          LEFT JOIN voltaje_ram vr ON p.id_hardware = vr.id_hardware
           LEFT JOIN velocidad_ram ve ON p.id_hardware = ve.id_hardware
           LEFT JOIN capacidad_almacenamiento ca ON p.id_hardware = ca.id_hardware
           LEFT JOIN formato_placa fp ON p.id_hardware = fp.id_hardware
           LEFT JOIN capacidad_ram cr ON p.id_hardware = cr.id_hardware
-          LEFT JOIN tipo_ram tr ON p.id_hardware = tr.id_hardware
+          LEFT JOIN formato_ram fr ON p.id_hardware = fr.id_hardware
           LEFT JOIN certificacion_fuente cf ON p.id_hardware = cf.id_hardware
           LEFT JOIN tipo_cableado tc ON p.id_hardware = tc.id_hardware
           LEFT JOIN tamanio_fuente tf ON p.id_hardware = tf.id_hardware
           LEFT JOIN potencia_fuente pf ON p.id_hardware = pf.id_hardware
           LEFT JOIN tamanio_placa tp ON p.id_hardware = tp.id_hardware
+          LEFT JOIN tipo_ram tr ON p.id_hardware = tr.id_hardware
+          LEFT JOIN tamanio_max_gabinete tmg ON p.id_hardware = tmg.id_hardware
+         
+
           WHERE p.id_hardware = '$id_hardware'";
 
 $result = mysqli_query($conexion, $query);
@@ -65,17 +68,18 @@ $row = mysqli_fetch_assoc($result);
                 <option value="nucleo_hilo_cpu" <?php if ($row['nucleo_hilo_cpu']) echo 'selected'; ?>>Nucleo Hilo Cpu</option>
                 <option value="socket_placa" <?php if ($row['socket_placa']) echo 'selected'; ?>>Socket Placa</option>
                 <option value="slot_memoria_placa" <?php if ($row['slot_memoria_placa']) echo 'selected'; ?>>Slot Memoria Placa</option>
-                <option value="voltaje_ram" <?php if ($row['voltaje_ram']) echo 'selected'; ?>>Voltaje Ram</option>
                 <option value="velocidad_ram" <?php if ($row['velocidad_ram']) echo 'selected'; ?>>Velocidad Ram</option>
                 <option value="capacidad_almacenamiento" <?php if ($row['capacidad_almacenamiento']) echo 'selected'; ?>>Capacidad Almacenamiento</option>
                 <option value="formato_placa" <?php if ($row['formato_placa']) echo 'selected'; ?>>Formato Placa</option>
                 <option value="capacidad_ram" <?php if ($row['capacidad_ram']) echo 'selected'; ?>>Capacidad Ram</option>
-                <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo Ram</option>
+                <option value="formato_ram" <?php if ($row['formato_ram']) echo 'selected'; ?>>Formato Ram</option>
                 <option value="certificacion_fuente" <?php if ($row['certificacion_fuente']) echo 'selected'; ?>>Certificacion Fuente</option>
                 <option value="tipo_cableado" <?php if ($row['tipo_cableado']) echo 'selected'; ?>>Tipo Cableado</option>
                 <option value="tamanio_fuente" <?php if ($row['tamanio_fuente']) echo 'selected'; ?>>Tamaño Fuente</option>
                 <option value="potencia_fuente" <?php if ($row['potencia_fuente']) echo 'selected'; ?>>Potencia Fuente</option>
                 <option value="tamanio_placa" <?php if ($row['tamanio_placa']) echo 'selected'; ?>>Tamaño Placa</option>
+                <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo RAM</option>
+                <option value="tamanio_max_gabinete" <?php if ($row['tamanio_max_gabinete']) echo 'selected'; ?>>Tipo RAM</option>
                 
 
             </select>
@@ -101,7 +105,6 @@ $row = mysqli_fetch_assoc($result);
             <label for="socket_cpu" class="form-label mt-3">Socket Cpu</label>
             <input type="text" name="socket_cpu" class="form-control" id="socket_cpu" value="<?php echo $row['socket_cpu']; ?>">
         </div>
-
         <div class="mb-3" id="camposNucleo_hilo_cpu" style="display: none;">       
             <label for="nucleo_hilo_cpu" class="form-label mt-3">Nucleo Hilo Cpu</label>
             <input type="text" name="nucleo_hilo_cpu" class="form-control" id="nucleo_hilo_cpu" value="<?php echo $row['nucleo_hilo_cpu']; ?>">
@@ -113,10 +116,6 @@ $row = mysqli_fetch_assoc($result);
         <div class="mb-3" id="camposSlot_memoria_placa" style="display: none;">       
             <label for="slot_memoria_placa" class="form-label mt-3">Slot Memoria Placa</label>
             <input type="text" name="slot_memoria_placa" class="form-control" id="slot_memoria_placa" value="<?php echo $row['slot_memoria_placa']; ?>">
-        </div>
-        <div class="mb-3" id="camposVoltaje_ram" style="display: none;">       
-            <label for="voltaje_ram" class="form-label mt-3">Voltaje Ram</label>
-            <input type="text" name="voltaje_ram" class="form-control" id="voltaje_ram" value="<?php echo $row['voltaje_ram']; ?>">
         </div>
         <div class="mb-3" id="camposVelocidad_ram" style="display: none;">       
             <label for="velocidad_ram" class="form-label mt-3">Velocidad Ram</label>
@@ -134,9 +133,9 @@ $row = mysqli_fetch_assoc($result);
             <label for="capacidad_ram" class="form-label mt-3">Capacidad Ram</label>
             <input type="text" name="capacidad_ram" class="form-control" id="capacidad_ram" value="<?php echo $row['capacidad_ram']; ?>">
         </div>
-        <div class="mb-3" id="camposTipo_ram" style="display: none;">       
-            <label for="tipo_ram" class="form-label mt-3">Tipo Ram</label>
-            <input type="text" name="tipo_ram" class="form-control" id="tipo_ram" value="<?php echo $row['tipo_ram']; ?>">
+        <div class="mb-3" id="camposformato_ram" style="display: none;">       
+            <label for="formato_ram" class="form-label mt-3">Formato Ram</label>
+            <input type="text" name="formato_ram" class="form-control" id="formato_ram" value="<?php echo $row['formato_ram']; ?>">
         </div>
         <div class="mb-3" id="camposCertificacion_fuente" style="display: none;">       
             <label for="certificacion_fuente" class="form-label mt-3">Certificacion Fuente</label>
@@ -158,6 +157,14 @@ $row = mysqli_fetch_assoc($result);
             <label for="tamanio_placa" class="form-label mt-3">Tamaño Placa</label>
             <input type="text" name="tamanio_placa" class="form-control" id="tamanio_placa" value="<?php echo $row['tamanio_placa']; ?>">
         </div>
+        <div class="mb-3" id="camposTipo_ram" style="display: none;">       
+            <label for="tipo_ram" class="form-label mt-3">Tipo RAM</label>
+            <input type="text" name="tipo_ram" class="form-control" id="tipo_ram" value="<?php echo $row['tipo_ram']; ?>">
+        </div>
+        <div class="mb-3" id="camposTamanio_max_gabinete" style="display: none;">       
+            <label for="tamanio_max_gabinete" class="form-label mt-3">Tamaño Max placa</label>
+            <input type="text" name="tamanio_max_gabinete" class="form-control" id="tamanio_max_gabinete" value="<?php echo $row['tamanio_max_gabinete']; ?>">
+        </div>
 
         <button type="submit" class="btn btn-primary mt-3">Guardar cambios</button>
     </form>
@@ -175,12 +182,11 @@ $row = mysqli_fetch_assoc($result);
         document.getElementById("camposNucleo_hilo_cpu").style.display = "none";
         document.getElementById("camposSocket_placa").style.display = "none";
         document.getElementById("camposSlot_memoria_placa").style.display = "none";
-        document.getElementById("camposVoltaje_ram").style.display = "none";
         document.getElementById("camposVelocidad_ram").style.display = "none";
         document.getElementById("camposCapacidad_almacenamiento").style.display = "none";
         document.getElementById("camposFormato_placa").style.display = "none";
         document.getElementById("camposCapacidad_ram").style.display = "none";
-        document.getElementById("camposTipo_ram").style.display = "none";
+        document.getElementById("camposformato_ram").style.display = "none";
         document.getElementById("camposCertificacion_fuente").style.display = "none";
         document.getElementById("camposTipo_cableado").style.display = "none";
         document.getElementById("camposTamanio_fuente").style.display = "none";
@@ -213,9 +219,6 @@ $row = mysqli_fetch_assoc($result);
         else if (tipoHardware === "slot_memoria_placa") {
             document.getElementById("camposSlot_memoria_placa").style.display = "block";
         } 
-        else if (tipoHardware === "voltaje_ram") {
-            document.getElementById("camposVoltaje_ram").style.display = "block";
-        } 
         
         else if (tipoHardware === "velocidad_ram") {
             document.getElementById("camposVelocidad_ram").style.display = "block";
@@ -233,8 +236,8 @@ $row = mysqli_fetch_assoc($result);
             document.getElementById("camposCapacidad_ram").style.display = "block";
         }
 
-        else if (tipoHardware === "tipo_ram") {
-            document.getElementById("camposTipo_ram").style.display = "block";
+        else if (tipoHardware === "formato_ram") {
+            document.getElementById("camposformato_ram").style.display = "block";
         }
 
         else if (tipoHardware === "certificacion_fuente") {
@@ -255,6 +258,13 @@ $row = mysqli_fetch_assoc($result);
 
         else if (tipoHardware === "tamanio_placa") {
             document.getElementById("camposTamanio_placa").style.display = "block";
+        }
+
+        else if (tipoHardware === "tipo_ram") {
+            document.getElementById("camposTipo_ram").style.display = "block";
+        }
+        else if (tipoHardware === "tamanio_max_gabinete") {
+            document.getElementById("camposTamanio_max_gabinete").style.display = "block";
         }
         
     }

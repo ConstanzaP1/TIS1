@@ -21,11 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (mysqli_query($conexion, $queryMemoria)) {
                 echo "Ingreso exitoso.";
-                header('location: index_hardware.php');
+                header('location: admin_panel_hardware.php');
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);   
             }
-            header('location: index_hardware.php');
+            header('location: admin_panel_hardware.php');
         } 
 
         elseif ($tipo_hardware == 'memoria_gpu') {
@@ -120,17 +120,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('location: slot_memoria_placa.php');
         } 
 
-        elseif ($tipo_hardware == 'voltaje_ram') {
-            $voltaje_ram = $_POST['voltaje_ram'];
+        elseif ($tipo_hardware == 'formato_ram') {
+            $formato_ram = $_POST['formato_ram'];
             // Insertar en las tablas asociadas para procesadores
-            $queryVoltaje_ram = "INSERT INTO voltaje_ram (id_hardware, voltaje_ram) VALUES ('$id_hardware', '$voltaje_ram')";
+            $queryFormato_ram = "INSERT INTO formato_ram (id_hardware, formato_ram) VALUES ('$id_hardware', '$formato_ram')";
 
-            if (mysqli_query($conexion, $queryVoltaje_ram)) {
+            if (mysqli_query($conexion, $queryFormato_ram)) {
                 echo "Ingreso exitoso.";
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: voltaje_ram.php');
+            header('location: formato_ram.php');
         } 
         
         elseif ($tipo_hardware == 'velocidad_ram') {
@@ -261,6 +261,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
             header('location: tamanio_placa.php');
+        } elseif ($tipo_hardware == 'tamanio_max_gabinete') {
+            $tamanio_max_gabinete  = $_POST['tamanio_max_gabinete'];
+            // Insertar en las tablas asociadas para procesadores
+            $queryTamanio_max_gabinete = "INSERT INTO tamanio_max_gabinete (id_hardware, tamanio_max_gabinete) VALUES ('$id_hardware', '$tamanio_max_gabinete')";
+
+            if (mysqli_query($conexion, $queryTamanio_max_gabinete)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: tamanio_max_gabinete.php');
         } 
 
 

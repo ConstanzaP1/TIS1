@@ -18,6 +18,15 @@ $query = "SELECT * FROM periferico p
           LEFT JOIN tipo_curvatura tc ON p.id_periferico = tc.id_periferico
           LEFT JOIN tiempo_respuesta tr ON p.id_periferico = tr.id_periferico
           LEFT JOIN tipo_panel tp ON p.id_periferico = tp.id_periferico
+          LEFT JOIN iluminacion i ON p.id_periferico = i.id_periferico
+          LEFT JOIN tipo_switch ts ON p.id_periferico = ts.id_periferico
+          LEFT JOIN peso_mouse pm ON p.id_periferico = pm.id_periferico
+          LEFT JOIN anc a ON p.id_periferico = a.id_periferico
+          LEFT JOIN tasa_refresco tre ON p.id_periferico = tre.id_periferico
+          LEFT JOIN soporte_monitor smr ON p.id_periferico = smr.id_periferico
+          
+
+          
           WHERE p.id_periferico = '$id_periferico'";
 
 $result = mysqli_query($conexion, $query);
@@ -62,6 +71,12 @@ $row = mysqli_fetch_assoc($result);
                 <option value="tipo_curvatura" <?php if ($row['tipo_curvatura']) echo 'selected'; ?>>Tipo curvatura</option>
                 <option value="tiempo_respuesta" <?php if ($row['tiempo_respuesta']) echo 'selected'; ?>>Tiempo respuesta</option>
                 <option value="tipo_panel" <?php if ($row['tipo_panel']) echo 'selected'; ?>>Tipo panel</option>
+                <option value="iluminacion" <?php if ($row['iluminacion']) echo 'selected'; ?>>Iluminacion</option>
+                <option value="tipo_switch" <?php if ($row['tipo_switch']) echo 'selected'; ?>>Tipo switch</option>
+                <option value="peso_mouse" <?php if ($row['peso_mouse']) echo 'selected'; ?>>Peso mouse</option>
+                <option value="anc" <?php if ($row['anc']) echo 'selected'; ?>>Anc</option>
+                <option value="tasa_refresco" <?php if ($row['tasa_refresco']) echo 'selected'; ?>>Tasa refresco</option>
+                <option value="soporte_monitor" <?php if ($row['soporte_monitor']) echo 'selected'; ?>>Soporte monitor</option>
             </select>
         </div>
         <!-- Campos (Ocultos inicialmente) -->
@@ -113,6 +128,30 @@ $row = mysqli_fetch_assoc($result);
             <label for="tipo_panel" class="form-label mt-3">Tipo panel</label>
             <input type="text" name="tipo_panel" class="form-control" id="tipo_panel" value="<?php echo $row['tipo_panel']; ?>">
         </div>
+        <div class="mb-3" id="campoIluminacion" style="display: none;">       
+            <label for="iluminacion" class="form-label mt-3">Iluminacion</label>
+            <input type="text" name="iluminacion" class="form-control" id="iluminacion" value="<?php echo $row['iluminacion']; ?>">
+        </div>
+        <div class="mb-3" id="campoTipo_switch" style="display: none;">       
+            <label for="tipo_switch" class="form-label mt-3">Tipo switch</label>
+            <input type="text" name="tipo_switch" class="form-control" id="tipo_switch" value="<?php echo $row['tipo_switch']; ?>">
+        </div>
+        <div class="mb-3" id="campoPeso_mouse" style="display: none;">       
+            <label for="peso_mouse" class="form-label mt-3">Peso mouse</label>
+            <input type="text" name="peso_mouse" class="form-control" id="peso_mouse" value="<?php echo $row['peso_mouse']; ?>">
+        </div>
+        <div class="mb-3" id="campoAnc" style="display: none;">       
+            <label for="anc" class="form-label mt-3">ANC</label>
+            <input type="text" name="anc" class="form-control" id="anc" value="<?php echo $row['anc']; ?>">
+        </div>
+        <div class="mb-3" id="campoTasa_refresco" style="display: none;">       
+            <label for="tasa_refresco" class="form-label mt-3">Tasa refresco</label>
+            <input type="text" name="tasa_refresco" class="form-control" id="tasa_refresco" value="<?php echo $row['tasa_refresco']; ?>">
+        </div>
+        <div class="mb-3" id="campoSoporte_monitor" style="display: none;">       
+            <label for="soporte_monitor" class="form-label mt-3">Soporte monitor</label>
+            <input type="text" name="soporte_monitor" class="form-control" id="soporte_monitor" value="<?php echo $row['soporte_monitor']; ?>">
+        </div>
 
         <button type="submit" class="btn btn-primary mt-3">Guardar cambios</button>
     </form>
@@ -124,7 +163,10 @@ $row = mysqli_fetch_assoc($result);
                 'campoConectividad', 'campoSensor_mouse', 'campoDpi_mouse',
                 'campoCategoria_teclado', 'campoTipo_teclado', 'campoTipo_audifono',
                 'campoTipo_microfono', 'campoTamanio_monitor', 'campoResolucion_monitor',
-                'campoTipo_curvatura', 'campoTiempo_respuesta', 'campoTipo_panel'
+                'campoTipo_curvatura', 'campoTiempo_respuesta', 'campoTipo_panel',
+                'campoIluminacion', 'campoTipo_switch','campoPeso_mouse',
+                'campoAnc', 'campoTasa_refresco', 'campoSoporte_monitor'
+
             ];
             
             // Oculta todos los campos

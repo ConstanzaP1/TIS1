@@ -1,13 +1,13 @@
 <?php
 require('../conexion.php');
 
-// Consulta para obtener datos de la tabla voltaje_ram que no sean NULL
+// Consulta para obtener datos de la tabla dpi_mouse que no sean NULL
 $query = "
-    SELECT p.id_hardware, 
-           vr.voltaje_ram
-    FROM hardware p
-    LEFT JOIN voltaje_ram vr ON p.id_hardware = vr.id_hardware
-    WHERE vr.voltaje_ram IS NOT NULL
+    SELECT p.id_periferico, 
+           dm.dpi_mouse
+    FROM periferico p
+    LEFT JOIN dpi_mouse dm ON p.id_periferico = dm.id_periferico
+    WHERE dm.dpi_mouse IS NOT NULL
 ";
 
 $result = mysqli_query($conexion, $query);
@@ -34,25 +34,24 @@ $result = mysqli_query($conexion, $query);
 <body>
 
 <div class="container mt-5">
-    <!-- Tabla de categorías, visible por defecto, pero se oculta al agregar una nueva categoría -->
-    <div class="container mt-5" id="tabla">
+    <div id="tabla">
         <div class="row">
             <div class="col">
-                <h2>Voltaje RAM</h2>
+                <h2>Dpi Mouse</h2>
                 <table class="table table-bordered mt-4">
                     <thead>
                         <tr>
-                            <th>Voltaje RAM</th>
+                            <th>Dpi Mouse</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+                        <?php while ($rowCategoria = mysqli_fetch_assoc($result)) : ?>
                             <tr>
-                                <td><?php echo $row['voltaje_ram']; ?></td>
+                                <td><?php echo $rowCategoria['dpi_mouse']; ?></td>
                                 <td>
-                                    <button class="btn btn-primary" onclick="window.location.href='modificar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Modificar</button>
-                                    <button class="btn btn-danger" onclick="window.location.href='eliminar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Eliminar</button>
+                                    <button class="btn btn-primary" onclick="window.location.href='modificar_periferico.php?id_periferico=<?php echo $rowCategoria['id_periferico']; ?>';">Modificar</button>
+                                    <button class="btn btn-danger" onclick="window.location.href='eliminar_periferico.php?id_periferico=<?php echo $rowCategoria['id_periferico']; ?>';">Eliminar</button>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -66,26 +65,27 @@ $result = mysqli_query($conexion, $query);
     <button type="button" id="botonAgregar" class="btn btn-primary" onclick="mostrarFormulario()">Agregar</button>
 
     <!-- Botón para volver al inicio que siempre aparece cuando la tabla está visible -->
-    <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>
+    <button type="button" id="botonVolverInicio" class="btn btn-secondary" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver a Inicio</button>                        
 
-    <!-- Formulario oculto inicialmente -->
-    <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
-        <h1 class="mb-4">Ingreso de Voltaje RAM</h1>
-        <!-- Campo oculto para seleccionar automáticamente-->
-        <input type="hidden" name="tipo_hardware" value="voltaje_ram">
+    
+    <!-- Formulario para insertar -->
+    <form action="ingresar_periferico.php" method="POST" id="formulario" style="display: none;" class="mt-4">
+        <h1 class="mb-4">Ingreso Dpi</h1>
+        <!-- Campo oculto para seleccionar automaticamente -->
+        <input type="hidden" name="tipo_periferico" value="dpi_mouse">
 
-        <div class="mb-3">
-            <label for="voltaje_ram" class="form-label">Voltaje RAM</label>
-            <input type="text" name="voltaje_ram" class="form-control" id="voltaje_ram" required>
+        <div class="mb-3">       
+            <label for="dpi_mouse" class="form-label mt-3">Dpi Mouse</label>
+            <input type="text" name="dpi_mouse" class="form-control" id="dpi_mouse" required>
         </div>
-        
+
         <!-- Contenedor para alinear los botones -->
         <div class="d-flex justify-content-between mt-3">
             <!-- Botón de guardar -->
             <button type="submit" class="btn btn-success">Guardar</button>
             
             <!-- Botón para volver al inicio al lado del botón de guardar -->
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='../index.php';">Volver a Inicio</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver a Inicio</button>
         </div>
     </form>
 </div>
