@@ -78,159 +78,20 @@ if (isset($_SESSION['error_message'])) {
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <aside id="sidebar">
-            <div class="d-flex">
-                <button class="toggle-btn" type="button">
-                    <i class="lni lni-grid-alt"></i>
-                </button>
-                <div class="sidebar-logo">
-                    <a href="#">Tisnology</a>
-                </div>
-            </div>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="lni lni-protection"></i>
-                    <span>Tarjetas de video</span>
+
+    <div class="header">
+        <h1>Lista de Productos</h1>
+    </div>
+
+    <div class="container">
+        <!-- Botones de Iniciar Sesión y Registrarse -->
+        <div class="formulario-registro">
+            <div class="button-container">
+                <a href="login/login.php">
+                    <button type="button">Iniciar Sesión</button>
                 </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/memoria_gpu.php" class="sidebar-link">Memoria</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/frecuencia_gpu.php" class="sidebar-link">Frecuencia</a>      
-                    </li>
-                </ul>
-            </li>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="lni lni-protection"></i>
-                    <span>Procesador</span>
-                </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/frecuencia_cpu.php" class="sidebar-link">Frecuencia</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/nucleo_hilo_cpu.php" class="sidebar-link">Nucleo / Hilo</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/socket_cpu.php" class="sidebar-link">Socket</a>      
-                    </li>
-                </ul>
-            </li>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="lni lni-protection"></i>
-                    <span>Placa madre</span>
-                </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/socket_placa.php" class="sidebar-link">Socket</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/slot_memoria_placa.php" class="sidebar-link">Slot memoria</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/formato_placa.php" class="sidebar-link">Formato</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/tamanio_placa.php" class="sidebar-link">Tamaño</a>      
-                    </li>
-                </ul>
-            </li>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="lni lni-protection"></i>
-                    <span>Memoria RAM</span>
-                </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/voltaje_ram.php" class="sidebar-link">Voltaje</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/velocidad_ram.php" class="sidebar-link">Velocidad</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/capacidad_ram.php" class="sidebar-link">Capacidad</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/tipo_ram.php" class="sidebar-link">Tipo</a>      
-                    </li>
-                </ul>
-            </li>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="lni lni-protection"></i>
-                    <span>Teclado</span>
-                </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                            <a href="mantenedores_periferico/categoria_teclado.php" class="sidebar-link">Categoria</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_periferico/tipo_teclado.php" class="sidebar-link">Tipo</a>      
-                    </li>
-                </ul>
-            </li>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="lni lni-protection"></i>
-                    <span>Notebooks</span>
-                </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                            <a href="mantenedores_notebook/cpu_notebook.php" class="sidebar-link">Cpu</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_notebook/gpu_notebook.php" class="sidebar-link">Gpu</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_notebook/pantalla_notebook.php" class="sidebar-link">Pantalla</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_notebook/bateria_notebook.php" class="sidebar-link">Batería</a>      
-                    </li>
-                </ul>
-            </li>
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                    <i class="lni lni-protection"></i>
-                    <span>Fuente de Poder</span>
-                </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/certificacion_fuente.php" class="sidebar-link">Certificacion</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/tipo_cableado.php" class="sidebar-link">Tipo Cableado</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/tamanio_fuente.php" class="sidebar-link">Tamaño</a>      
-                    </li>
-                    <li class="sidebar-item">
-                            <a href="mantenedores_hardware/potencia_fuente.php" class="sidebar-link">Potencia</a>      
-                    </li>
-                    
-                </ul>
-            </li>
-            <li class="sidebar-item">
-                    <a href="crear_producto.php" class="sidebar-link">
-                        <i class="lni lni-user"></i>
-                        <span>Crear producto</span>
-                    </a>
-            </li>
-            <div class="sidebar-footer">
-                <a href="#" class="sidebar-link">
-                    <i class="lni lni-exit"></i>
-                    <span>Logout</span>
+                <a href="login/login.php">
+                    <button type="button">Registrarse</button>
                 </a>
             </div>
         </div>

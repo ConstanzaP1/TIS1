@@ -365,6 +365,15 @@ $result_users = mysqli_query($conexion, $sql_users);
     </div>
 </div>
 
+<div class="accordion-header">Marcas</div>
+    <div class="accordion-content">
+        <ul>
+            <li><a href="../mantenedores_marcas/nombres_marcas.php">Agregar Marcas</a></li>
+            
+        </ul>
+    </div>
+</div>
+
 <style>
     .sub-category-header {
         cursor: pointer;
