@@ -20,10 +20,9 @@ $query = "SELECT * FROM hardware p
           LEFT JOIN capacidad_ram cr ON p.id_hardware = cr.id_hardware
           LEFT JOIN formato_ram fr ON p.id_hardware = fr.id_hardware
           LEFT JOIN certificacion_fuente cf ON p.id_hardware = cf.id_hardware
-          LEFT JOIN tipo_cableado tc ON p.id_hardware = tc.id_hardware
           LEFT JOIN tamanio_fuente tf ON p.id_hardware = tf.id_hardware
           LEFT JOIN potencia_fuente pf ON p.id_hardware = pf.id_hardware
-          LEFT JOIN tamanio_placa tp ON p.id_hardware = tp.id_hardware
+          LEFT JOIN chipset_placa cp ON p.id_hardware = cp.id_hardware
           LEFT JOIN tipo_ram tr ON p.id_hardware = tr.id_hardware
           LEFT JOIN tamanio_max_gabinete tmg ON p.id_hardware = tmg.id_hardware
          
@@ -74,10 +73,9 @@ $row = mysqli_fetch_assoc($result);
                 <option value="capacidad_ram" <?php if ($row['capacidad_ram']) echo 'selected'; ?>>Capacidad Ram</option>
                 <option value="formato_ram" <?php if ($row['formato_ram']) echo 'selected'; ?>>Formato Ram</option>
                 <option value="certificacion_fuente" <?php if ($row['certificacion_fuente']) echo 'selected'; ?>>Certificacion Fuente</option>
-                <option value="tipo_cableado" <?php if ($row['tipo_cableado']) echo 'selected'; ?>>Tipo Cableado</option>
                 <option value="tamanio_fuente" <?php if ($row['tamanio_fuente']) echo 'selected'; ?>>Tamaño Fuente</option>
                 <option value="potencia_fuente" <?php if ($row['potencia_fuente']) echo 'selected'; ?>>Potencia Fuente</option>
-                <option value="tamanio_placa" <?php if ($row['tamanio_placa']) echo 'selected'; ?>>Tamaño Placa</option>
+                <option value="chipset_placa" <?php if ($row['chipset_placa']) echo 'selected'; ?>>Chipset</option>
                 <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo RAM</option>
                 <option value="tamanio_max_gabinete" <?php if ($row['tamanio_max_gabinete']) echo 'selected'; ?>>tamaño maximo placa</option>
                 
@@ -141,10 +139,6 @@ $row = mysqli_fetch_assoc($result);
             <label for="certificacion_fuente" class="form-label mt-3">Certificacion Fuente</label>
             <input type="text" name="certificacion_fuente" class="form-control" id="certificacion_fuente" value="<?php echo $row['certificacion_fuente']; ?>">
         </div>
-        <div class="mb-3" id="camposTipo_cableado" style="display: none;">       
-            <label for="tipo_cableado" class="form-label mt-3">Tipo Cableado</label>
-            <input type="text" name="tipo_cableado" class="form-control" id="tipo_cableado" value="<?php echo $row['tipo_cableado']; ?>">
-        </div>
         <div class="mb-3" id="camposTamanio_fuente" style="display: none;">       
             <label for="tamanio_fuente" class="form-label mt-3">Tamaño Fuente</label>
             <input type="text" name="tamanio_fuente" class="form-control" id="tamanio_fuente" value="<?php echo $row['tamanio_fuente']; ?>">
@@ -153,9 +147,9 @@ $row = mysqli_fetch_assoc($result);
             <label for="potencia_fuente" class="form-label mt-3">Potencia Fuente</label>
             <input type="text" name="potencia_fuente" class="form-control" id="potencia_fuente" value="<?php echo $row['potencia_fuente']; ?>">
         </div>
-        <div class="mb-3" id="camposTamanio_placa" style="display: none;">       
-            <label for="tamanio_placa" class="form-label mt-3">Tamaño Placa</label>
-            <input type="text" name="tamanio_placa" class="form-control" id="tamanio_placa" value="<?php echo $row['tamanio_placa']; ?>">
+        <div class="mb-3" id="camposchipset_placa" style="display: none;">       
+            <label for="chipset_placa" class="form-label mt-3">Chipset</label>
+            <input type="text" name="chipset_placa" class="form-control" id="chipset_placa" value="<?php echo $row['chipset_placa']; ?>">
         </div>
         <div class="mb-3" id="camposTipo_ram" style="display: none;">       
             <label for="tipo_ram" class="form-label mt-3">Tipo RAM</label>
@@ -188,10 +182,9 @@ $row = mysqli_fetch_assoc($result);
         document.getElementById("camposCapacidad_ram").style.display = "none";
         document.getElementById("camposformato_ram").style.display = "none";
         document.getElementById("camposCertificacion_fuente").style.display = "none";
-        document.getElementById("camposTipo_cableado").style.display = "none";
         document.getElementById("camposTamanio_fuente").style.display = "none";
         document.getElementById("camposPotencia_fuente").style.display = "none";
-        document.getElementById("camposTamanio_placa").style.display = "none";
+        document.getElementById("camposchipset_placa").style.display = "none";
 
 
         if (tipoHardware === "memoria") {
@@ -244,10 +237,6 @@ $row = mysqli_fetch_assoc($result);
             document.getElementById("camposCertificacion_fuente").style.display = "block";
         }
 
-        else if (tipoHardware === "tipo_cableado") {
-            document.getElementById("camposTipo_cableado").style.display = "block";
-        }
-
         else if (tipoHardware === "tamanio_fuente") {
             document.getElementById("camposTamanio_fuente").style.display = "block";
         }
@@ -256,8 +245,8 @@ $row = mysqli_fetch_assoc($result);
             document.getElementById("camposPotencia_fuente").style.display = "block";
         }
 
-        else if (tipoHardware === "tamanio_placa") {
-            document.getElementById("camposTamanio_placa").style.display = "block";
+        else if (tipoHardware === "chipset_placa") {
+            document.getElementById("camposchipset_placa").style.display = "block";
         }
 
         else if (tipoHardware === "tipo_ram") {
@@ -280,6 +269,6 @@ $row = mysqli_fetch_assoc($result);
 </div>
 
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="htcps://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,13 +1,13 @@
 <?php
 require('../conexion.php');
 
-// Consulta para obtener datos de la tabla tamanio_placa que no sean NULL
+// Consulta para obtener datos de la tabla chipset_placa que no sean NULL
 $query = "
     SELECT p.id_hardware, 
-           tp.tamanio_placa
+           cp.chipset_placa
     FROM hardware p
-    LEFT JOIN tamanio_placa tp ON p.id_hardware = tp.id_hardware
-    WHERE tp.tamanio_placa IS NOT NULL
+    LEFT JOIN chipset_placa cp ON p.id_hardware = cp.id_hardware
+    WHERE cp.chipset_placa IS NOT NULL
 ";
 
 $result = mysqli_query($conexion, $query);
@@ -38,18 +38,18 @@ $result = mysqli_query($conexion, $query);
     <div id="tabla">
         <div class="row">
             <div class="col">
-                <h2>Tamaño Placa</h2>
+                <h2>Chipset placa</h2>
                 <table class="table table-bordered mt-4">
                     <thead>
                         <tr>
-                            <th>Tamaño Placa</th>
+                            <th>Chipset placa</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                             <tr>
-                                <td><?php echo $row['tamanio_placa']; ?></td>
+                                <td><?php echo $row['chipset_placa']; ?></td>
                                 <td>
                                     <button class="btn btn-primary" onclick="window.location.href='modificar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Modificar</button>
                                     <button class="btn btn-danger" onclick="window.location.href='eliminar_hardware.php?id_hardware=<?php echo $row['id_hardware']; ?>';">Eliminar</button>
@@ -70,13 +70,13 @@ $result = mysqli_query($conexion, $query);
 
     <!-- Formulario oculto inicialmente -->
     <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
-        <h1 class="mb-4">Ingreso de Tamaño Placa </h1>
+        <h1 class="mb-4">Ingreso de Chipset placa </h1>
         <!-- Campo oculto para seleccionar automáticamente-->
-        <input type="hidden" name="tipo_hardware" value="tamanio_placa">
+        <input type="hidden" name="tipo_hardware" value="chipset_placa">
 
         <div class="mb-3">
-            <label for="tamanio_placa" class="form-label">Tamaño Placa</label>
-            <input type="text" name="tamanio_placa" class="form-control" id="tamanio_placa" required>
+            <label for="chipset_placa" class="form-label">Chipset placa</label>
+            <input type="text" name="chipset_placa" class="form-control" id="chipset_placa" required>
         </div>
         
         <!-- Contenedor para alinear los botones -->

@@ -2,14 +2,14 @@
 require('../conexion.php');
 
 // Consultas para obtener las opciones de los atributos específicos del teclado
-$queryDpiMouse = "SELECT id_periferico, dpi_mouse FROM dpi_mouse";
-$resultDpiMouse = mysqli_query($conexion, $queryDpiMouse);
+$queryCertificacion = "SELECT id_hardware, certificacion_fuente FROM certificacion_fuente";
+$resultCertificacion = mysqli_query($conexion, $queryCertificacion);
 
-$queryPesoMouse = "SELECT id_periferico, peso_mouse FROM peso_mouse";
-$resultPesoMouse = mysqli_query($conexion, $queryPesoMouse);
+$queryPotencia = "SELECT id_hardware, potencia_fuente FROM potencia_fuente";
+$resultPotencia = mysqli_query($conexion, $queryPotencia);
 
-$querySensorMouse = "SELECT id_periferico, sensor_mouse FROM sensor_mouse";
-$resultSensorMouse = mysqli_query($conexion, $querySensorMouse);
+$queryTamanio = "SELECT id_hardware, tamanio_fuente FROM tamanio_fuente";
+$resultTamanio = mysqli_query($conexion, $queryTamanio);
 
 $queryMarca = "SELECT id_marca, nombre_marca FROM marca";
 $resultMarca = mysqli_query($conexion, $queryMarca);
@@ -25,9 +25,9 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Ingreso de Teclado</h1>
+    <h1 class="mb-4">Ingreso de Fuentes de poder</h1>
     <form action="procesar_producto.php" method="POST">
-        <input type="hidden" name="categoria_producto" value="mouse">
+        <input type="hidden" name="categoria_producto" value="fuente">
 
         <div class="mb-3">
             <label for="nombre_producto" class="form-label">Nombre del Producto</label>
@@ -55,31 +55,31 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         </div>
         
         <div class="mb-3">
-            <label for="dpi_mouse" class="form-label">DPI de mouse</label>
-            <select name="dpi_mouse" class="form-select" required>
-                <option value="" selected disabled>Seleccione un DPI</option>
-                <?php while ($row = mysqli_fetch_assoc($resultDpiMouse)): ?>
-                    <option value="<?= $row['id_periferico'] ?>"><?= $row['dpi_mouse'] ?></option>
+            <label for="certificacion_fuente" class="form-label">Certificacion Fuente</label>
+            <select name="certificacion_fuente" class="form-select" required>
+                <option value="" selected disabled>Seleccione una certificacion</option>
+                <?php while ($row = mysqli_fetch_assoc($resultCertificacion)): ?>
+                    <option value="<?= $row['id_hardware'] ?>"><?= $row['certificacion_fuente'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="peso_mouse" class="form-label">Peso de Mouse</label>
-            <select name="peso_mouse" class="form-select" required>
-                <option value="" selected disabled>Seleccione un peso</option>
-                <?php while ($row = mysqli_fetch_assoc($resultPesoMouse)): ?>
-                    <option value="<?= $row['id_periferico'] ?>"><?= $row['peso_mouse'] ?></option>
+            <label for="potencia_fuente" class="form-label">Potencia de fuente</label>
+            <select name="potencia_fuente" class="form-select" required>
+                <option value="" selected disabled>Seleccione una potencia</option>
+                <?php while ($row = mysqli_fetch_assoc($resultPotencia)): ?>
+                    <option value="<?= $row['id_hardware'] ?>"><?= $row['potencia_fuente'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="sensor_mouse" class="form-label">Sensor de mouse</label>
-            <select name="sensor_mouse" class="form-select" required>
-                <option value="" selected disabled>Seleccione un sensor</option>
-                <?php while ($row = mysqli_fetch_assoc($resultSensorMouse)): ?>
-                    <option value="<?= $row['id_periferico'] ?>"><?= $row['sensor_mouse'] ?></option>
+            <label for="tamanio_fuente" class="form-label">Tamaño Fuente</label>
+            <select name="tamanio_fuente" class="form-select" required>
+                <option value="" selected disabled>Seleccione un tamaño</option>
+                <?php while ($row = mysqli_fetch_assoc($resultTamanio)): ?>
+                    <option value="<?= $row['id_hardware'] ?>"><?= $row['tamanio_fuente'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>

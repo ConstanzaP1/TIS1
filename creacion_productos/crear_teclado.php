@@ -112,6 +112,7 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         </div>
 
         <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.href='index_crear_producto.php';">Volver</button>
     </form>
 </div>
 </body>

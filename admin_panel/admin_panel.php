@@ -224,7 +224,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                     <li><a href="../mantenedores_hardware/formato_placa.php">Formato Placa</a></li>
                     <li><a href="../mantenedores_hardware/slot_memoria_placa.php">Slot Memoria Placa</a></li>
                     <li><a href="../mantenedores_hardware/socket_placa.php">Socket Placa</a></li>
-                    <li><a href="../mantenedores_hardware/tamanio_placa.php">Tamaño Placa</a></li>
+                    <li><a href="../mantenedores_hardware/chipset_placa.php">Chipset Placa</a></li>
                 </ul>
             </li>
 
@@ -246,13 +246,6 @@ $result_users = mysqli_query($conexion, $sql_users);
                 </ul>
             </li>
 
-            <!-- Subcategoría: Cableado -->
-            <li>
-                <a href="#" class="sub-category-header">Cableado</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_hardware/tipo_cableado.php">Tipo Cableado</a></li>
-                </ul>
-            </li>
         </ul>
     </div>
 </div>
@@ -328,36 +321,21 @@ $result_users = mysqli_query($conexion, $sql_users);
     </div>
 </div>
 
-
-
 <div class="accordion-item">
     <div class="accordion-header">Notebook</div>
     <div class="accordion-content">
         <ul>
             <!-- Subcategoría: Batería -->
-            <li>
-                <a href="#" class="sub-category-header">Batería</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_notebook/bateria_notebook.php">Batería Notebook</a></li>
-                </ul>
-            </li>
+            <li><a href="../mantenedores_notebook/bateria_notebook.php">Batería</a></li>
 
             <!-- Subcategoría: Procesador -->
-            <li>
-                <a href="#" class="sub-category-header">Procesador</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_notebook/cpu_notebook.php">CPU Notebook</a></li>
-                    <li><a href="../mantenedores_notebook/gpu_notebook.php">GPU Notebook</a></li>
-                </ul>
-            </li>
+            <li><a href="../mantenedores_notebook/cpu_notebook.php">Procesador</a></li>
+
+            <!-- Subcategoría: Tarjeta de video -->
+            <li><a href="../mantenedores_notebook/gpu_notebook.php">Tarjeta de video</a></li>
 
             <!-- Subcategoría: Pantalla -->
-            <li>
-                <a href="#" class="sub-category-header">Pantalla</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_notebook/pantalla_notebook.php">Pantalla Notebook</a></li>
-                </ul>
-            </li>
+            <li><a href="../mantenedores_notebook/pantalla_notebook.php">Pantalla</a></li>
         </ul>
     </div>
 </div>

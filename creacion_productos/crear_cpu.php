@@ -1,15 +1,15 @@
 <?php
 require('../conexion.php');
 
-// Consultas para obtener las opciones de los atributos específicos del teclado
-$queryDpiMouse = "SELECT id_periferico, dpi_mouse FROM dpi_mouse";
-$resultDpiMouse = mysqli_query($conexion, $queryDpiMouse);
+// Consultas para obtener las opciones de los atributos específicos del CPU
+$queryFrecuenciaCpu = "SELECT id_hardware, frecuencia_cpu FROM frecuencia_cpu";
+$resultFrencuenciaCpu = mysqli_query($conexion, $queryFrecuenciaCpu);
 
-$queryPesoMouse = "SELECT id_periferico, peso_mouse FROM peso_mouse";
-$resultPesoMouse = mysqli_query($conexion, $queryPesoMouse);
+$queryNucleoHilo = "SELECT id_hardware, nucleo_hilo_cpu FROM nucleo_hilo_cpu";
+$resultNucleoHilo = mysqli_query($conexion, $queryNucleoHilo);
 
-$querySensorMouse = "SELECT id_periferico, sensor_mouse FROM sensor_mouse";
-$resultSensorMouse = mysqli_query($conexion, $querySensorMouse);
+$querySocketCpu = "SELECT id_hardware, socket_cpu FROM socket_cpu";
+$resultSocketCpu = mysqli_query($conexion, $querySocketCpu);
 
 $queryMarca = "SELECT id_marca, nombre_marca FROM marca";
 $resultMarca = mysqli_query($conexion, $queryMarca);
@@ -20,14 +20,14 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Teclado</title>
+    <title>Crear CPU</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Ingreso de Teclado</h1>
+    <h1 class="mb-4">Ingreso de CPU</h1>
     <form action="procesar_producto.php" method="POST">
-        <input type="hidden" name="categoria_producto" value="mouse">
+        <input type="hidden" name="categoria_producto" value="cpu">
 
         <div class="mb-3">
             <label for="nombre_producto" class="form-label">Nombre del Producto</label>
@@ -53,33 +53,33 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
             <label for="cantidad" class="form-label">Cantidad</label>
             <input type="number" name="cantidad" class="form-control" id="cantidad" required>
         </div>
-        
+
         <div class="mb-3">
-            <label for="dpi_mouse" class="form-label">DPI de mouse</label>
-            <select name="dpi_mouse" class="form-select" required>
-                <option value="" selected disabled>Seleccione un DPI</option>
-                <?php while ($row = mysqli_fetch_assoc($resultDpiMouse)): ?>
-                    <option value="<?= $row['id_periferico'] ?>"><?= $row['dpi_mouse'] ?></option>
+            <label for="frecuencia_cpu" class="form-label">Frecuencia de la CPU</label>
+            <select name="frecuencia_cpu" class="form-select" required>
+                <option value="" selected disabled>Seleccione una frecuencia</option>
+                <?php while ($row = mysqli_fetch_assoc($resultFrencuenciaCpu)): ?>
+                    <option value="<?= $row['id_hardware'] ?>"><?= $row['frecuencia_cpu'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="peso_mouse" class="form-label">Peso de Mouse</label>
-            <select name="peso_mouse" class="form-select" required>
-                <option value="" selected disabled>Seleccione un peso</option>
-                <?php while ($row = mysqli_fetch_assoc($resultPesoMouse)): ?>
-                    <option value="<?= $row['id_periferico'] ?>"><?= $row['peso_mouse'] ?></option>
+            <label for="nucleo_hilo_cpu" class="form-label">Nucle / HIlo CPU</label>
+            <select name="nucleo_hilo_cpu" class="form-select" required>
+                <option value="" selected disabled>Seleccione una opcion</option>
+                <?php while ($row = mysqli_fetch_assoc($resultNucleoHilo)): ?>
+                    <option value="<?= $row['id_hardware'] ?>"><?= $row['nucleo_hilo_cpu'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="sensor_mouse" class="form-label">Sensor de mouse</label>
-            <select name="sensor_mouse" class="form-select" required>
-                <option value="" selected disabled>Seleccione un sensor</option>
-                <?php while ($row = mysqli_fetch_assoc($resultSensorMouse)): ?>
-                    <option value="<?= $row['id_periferico'] ?>"><?= $row['sensor_mouse'] ?></option>
+            <label for="socket_cpu" class="form-label">Socket CPU</label>
+            <select name="socket_cpu" class="form-select" required>
+                <option value="" selected disabled>Seleccione un socket </option>
+                <?php while ($row = mysqli_fetch_assoc($resultSocketCpu)): ?>
+                    <option value="<?= $row['id_hardware'] ?>"><?= $row['socket_cpu'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>

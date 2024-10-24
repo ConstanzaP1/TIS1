@@ -7,15 +7,27 @@ if (isset($_POST['categoria_producto'])) {
     if ($categoria == 'teclado') {
         header('Location: crear_teclado.php');
     } elseif ($categoria == 'monitor') {
-        // Aquí puedes redirigir a una página para crear un monitor
         header('Location: crear_monitor.php');
     } elseif ($categoria == 'mouse') {
-        // Aquí puedes redirigir a una página para crear un mouse
         header('Location: crear_mouse.php');
     } elseif ($categoria == 'audifono') {
-        // Aquí puedes redirigir a una página para crear un audifono
         header('Location: crear_audifono.php');
-    } else {
+    } elseif ($categoria == 'cpu') {
+        header('Location: crear_cpu.php');
+    } elseif ($categoria == 'gpu') {
+        header('Location: crear_gpu.php');
+    } elseif ($categoria == 'ram') {
+        header('Location: crear_ram.php');
+    } elseif ($categoria == 'placa') {
+        header('Location: crear_placa_madre.php');
+    } elseif ($categoria == 'fuente') {
+        header('Location: crear_fuente.php');
+    } elseif ($categoria == 'gabinete') {
+        header('Location: crear_gabinete.php');
+    } elseif ($categoria == 'notebook') {
+        header('Location: crear_notebook.php');
+    }
+    else {
         // Si no se seleccionó ninguna categoría válida, redirigir de nuevo
         header('Location: index_crear_producto.php');
     }

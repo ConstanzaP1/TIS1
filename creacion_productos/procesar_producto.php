@@ -47,6 +47,43 @@ if (mysqli_query($conexion, $query_producto)) {
         if (isset($_POST['peso_mouse'])) $caracteristicas['peso_mouse'] = $_POST['peso_mouse'];
         if (isset($_POST['sensor_mouse'])) $caracteristicas['sensor_mouse'] = $_POST['sensor_mouse'];
 
+    } elseif ($categoria_producto == 'cpu') {
+        if (isset($_POST['frecuencia_cpu'])) $caracteristicas['frecuencia_cpu'] = $_POST['frecuencia_cpu'];
+        if (isset($_POST['nucleo_hilo_cpu'])) $caracteristicas['nucleo_hilo_cpu'] = $_POST['nucleo_hilo_cpu'];
+        if (isset($_POST['socket_cpu'])) $caracteristicas['socket_cpu'] = $_POST['socket_cpu'];
+
+    } elseif ($categoria_producto == 'gpu') {
+        if (isset($_POST['frecuencia_gpu'])) $caracteristicas['frecuencia_gpu'] = $_POST['frecuencia_gpu'];
+        if (isset($_POST['memoria_gpu'])) $caracteristicas['memoria_gpu'] = $_POST['memoria_gpu'];
+
+    } elseif ($categoria_producto == 'ram') {
+        if (isset($_POST['tipo_ram'])) $caracteristicas['tipo_ram'] = $_POST['tipo_ram'];
+        if (isset($_POST['velocidad_ram'])) $caracteristicas['velocidad_ram'] = $_POST['velocidad_ram'];
+        if (isset($_POST['capacidad_ram'])) $caracteristicas['capacidad_ram'] = $_POST['capacidad_ram'];
+        if (isset($_POST['formato_ram'])) $caracteristicas['formato_ram'] = $_POST['formato_ram'];
+
+    } elseif ($categoria_producto == 'placa') {
+        if (isset($_POST['formato_placa'])) $caracteristicas['formato_placa'] = $_POST['formato_placa'];
+        if (isset($_POST['slot_memoria_placa'])) $caracteristicas['slot_memoria_placa'] = $_POST['slot_memoria_placa'];
+        if (isset($_POST['socket_placa'])) $caracteristicas['socket_placa'] = $_POST['socket_placa'];
+        if (isset($_POST['chipset_placa'])) $caracteristicas['chipset_placa'] = $_POST['chipset_placa'];
+
+    } elseif ($categoria_producto == 'fuente') {
+        if (isset($_POST['certificacion_fuente'])) $caracteristicas['certificacion_fuente'] = $_POST['certificacion_fuente'];
+        if (isset($_POST['potencia_fuente'])) $caracteristicas['potencia_fuente'] = $_POST['potencia_fuente'];
+        if (isset($_POST['tamanio_fuente'])) $caracteristicas['tamanio_fuente'] = $_POST['tamanio_fuente'];
+
+    } elseif ($categoria_producto == 'gabinete') {
+        if (isset($_POST['tamanio_max_gabinete'])) $caracteristicas['tamanio_max_gabinete'] = $_POST['tamanio_max_gabinete'];
+        if (isset($_POST['iluminacion'])) $caracteristicas['iluminacion'] = $_POST['iluminacion'];
+
+    } elseif ($categoria_producto == 'notebook') {
+        if (isset($_POST['bateria_notebook'])) $caracteristicas['bateria_notebook'] = $_POST['bateria_notebook'];
+        if (isset($_POST['cpu_notebook'])) $caracteristicas['cpu_notebook'] = $_POST['cpu_notebook'];
+        if (isset($_POST['gpu_notebook'])) $caracteristicas['gpu_notebook'] = $_POST['gpu_notebook'];
+        if (isset($_POST['capacidad_ram'])) $caracteristicas['capacidad_ram'] = $_POST['capacidad_ram'];
+        if (isset($_POST['pantalla_notebook'])) $caracteristicas['pantalla_notebook'] = $_POST['pantalla_notebook'];
+
     }
 
     // Insertar cada atributo y su valor en la tabla producto_atributo
