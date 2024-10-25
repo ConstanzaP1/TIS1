@@ -61,6 +61,11 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         </div>
         
         <div class="mb-3">
+            <label for="imagen_url" class="form-label">URL imagen</label>
+            <input type="text" name="imagen_url" class="form-control" id="imagen_url" required>
+        </div>
+
+        <div class="mb-3">
             <label for="tipo_teclado" class="form-label">Tipo de Teclado</label>
             <select name="tipo_teclado" class="form-select" required>
                 <option value="" selected disabled>Seleccione un tipo</option>

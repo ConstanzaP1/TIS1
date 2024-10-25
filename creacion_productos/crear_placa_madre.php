@@ -58,6 +58,11 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         </div>
         
         <div class="mb-3">
+            <label for="imagen_url" class="form-label">URL imagen</label>
+            <input type="text" name="imagen_url" class="form-control" id="imagen_url" required>
+        </div>
+
+        <div class="mb-3">
             <label for="formato_placa" class="form-label">Formato Placa</label>
             <select name="formato_placa" class="form-select" required>
                 <option value="" selected disabled>Seleccione un formato</option>

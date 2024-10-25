@@ -58,6 +58,11 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         </div>
 
         <div class="mb-3">
+            <label for="imagen_url" class="form-label">URL imagen</label>
+            <input type="text" name="imagen_url" class="form-control" id="imagen_url" required>
+        </div>
+
+        <div class="mb-3">
             <label for="tipo_ram" class="form-label">Tipo RAM</label>
             <select name="tipo_ram" class="form-select" required>
                 <option value="" selected disabled>Seleccione un tipo</option>

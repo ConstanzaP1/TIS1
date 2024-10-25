@@ -2,15 +2,16 @@
 require('../conexion.php');
 
 // Recoger los datos generales del formulario
-$nombre_producto = $_POST['nombre_producto'];
-$nombre_marca = $_POST['nombre_marca'];
-$precio = $_POST['precio'];
-$cantidad = $_POST['cantidad'];
-$categoria_producto = $_POST['categoria_producto']; // Ejemplo: 'teclado', 'monitor', 'audifono', etc.
+$nombre_producto = mysqli_real_escape_string($conexion, $_POST['nombre_producto']);
+$nombre_marca = mysqli_real_escape_string($conexion, $_POST['nombre_marca']);
+$precio = mysqli_real_escape_string($conexion, $_POST['precio']);
+$cantidad = mysqli_real_escape_string($conexion, $_POST['cantidad']);
+$categoria_producto = mysqli_real_escape_string($conexion, $_POST['categoria_producto']); // Ejemplo: 'teclado', 'monitor', 'audifono', etc.
+$imagen_url = mysqli_real_escape_string($conexion, $_POST['imagen_url']);
 
 // Insertar los datos generales del producto en la tabla producto
-$query_producto = "INSERT INTO producto (nombre_producto, precio, cantidad, tipo_producto, marca) 
-                   VALUES ('$nombre_producto', '$precio', '$cantidad', '$categoria_producto', $nombre_marca)";
+$query_producto = "INSERT INTO producto (nombre_producto, precio, cantidad, tipo_producto, marca, imagen_url) 
+                   VALUES ('$nombre_producto', '$precio', '$cantidad', '$categoria_producto', '$nombre_marca', '$imagen_url')";
 if (mysqli_query($conexion, $query_producto)) {
     // Obtener el id del último producto insertado
     $id_producto = mysqli_insert_id($conexion);
@@ -29,7 +30,7 @@ if (mysqli_query($conexion, $query_producto)) {
     } elseif ($categoria_producto == 'monitor') {
         if (isset($_POST['resolucion_monitor'])) $caracteristicas['resolucion_monitor'] = $_POST['resolucion_monitor'];
         if (isset($_POST['tamanio_monitor'])) $caracteristicas['tamanio_monitor'] = $_POST['tamanio_monitor'];
-        if (isset($_POST['tasa_refresco'])) $caracteristicas['frecuencia_actualizacion'] = $_POST['tasa_refresco'];
+        if (isset($_POST['tasa_refresco'])) $caracteristicas['tasa_refresco'] = $_POST['tasa_refresco'];
         if (isset($_POST['tiempo_respuesta'])) $caracteristicas['tiempo_respuesta'] = $_POST['tiempo_respuesta'];
         if (isset($_POST['soporte_monitor'])) $caracteristicas['soporte_monitor'] = $_POST['soporte_monitor'];
         if (isset($_POST['tipo_panel'])) $caracteristicas['tipo_panel'] = $_POST['tipo_panel'];
@@ -46,6 +47,8 @@ if (mysqli_query($conexion, $query_producto)) {
         if (isset($_POST['dpi_mouse'])) $caracteristicas['dpi_mouse'] = $_POST['dpi_mouse'];
         if (isset($_POST['peso_mouse'])) $caracteristicas['peso_mouse'] = $_POST['peso_mouse'];
         if (isset($_POST['sensor_mouse'])) $caracteristicas['sensor_mouse'] = $_POST['sensor_mouse'];
+        if (isset($_POST['iluminacion'])) $caracteristicas['iluminacion'] = $_POST['iluminacion'];
+        if (isset($_POST['conectividad'])) $caracteristicas['conectividad'] = $_POST['conectividad'];
 
     } elseif ($categoria_producto == 'cpu') {
         if (isset($_POST['frecuencia_cpu'])) $caracteristicas['frecuencia_cpu'] = $_POST['frecuencia_cpu'];

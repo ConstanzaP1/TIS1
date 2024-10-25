@@ -53,6 +53,11 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
             <label for="cantidad" class="form-label">Cantidad</label>
             <input type="number" name="cantidad" class="form-control" id="cantidad" required>
         </div>
+
+        <div class="mb-3">
+            <label for="imagen_url" class="form-label">URL imagen</label>
+            <input type="text" name="imagen_url" class="form-control" id="imagen_url" required>
+        </div>
         
         <div class="mb-3">
             <label for="certificacion_fuente" class="form-label">Certificacion Fuente</label>

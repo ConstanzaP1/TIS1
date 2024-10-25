@@ -52,6 +52,11 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         </div>
 
         <div class="mb-3">
+            <label for="imagen_url" class="form-label">URL imagen</label>
+            <input type="text" name="imagen_url" class="form-control" id="imagen_url" required>
+        </div>
+
+        <div class="mb-3">
             <label for="frecuencia_gpu" class="form-label">Frecuencia de GPU</label>
             <select name="frecuencia_gpu" class="form-select" required>
                 <option value="" selected disabled>Seleccione una frecuencia</option>
@@ -70,6 +75,7 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
                 <?php endwhile; ?>
             </select>
         </div>
+        
         
         <button type="submit" class="btn btn-success">Guardar</button>
         <button type="button" class="btn btn-secondary" onclick="window.location.href='index_crear_producto.php';">Volver</button>

@@ -67,6 +67,11 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         </div>
 
         <div class="mb-3">
+            <label for="imagen_url" class="form-label">URL imagen</label>
+            <input type="text" name="imagen_url" class="form-control" id="imagen_url" required>
+        </div>
+
+        <div class="mb-3">
             <label for="resolucion_monitor" class="form-label">Resolucion de Monitor</label>
             <select name="resolucion_monitor" class="form-select" required>
                 <option value="" selected disabled>Seleccione una resolucion</option>
