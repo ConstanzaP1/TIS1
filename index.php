@@ -65,7 +65,7 @@
                   <div class='card mx-1 mb-3 p-1 shadow' style='width: 18rem;'>
                     <img src='$imagen_url' alt='$nombre_producto'>
                       <div class='card-body text-begin'>
-                        <a class='text-decoration-none' href='detalle_producto.php?id_producto=$id_producto'>
+                        <a class='text-decoration-none' href=''>
                             <p class='text-secondary'>$marca</p>
                             <h5 class='text-black'>$nombre_producto</h5>
                             <p class='text-secondary'>$$precio</p>

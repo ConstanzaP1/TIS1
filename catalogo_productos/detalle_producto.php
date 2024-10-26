@@ -11,20 +11,22 @@
 <body>
 
 <nav class="barra1 navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <div class="row col-2">
-          <img class="img-fluid w-75" src="https://upload.wikimedia.org/wikipedia/commons/d/df/Ripley_Logo.png" alt="">
-        </div>
-        <div class="row col-8">
-          <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
-              <button class="btn btn-primary" type="submit">Buscar</button>
-          </form>
-        </div>
-        <div class="row col-2">
-          <button type="button" id="botonVolverInicio" class="btn btn-danger" onclick="window.location.href='../admin_panel/admin_panel.php';">Admin Panel</button>
-        </div>
+  <div class="container-fluid">
+    <div class="row col-2">
+      <img class="img-fluid w-75" src="https://upload.wikimedia.org/wikipedia/commons/d/df/Ripley_Logo.png" alt="">
     </div>
+    <div class="row col-8">
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+      </form>
+    </div>
+    <div class="row col-2">
+      <div class="d-grid gap-2 d-md-block">
+        <button type="button" class="btn btn-primary" onclick="window.location.href='../admin_panel/admin_panel.php';">Panel</button>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <div class="container py-5">
