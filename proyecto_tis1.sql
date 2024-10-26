@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 25, 2024 at 12:07 AM
+-- Generation Time: Oct 25, 2024 at 04:58 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -608,24 +608,19 @@ CREATE TABLE `producto` (
   `precio` decimal(10,2) DEFAULT NULL,
   `cantidad` int(11) DEFAULT NULL,
   `tipo_producto` varchar(255) DEFAULT NULL,
-  `marca` varchar(55) DEFAULT NULL
+  `marca` varchar(55) DEFAULT NULL,
+  `imagen_url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `producto`
 --
 
-INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio`, `cantidad`, `tipo_producto`, `marca`) VALUES
-(19, 'Audifono1', 123.00, 123, 'audifono', '1'),
-(20, 'Mouse1', 123.00, 123, 'mouse', '1'),
-(21, 'Procesador1', 123.00, 123, 'cpu', '1'),
-(22, 'Procesador2', 123.00, 123, 'cpu', '1'),
-(25, 'GPU1', 123.00, 123, 'gpu', '1'),
-(26, 'RAM1', 123.00, 123, 'ram', '1'),
-(29, 'Placa1', 123.00, 123, 'placa', '1'),
-(30, 'Fuente 1', 123.00, 123, 'fuente', '1'),
-(32, 'Gabinete 1', 123.00, 123, 'gabinete', '1'),
-(33, 'Notebook1', 123.00, 123, 'notebook', '1');
+INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio`, `cantidad`, `tipo_producto`, `marca`, `imagen_url`) VALUES
+(35, 'Teclado gamer', 60000.00, 1, 'teclado', '1', 'https://i.blogs.es/e20f36/comprar-teclado-razer-cynosa-v2-al-mejor-precio/450_1000.jpg'),
+(36, 'Monitor Gamer', 120000.00, 1, 'monitor', '1', 'https://www.alcaplus.cl/media/2022/05/cl-odyssey-g3-g32a-422024-ls24ag320nlxzs-532138048.webp'),
+(37, 'Audifono generico', 10000.00, 1, 'audifono', '1', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG9AY8LJWEDgZJsKdw77Dc2uTGH7DwyJa4AQ&s'),
+(39, 'Mouse generico', 5000.00, 1, 'mouse', '1', 'https://http2.mlstatic.com/D_NQ_NP_781312-MLA45385798113_032021-O.webp');
 
 -- --------------------------------------------------------
 
@@ -645,40 +640,28 @@ CREATE TABLE `producto_caracteristica` (
 --
 
 INSERT INTO `producto_caracteristica` (`id_caracteristica`, `id_producto`, `caracteristica`, `valor_caracteristica`) VALUES
-(76, 19, 'tipo_audifono', '176'),
-(77, 19, 'tipo_microfono', '177'),
-(78, 19, 'anc', '178'),
-(79, 19, 'conectividad', '76'),
-(80, 19, 'iluminacion', '155'),
-(81, 20, 'dpi_mouse', '77'),
-(82, 20, 'peso_mouse', '161'),
-(83, 20, 'sensor_mouse', '75'),
-(84, 21, 'frecuencia_cpu', '24'),
-(85, 21, 'nucleo_hilo_cpu', '39'),
-(86, 21, 'socket_cpu', '54'),
-(87, 22, 'frecuencia_cpu', '24'),
-(88, 22, 'nucleo_hilo_cpu', '39'),
-(89, 22, 'socket_cpu', '54'),
-(90, 25, 'frecuencia_gpu', '58'),
-(91, 25, 'memoria_gpu', '59'),
-(92, 26, 'tipo_ram', '44'),
-(93, 26, 'velocidad_ram', '55'),
-(94, 26, 'capacidad_ram', '56'),
-(95, 26, 'formato_ram', '57'),
-(96, 29, 'formato_placa', '60'),
-(97, 29, 'slot_memoria_placa', '34'),
-(98, 29, 'socket_placa', '61'),
-(99, 29, 'chipset_placa', '63'),
-(100, 30, 'certificacion_fuente', '65'),
-(101, 30, 'potencia_fuente', '66'),
-(102, 30, 'tamanio_fuente', '67'),
-(103, 32, 'tamanio_max_gabinete', '68'),
-(104, 32, 'iluminacion', '155'),
-(105, 33, 'bateria_notebook', '24'),
-(106, 33, 'cpu_notebook', '23'),
-(107, 33, 'gpu_notebook', '26'),
-(108, 33, 'capacidad_ram', '56'),
-(109, 33, 'pantalla_notebook', '25');
+(115, 35, 'tipo_teclado', '66'),
+(116, 35, 'tipo_switch', '159'),
+(117, 35, 'conectividad', '76'),
+(118, 35, 'iluminacion', '155'),
+(119, 35, 'categoria_teclado', '173'),
+(120, 36, 'resolucion_monitor', '81'),
+(121, 36, 'tamanio_monitor', '78'),
+(122, 36, 'tasa_refresco', '168'),
+(123, 36, 'tiempo_respuesta', '80'),
+(124, 36, 'soporte_monitor', '170'),
+(125, 36, 'tipo_panel', '82'),
+(126, 36, 'tipo_curvatura', '79'),
+(127, 37, 'tipo_audifono', '176'),
+(128, 37, 'tipo_microfono', '177'),
+(129, 37, 'anc', '178'),
+(130, 37, 'conectividad', '76'),
+(131, 37, 'iluminacion', '155'),
+(135, 39, 'dpi_mouse', '77'),
+(136, 39, 'peso_mouse', '161'),
+(137, 39, 'sensor_mouse', '75'),
+(138, 39, 'iluminacion', '155'),
+(139, 39, 'conectividad', '141');
 
 -- --------------------------------------------------------
 
@@ -1498,13 +1481,13 @@ ALTER TABLE `periferico`
 -- AUTO_INCREMENT for table `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `producto_caracteristica`
 --
 ALTER TABLE `producto_caracteristica`
-  MODIFY `id_caracteristica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `id_caracteristica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT for table `resena_valoracion`
