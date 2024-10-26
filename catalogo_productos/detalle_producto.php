@@ -10,7 +10,26 @@
 </head>
 <body>
 
-<div class="container my-5 py-5">
+<nav class="barra1 navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <div class="row col-2">
+      <img class="img-fluid w-75" src="https://upload.wikimedia.org/wikipedia/commons/d/df/Ripley_Logo.png" alt="">
+    </div>
+    <div class="row col-8">
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+      </form>
+    </div>
+    <div class="row col-2">
+      <div class="d-grid gap-2 d-md-block">
+        <button type="button" class="btn btn-primary" onclick="window.location.href='../admin_panel/admin_panel.php';">Panel</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
     <?php
     // Conexión a la base de datos
     require('../conexion.php');
@@ -122,28 +141,6 @@
                     ";
                     break;
 
-                case 'audifono':
-                    $query_caracteristicas = "
-                        SELECT 
-                            CASE 
-                                WHEN pa.caracteristica = 'tipo_audifono' THEN CONCAT('Tipo de Audífono: ', ta.tipo_audifono)
-                                WHEN pa.caracteristica = 'tipo_microfono' THEN CONCAT('Tipo de Microfono: ', tm.tipo_microfono)
-                                WHEN pa.caracteristica = 'anc' THEN CONCAT('Cancelacion de ruido: ', a.anc)
-                                WHEN pa.caracteristica = 'iluminacion' THEN CONCAT('Iluminacion: ', i.iluminacion)
-                                WHEN pa.caracteristica = 'conectividad' THEN CONCAT('Conectividad: ', c.conectividad)
-                                ELSE NULL
-                            END AS caracteristica
-                        FROM 
-                            producto_caracteristica pa
-                        LEFT JOIN tipo_audifono ta ON pa.valor_caracteristica = ta.id_periferico AND pa.caracteristica = 'tipo_audifono'
-                        LEFT JOIN tipo_microfono tm ON pa.valor_caracteristica = tm.id_periferico AND pa.caracteristica = 'tipo_microfono'
-                        LEFT JOIN anc a ON pa.valor_caracteristica = a.id_periferico AND pa.caracteristica = 'anc'
-                        LEFT JOIN iluminacion i ON pa.valor_caracteristica = i.id_periferico AND pa.caracteristica = 'iluminacion'
-                        LEFT JOIN conectividad c ON pa.valor_caracteristica = c.id_periferico AND pa.caracteristica = 'conectividad'
-                        WHERE pa.id_producto = '$id_producto'
-                    ";
-                    break;
-
                 case 'mouse':
                     $query_caracteristicas = "
                         SELECT 
@@ -165,7 +162,134 @@
                         WHERE pa.id_producto = '$id_producto'
                     ";
                         break;
-                // Agrega más casos para otros tipos de productos, como mouse, parlantes, etc.
+
+                case 'cpu':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'frecuencia_cpu' THEN CONCAT('Frecuencia: ', fc.frecuencia_cpu)
+                                WHEN pa.caracteristica = 'nucleo_hilo_cpu' THEN CONCAT('Nucle / Hilo: ', nhc.nucleo_hilo_cpu)
+                                WHEN pa.caracteristica = 'socket_cpu' THEN CONCAT('Socket: ', sc.socket_cpu)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN frecuencia_cpu fc ON pa.valor_caracteristica = fc.id_hardware AND pa.caracteristica = 'frecuencia_cpu'
+                        LEFT JOIN nucleo_hilo_cpu nhc ON pa.valor_caracteristica = nhc.id_hardware AND pa.caracteristica = 'nucleo_hilo_cpu'
+                        LEFT JOIN socket_cpu sc ON pa.valor_caracteristica = sc.id_hardware AND pa.caracteristica = 'socket_cpu'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+
+                case 'gpu':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'frecuencia_gpu' THEN CONCAT('Frecuencia: ', fg.frecuencia_gpu)
+                                WHEN pa.caracteristica = 'memoria_gpu' THEN CONCAT('Memoria: ', mg.memoria_gpu)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN frecuencia_gpu fg ON pa.valor_caracteristica = fg.id_hardware AND pa.caracteristica = 'frecuencia_gpu'
+                        LEFT JOIN memoria_gpu mg ON pa.valor_caracteristica = mg.id_hardware AND pa.caracteristica = 'memoria_gpu'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+
+                case 'placa':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'formato_placa' THEN CONCAT('Formato: ', fp.formato_placa)
+                                WHEN pa.caracteristica = 'slot_memoria_placa' THEN CONCAT('Slots de memoria: ', smp.slot_memoria_placa)
+                                WHEN pa.caracteristica = 'socket_placa' THEN CONCAT('Socket: ', sp.socket_placa)
+                                WHEN pa.caracteristica = 'chipset_placa' THEN CONCAT('Chipset: ', cp.chipset_placa)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN formato_placa fp ON pa.valor_caracteristica = fp.id_hardware AND pa.caracteristica = 'formato_placa'
+                        LEFT JOIN slot_memoria_placa smp ON pa.valor_caracteristica = smp.id_hardware AND pa.caracteristica = 'slot_memoria_placa'
+                        LEFT JOIN socket_placa sp ON pa.valor_caracteristica = sp.id_hardware AND pa.caracteristica = 'socket_placa'
+                        LEFT JOIN chipset_placa cp ON pa.valor_caracteristica = cp.id_hardware AND pa.caracteristica = 'chipset_placa'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+
+                case 'ram':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'tipo_ram' THEN CONCAT('Tipo: ', tr.tipo_ram)
+                                WHEN pa.caracteristica = 'velocidad_ram' THEN CONCAT('Velocidad: ', vr.velocidad_ram)
+                                WHEN pa.caracteristica = 'capacidad_ram' THEN CONCAT('Capacidad: ', cr.capacidad_ram)
+                                WHEN pa.caracteristica = 'formato_ram' THEN CONCAT('Formato: ', fr.formato_ram)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN tipo_ram tr ON pa.valor_caracteristica = tr.id_hardware AND pa.caracteristica = 'tipo_ram'
+                        LEFT JOIN velocidad_ram vr ON pa.valor_caracteristica = vr.id_hardware AND pa.caracteristica = 'velocidad_ram'
+                        LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
+                        LEFT JOIN formato_ram fr ON pa.valor_caracteristica = fr.id_hardware AND pa.caracteristica = 'formato_ram'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+                case 'fuente':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'certificacion_fuente' THEN CONCAT('Certificacion: ', cf.certificacion_fuente)
+                                WHEN pa.caracteristica = 'potencia_fuente' THEN CONCAT('Potencia: ', pf.potencia_fuente)
+                                WHEN pa.caracteristica = 'tamanio_fuente' THEN CONCAT('Tamaño: ', tf.tamanio_fuente)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN certificacion_fuente cf ON pa.valor_caracteristica = cf.id_hardware AND pa.caracteristica = 'certificacion_fuente'
+                        LEFT JOIN potencia_fuente pf ON pa.valor_caracteristica = pf.id_hardware AND pa.caracteristica = 'potencia_fuente'
+                        LEFT JOIN tamanio_fuente tf ON pa.valor_caracteristica = tf.id_hardware AND pa.caracteristica = 'tamanio_fuente'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+                case 'gabinete':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'tamanio_max_gabinete' THEN CONCAT('Tamaño maximo de placa: ', tmg.tamanio_max_gabinete)
+                                WHEN pa.caracteristica = 'iluminacion' THEN CONCAT('Iluminacion: ', i.iluminacion)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN tamanio_max_gabinete tmg ON pa.valor_caracteristica = tmg.id_hardware AND pa.caracteristica = 'tamanio_max_gabinete'
+                        LEFT JOIN iluminacion i ON pa.valor_caracteristica = i.id_periferico AND pa.caracteristica = 'iluminacion'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+                case 'notebook':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'bateria_notebook' THEN CONCAT('Bateria: ', bn.bateria_notebook)
+                                WHEN pa.caracteristica = 'cpu_notebook' THEN CONCAT('Procesador: ', cn.cpu_notebook)
+                                WHEN pa.caracteristica = 'gpu_notebook' THEN CONCAT('Tarjeta de video maximo de placa: ', gn.gpu_notebook)
+                                WHEN pa.caracteristica = 'pantalla_notebook' THEN CONCAT('Pantalla: ', pn.pantalla_notebook)
+                                WHEN pa.caracteristica = 'capacidad_ram' THEN CONCAT('RAM: ', cr.capacidad_ram)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN bateria_notebook bn ON pa.valor_caracteristica = bn.id_notebook AND pa.caracteristica = 'bateria_notebook'
+                        LEFT JOIN cpu_notebook cn ON pa.valor_caracteristica = cn.id_notebook AND pa.caracteristica = 'cpu_notebook'
+                        LEFT JOIN gpu_notebook gn ON pa.valor_caracteristica = gn.id_notebook AND pa.caracteristica = 'gpu_notebook'
+                        LEFT JOIN pantalla_notebook pn ON pa.valor_caracteristica = pn.id_notebook AND pa.caracteristica = 'pantalla_notebook'
+                        LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+
             }
 
             // Ejecutar la consulta de características
@@ -195,7 +319,6 @@
         echo "<p>ID de producto no proporcionado.</p>";
     }
 
-    // Cierre de conexión
     mysqli_close($conexion);
     ?>
     <a href="catalogo_productos.php" class="btn btn-secondary mb-4">Volver al Catálogo</a>

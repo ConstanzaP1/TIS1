@@ -118,52 +118,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
 <body>
     <div class="container mt-5">
-        <h2 class="text-center">Iniciar Sesión</h2>
+        <div class="row p-5 text-center d-flex justify-content-center">
+            <div class="col-10 col-md-5 mt-2">
+                <h2 class="text-center">Iniciar Sesión</h2>
+                <!-- Mostrar mensajes de éxito o error -->
+                <?php if (!empty($error_message)): ?>
+                    <div class="alert alert-danger"><?= $error_message ?></div>
+                <?php elseif (!empty($message)): ?>
+                    <div class="alert alert-success"><?= $message ?></div>
+                <?php endif; ?>
 
-        <!-- Mostrar mensajes de éxito o error -->
-        <?php if (!empty($error_message)): ?>
-            <div class="alert alert-danger"><?= $error_message ?></div>
-        <?php elseif (!empty($message)): ?>
-            <div class="alert alert-success"><?= $message ?></div>
-        <?php endif; ?>
-
-        <!-- Formulario de inicio de sesión -->
-        <form action="login.php" method="POST">
-            <div class="mb-3">
-                <label for="email" class="form-label">Correo Electrónico</label> <!-- Cambiado a Correo Electrónico -->
-                <input type="email" class="form-control" name="email" required> <!-- Cambiado a email -->
+                <!-- Formulario de inicio de sesión -->
+                <form action="login.php" method="POST">
+                    <div class="mb-3">
+                        <input type="email" class="form-control" placeholder="Correo Electrónico" name="email" required> <!-- Cambiado a email -->
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" placeholder="Contraseña" name="password" required>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" name="login" class="btn btn-primary">Iniciar Sesión</button>
+                        <a href="../index.php" class="btn btn-secondary">Volver al Inicio</a>
+                    </div>
+                </form>
+                 <hr>
+                <!-- Formulario de registro -->
+                <h2 class="text-center">Registrarse</h2>
+                <form action="login.php" method="POST">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Usuario"  name="reg_username" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" class="form-control" placeholder="Correo Electrónico" name="reg_email" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" placeholder="Contraseña" name="reg_password" required>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" name="register" class="btn btn-success">Registrarse</button>
+                    </div>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" name="password" required>
-            </div>
-            <div class="d-flex justify-content-between">
-                <button type="submit" name="login" class="btn btn-primary">Iniciar Sesión</button>
-                <a href="../index.php" class="btn btn-secondary">Volver al Inicio</a>
-            </div>
-        </form>
-
-        <hr>
-
-        <!-- Formulario de registro -->
-        <h2 class="text-center">Registrarse</h2>
-        <form action="login.php" method="POST">
-            <div class="mb-3">
-                <label for="reg_username" class="form-label">Usuario</label>
-                <input type="text" class="form-control" name="reg_username" required>
-            </div>
-            <div class="mb-3">
-                <label for="reg_email" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" name="reg_email" required>
-            </div>
-            <div class="mb-3">
-                <label for="reg_password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" name="reg_password" required>
-            </div>
-            <div class="d-flex justify-content-between">
-                <button type="submit" name="register" class="btn btn-success">Registrarse</button>
-            </div>
-        </form>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
