@@ -16,9 +16,7 @@
     </div>
     <div class="row col-8">
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
-        <button class="btn btn-primary" type="submit">Buscar</button>
-      </form>
+        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">      </form>
     </div>
     <div class="row col-2">
       <div class="d-grid gap-2 d-md-block">
@@ -83,5 +81,34 @@
 
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('.form-control[type="search"]');
+    const productContainer = document.querySelector('.row.d-flex.justify-content-center');
+
+    // Función para cargar productos según la búsqueda
+    function cargarProductos(query = '') {
+        $.ajax({
+            url: 'buscar_productos.php',
+            method: 'GET',
+            data: { query: query },
+            success: function(response) {
+                productContainer.innerHTML = response;
+            }
+        });
+    }
+
+    // Cargar todos los productos al cargar la página
+    cargarProductos();
+
+    // Evento para búsqueda en tiempo real
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value;
+        cargarProductos(query);
+    });
+});
+</script>
+
 </body>
 </html>
