@@ -271,7 +271,78 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
             header('location: chipset_gpu.php');
+        }elseif ($tipo_hardware == 'bus_de_entrada_gpu') {
+            $bus_de_entrada_gpu = $_POST['bus_de_entrada_gpu'];
+            $queryBusEntradaGPU = "INSERT INTO bus_de_entrada_gpu (id_hardware, bus_de_entrada_gpu) VALUES ('$id_hardware', '$bus_de_entrada_gpu')";
+        
+            if (mysqli_query($conexion, $queryBusEntradaGPU)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: bus_de_entrada_gpu.php');
         }
+        
+        elseif ($tipo_hardware == 'bus_hdd') {
+            $bus_hdd = $_POST['bus_hdd'];
+            $queryBusHDD = "INSERT INTO bus_hdd (id_hardware, bus) VALUES ('$id_hardware', '$bus_hdd')";
+        
+            if (mysqli_query($conexion, $queryBusHDD)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: bus_hdd.php');
+        }
+        
+        elseif ($tipo_hardware == 'bus_ssd') {
+            $bus_ssd = $_POST['bus_ssd'];
+            $queryBusSSD = "INSERT INTO bus_ssd (id_hardware, bus) VALUES ('$id_hardware', '$bus_ssd')";
+        
+            if (mysqli_query($conexion, $queryBusSSD)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: bus_ssd.php');
+        }
+        
+        elseif ($tipo_hardware == 'formato_ssd') {
+            $formato_ssd = $_POST['formato_ssd'];
+            $queryFormatoSSD = "INSERT INTO formato_ssd (id_hardware, formato) VALUES ('$id_hardware', '$formato_ssd')";
+        
+            if (mysqli_query($conexion, $queryFormatoSSD)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: formato_ssd.php');
+        }
+        
+        elseif ($tipo_hardware == 'rpm_hdd') {
+            $rpm_hdd = $_POST['rpm_hdd'];
+            $queryRPMHDD = "INSERT INTO rpm_hdd (id_hardware, rpm) VALUES ('$id_hardware', '$rpm_hdd')";
+        
+            if (mysqli_query($conexion, $queryRPMHDD)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: rpm_hdd.php');
+        }
+        
+        elseif ($tipo_hardware == 'tamanio_hdd') {
+            $tamanio_hdd = $_POST['tamanio_hdd'];
+            $queryTamanioHDD = "INSERT INTO tamanio_hdd (id_hardware, tamanio) VALUES ('$id_hardware', '$tamanio_hdd')";
+        
+            if (mysqli_query($conexion, $queryTamanioHDD)) {
+                echo "Ingreso exitoso.";
+            } else {
+                echo "Error al insertar." . mysqli_error($conexion);
+            }
+            header('location: tamanio_hdd.php');
+        }
+        
 
 
         

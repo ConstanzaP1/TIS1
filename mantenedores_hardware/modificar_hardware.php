@@ -26,13 +26,16 @@ $query = "SELECT * FROM hardware p
           LEFT JOIN tipo_ram tr ON p.id_hardware = tr.id_hardware
           LEFT JOIN tamanio_max_gabinete tmg ON p.id_hardware = tmg.id_hardware
           LEFT JOIN chipset_gpu cg ON p.id_hardware = cg.id_hardware
-
-
+          LEFT JOIN bus_de_entrada_gpu beg ON p.id_hardware = beg.id_hardware
+          LEFT JOIN bus_hdd bh ON p.id_hardware = bh.id_hardware
+          LEFT JOIN bus_ssd bs ON p.id_hardware = bs.id_hardware
+          LEFT JOIN formato_ssd fs ON p.id_hardware = fs.id_hardware
+          LEFT JOIN rpm_hdd rh ON p.id_hardware = rh.id_hardware
+          LEFT JOIN tamanio_hdd th ON p.id_hardware = th.id_hardware
           WHERE p.id_hardware = '$id_hardware'";
 
 $result = mysqli_query($conexion, $query);
 $row = mysqli_fetch_assoc($result);
-
 // Mostrar un formulario con los datos actuales para que el usuario pueda modificarlos
 ?>
 
@@ -80,6 +83,13 @@ $row = mysqli_fetch_assoc($result);
                 <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo RAM</option>
                 <option value="tamanio_max_gabinete" <?php if ($row['tamanio_max_gabinete']) echo 'selected'; ?>>Tipo RAM</option>
                 <option value="chipset_gpu" <?php if ($row['chipset_gpu']) echo 'selected'; ?>>chipset gpu</option>
+                <option value="bus_de_entrada_gpu" <?php if ($row['bus_de_entrada_gpu']) echo 'selected'; ?>>Bus de Entrada GPU</option>
+                <option value="bus_hdd" <?php if ($row['bus_hdd']) echo 'selected'; ?>>Bus HDD</option>
+                <option value="bus_ssd" <?php if ($row['bus_ssd']) echo 'selected'; ?>>Bus SSD</option>
+                <option value="formato_ssd" <?php if ($row['formato_ssd']) echo 'selected'; ?>>Formato SSD</option>
+                <option value="rpm_hdd" <?php if ($row['rpm_hdd']) echo 'selected'; ?>>RPM HDD</option>
+                <option value="tamanio_hdd" <?php if ($row['tamanio_hdd']) echo 'selected'; ?>>Tamaño HDD</option>
+            </select>
 
 
             </select>
@@ -165,6 +175,31 @@ $row = mysqli_fetch_assoc($result);
             <label for="chipset_gpu" class="form-label mt-3">Chipset gpu</label>
             <input type="text" name="chipset_gpu" class="form-control" id="chipset_gpu" value="<?php echo $row['chipset_gpu']; ?>">
         </div>
+        <div class="mb-3" id="camposBus_de_entrada_gpu" style="display: none;">       
+            <label for="bus_de_entrada_gpu" class="form-label mt-3">Bus de Entrada GPU</label>
+            <input type="text" name="bus_de_entrada_gpu" class="form-control" id="bus_de_entrada_gpu" value="<?php echo $row['bus_de_entrada_gpu']; ?>">
+        </div>
+        <div class="mb-3" id="camposBus_hdd" style="display: none;">       
+            <label for="bus_hdd" class="form-label mt-3">Bus HDD</label>
+            <input type="text" name="bus_hdd" class="form-control" id="bus_hdd" value="<?php echo $row['bus_hdd']; ?>">
+        </div>
+        <div class="mb-3" id="camposBus_ssd" style="display: none;">       
+            <label for="bus_ssd" class="form-label mt-3">Bus SSD</label>
+            <input type="text" name="bus_ssd" class="form-control" id="bus_ssd" value="<?php echo $row['bus_ssd']; ?>">
+        </div>
+        <div class="mb-3" id="camposFormato_ssd" style="display: none;">       
+            <label for="formato_ssd" class="form-label mt-3">Formato SSD</label>
+            <input type="text" name="formato_ssd" class="form-control" id="formato_ssd" value="<?php echo $row['formato_ssd']; ?>">
+        </div>
+        <div class="mb-3" id="camposRpm_hdd" style="display: none;">       
+            <label for="rpm_hdd" class="form-label mt-3">RPM HDD</label>
+            <input type="text" name="rpm_hdd" class="form-control" id="rpm_hdd" value="<?php echo $row['rpm_hdd']; ?>">
+        </div>
+        <div class="mb-3" id="camposTamanio_hdd" style="display: none;">       
+            <label for="tamanio_hdd" class="form-label mt-3">Tamaño HDD</label>
+            <input type="text" name="tamanio_hdd" class="form-control" id="tamanio_hdd" value="<?php echo $row['tamanio_hdd']; ?>">
+        </div>
+
 
 
         <button type="submit" class="btn btn-primary mt-3">Guardar cambios</button>
@@ -193,6 +228,13 @@ $row = mysqli_fetch_assoc($result);
         document.getElementById("camposPotencia_fuente").style.display = "none";
         document.getElementById("camposTamanio_placa").style.display = "none";
         document.getElementById("camposChipset_gpu").style.display = "none";
+        document.getElementById("camposBus_de_entrada_gpu").style.display = "none";
+        document.getElementById("camposBus_hdd").style.display = "none";
+        document.getElementById("camposBus_ssd").style.display = "none";
+        document.getElementById("camposFormato_ssd").style.display = "none";
+        document.getElementById("camposRpm_hdd").style.display = "none";
+        document.getElementById("camposTamanio_hdd").style.display = "none";
+ 
 
 
         if (tipoHardware === "memoria") {
@@ -216,47 +258,36 @@ $row = mysqli_fetch_assoc($result);
         else if (tipoHardware === "socket_placa") {
             document.getElementById("camposSocket_placa").style.display = "block";
         } 
-
         else if (tipoHardware === "slot_memoria_placa") {
             document.getElementById("camposSlot_memoria_placa").style.display = "block";
-        } 
-        
+        }  
         else if (tipoHardware === "velocidad_ram") {
             document.getElementById("camposVelocidad_ram").style.display = "block";
         }
-        
         else if (tipoHardware === "capacidad_almacenamiento") {
             document.getElementById("camposCapacidad_almacenamiento").style.display = "block";
         }
-
         else if (tipoHardware === "formato_placa") {
             document.getElementById("camposFormato_placa").style.display = "block";
         }
-
         else if (tipoHardware === "capacidad_ram") {
             document.getElementById("camposCapacidad_ram").style.display = "block";
         }
-
         else if (tipoHardware === "formato_ram") {
             document.getElementById("camposformato_ram").style.display = "block";
         }
-
         else if (tipoHardware === "certificacion_fuente") {
             document.getElementById("camposCertificacion_fuente").style.display = "block";
         }
-
         else if (tipoHardware === "tamanio_fuente") {
             document.getElementById("camposTamanio_fuente").style.display = "block";
         }
-
         else if (tipoHardware === "potencia_fuente") {
             document.getElementById("camposPotencia_fuente").style.display = "block";
         }
-
         else if (tipoHardware === "chipset_placa") {
             document.getElementById("camposchipset_placa").style.display = "block";
         }
-
         else if (tipoHardware === "tipo_ram") {
             document.getElementById("camposTipo_ram").style.display = "block";
         }
@@ -266,6 +297,25 @@ $row = mysqli_fetch_assoc($result);
         else if (tipoHardware === "chipset_gpu") {
             document.getElementById("camposChipset_gpu").style.display = "block";
         }
+        if (tipoHardware === "bus_de_entrada_gpu") {
+                document.getElementById("camposBus_de_entrada_gpu").style.display = "block";
+        } 
+        else if (tipoHardware === "bus_hdd") {
+                document.getElementById("camposBus_hdd").style.display = "block";
+        } 
+        else if (tipoHardware === "bus_ssd") {
+                document.getElementById("camposBus_ssd").style.display = "block";
+        } 
+        else if (tipoHardware === "formato_ssd") {
+                document.getElementById("camposFormato_ssd").style.display = "block";
+        } 
+        else if (tipoHardware === "rpm_hdd") {
+                document.getElementById("camposRpm_hdd").style.display = "block";
+        } 
+        else if (tipoHardware === "tamanio_hdd") {
+                document.getElementById("camposTamanio_hdd").style.display = "block";
+        }
+ 
         
     }
 
@@ -280,6 +330,6 @@ $row = mysqli_fetch_assoc($result);
 </div>
 
 <!-- Bootstrap JS -->
-<script src="htcps://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -8,13 +8,16 @@ if (isset($_GET['id_hardware'])) {
     // Eliminar de todas las tablas relacionadas, dependiendo de su existencia
     $tablas = [
         'memoria', 'memoria_gpu', 'frecuencia_gpu', 
-        'frecuencia_cpu','socket_cpu','nucleo_hilo_cpu',
-        'socket_placa','slot_memoria_placa','formato_ram',
-        'velocidad_ram','capacidad_almacenamiento','formato_placa',
-        'capacidad_ram','tipo_ram','certificacion_fuente',
-        'tipo_cableado','tamanio_fuente','potencia_fuente',
-        'tamanio_placa', 'tamanio_max_gabinete', 'chipset_gpu'
+        'frecuencia_cpu', 'socket_cpu', 'nucleo_hilo_cpu',
+        'socket_placa', 'slot_memoria_placa', 'formato_ram',
+        'velocidad_ram', 'capacidad_almacenamiento', 'formato_placa',
+        'capacidad_ram', 'tipo_ram', 'certificacion_fuente',
+        'tipo_cableado', 'tamanio_fuente', 'potencia_fuente',
+        'tamanio_placa', 'tamanio_max_gabinete', 'chipset_gpu',
+        'bus_de_entrada_gpu', 'bus_hdd', 'bus_ssd', 'formato_ssd', 
+        'rpm_hdd', 'tamanio_hdd'
     ];
+    
 
     foreach ($tablas as $tabla) {
         $queryEliminar = "DELETE FROM $tabla WHERE id_hardware='$id_hardware'";
