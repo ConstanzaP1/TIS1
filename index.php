@@ -79,8 +79,21 @@ if (isset($_SESSION['error_message'])) {
 </head>
 <body>
 
-    <div class="header">
-        <h1>Lista de Productos</h1>
+<nav class="barra1 navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <div class="row col-2">
+      <img class="img-fluid w-75" src="https://upload.wikimedia.org/wikipedia/commons/d/df/Ripley_Logo.png" alt="">
+    </div>
+    <div class="row col-8">
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+      </form>
+    </div>
+    <div class="row col-2">
+      <div class="d-grid gap-2 d-md-block">
+        <button type="button" class="btn btn-primary" onclick="window.location.href='login/login.php';">Iniciar sesion</button>
+      </div>
     </div>
 
     <div class="container">
@@ -124,6 +137,6 @@ if (isset($_SESSION['error_message'])) {
             <p>Precio: $30</p>
         </div>
     </div>
-
+</div>
 </body>
 </html>
