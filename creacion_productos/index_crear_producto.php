@@ -19,11 +19,19 @@
                 <option value="" selected disabled>Seleccione una categoría</option>
                 <option value="teclado">Teclado</option>
                 <option value="monitor">Monitor</option>
+                <option value="audifono">Audifono</option>
                 <option value="mouse">Mouse</option>
-                <option value="auricular">Auricular</option>
+                <option value="cpu">Procesador</option>
+                <option value="gpu">Tarjeta de video</option>
+                <option value="ram">Memoria Ram</option>
+                <option value="placa">Placa Madre</option>
+                <option value="fuente">Fuente de poder</option>
+                <option value="gabinete">Gabinete</option>
+                <option value="notebook">Notebook</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Continuar</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver</button>
     </form>
 </div>
 

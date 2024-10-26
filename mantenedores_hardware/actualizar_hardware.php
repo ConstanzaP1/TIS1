@@ -69,10 +69,6 @@ elseif ($tipo_hardware == 'certificacion_fuente') {
     $certificacion_fuente = $_POST['certificacion_fuente'];
     $query = "UPDATE certificacion_fuente SET certificacion_fuente = '$certificacion_fuente' WHERE id_hardware = '$id_hardware'";
 
-}elseif ($tipo_hardware == 'tipo_cableado') {
-    $tipo_cableado = $_POST['tipo_cableado'];
-    $query = "UPDATE tipo_cableado SET tipo_cableado = '$tipo_cableado' WHERE id_hardware = '$id_hardware'";
-
 }elseif ($tipo_hardware == 'tamanio_fuente') {
     $tamanio_fuente = $_POST['tamanio_fuente'];
     $query = "UPDATE tamanio_fuente SET tamanio_fuente = '$tamanio_fuente' WHERE id_hardware = '$id_hardware'";
@@ -81,9 +77,9 @@ elseif ($tipo_hardware == 'certificacion_fuente') {
     $potencia_fuente = $_POST['potencia_fuente'];
     $query = "UPDATE potencia_fuente SET potencia_fuente = '$potencia_fuente' WHERE id_hardware = '$id_hardware'";
 
-}elseif ($tipo_hardware == 'tamanio_placa') {
-    $tamanio_placa = $_POST['tamanio_placa'];
-    $query = "UPDATE tamanio_placa SET tamanio_placa = '$tamanio_placa' WHERE id_hardware = '$id_hardware'";
+}elseif ($tipo_hardware == 'chipset_placa') {
+    $chipset_placa = $_POST['chipset_placa'];
+    $query = "UPDATE chipset_placa SET chipset_placa = '$chipset_placa' WHERE id_hardware = '$id_hardware'";
 }elseif ($tipo_hardware == 'tamanio_max_gabinete') {
     $tamanio_max_gabinete = $_POST['tamanio_max_gabinete'];
     $query = "UPDATE tamanio_max_gabinete SET tamanio_max_gabinete = '$tamanio_max_gabinete' WHERE id_hardware = '$id_hardware'";
@@ -100,7 +96,7 @@ mysqli_query($conexion, $query);
 // Verificar si la consulta se ejecutó correctamente
 if (mysqli_affected_rows($conexion) > 0) {
     // Redireccionar a la página de inicio
-    header('Location: ../panel_admin/admin_panel.php');
+    header('Location: ../admin_panel/admin_panel.php');
     exit;
 } else {
     // Mostrar un mensaje de error

@@ -211,19 +211,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('location: certificacion_fuente.php');
         } 
 
-        elseif ($tipo_hardware == 'tipo_cableado') {
-            $tipo_cableado  = $_POST['tipo_cableado'];
-            // Insertar en las tablas asociadas para procesadores
-            $queryTipo_cableado = "INSERT INTO tipo_cableado (id_hardware, tipo_cableado) VALUES ('$id_hardware', '$tipo_cableado')";
-
-            if (mysqli_query($conexion, $queryTipo_cableado)) {
-                echo "Ingreso exitoso.";
-            } else {
-                echo "Error al insertar." . mysqli_error($conexion);
-            }
-            header('location: tipo_cableado.php');
-        } 
-
         elseif ($tipo_hardware == 'tamanio_fuente') {
             $tamanio_fuente  = $_POST['tamanio_fuente'];
             // Insertar en las tablas asociadas para procesadores
@@ -250,18 +237,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('location: potencia_fuente.php');
         } 
 
-        elseif ($tipo_hardware == 'tamanio_placa') {
-            $tamanio_placa  = $_POST['tamanio_placa'];
+        elseif ($tipo_hardware == 'chipset_placa') {
+            $chipset_placa  = $_POST['chipset_placa'];
             // Insertar en las tablas asociadas para procesadores
-            $queryTamanio_placa = "INSERT INTO tamanio_placa (id_hardware, tamanio_placa) VALUES ('$id_hardware', '$tamanio_placa')";
+            $querychipset_placa = "INSERT INTO chipset_placa (id_hardware, chipset_placa) VALUES ('$id_hardware', '$chipset_placa')";
 
-            if (mysqli_query($conexion, $queryTamanio_placa)) {
+            if (mysqli_query($conexion, $querychipset_placa)) {
                 echo "Ingreso exitoso.";
             } else {
                 echo "Error al insertar." . mysqli_error($conexion);
             }
-            header('location: tamanio_placa.php');
-        } elseif ($tipo_hardware == 'tamanio_max_gabinete') {
+            header('location: chipset_placa.php');
+        } 
+        elseif ($tipo_hardware == 'tamanio_max_gabinete') {
             $tamanio_max_gabinete  = $_POST['tamanio_max_gabinete'];
             // Insertar en las tablas asociadas para procesadores
             $queryTamanio_max_gabinete = "INSERT INTO tamanio_max_gabinete (id_hardware, tamanio_max_gabinete) VALUES ('$id_hardware', '$tamanio_max_gabinete')";

@@ -2,20 +2,20 @@
 require('../conexion.php');
 
 // Consultas para obtener las opciones de los atributos específicos del teclado
-$queryTipoTeclado = "SELECT id_periferico, tipo_teclado FROM tipo_teclado";
-$resultTipoTeclado = mysqli_query($conexion, $queryTipoTeclado);
+$queryTipoAudifono = "SELECT id_periferico, tipo_audifono FROM tipo_audifono";
+$resultTipoAudifono = mysqli_query($conexion, $queryTipoAudifono);
 
-$queryTipoSwitch = "SELECT id_periferico, tipo_switch FROM tipo_switch";
-$resultTipoSwitch = mysqli_query($conexion, $queryTipoSwitch);
+$queryTipoMicrofono = "SELECT id_periferico, tipo_microfono FROM tipo_microfono";
+$resultTipoMicrofono = mysqli_query($conexion, $queryTipoMicrofono);
+
+$queryAnc = "SELECT id_periferico, anc FROM anc";
+$resultAnc = mysqli_query($conexion, $queryAnc);
 
 $queryConectividad = "SELECT id_periferico, conectividad FROM conectividad";
 $resultConectividad = mysqli_query($conexion, $queryConectividad);
 
 $queryIluminacion = "SELECT id_periferico, iluminacion FROM iluminacion";
 $resultIluminacion = mysqli_query($conexion, $queryIluminacion);
-
-$queryCategoria = "SELECT id_periferico, categoria_teclado FROM categoria_teclado";
-$resultCategoria = mysqli_query($conexion, $queryCategoria);
 
 $queryMarca = "SELECT id_marca, nombre_marca FROM marca";
 $resultMarca = mysqli_query($conexion, $queryMarca);
@@ -31,9 +31,9 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Ingreso de Teclado</h1>
+    <h1 class="mb-4">Ingreso de Audifono</h1>
     <form action="procesar_producto.php" method="POST">
-        <input type="hidden" name="categoria_producto" value="teclado">
+        <input type="hidden" name="categoria_producto" value="audifono">
 
         <div class="mb-3">
             <label for="nombre_producto" class="form-label">Nombre del Producto</label>
@@ -59,52 +59,42 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
             <label for="cantidad" class="form-label">Cantidad</label>
             <input type="number" name="cantidad" class="form-control" id="cantidad" required>
         </div>
-        
+
         <div class="mb-3">
             <label for="imagen_url" class="form-label">URL imagen</label>
             <input type="text" name="imagen_url" class="form-control" id="imagen_url" required>
         </div>
 
         <div class="mb-3">
-            <label for="tipo_teclado" class="form-label">Tipo de Teclado</label>
-            <select name="tipo_teclado" class="form-select" required>
+            <label for="tipo_audifono" class="form-label">Tipo de Audifono</label>
+            <select name="tipo_audifono" class="form-select" required>
                 <option value="" selected disabled>Seleccione un tipo</option>
-                <?php while ($row = mysqli_fetch_assoc($resultTipoTeclado)): ?>
-                    <option value="<?= $row['id_periferico'] ?>"><?= $row['tipo_teclado'] ?></option>
+                <?php while ($row = mysqli_fetch_assoc($resultTipoAudifono)): ?>
+                    <option value="<?= $row['id_periferico'] ?>"><?= $row['tipo_audifono'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="tipo_switch" class="form-label">Tipo de Switch</label>
-            <select name="tipo_switch" class="form-select" required>
-                <option value="" selected disabled>Seleccione un switch</option>
-                <?php while ($row = mysqli_fetch_assoc($resultTipoSwitch)): ?>
-                    <option value="<?= $row['id_periferico'] ?>"><?= $row['tipo_switch'] ?></option>
+            <label for="tipo_microfono" class="form-label">Tipo de microfono</label>
+            <select name="tipo_microfono" class="form-select" required>
+                <option value="" selected disabled>Seleccione un microfono</option>
+                <?php while ($row = mysqli_fetch_assoc($resultTipoMicrofono)): ?>
+                    <option value="<?= $row['id_periferico'] ?>"><?= $row['tipo_microfono'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="categoria_teclado" class="form-label">Categoria</label>
-            <select name="categoria_teclado" class="form-select" required>
-                <option value="" selected disabled>Seleccione la categoria</option>
-                <?php while ($row = mysqli_fetch_assoc($resultCategoria)): ?>
-                    <option value="<?= $row['id_periferico'] ?>"><?= $row['categoria_teclado'] ?></option>
+            <label for="anc" class="form-label">ANC</label>
+            <select name="anc" class="form-select" required>
+                <option value="" selected disabled>Seleccione un ANC </option>
+                <?php while ($row = mysqli_fetch_assoc($resultAnc)): ?>
+                    <option value="<?= $row['id_periferico'] ?>"><?= $row['anc'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
 
-
-        <div class="mb-3">
-            <label for="conectividad" class="form-label">Conectividad</label>
-            <select name="conectividad" class="form-select" required>
-                <option value="" selected disabled>Seleccione la conectividad</option>
-                <?php while ($row = mysqli_fetch_assoc($resultConectividad)): ?>
-                    <option value="<?= $row['id_periferico'] ?>"><?= $row['conectividad'] ?></option>
-                <?php endwhile; ?>
-            </select>
-        </div>
 
         <div class="mb-3">
             <label for="iluminacion" class="form-label">Iluminación</label>
@@ -112,6 +102,16 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
                 <option value="" selected disabled>Seleccione la iluminación</option>
                 <?php while ($row = mysqli_fetch_assoc($resultIluminacion)): ?>
                     <option value="<?= $row['id_periferico'] ?>"><?= $row['iluminacion'] ?></option>
+                <?php endwhile; ?>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="conectividad" class="form-label">Conectividad</label>
+            <select name="conectividad" class="form-select" required>
+                <option value="" selected disabled>Seleccione la conectividad</option>
+                <?php while ($row = mysqli_fetch_assoc($resultConectividad)): ?>
+                    <option value="<?= $row['id_periferico'] ?>"><?= $row['conectividad'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>

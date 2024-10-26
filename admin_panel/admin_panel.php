@@ -226,7 +226,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                     <li><a href="../mantenedores_hardware/formato_placa.php">Formato Placa</a></li>
                     <li><a href="../mantenedores_hardware/slot_memoria_placa.php">Slot Memoria Placa</a></li>
                     <li><a href="../mantenedores_hardware/socket_placa.php">Socket Placa</a></li>
-                    <li><a href="../mantenedores_hardware/tamanio_placa.php">Tamaño Placa</a></li>
+                    <li><a href="../mantenedores_hardware/chipset_placa.php">Chipset Placa</a></li>
                 </ul>
             </li>
 
@@ -248,13 +248,6 @@ $result_users = mysqli_query($conexion, $sql_users);
                 </ul>
             </li>
 
-            <!-- Subcategoría: Cableado -->
-            <li>
-                <a href="#" class="sub-category-header">Cableado</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_hardware/tipo_cableado.php">Tipo Cableado</a></li>
-                </ul>
-            </li>
         </ul>
     </div>
 </div>
@@ -301,29 +294,26 @@ $result_users = mysqli_query($conexion, $sql_users);
 
             <!-- Subcategoría: Audio -->
             <li>
-                <a href="#" class="sub-category-header">Audio</a>
+                <a href="#" class="sub-category-header">Audifonos</a>
                 <ul class="sub-category-content" style="display: none;">
                     <li><a href="../mantenedores_periferico/tipo_audifono.php">Tipo Audífono</a></li>
                     <li><a href="../mantenedores_periferico/tipo_microfono.php">Tipo Micrófono</a></li>
                     <li><a href="../mantenedores_periferico/anc.php">ANC</a></li>
+                    <li><a href="../mantenedores_periferico/iluminacion.php">Iluminación</a></li>
+                    <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
                 </ul>
             </li>
 
-            <!-- Subcategoría: Conectividad -->
-            <li>
-                <a href="#" class="sub-category-header">Conectividad</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
-                    <li><a href="../mantenedores_periferico/tipo_switch.php">Tipo Switch</a></li>
-                </ul>
-            </li>
 
             <!-- Subcategoría: Teclados -->
             <li>
                 <a href="#" class="sub-category-header">Teclados</a>
                 <ul class="sub-category-content" style="display: none;">
                     <li><a href="../mantenedores_periferico/tipo_teclado.php">Tipo Teclado</a></li>
+                    <li><a href="../mantenedores_periferico/tipo_switch.php">Tipo Switch</a></li>
+                    <li><a href="../mantenedores_periferico/categoria_teclado.php">Categoria</a></li>
                     <li><a href="../mantenedores_periferico/iluminacion.php">Iluminación</a></li>
+                    <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
                 </ul>
             </li>
 
@@ -333,40 +323,45 @@ $result_users = mysqli_query($conexion, $sql_users);
     </div>
 </div>
 
-
-
 <div class="accordion-item">
     <div class="accordion-header">Notebook</div>
     <div class="accordion-content">
         <ul>
             <!-- Subcategoría: Batería -->
-            <li>
-                <a href="#" class="sub-category-header">Batería</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_notebook/bateria_notebook.php">Batería Notebook</a></li>
-                </ul>
-            </li>
+            <li><a href="../mantenedores_notebook/bateria_notebook.php">Batería</a></li>
 
             <!-- Subcategoría: Procesador -->
-            <li>
-                <a href="#" class="sub-category-header">Procesador</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_notebook/cpu_notebook.php">CPU Notebook</a></li>
-                    <li><a href="../mantenedores_notebook/gpu_notebook.php">GPU Notebook</a></li>
-                </ul>
-            </li>
+            <li><a href="../mantenedores_notebook/cpu_notebook.php">Procesador</a></li>
+
+            <!-- Subcategoría: Tarjeta de video -->
+            <li><a href="../mantenedores_notebook/gpu_notebook.php">Tarjeta de video</a></li>
 
             <!-- Subcategoría: Pantalla -->
-            <li>
-                <a href="#" class="sub-category-header">Pantalla</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_notebook/pantalla_notebook.php">Pantalla Notebook</a></li>
-                </ul>
-            </li>
+            <li><a href="../mantenedores_notebook/pantalla_notebook.php">Pantalla</a></li>
         </ul>
     </div>
 </div>
+<div class="accordion-item">
+    <div class="accordion-header">Marcas</div>
+        <div class="accordion-content">
+            <ul>
+                <li><a href="../mantenedores_marcas/nombres_marcas.php">Agregar Marcas</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
 
+<div class="acordion-item">
+    <div class="accordion-header">Crear producto</div>
+        <div class="accordion-content">
+            <ul>
+                <li><a href="../creacion_productos/index_crear_producto.php">Crear producto</a></li>
+                <li><a href="../catalogo_productos/catalogo_productos.php">Catalogo productos</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 <style>
     .sub-category-header {
         cursor: pointer;
@@ -376,6 +371,9 @@ $result_users = mysqli_query($conexion, $sql_users);
         padding-left: 20px; /* Indentación para la subcategoría */
     }
 </style>
+
+
+
 
 <script>
     document.querySelectorAll('.sub-category-header').forEach(header => {
