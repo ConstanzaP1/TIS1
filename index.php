@@ -14,27 +14,27 @@ session_start();
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <div class="row col-2">
+        <div class="row col-2 ">
             <img class="img-fluid w-75" src="https://upload.wikimedia.org/wikipedia/commons/d/df/Ripley_Logo.png" alt="">
         </div>
-        <div class="row col-8">
+        <div class="row col-6 ">
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
                 <button class="btn btn-primary" type="submit">Buscar</button>
             </form>
         </div>
-        <div class="row col-2 text-end">
-            <div class="d-grid gap-2 d-md-block">
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <!-- Si el usuario es admin, mostrar botón adicional -->
+        <div class="row col-4 text-end">
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="align-items-center">
+                    <span class="me-2">Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
                     <?php if ($_SESSION['role'] === 'admin'): ?>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='admin_panel/admin_panel.php';">Panel de Admin</button>
+                        <button type="button" class="btn btn-primary me-1" onclick="window.location.href='admin_panel/admin_panel.php';">Panel Admin</button>
                     <?php endif; ?>
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='login/logout.php';">Cerrar Sesión</button>
-                <?php else: ?>
-                    <button type="button" class="btn btn-primary" onclick="window.location.href='login/login.php';">Iniciar Sesión</button>
-                <?php endif; ?>
-            </div>
+                    <button type="button" class="btn btn-danger" onclick="window.location.href='login/logout.php';">Cerrar Sesión</button>
+                </div>
+            <?php else: ?>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='login/login.php';">Iniciar Sesión</button>
+            <?php endif; ?>
         </div>
     </div>
 </nav>
@@ -42,7 +42,7 @@ session_start();
 <div class="container my-4">
     <div class="row d-flex justify-content-center">
         <?php
-        // Conexión a la base de datos
+        // Conexión a la base de datos  
         require('conexion.php');
 
         // Consulta para obtener los productos y el nombre de la marca
