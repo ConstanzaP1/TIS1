@@ -31,6 +31,7 @@ session_start();
                     <?php if ($_SESSION['role'] === 'admin'): ?>
                         <button type="button" class="btn btn-primary me-1" onclick="window.location.href='admin_panel/admin_panel.php';">Panel Admin</button>
                     <?php endif; ?>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='../carrito/carrito.php';">Mi Carro</button>
                     <button type="button" class="btn btn-danger" onclick="window.location.href='login/logout.php';">Cerrar Sesión</button>
                 </div>
             <?php else: ?>
@@ -79,7 +80,14 @@ session_start();
                     <p><strong>Marca:</strong> {$producto['marca']}</p>
                     <p><strong>Características:</strong></p>
                     <ul>";
-
+                    echo "
+                            <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                                <input type='hidden' name='id_producto' value='{$id_producto}'>
+                                <label>Cantidad:</label>
+                                <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
+                                <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
+                            </form>
+                            ";
             // Mostrar características según el tipo de producto
             switch ($producto['tipo_producto']) {
                 case 'teclado':
@@ -320,10 +328,7 @@ session_start();
             // Botones de acción según el rol del usuario
             if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
                 echo "<button class='btn btn-danger mt-3 mx-1'>Eliminar producto</button>";
-            } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
-                echo "<button class='btn btn-primary mt-3 mx-1'>Agregar al carrito</button>";
-            }
-
+            } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user')
             echo "<a href='../index.php' class='btn btn-secondary mt-3'>Volver al Catálogo</a>
                 </div>
             </div>";
