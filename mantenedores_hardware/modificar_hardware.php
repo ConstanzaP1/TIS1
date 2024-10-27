@@ -58,42 +58,40 @@ $row = mysqli_fetch_assoc($result);
         <!-- Campos oculto para el ID del periférico -->
         <input type="hidden" name="id_hardware" value="<?php echo $id_hardware; ?>">
 
-        <!-- Menú desplegable para seleccionar el tipo de periférico -->
-        <div class="mb-3" style="display: none;">
-            <label for="tipo_hardware" class="form-label">Tipo de Hardware</label>
-            <select name="tipo_hardware" id="tipo_hardware" class="form-select" required>
-                <option value="" selected disabled>Seleccione un tipo de Hardware</option>
-                <option value="memoria" <?php if ($row['memoria']) echo 'selected'; ?>>memoria </option>
-                <option value="memoria_gpu" <?php if ($row['memoria_gpu']) echo 'selected'; ?>>memoria gpu</option>
-                <option value="frecuencia_gpu" <?php if ($row['frecuencia_gpu']) echo 'selected'; ?>>Frecuencia Gpu</option>
-                <option value="frecuencia_cpu" <?php if ($row['frecuencia_cpu']) echo 'selected'; ?>>Frecuencia Cpu</option>
-                <option value="socket_cpu" <?php if ($row['socket_cpu']) echo 'selected'; ?>>Socket Cpu</option>
-                <option value="nucleo_hilo_cpu" <?php if ($row['nucleo_hilo_cpu']) echo 'selected'; ?>>Nucleo Hilo Cpu</option>
-                <option value="socket_placa" <?php if ($row['socket_placa']) echo 'selected'; ?>>Socket Placa</option>
-                <option value="slot_memoria_placa" <?php if ($row['slot_memoria_placa']) echo 'selected'; ?>>Slot Memoria Placa</option>
-                <option value="velocidad_ram" <?php if ($row['velocidad_ram']) echo 'selected'; ?>>Velocidad Ram</option>
-                <option value="capacidad_almacenamiento" <?php if ($row['capacidad_almacenamiento']) echo 'selected'; ?>>Capacidad Almacenamiento</option>
-                <option value="formato_placa" <?php if ($row['formato_placa']) echo 'selected'; ?>>Formato Placa</option>
-                <option value="capacidad_ram" <?php if ($row['capacidad_ram']) echo 'selected'; ?>>Capacidad Ram</option>
-                <option value="formato_ram" <?php if ($row['formato_ram']) echo 'selected'; ?>>Formato Ram</option>
-                <option value="certificacion_fuente" <?php if ($row['certificacion_fuente']) echo 'selected'; ?>>Certificacion Fuente</option>
-                <option value="tamanio_fuente" <?php if ($row['tamanio_fuente']) echo 'selected'; ?>>Tamaño Fuente</option>
-                <option value="potencia_fuente" <?php if ($row['potencia_fuente']) echo 'selected'; ?>>Potencia Fuente</option>
-                <option value="chipset_placa" <?php if ($row['chipset_placa']) echo 'selected'; ?>>Chipset</option>
-                <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo RAM</option>
-                <option value="tamanio_max_gabinete" <?php if ($row['tamanio_max_gabinete']) echo 'selected'; ?>>Tipo RAM</option>
-                <option value="chipset_gpu" <?php if ($row['chipset_gpu']) echo 'selected'; ?>>chipset gpu</option>
-                <option value="bus_de_entrada_gpu" <?php if ($row['bus_de_entrada_gpu']) echo 'selected'; ?>>Bus de Entrada GPU</option>
-                <option value="bus_hdd" <?php if ($row['bus_hdd']) echo 'selected'; ?>>Bus HDD</option>
-                <option value="bus_ssd" <?php if ($row['bus_ssd']) echo 'selected'; ?>>Bus SSD</option>
-                <option value="formato_ssd" <?php if ($row['formato_ssd']) echo 'selected'; ?>>Formato SSD</option>
-                <option value="rpm_hdd" <?php if ($row['rpm_hdd']) echo 'selected'; ?>>RPM HDD</option>
-                <option value="tamanio_hdd" <?php if ($row['tamanio_hdd']) echo 'selected'; ?>>Tamaño HDD</option>
-            </select>
+<!-- Menú desplegable para seleccionar el tipo de periférico -->
+<div class="mb-3">
+    <label for="tipo_hardware" class="form-label">Tipo de Hardware</label>
+    <select name="tipo_hardware" id="tipo_hardware" class="form-select" required>
+        <option value="" selected disabled>Seleccione un tipo de Hardware</option>
+        <option value="memoria" <?php if ($row['memoria']) echo 'selected'; ?>>memoria</option>
+        <option value="memoria_gpu" <?php if ($row['memoria_gpu']) echo 'selected'; ?>>memoria gpu</option>
+        <option value="frecuencia_gpu" <?php if ($row['frecuencia_gpu']) echo 'selected'; ?>>Frecuencia Gpu</option>
+        <option value="frecuencia_cpu" <?php if ($row['frecuencia_cpu']) echo 'selected'; ?>>Frecuencia Cpu</option>
+        <option value="socket_cpu" <?php if ($row['socket_cpu']) echo 'selected'; ?>>Socket Cpu</option>
+        <option value="nucleo_hilo_cpu" <?php if ($row['nucleo_hilo_cpu']) echo 'selected'; ?>>Nucleo Hilo Cpu</option>
+        <option value="socket_placa" <?php if ($row['socket_placa']) echo 'selected'; ?>>Socket Placa</option>
+        <option value="slot_memoria_placa" <?php if ($row['slot_memoria_placa']) echo 'selected'; ?>>Slot Memoria Placa</option>
+        <option value="velocidad_ram" <?php if ($row['velocidad_ram']) echo 'selected'; ?>>Velocidad Ram</option>
+        <option value="capacidad_almacenamiento" <?php if ($row['capacidad_almacenamiento']) echo 'selected'; ?>>Capacidad Almacenamiento</option>
+        <option value="formato_placa" <?php if ($row['formato_placa']) echo 'selected'; ?>>Formato Placa</option>
+        <option value="capacidad_ram" <?php if ($row['capacidad_ram']) echo 'selected'; ?>>Capacidad Ram</option>
+        <option value="formato_ram" <?php if ($row['formato_ram']) echo 'selected'; ?>>Formato Ram</option>
+        <option value="certificacion_fuente" <?php if ($row['certificacion_fuente']) echo 'selected'; ?>>Certificacion Fuente</option>
+        <option value="tamanio_fuente" <?php if ($row['tamanio_fuente']) echo 'selected'; ?>>Tamaño Fuente</option>
+        <option value="potencia_fuente" <?php if ($row['potencia_fuente']) echo 'selected'; ?>>Potencia Fuente</option>
+        <option value="chipset_placa" <?php if ($row['chipset_placa']) echo 'selected'; ?>>Chipset</option>
+        <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo RAM</option>
+        <option value="tamanio_max_gabinete" <?php if ($row['tamanio_max_gabinete']) echo 'selected'; ?>>Tamaño maximo placa</option>
+        <option value="chipset_gpu" <?php if ($row['chipset_gpu']) echo 'selected'; ?>>Chipset GPU</option>
+        <option value="bus_de_entrada_gpu" <?php if ($row['bus_de_entrada_gpu']) echo 'selected'; ?>>Bus de Entrada GPU</option>
+        <option value="bus_hdd" <?php if ($row['bus_hdd']) echo 'selected'; ?>>Bus HDD</option>
+        <option value="bus_ssd" <?php if ($row['bus_ssd']) echo 'selected'; ?>>Bus SSD</option>
+        <option value="formato_ssd" <?php if ($row['formato_ssd']) echo 'selected'; ?>>Formato SSD</option>
+        <option value="rpm_hdd" <?php if ($row['rpm_hdd']) echo 'selected'; ?>>RPM HDD</option>
+        <option value="tamanio_hdd" <?php if ($row['tamanio_hdd']) echo 'selected'; ?>>Tamaño HDD</option>
+    </select>
+</div>
 
-
-            </select>
-        </div>
                  <!-- Camposs (Ocultos inicialmente) -->
         <div class="mb-3" id="camposMemoria" style="display: none;">       
             <label for="memoria" class="form-label mt-3">Memoria</label>
