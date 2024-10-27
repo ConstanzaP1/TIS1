@@ -12,23 +12,31 @@ session_start();
 </head>
 <body>
 
-<nav class="barra1 navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <div class="row col-2">
-      <img class="img-fluid w-75" src="https://upload.wikimedia.org/wikipedia/commons/d/df/Ripley_Logo.png" alt="">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <div class="row col-2">
+            <img class="img-fluid w-75" src="https://upload.wikimedia.org/wikipedia/commons/d/df/Ripley_Logo.png" alt="">
+        </div>
+        <div class="row col-8">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </form>
+        </div>
+        <div class="row col-2 text-end">
+            <div class="d-grid gap-2 d-md-block">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <!-- Si el usuario es admin, mostrar botón adicional -->
+                    <?php if ($_SESSION['role'] === 'admin'): ?>
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='admin_panel/admin_panel.php';">Panel de Admin</button>
+                    <?php endif; ?>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='login/logout.php';">Cerrar Sesión</button>
+                <?php else: ?>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='login/login.php';">Iniciar Sesión</button>
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
-    <div class="row col-8">
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
-        <button class="btn btn-primary" type="submit">Buscar</button>
-      </form>
-    </div>
-    <div class="row col-2">
-      <div class="d-grid gap-2 d-md-block">
-        <button type="button" class="btn btn-primary" onclick="window.location.href='login/login.php';">Iniciar sesion</button>
-      </div>
-    </div>
-  </div>
 </nav>
 
 <div class="container my-4">
@@ -90,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Función para cargar productos según la búsqueda
     function cargarProductos(query = '') {
         $.ajax({
-            url: 'catalogo_productos/buscar_productos.php',
+            url: 'funcion_busqueda/buscar_productos.php',
             method: 'GET',
             data: { query: query },
             success: function(response) {
@@ -109,6 +117,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
 </body>
 </html>
