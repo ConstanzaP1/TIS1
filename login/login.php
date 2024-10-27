@@ -111,7 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
 <main class="main">
     <button class="boton__volver" onclick="history.back()">Volver Atrás</button>
-    
     <div class="contenedor__todo">
         
         <div class="caja__trasera">

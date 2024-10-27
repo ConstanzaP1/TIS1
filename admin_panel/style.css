@@ -198,3 +198,14 @@ main {
     background: #fff;
     color: #46A2FD;
 }
+.contenedor__login-register form {
+    width: 100%;
+    padding: 80px 20px;
+    background: white;
+    position: absolute;
+    border-radius: 20px;
+    height: 450px; /* Altura fija para ambos formularios */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
