@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,29 +10,35 @@
     <title>Detalle del Producto</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
 </head>
 <body>
-
-<nav class="barra1 navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <div class="row col-2">
-      <img class="img-fluid w-75" src="https://upload.wikimedia.org/wikipedia/commons/d/df/Ripley_Logo.png" alt="">
+    
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <div class="row col-2 ">
+            <img class="img-fluid w-75" src="https://upload.wikimedia.org/wikipedia/commons/d/df/Ripley_Logo.png" alt="">
+        </div>
+        <div class="row col-6 ">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </form>
+        </div>
+        <div class="row col-4 text-end">
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="align-items-center">
+                    <span class="me-2">Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
+                    <?php if ($_SESSION['role'] === 'admin'): ?>
+                        <button type="button" class="btn btn-primary me-1" onclick="window.location.href='admin_panel/admin_panel.php';">Panel Admin</button>
+                    <?php endif; ?>
+                    <button type="button" class="btn btn-danger" onclick="window.location.href='login/logout.php';">Cerrar Sesión</button>
+                </div>
+            <?php else: ?>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='login/login.php';">Iniciar Sesión</button>
+            <?php endif; ?>
+        </div>
     </div>
-    <div class="row col-8">
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
-        <button class="btn btn-primary" type="submit">Buscar</button>
-      </form>
-    </div>
-    <div class="row col-2">
-      <div class="d-grid gap-2 d-md-block">
-        <button type="button" class="btn btn-primary" onclick="window.location.href='../admin_panel/admin_panel.php';">Panel</button>
-      </div>
-    </div>
-  </div>
 </nav>
-
 <div class="container py-5">
     <?php
     // Conexión a la base de datos
@@ -68,8 +78,7 @@
                     <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
                     <p><strong>Marca:</strong> {$producto['marca']}</p>
                     <p><strong>Características:</strong></p>
-                    <ul>
-            ";
+                    <ul>";
 
             // Mostrar características según el tipo de producto
             switch ($producto['tipo_producto']) {
@@ -304,24 +313,29 @@
                 }
             } else {
                 echo "<li>No hay características disponibles.</li>";
+            }            
+            echo "
+                    </ul>";
+
+            // Botones de acción según el rol del usuario
+            if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                echo "<button class='btn btn-danger mt-3 mx-1'>Eliminar producto</button>";
+            } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
+                echo "<button class='btn btn-primary mt-3 mx-1'>Agregar al carrito</button>";
             }
 
-            echo "
-                    </ul>
-                    <button class='btn btn-primary mt-3'>Agregar al Carro</button>
+            echo "<a href='../index.php' class='btn btn-secondary mt-3'>Volver al Catálogo</a>
                 </div>
-            </div>
-            ";
+            </div>";
         } else {
             echo "<p>Producto no encontrado.</p>";
         }
     } else {
         echo "<p>ID de producto no proporcionado.</p>";
     }
-
     mysqli_close($conexion);
     ?>
-    <a href="catalogo_productos.php" class="btn btn-secondary mb-4">Volver al Catálogo</a>
+    
 </div>
 
 <!-- Bootstrap JS -->

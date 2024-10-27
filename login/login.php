@@ -33,12 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['role'] = $user['role'];
+            $_SESSION['username'] = $user['username'];
 
             // Redirigir según el rol del usuario
             if ($user['role'] == 'admin') {
-                header('Location: ../admin_panel/admin_panel.php');
+                header('Location: ../index.php');
             } else {
-                header('Location: ../login/user_panel.php');
+                header('Location: ../index.php');
             }
             exit();
         } else {
