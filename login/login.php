@@ -36,9 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 
             // Redirigir según el rol del usuario
             if ($user['role'] == 'admin') {
-                header('Location: ../admin_panel/admin_panel.php');
+                header('Location: ../index.php');
             } else {
-                header('Location: ../login/user_panel.php');
+                header('Location: ../index.php');
             }
             exit();
         } else {

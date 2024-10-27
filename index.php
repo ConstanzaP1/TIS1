@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
 </head>
 <body>
 
@@ -17,6 +20,7 @@
     <div class="row col-8">
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+        <button class="btn btn-primary" type="submit">Buscar</button>
       </form>
     </div>
     <div class="row col-2">
@@ -29,7 +33,6 @@
 
 <div class="container my-4">
     <div class="row d-flex justify-content-center">
-
         <?php
         // Conexión a la base de datos
         require('conexion.php');
@@ -52,19 +55,17 @@
 
         if ($result->num_rows > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                // Variables del producto
                 $id_producto = $row['id_producto'];
                 $marca = $row['marca']; 
                 $nombre_producto = $row['nombre_producto'];
                 $precio = number_format($row['precio'], 0, ',', '.');
                 $imagen_url = $row['imagen_url']; 
 
-                // HTML del producto con enlace al detalle
                 echo "
                   <div class='card mx-1 mb-3 p-1 shadow' style='width: 18rem;'>
                     <img src='$imagen_url' alt='$nombre_producto'>
                       <div class='card-body text-begin'>
-                        <a class='text-decoration-none' href=''>
+                        <a class='text-decoration-none' href='catalogo_productos/detalle_producto.php?id_producto=$id_producto'>
                             <p class='text-secondary'>$marca</p>
                             <h5 class='text-black'>$nombre_producto</h5>
                             <p class='text-secondary'>$$precio</p>
@@ -78,7 +79,6 @@
         }
         mysqli_close($conexion);
         ?>
-
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
