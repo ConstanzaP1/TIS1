@@ -118,8 +118,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 </head>
 
 <body>
-    <div class="container mt-5">
-        <div class="row p-5 text-center d-flex justify-content-center">
+    <div class="container">
+        <div class="row text-center d-flex justify-content-center py-1">
+            <div class="col-6">  
+                <img class="logo img-fluid w-75" src="../logo.jpg" alt="">
+            </div>
+        </div>
+        <div class="row px-5 text-center d-flex justify-content-center">
             <div class="col-10 col-md-5 mt-2">
                 <h2 class="text-center">Iniciar Sesión</h2>
                 <!-- Mostrar mensajes de éxito o error -->
