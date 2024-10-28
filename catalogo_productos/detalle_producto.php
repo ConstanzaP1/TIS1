@@ -328,7 +328,16 @@
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
-                        echo "<button class='btn btn-danger mt-3 mx-1'>Eliminar producto</button>";
+                                
+                                // Asegurarse de que el parámetro id_producto está definido antes de construir el enlace
+                                if (isset($_GET['id_producto'])) {
+                                    $id_producto = $_GET['id_producto'];
+                                    echo "<a href='eliminar_producto.php?id_producto=" . $id_producto . "' class='btn btn-danger mt-3 mx-1'>Eliminar producto</a>";
+                                } else {
+                                    echo "ID de producto no especificado.";
+                                }
+                                
+                        
                     } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
                         echo "
                                 <form method='POST' action='../carrito/agregar_al_carrito.php'>
