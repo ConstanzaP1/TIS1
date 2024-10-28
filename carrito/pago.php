@@ -24,8 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pagar'])) {
         session_id(), // ID de sesión
         uniqid(), // Orden de compra única
         $total, // Monto total
-        'http://localhost/xampp/TIS1/TIS1/carrito/carrito.php', // Cambia esta URL a tu dominio o entorno local
-        'http://localhost/xampp/TIS1/TIS1/carrito/carrito.php' // Cambia esta URL a tu dominio o entorno local
+        'http://localhost/xampp/TIS1/TIS1/carrito/pago_exitoso.php', // Cambia esta URL a tu dominio o entorno local
+        'http://localhost/xampp/TIS1/TIS1/carrito/pago_fallido.php' // Cambia esta URL a tu dominio o entorno local
     );
 
     if ($response) {
