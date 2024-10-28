@@ -319,26 +319,41 @@
                         </ul>";
 
                 // Botones de acción según el rol del usuario
-                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
-                        echo "
-                                <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <label>Cantidad:</label>
-                                    <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
-                                    <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
-                                </form>
-                                ";
-                        echo "<button class='btn btn-danger mt-3 mx-1'>Eliminar producto</button>";
-                    } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
-                        echo "
-                                <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <label>Cantidad:</label>
-                                    <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
-                                    <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
-                                </form>
-                                ";
-                    }
+                if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                    echo "
+                        <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <label>Cantidad:</label>
+                            <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
+                            <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
+                        </form>
+                    ";
+                    // Botón para agregar al comparador
+                    echo "
+                        <form method='POST' action='../comparador/agregar_al_comparador.php' class='mt-3'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <button type='submit' name='agregar_comparador' class='btn btn-secondary'>Agregar al Comparador</button>
+                        </form>
+                    ";
+                    echo "<button class='btn btn-danger mt-3 mx-1'>Eliminar producto</button>";
+                } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
+                    echo "
+                        <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <label>Cantidad:</label>
+                            <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
+                            <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
+                        </form>
+                    ";
+                    // Botón para agregar al comparador
+                    echo "
+                        <form method='POST' action='../comparador/agregar_al_comparador.php' class='mt-3'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <button type='submit' name='agregar_comparador' class='btn btn-secondary'>Agregar al Comparador</button>
+                        </form>
+                    ";
+                }
+                
 
                 echo "<a href='../index.php' class='btn btn-secondary mt-3'>Volver al Catálogo</a>
                 </div>
