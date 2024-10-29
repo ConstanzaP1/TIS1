@@ -356,7 +356,7 @@ $result_users = mysqli_query($conexion, $sql_users);
             <ul>
                 <li><a href="../creacion_productos/index_crear_producto.php">Crear producto</a></li>
                 <li><a href="../index.php">Catalogo productos</a></li>
-                <li><a href="../index.php">Modificar productos</a></li>
+                <li><a href="../creacion_productos/listar_productos.php">Modificar productos</a></li>
             </ul>
         </div>
     </div>

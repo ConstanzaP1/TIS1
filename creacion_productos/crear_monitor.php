@@ -1,7 +1,7 @@
 <?php
 require('../conexion.php');
 
-// Consultas para obtener las opciones de los atributos específicos del teclado
+// Consultas para obtener las opciones de los atributos específicos 
 $queryResolucionMonitor = "SELECT id_periferico, resolucion_monitor FROM resolucion_monitor";
 $resultResolucionMonitor = mysqli_query($conexion, $queryResolucionMonitor);
 
