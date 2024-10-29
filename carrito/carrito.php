@@ -106,7 +106,7 @@ if (isset($_POST['eliminar_producto'])) {
         </table>
 
         <h4>Total: <?php echo "$" . number_format($total, 0, ',', '.'); ?></h4>
-        <a href="pagar.php" class="btn btn-primary">Proceder al Pago</a>
+        <a href="pago.php" class="btn btn-primary">Proceder al Pago</a>
     <?php endif; ?>
 
     <a href="../index.php" class="btn btn-secondary">Volver a la Tienda</a>
