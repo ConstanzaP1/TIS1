@@ -31,7 +31,6 @@ session_start();
                     <?php if ($_SESSION['role'] === 'admin'): ?>
                         <button type="button" class="btn btn-primary me-1" onclick="window.location.href='admin_panel/admin_panel.php';">Panel Admin</button>
                     <?php endif; ?>
-                    <button type="button" class="btn btn-primary" onclick="window.location.href='comparador/comparador.php';">Comparador</button>
                     <button type="button" class="btn btn-primary" onclick="window.location.href='carrito/carrito.php';">Mi Carro</button>
                     <button type="button" class="btn btn-danger" onclick="window.location.href='login/logout.php';">Cerrar Sesión</button>
                 </div>

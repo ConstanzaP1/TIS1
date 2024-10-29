@@ -351,11 +351,12 @@ $result_users = mysqli_query($conexion, $sql_users);
 </div>
 
 <div class="acordion-item">
-    <div class="accordion-header">Crear producto</div>
+    <div class="accordion-header">Gestionar productos</div>
         <div class="accordion-content">
             <ul>
                 <li><a href="../creacion_productos/index_crear_producto.php">Crear producto</a></li>
                 <li><a href="../index.php">Catalogo productos</a></li>
+                <li><a href="../index.php">Modificar productos</a></li>
             </ul>
         </div>
     </div>
