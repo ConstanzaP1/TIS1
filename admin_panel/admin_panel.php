@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['update'])) {
     // Validar si el correo electrónico ya existe
     $sql_check_email = "SELECT * FROM users WHERE email = ?";
     $stmt_check_email = mysqli_prepare($conexion, $sql_check_email);
-    mysqli_stmt_bind_param($stmt_check_email, 's', $email);
+    mysqli_stmt_bind_param($stmt_check_email, 's', $email); 
     mysqli_stmt_execute($stmt_check_email);
     mysqli_stmt_store_result($stmt_check_email);
     
@@ -181,10 +181,17 @@ $result_users = mysqli_query($conexion, $sql_users);
         <ul>
             <!-- Subcategoría: Almacenamiento -->
             <li>
-                <a href="#" class="sub-category-header">Almacenamiento</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
-                </ul>
+            <a href="#" class="sub-category-header">Almacenamiento</a>
+                        <ul class="sub-category-content" style="display: none;">
+                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
+                            <li><a href="../mantenedores_hardware/bus_hdd.php">Bus HDD</a></li>
+                            <li><a href="../mantenedores_hardware/bus_ssd.php">Bus SSD</a></li>
+                            <li><a href="../mantenedores_hardware/formato_ssd.php">Formato SSD</a></li>
+                            <li><a href="../mantenedores_hardware/rpm_hdd.php">RPM HDD</a></li>
+                            <li><a href="../mantenedores_hardware/tamanio_hdd.php">Tamaño HDD</a></li>
+                        </ul>
+                    </li>
+
             </li>
 
             <!-- Subcategoría: RAM -->
@@ -214,6 +221,8 @@ $result_users = mysqli_query($conexion, $sql_users);
                 <ul class="sub-category-content" style="display: none;">
                     <li><a href="../mantenedores_hardware/frecuencia_gpu.php">Frecuencia GPU</a></li>
                     <li><a href="../mantenedores_hardware/memoria_gpu.php">Memoria GPU</a></li>
+                    <li><a href="../mantenedores_hardware/chipset_gpu.php">Chipset GPU</a></li>
+                    <li><a href="../mantenedores_hardware/bus_de_entrada_gpu.php">Bus de Entrada GPU</a></li>
                 </ul>
             </li>
 

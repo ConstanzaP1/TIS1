@@ -25,13 +25,17 @@ $query = "SELECT * FROM hardware p
           LEFT JOIN chipset_placa cp ON p.id_hardware = cp.id_hardware
           LEFT JOIN tipo_ram tr ON p.id_hardware = tr.id_hardware
           LEFT JOIN tamanio_max_gabinete tmg ON p.id_hardware = tmg.id_hardware
-         
-
+          LEFT JOIN chipset_gpu cg ON p.id_hardware = cg.id_hardware
+          LEFT JOIN bus_de_entrada_gpu beg ON p.id_hardware = beg.id_hardware
+          LEFT JOIN bus_hdd bh ON p.id_hardware = bh.id_hardware
+          LEFT JOIN bus_ssd bs ON p.id_hardware = bs.id_hardware
+          LEFT JOIN formato_ssd fs ON p.id_hardware = fs.id_hardware
+          LEFT JOIN rpm_hdd rh ON p.id_hardware = rh.id_hardware
+          LEFT JOIN tamanio_hdd th ON p.id_hardware = th.id_hardware
           WHERE p.id_hardware = '$id_hardware'";
 
 $result = mysqli_query($conexion, $query);
 $row = mysqli_fetch_assoc($result);
-
 // Mostrar un formulario con los datos actuales para que el usuario pueda modificarlos
 ?>
 
@@ -54,34 +58,40 @@ $row = mysqli_fetch_assoc($result);
         <!-- Campos oculto para el ID del periférico -->
         <input type="hidden" name="id_hardware" value="<?php echo $id_hardware; ?>">
 
-        <!-- Menú desplegable para seleccionar el tipo de periférico -->
-        <div class="mb-3" style="display: none;">
-            <label for="tipo_hardware" class="form-label">Tipo de Hardware</label>
-            <select name="tipo_hardware" id="tipo_hardware" class="form-select" required>
-                <option value="" selected disabled>Seleccione un tipo de Hardware</option>
-                <option value="memoria" <?php if ($row['memoria']) echo 'selected'; ?>>memoria </option>
-                <option value="memoria_gpu" <?php if ($row['memoria_gpu']) echo 'selected'; ?>>memoria gpu</option>
-                <option value="frecuencia_gpu" <?php if ($row['frecuencia_gpu']) echo 'selected'; ?>>Frecuencia Gpu</option>
-                <option value="frecuencia_cpu" <?php if ($row['frecuencia_cpu']) echo 'selected'; ?>>Frecuencia Cpu</option>
-                <option value="socket_cpu" <?php if ($row['socket_cpu']) echo 'selected'; ?>>Socket Cpu</option>
-                <option value="nucleo_hilo_cpu" <?php if ($row['nucleo_hilo_cpu']) echo 'selected'; ?>>Nucleo Hilo Cpu</option>
-                <option value="socket_placa" <?php if ($row['socket_placa']) echo 'selected'; ?>>Socket Placa</option>
-                <option value="slot_memoria_placa" <?php if ($row['slot_memoria_placa']) echo 'selected'; ?>>Slot Memoria Placa</option>
-                <option value="velocidad_ram" <?php if ($row['velocidad_ram']) echo 'selected'; ?>>Velocidad Ram</option>
-                <option value="capacidad_almacenamiento" <?php if ($row['capacidad_almacenamiento']) echo 'selected'; ?>>Capacidad Almacenamiento</option>
-                <option value="formato_placa" <?php if ($row['formato_placa']) echo 'selected'; ?>>Formato Placa</option>
-                <option value="capacidad_ram" <?php if ($row['capacidad_ram']) echo 'selected'; ?>>Capacidad Ram</option>
-                <option value="formato_ram" <?php if ($row['formato_ram']) echo 'selected'; ?>>Formato Ram</option>
-                <option value="certificacion_fuente" <?php if ($row['certificacion_fuente']) echo 'selected'; ?>>Certificacion Fuente</option>
-                <option value="tamanio_fuente" <?php if ($row['tamanio_fuente']) echo 'selected'; ?>>Tamaño Fuente</option>
-                <option value="potencia_fuente" <?php if ($row['potencia_fuente']) echo 'selected'; ?>>Potencia Fuente</option>
-                <option value="chipset_placa" <?php if ($row['chipset_placa']) echo 'selected'; ?>>Chipset</option>
-                <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo RAM</option>
-                <option value="tamanio_max_gabinete" <?php if ($row['tamanio_max_gabinete']) echo 'selected'; ?>>tamaño maximo placa</option>
-                
+<!-- Menú desplegable para seleccionar el tipo de periférico -->
+<div class="mb-3">
+    <label for="tipo_hardware" class="form-label">Tipo de Hardware</label>
+    <select name="tipo_hardware" id="tipo_hardware" class="form-select" required>
+        <option value="" selected disabled>Seleccione un tipo de Hardware</option>
+        <option value="memoria" <?php if ($row['memoria']) echo 'selected'; ?>>memoria</option>
+        <option value="memoria_gpu" <?php if ($row['memoria_gpu']) echo 'selected'; ?>>memoria gpu</option>
+        <option value="frecuencia_gpu" <?php if ($row['frecuencia_gpu']) echo 'selected'; ?>>Frecuencia Gpu</option>
+        <option value="frecuencia_cpu" <?php if ($row['frecuencia_cpu']) echo 'selected'; ?>>Frecuencia Cpu</option>
+        <option value="socket_cpu" <?php if ($row['socket_cpu']) echo 'selected'; ?>>Socket Cpu</option>
+        <option value="nucleo_hilo_cpu" <?php if ($row['nucleo_hilo_cpu']) echo 'selected'; ?>>Nucleo Hilo Cpu</option>
+        <option value="socket_placa" <?php if ($row['socket_placa']) echo 'selected'; ?>>Socket Placa</option>
+        <option value="slot_memoria_placa" <?php if ($row['slot_memoria_placa']) echo 'selected'; ?>>Slot Memoria Placa</option>
+        <option value="velocidad_ram" <?php if ($row['velocidad_ram']) echo 'selected'; ?>>Velocidad Ram</option>
+        <option value="capacidad_almacenamiento" <?php if ($row['capacidad_almacenamiento']) echo 'selected'; ?>>Capacidad Almacenamiento</option>
+        <option value="formato_placa" <?php if ($row['formato_placa']) echo 'selected'; ?>>Formato Placa</option>
+        <option value="capacidad_ram" <?php if ($row['capacidad_ram']) echo 'selected'; ?>>Capacidad Ram</option>
+        <option value="formato_ram" <?php if ($row['formato_ram']) echo 'selected'; ?>>Formato Ram</option>
+        <option value="certificacion_fuente" <?php if ($row['certificacion_fuente']) echo 'selected'; ?>>Certificacion Fuente</option>
+        <option value="tamanio_fuente" <?php if ($row['tamanio_fuente']) echo 'selected'; ?>>Tamaño Fuente</option>
+        <option value="potencia_fuente" <?php if ($row['potencia_fuente']) echo 'selected'; ?>>Potencia Fuente</option>
+        <option value="chipset_placa" <?php if ($row['chipset_placa']) echo 'selected'; ?>>Chipset</option>
+        <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo RAM</option>
+        <option value="tamanio_max_gabinete" <?php if ($row['tamanio_max_gabinete']) echo 'selected'; ?>>Tamaño maximo placa</option>
+        <option value="chipset_gpu" <?php if ($row['chipset_gpu']) echo 'selected'; ?>>Chipset GPU</option>
+        <option value="bus_de_entrada_gpu" <?php if ($row['bus_de_entrada_gpu']) echo 'selected'; ?>>Bus de Entrada GPU</option>
+        <option value="bus_hdd" <?php if ($row['bus_hdd']) echo 'selected'; ?>>Bus HDD</option>
+        <option value="bus_ssd" <?php if ($row['bus_ssd']) echo 'selected'; ?>>Bus SSD</option>
+        <option value="formato_ssd" <?php if ($row['formato_ssd']) echo 'selected'; ?>>Formato SSD</option>
+        <option value="rpm_hdd" <?php if ($row['rpm_hdd']) echo 'selected'; ?>>RPM HDD</option>
+        <option value="tamanio_hdd" <?php if ($row['tamanio_hdd']) echo 'selected'; ?>>Tamaño HDD</option>
+    </select>
+</div>
 
-            </select>
-        </div>
                  <!-- Camposs (Ocultos inicialmente) -->
         <div class="mb-3" id="camposMemoria" style="display: none;">       
             <label for="memoria" class="form-label mt-3">Memoria</label>
@@ -159,6 +169,36 @@ $row = mysqli_fetch_assoc($result);
             <label for="tamanio_max_gabinete" class="form-label mt-3">Tamaño maximo placa</label>
             <input type="text" name="tamanio_max_gabinete" class="form-control" id="tamanio_max_gabinete" value="<?php echo $row['tamanio_max_gabinete']; ?>">
         </div>
+        <div class="mb-3" id="camposChipset_gpu" style="display: none;">       
+            <label for="chipset_gpu" class="form-label mt-3">Chipset gpu</label>
+            <input type="text" name="chipset_gpu" class="form-control" id="chipset_gpu" value="<?php echo $row['chipset_gpu']; ?>">
+        </div>
+        <div class="mb-3" id="camposBus_de_entrada_gpu" style="display: none;">       
+            <label for="bus_de_entrada_gpu" class="form-label mt-3">Bus de Entrada GPU</label>
+            <input type="text" name="bus_de_entrada_gpu" class="form-control" id="bus_de_entrada_gpu" value="<?php echo $row['bus_de_entrada_gpu']; ?>">
+        </div>
+        <div class="mb-3" id="camposBus_hdd" style="display: none;">       
+            <label for="bus_hdd" class="form-label mt-3">Bus HDD</label>
+            <input type="text" name="bus_hdd" class="form-control" id="bus_hdd" value="<?php echo $row['bus_hdd']; ?>">
+        </div>
+        <div class="mb-3" id="camposBus_ssd" style="display: none;">       
+            <label for="bus_ssd" class="form-label mt-3">Bus SSD</label>
+            <input type="text" name="bus_ssd" class="form-control" id="bus_ssd" value="<?php echo $row['bus_ssd']; ?>">
+        </div>
+        <div class="mb-3" id="camposFormato_ssd" style="display: none;">       
+            <label for="formato_ssd" class="form-label mt-3">Formato SSD</label>
+            <input type="text" name="formato_ssd" class="form-control" id="formato_ssd" value="<?php echo $row['formato_ssd']; ?>">
+        </div>
+        <div class="mb-3" id="camposRpm_hdd" style="display: none;">       
+            <label for="rpm_hdd" class="form-label mt-3">RPM HDD</label>
+            <input type="text" name="rpm_hdd" class="form-control" id="rpm_hdd" value="<?php echo $row['rpm_hdd']; ?>">
+        </div>
+        <div class="mb-3" id="camposTamanio_hdd" style="display: none;">       
+            <label for="tamanio_hdd" class="form-label mt-3">Tamaño HDD</label>
+            <input type="text" name="tamanio_hdd" class="form-control" id="tamanio_hdd" value="<?php echo $row['tamanio_hdd']; ?>">
+        </div>
+
+
 
         <button type="submit" class="btn btn-primary mt-3">Guardar cambios</button>
     </form>
@@ -184,7 +224,15 @@ $row = mysqli_fetch_assoc($result);
         document.getElementById("camposCertificacion_fuente").style.display = "none";
         document.getElementById("camposTamanio_fuente").style.display = "none";
         document.getElementById("camposPotencia_fuente").style.display = "none";
-        document.getElementById("camposchipset_placa").style.display = "none";
+        document.getElementById("camposTamanio_placa").style.display = "none";
+        document.getElementById("camposChipset_gpu").style.display = "none";
+        document.getElementById("camposBus_de_entrada_gpu").style.display = "none";
+        document.getElementById("camposBus_hdd").style.display = "none";
+        document.getElementById("camposBus_ssd").style.display = "none";
+        document.getElementById("camposFormato_ssd").style.display = "none";
+        document.getElementById("camposRpm_hdd").style.display = "none";
+        document.getElementById("camposTamanio_hdd").style.display = "none";
+ 
 
 
         if (tipoHardware === "memoria") {
@@ -208,53 +256,64 @@ $row = mysqli_fetch_assoc($result);
         else if (tipoHardware === "socket_placa") {
             document.getElementById("camposSocket_placa").style.display = "block";
         } 
-
         else if (tipoHardware === "slot_memoria_placa") {
             document.getElementById("camposSlot_memoria_placa").style.display = "block";
-        } 
-        
+        }  
         else if (tipoHardware === "velocidad_ram") {
             document.getElementById("camposVelocidad_ram").style.display = "block";
         }
-        
         else if (tipoHardware === "capacidad_almacenamiento") {
             document.getElementById("camposCapacidad_almacenamiento").style.display = "block";
         }
-
         else if (tipoHardware === "formato_placa") {
             document.getElementById("camposFormato_placa").style.display = "block";
         }
-
         else if (tipoHardware === "capacidad_ram") {
             document.getElementById("camposCapacidad_ram").style.display = "block";
         }
-
         else if (tipoHardware === "formato_ram") {
             document.getElementById("camposformato_ram").style.display = "block";
         }
-
         else if (tipoHardware === "certificacion_fuente") {
             document.getElementById("camposCertificacion_fuente").style.display = "block";
         }
-
         else if (tipoHardware === "tamanio_fuente") {
             document.getElementById("camposTamanio_fuente").style.display = "block";
         }
-
         else if (tipoHardware === "potencia_fuente") {
             document.getElementById("camposPotencia_fuente").style.display = "block";
         }
-
         else if (tipoHardware === "chipset_placa") {
             document.getElementById("camposchipset_placa").style.display = "block";
         }
-
         else if (tipoHardware === "tipo_ram") {
             document.getElementById("camposTipo_ram").style.display = "block";
         }
         else if (tipoHardware === "tamanio_max_gabinete") {
             document.getElementById("camposTamanio_max_gabinete").style.display = "block";
         }
+        else if (tipoHardware === "chipset_gpu") {
+            document.getElementById("camposChipset_gpu").style.display = "block";
+        }
+        if (tipoHardware === "bus_de_entrada_gpu") {
+                document.getElementById("camposBus_de_entrada_gpu").style.display = "block";
+        } 
+        else if (tipoHardware === "bus_hdd") {
+                document.getElementById("camposBus_hdd").style.display = "block";
+        } 
+        else if (tipoHardware === "bus_ssd") {
+                document.getElementById("camposBus_ssd").style.display = "block";
+        } 
+        else if (tipoHardware === "formato_ssd") {
+                document.getElementById("camposFormato_ssd").style.display = "block";
+        } 
+        else if (tipoHardware === "rpm_hdd") {
+                document.getElementById("camposRpm_hdd").style.display = "block";
+        } 
+        else if (tipoHardware === "tamanio_hdd") {
+                document.getElementById("camposTamanio_hdd").style.display = "block";
+        }
+ 
         
     }
 
@@ -269,6 +328,6 @@ $row = mysqli_fetch_assoc($result);
 </div>
 
 <!-- Bootstrap JS -->
-<script src="htcps://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
