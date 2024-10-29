@@ -45,7 +45,7 @@ function filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_m
 
     // Filtro de categoría (buscando la palabra en el nombre del producto)
     if ($categoria !== "") {
-        $query .= " AND p.nombre_producto LIKE ?";
+        $query .= " AND p.tipo_producto LIKE ?";
         $params[] = "%" . $categoria . "%";
         $types .= "s";
     }
