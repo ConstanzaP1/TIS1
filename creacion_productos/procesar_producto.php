@@ -105,3 +105,4 @@ if (mysqli_query($conexion, $query_producto)) {
     echo "Error al insertar el producto: " . mysqli_error($conexion);
 }
 ?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">

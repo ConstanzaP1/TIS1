@@ -2,8 +2,8 @@
 require('../conexion.php');
 
 // Consultas para obtener las opciones de los atributos específicos del teclado
-$queryCertificacion = "SELECT id_hardware, tamanio_max_gabinete FROM tamanio_max_gabinete";
-$resultCertificacion = mysqli_query($conexion, $queryCertificacion);
+$queryGabinete = "SELECT id_hardware, tamanio_max_gabinete FROM tamanio_max_gabinete";
+$resultGabinete = mysqli_query($conexion, $queryGabinete);
 
 $queryIluminacion = "SELECT id_periferico, iluminacion FROM iluminacion";
 $resultIluminacion = mysqli_query($conexion, $queryIluminacion);
@@ -60,7 +60,7 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
             <label for="tamanio_max_gabinete" class="form-label">Tamaño Gabinete</label>
             <select name="tamanio_max_gabinete" class="form-select" required>
                 <option value="" selected disabled>Seleccione un tamaño</option>
-                <?php while ($row = mysqli_fetch_assoc($resultCertificacion)): ?>
+                <?php while ($row = mysqli_fetch_assoc($resultGabinete)): ?>
                     <option value="<?= $row['id_hardware'] ?>"><?= $row['tamanio_max_gabinete'] ?></option>
                 <?php endwhile; ?>
             </select>
