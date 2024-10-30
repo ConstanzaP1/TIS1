@@ -7,27 +7,44 @@
     font-family: 'Roboto', sans-serif;
 }
 
-body {
-    background-image: url(fondo.webp);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
-}
 
-main {
+
+.bodylogin {
+    background-color: #d39a49;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     width: 100%;
-    padding: 20px;
-    margin: auto;
-    margin-top: 100px;
+    height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+    overflow: hidden; /* Previene cualquier desbordamiento */
 }
+.mainlogin  {
+    width: 48%;
+    height: 100%;
+    background-color: #d39a49;
+    margin-top: 15%;
+    margin-left: 10%;
+}
+.mainlogin2{
+    width: 48%; /* Ocupa aproximadamente la mitad del contenedor */
+    padding: 20px;
+    height: 100%;
 
+}
+.imagen-login {
+    height: 100vh; /* Ocupa el 100% de la altura de la ventana */
+    width: 50vw; /* Ocupa el 50% del ancho de la ventana */
+    object-fit: cover; /* Ajusta la imagen sin deformarla */
+}
 .contenedor__todo {
     width: 100%;
     max-width: 800px;
-    margin: auto;
     position: relative;
 }
+
 
 /* Botón Volver Atrás */
 .boton__volver {
@@ -55,10 +72,11 @@ main {
     width: 100%;
     padding: 10px 20px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     background-color: rgba(0, 128, 255, 0.5);
+    align-items: center;
 }
 
 .caja__trasera div {

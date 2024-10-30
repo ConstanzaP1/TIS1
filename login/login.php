@@ -108,17 +108,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../admin_panel/style.css">
 </head>
-<body>
-    <div class="container">
-        <div class="row text-center d-flex justify-content-center py-1">
-            <div class="col-6">  
-                <img class="logo img-fluid w-75" src="../logo.jpg" alt="">
+<body class="bodylogin">
+<div class="mainlogin">
+<main>
+    <button class="boton__volver" onclick="history.back()">Volver Atrás</button>
+    <div class="contenedor__todo">
+        
+        <div class="caja__trasera">
+            <div class="caja__trasera-login">
+                <h3>¿Ya tienes una cuenta?</h3>
+                <p>Inicia sesión para acceder</p>
+                <button id="btn__iniciar-sesion">Iniciar Sesión</button>
+            </div>
+            <div class="caja__trasera-register">
+                <h3>¿Aún no tienes cuenta?</h3>
+                <p>Regístrate para que puedas iniciar sesión</p>
+                <button id="btn__registrarse">Registrarse</button>
             </div>
         </div>
-        <div class="row px-5 text-center d-flex justify-content-center">
-            <div class="col-10 col-md-5 mt-2">
-                <h2 class="text-center">Iniciar Sesión</h2>
-                <!-- Mostrar mensajes de éxito o error -->
+
+        <div class="contenedor__login-register">
+            
+            <form action="login.php" method="POST" class="formulario__login">
+                <h2>Iniciar Sesión</h2>
                 <?php if (!empty($error_message)): ?>
                     <div class="alert alert-danger"><?= $error_message ?></div>
                 <?php elseif (!empty($message)): ?>
@@ -138,7 +150,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
             </form>
         </div>
     </div>
-</main>
+</main></div>
+<div class="mainlogin2">
+<img src="../admin_panel/chiona3.0.svg" class="imagen-login" alt="">
+</div>
 
 <script src="../admin_panel/script.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
