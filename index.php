@@ -16,7 +16,6 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Productos</title>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 </head>
@@ -28,46 +27,25 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
         <div class="navbar-brand col-2  ">
             <img class="logo img-fluid w-75" src="logo.jpg" alt="Logo">
         </div>
+        <div class="row col-6 ">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
 
-        <!-- Botón para colapsar el menú en pantallas pequeñas -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Contenido de la navbar -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Barra de búsqueda -->
-            <form class="d-flex ms-auto col-8 shadow" role="search">
-                <input class="form-control" type="search" placeholder="Buscar" aria-label="Buscar">
             </form>
-
-            <!-- Menú desplegable -->
-            <ul class="navbar-nav ms-auto">
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if ($_SESSION['role'] === 'admin'): ?>
-                                <li>
-                                    <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
-                                </li>
-                            <?php endif; ?>
-                            <li>
-                                <a class="dropdown-item" href="carrito/carrito.php">Mi Carro</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
-                            </li>
-                        </ul>
-                    </li>
-                <?php else: ?>
-                    <li class="nav-item">
-                        <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
+        </div>
+        <div class="row col-4 text-end">
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="align-items-center">
+                    <span class="me-2">Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
+                    <?php if ($_SESSION['role'] === 'admin'): ?>
+                        <button type="button" class="btn btn-primary me-1" onclick="window.location.href='admin_panel/admin_panel.php';">Panel Admin</button>
+                    <?php endif; ?>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='carrito/carrito.php';">Mi Carro</button>
+                    <button type="button" class="btn btn-danger" onclick="window.location.href='login/logout.php';">Cerrar Sesión</button>
+                </div>
+            <?php else: ?>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='login/login.php';">Iniciar Sesión</button>
+            <?php endif; ?>
         </div>
     </div>
 </nav>
@@ -110,13 +88,17 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                     <label for="categoria" class="form-label">Categoría</label>
                     <select name="categoria" id="categoria" class="form-select">
                         <option value="">Selecciona una categoría</option>
-                        <?php
-                        $categorias = ["Teclado", "Monitor", "Audifono", "Mouse", "Procesador", "Tarjeta de video", "Memoria Ram", "Placa Madre", "Fuente de Poder", "Gabinete", "Notebook"];
-                        foreach ($categorias as $cat) {
-                            $selected = ($cat == $categoria) ? "selected" : "";
-                            echo "<option value='$cat' $selected>$cat</option>";
-                        }
-                        ?>
+                        <option value="audifono">Audífono</option>
+                        <option value="cpu">Procesador</option>
+                        <option value="fuente">Fuente de Poder</option>
+                        <option value="gabinete">Gabinete</option>
+                        <option value="gpu">Tarjeta de Video</option>
+                        <option value="monitor">Monitor</option>
+                        <option value="mouse">Mouse</option>
+                        <option value="notebook">Notebook</option>
+                        <option value="placa">Placa Madre</option>
+                        <option value="ram">Memoria RAM</option>
+                        <option value="teclado">Teclado</option>
                     </select>
                 </div>
 
