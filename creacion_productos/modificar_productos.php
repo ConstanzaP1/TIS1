@@ -118,6 +118,14 @@ $resultCapacidadRam = mysqli_query($conexion, $queryCapacidadRam);
 $queryFormatoRam = "SELECT id_hardware, formato_ram FROM formato_ram";
 $resultFormatoRam = mysqli_query($conexion, $queryFormatoRam);
 
+//query ssd
+$queryBusSsd = "SELECT id_hardware, bus_ssd FROM bus_ssd";
+$resultBusSsd = mysqli_query($conexion, $queryBusSsd);
+
+$queryFormatoSsd = "SELECT id_hardware, formato_ssd FROM formato_ssd";
+$resultFormatoSsd = mysqli_query($conexion, $queryFormatoSsd);
+
+
 //query hdd
 $queryCapacidadAlmacenamiento = "SELECT id_hardware, capacidad_almacenamiento FROM capacidad_almacenamiento";
 $resultCapacidadAlmacenamiento = mysqli_query($conexion, $queryCapacidadAlmacenamiento);
@@ -645,6 +653,45 @@ $resultPantalla = mysqli_query($conexion, $queryPantalla);
                         <?php endwhile; ?>
                     </select>
                 </div>
+            <?php elseif ($producto['tipo_producto'] == 'ssd'): ?>
+                
+                <div class="col-md-6">
+                    <label for="capacidad_almacenamiento" class="form-label">Capacidad almacenamiento:</label>
+                    <select name="capacidad_almacenamiento" id="capacidad_almacenamiento" class="form-select" required>
+                        <option value="" selected disabled>Seleccione una opcion</option>
+                        <?php while ($row = mysqli_fetch_assoc($resultCapacidadAlmacenamiento)): ?>
+                            <option value="<?= $row['id_hardware'] ?>" <?= (isset($caracteristicas['capacidad_almacenamiento']) && $caracteristicas['capacidad_almacenamiento'] == $row['id_hardware']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($row['capacidad_almacenamiento']) ?>
+                            </option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="bus_ssd" class="form-label">Bus:</label>
+                    <select name="bus_ssd" id="bus_ssd" class="form-select" required>
+                        <option value="" selected disabled>Seleccione una opcion</option>
+                        <?php while ($row = mysqli_fetch_assoc($resultBusSsd)): ?>
+                            <option value="<?= $row['id_hardware'] ?>" <?= (isset($caracteristicas['bus_ssd']) && $caracteristicas['bus_ssd'] == $row['id_hardware']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($row['bus_ssd']) ?>
+                            </option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="formato_ssd" class="form-label">Formato:</label>
+                    <select name="formato_ssd" id="formato_ssd" class="form-select" required>
+                        <option value="" selected disabled>Seleccione una opcion</option>
+                        <?php while ($row = mysqli_fetch_assoc($resultFormatoSsd)): ?>
+                            <option value="<?= $row['id_hardware'] ?>" <?= (isset($caracteristicas['formato_ssd']) && $caracteristicas['formato_ssd'] == $row['id_hardware']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($row['formato_ssd']) ?>
+                            </option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+
+
             <?php elseif ($producto['tipo_producto'] == 'hdd'): ?>
                 
                 <div class="col-md-6">

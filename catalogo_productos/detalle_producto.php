@@ -272,6 +272,23 @@
                             WHERE pa.id_producto = '$id_producto'
                         ";
                             break;
+                    case 'ssd':
+                        $query_caracteristicas = "
+                            SELECT 
+                                CASE 
+                                    WHEN pa.caracteristica = 'capacidad_almacenamiento' THEN CONCAT('Capacidad almacenamiento: ', ca.capacidad_almacenamiento)
+                                    WHEN pa.caracteristica = 'bus_ssd' THEN CONCAT('Bus: ', bs.bus_ssd)
+                                    WHEN pa.caracteristica = 'formato_ssd' THEN CONCAT('Formato: ', fs.formato_ssd)
+                                    ELSE NULL
+                                END AS caracteristica
+                            FROM 
+                                producto_caracteristica pa
+                            LEFT JOIN capacidad_almacenamiento ca ON pa.valor_caracteristica = ca.id_hardware AND pa.caracteristica = 'capacidad_almacenamiento'
+                            LEFT JOIN bus_ssd bs ON pa.valor_caracteristica = bs.id_hardware AND pa.caracteristica = 'bus_ssd'
+                            LEFT JOIN formato_ssd fs ON pa.valor_caracteristica = fs.id_hardware AND pa.caracteristica = 'formato_ssd'
+                            WHERE pa.id_producto = '$id_producto'
+                        ";
+                            break;
                     case 'hdd':
                         $query_caracteristicas = "
                             SELECT 

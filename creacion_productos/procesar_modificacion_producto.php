@@ -70,6 +70,12 @@ if ($categoria_producto === 'teclado') {
         'capacidad_ram' => $_POST['capacidad_ram'],
         'formato_ram' => $_POST['formato_ram']
     ];
+} elseif ($categoria_producto === 'ssd') {
+    $caracteristicas = [
+        'capacidad_almacenamiento' => $_POST['capacidad_almacenamiento'],
+        'bus_ssd' => $_POST['bus_ssd'],
+        'formato_ssd' => $_POST['formato_ssd']
+    ];
 } elseif ($categoria_producto === 'hdd') {
     $caracteristicas = [
         'capacidad_almacenamiento' => $_POST['capacidad_almacenamiento'],
