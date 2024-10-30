@@ -115,10 +115,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                 <img class="logo img-fluid w-75" src="../logo.jpg" alt="">
             </div>
         </div>
-        <div class="row px-5 text-center d-flex justify-content-center">
-            <div class="col-10 col-md-5 mt-2">
-                <h2 class="text-center">Iniciar Sesión</h2>
-                <!-- Mostrar mensajes de éxito o error -->
+
+        <div class="contenedor__login-register">
+            
+            <form action="login.php" method="POST" class="formulario__login">
+                <h2>Iniciar Sesión</h2>
                 <?php if (!empty($error_message)): ?>
                     <div class="alert alert-danger"><?= $error_message ?></div>
                 <?php elseif (!empty($message)): ?>
@@ -138,7 +139,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
             </form>
         </div>
     </div>
-</main>
+</main></div>
+<div class="mainlogin2">
+<img src="../admin_panel/chiona3.0.svg" class="imagen-login" alt="">
+</div>
 
 <script src="../admin_panel/script.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
