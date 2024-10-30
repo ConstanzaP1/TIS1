@@ -3,10 +3,10 @@ require('../conexion.php');
 
 // Suponiendo que tu consulta selecciona datos de la tabla `bus_ssd`
 $query = "
-    SELECT p.id_hardware, bs.bus
+    SELECT p.id_hardware, bs.bus_ssd
     FROM hardware p
     LEFT JOIN bus_ssd bs ON p.id_hardware = bs.id_hardware
-    WHERE bs.bus IS NOT NULL
+    WHERE bs.bus_ssd IS NOT NULL
 ";
 
 $result = mysqli_query($conexion, $query);
@@ -72,11 +72,11 @@ $result = mysqli_query($conexion, $query);
     <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
         <h1 class="mb-4">Ingreso de Bus SSD</h1>
         <!-- Campo oculto para seleccionar automáticamente-->
-        <input type="hidden" name="tipo_hardware" value="bus" />
+        <input type="hidden" name="tipo_hardware" value="bus_sdd" />
 
         <div class="mb-3">
-            <label for="bus" class="form-label">Bus</label>
-            <input type="text" name="bus" class="form-control" id="bus" required>
+            <label for="bus_sdd" class="form-label">Bus</label>
+            <input type="text" name="bus_sdd" class="form-control" id="bus_sdd" required>
         </div>
         
         <!-- Contenedor para alinear los botones -->

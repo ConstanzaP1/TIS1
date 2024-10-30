@@ -181,12 +181,20 @@ $result_users = mysqli_query($conexion, $sql_users);
         <ul>
             <!-- Subcategoría: Almacenamiento -->
             <li>
-            <a href="#" class="sub-category-header">Almacenamiento</a>
+            <a href="#" class="sub-category-header">SSD</a>
+                        <ul class="sub-category-content" style="display: none;">
+                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
+                            <li><a href="../mantenedores_hardware/bus_ssd.php">Bus SSD</a></li>
+                            <li><a href="../mantenedores_hardware/formato_ssd.php">Formato SSD</a></li>
+
+                        </ul>
+                    </li>
+            </li>
+            <li>
+            <a href="#" class="sub-category-header">HDD</a>
                         <ul class="sub-category-content" style="display: none;">
                             <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
                             <li><a href="../mantenedores_hardware/bus_hdd.php">Bus HDD</a></li>
-                            <li><a href="../mantenedores_hardware/bus_ssd.php">Bus SSD</a></li>
-                            <li><a href="../mantenedores_hardware/formato_ssd.php">Formato SSD</a></li>
                             <li><a href="../mantenedores_hardware/rpm_hdd.php">RPM HDD</a></li>
                             <li><a href="../mantenedores_hardware/tamanio_hdd.php">Tamaño HDD</a></li>
                         </ul>
@@ -280,7 +288,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                 <a href="#" class="sub-category-header">Monitores</a>
                 <ul class="sub-category-content" style="display: none;">
                     <li><a href="../mantenedores_periferico/resolucion_monitor.php">Resolución Monitor</a></li>
-                    <li><a href="../mantenedores_periferico/tamano_monitor.php">Tamaño Monitor</a></li>
+                    <li><a href="../mantenedores_periferico/tamanio_monitor.php">Tamaño Monitor</a></li>
                     <li><a href="../mantenedores_periferico/tasa_refresco.php">Tasa de Refresco</a></li>
                     <li><a href="../mantenedores_periferico/tiempo_respuesta.php">Tiempo de Respuesta</a></li>
                     <li><a href="../mantenedores_periferico/soporte_monitor.php">Soporte Monitor</a></li>

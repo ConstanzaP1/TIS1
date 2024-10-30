@@ -72,11 +72,11 @@ $result = mysqli_query($conexion, $query);
     <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
         <h1 class="mb-4">Ingreso de Rpm HDD</h1>
         <!-- Campo oculto para seleccionar automáticamente-->
-        <input type="hidden" name="tipo_hardware" value="rpm" />
+        <input type="hidden" name="tipo_hardware" value="rpm_hdd" />
 
         <div class="mb-3">
-            <label for="rpm" class="form-label">Rpm</label>
-            <input type="text" name="rpm" class="form-control" id="rpm" required>
+            <label for="rpm_hdd" class="form-label">Rpm</label>
+            <input type="text" name="rpm_hdd" class="form-control" id="rpm_hdd" required>
         </div>
         
         <!-- Contenedor para alinear los botones -->

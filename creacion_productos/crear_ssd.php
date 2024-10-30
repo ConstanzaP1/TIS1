@@ -1,15 +1,15 @@
 <?php
 require('../conexion.php');
 
-// Consultas para obtener las opciones de los atributos específicos del CPU
-$queryFrecuenciaGpu = "SELECT id_hardware, frecuencia_gpu FROM frecuencia_gpu";
-$resultFrencuenciaGpu = mysqli_query($conexion, $queryFrecuenciaGpu);
+// Consultas para obtener las opciones de los atributos específicos del RAM
+$queryCapacidadAlmacenamiento = "SELECT id_hardware, capacidad_almacenamiento FROM capacidad_almacenamiento";
+$resultCapacidadAlmacenamiento = mysqli_query($conexion, $queryCapacidadAlmacenamiento);
 
-$queryMemoriaGpu = "SELECT id_hardware, memoria_gpu FROM memoria_gpu";
-$resultMemoriaGpu = mysqli_query($conexion, $queryMemoriaGpu);
+$queryBusSsd = "SELECT id_hardware, bus_ssd FROM bus_ssd";
+$resultBusSsd = mysqli_query($conexion, $queryBusSsd);
 
-$queryBusEntrada = "SELECT id_hardware, bus_de_entrada_gpu FROM bus_de_entrada_gpu";
-$resultBusEntrada = mysqli_query($conexion, $queryBusEntrada);
+$queryFormatoSsd = "SELECT id_hardware, formato_ssd FROM formato_sdd";
+$resultFormatoSsd = mysqli_query($conexion, $queryFormatoSsd);
 
 $queryMarca = "SELECT id_marca, nombre_marca FROM marca";
 $resultMarca = mysqli_query($conexion, $queryMarca);
@@ -20,14 +20,14 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear GPU</title>
+    <title>Crear SSD</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Ingreso de GPU</h1>
+    <h1 class="mb-4">Ingreso de RAM</h1>
     <form action="procesar_producto.php" method="POST">
-        <input type="hidden" name="categoria_producto" value="gpu">
+        <input type="hidden" name="categoria_producto" value="ram">
 
         <div class="mb-3">
             <label for="nombre_producto" class="form-label">Nombre del Producto</label>
@@ -60,36 +60,35 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         </div>
 
         <div class="mb-3">
-            <label for="frecuencia_gpu" class="form-label">Frecuencia de GPU</label>
-            <select name="frecuencia_gpu" class="form-select" required>
-                <option value="" selected disabled>Seleccione una frecuencia</option>
-                <?php while ($row = mysqli_fetch_assoc($resultFrencuenciaGpu)): ?>
-                    <option value="<?= $row['id_hardware'] ?>"><?= $row['frecuencia_gpu'] ?></option>
+            <label for="capacidad_almacenamiento" class="form-label">Capacidad de almacenamiento</label>
+            <select name="capacidad_almacenamiento" class="form-select" required>
+                <option value="" selected disabled>Seleccione una opcion</option>
+                <?php while ($row = mysqli_fetch_assoc($resultCapacidadAlmacenamiento)): ?>
+                    <option value="<?= $row['id_hardware'] ?>"><?= $row['capacidad_almacenamiento'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="memoria_gpu" class="form-label">Memoria GPU</label>
-            <select name="memoria_gpu" class="form-select" required>
-                <option value="" selected disabled>Seleccione una memoria</option>
-                <?php while ($row = mysqli_fetch_assoc($resultMemoriaGpu)): ?>
-                    <option value="<?= $row['id_hardware'] ?>"><?= $row['memoria_gpu'] ?></option>
+            <label for="bus_ssd" class="form-label">Bus</label>
+            <select name="bus_ssd" class="form-select" required>
+                <option value="" selected disabled>Seleccione una opcion</option>
+                <?php while ($row = mysqli_fetch_assoc($resultBusSsd)): ?>
+                    <option value="<?= $row['id_hardware'] ?>"><?= $row['bus_ssd'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="bus_de_entrada_gpu" class="form-label">Bus entrada</label>
-            <select name="bus_de_entrada_gpu" class="form-select" required>
-                <option value="" selected disabled>Seleccione una memoria</option>
-                <?php while ($row = mysqli_fetch_assoc($resultBusEntrada)): ?>
-                    <option value="<?= $row['id_hardware'] ?>"><?= $row['bus_de_entrada_gpu'] ?></option>
+            <label for="formato_ssd" class="form-label">Formato</label>
+            <select name="formato_ssd" class="form-select" required>
+                <option value="" selected disabled>Seleccione una opcion</option>
+                <?php while ($row = mysqli_fetch_assoc($resultFormatoSsd)): ?>
+                    <option value="<?= $row['id_hardware'] ?>"><?= $row['formato_ssd'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
-        
-        
+
         <button type="submit" class="btn btn-success">Guardar</button>
         <button type="button" class="btn btn-secondary" onclick="window.location.href='index_crear_producto.php';">Volver</button>
     </form>

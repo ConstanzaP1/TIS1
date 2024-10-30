@@ -72,11 +72,11 @@ $result = mysqli_query($conexion, $query);
     <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
         <h1 class="mb-4">Ingreso de Tamaño HDD</h1>
         <!-- Campo oculto para seleccionar automáticamente-->
-        <input type="hidden" name="tipo_hardware" value="tamanio" />
+        <input type="hidden" name="tipo_hardware" value="tamanio_hdd" />
 
         <div class="mb-3">
-            <label for="tamanio" class="form-label">Tamaño</label>
-            <input type="text" name="tamanio" class="form-control" id="tamanio" required>
+            <label for="tamanio_hdd" class="form-label">Tamaño</label>
+            <input type="text" name="tamanio_hdd" class="form-control" id="tamanio_hdd" required>
         </div>
         
         <!-- Contenedor para alinear los botones -->

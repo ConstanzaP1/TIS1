@@ -72,11 +72,11 @@ $result = mysqli_query($conexion, $query);
     <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
         <h1 class="mb-4">Ingreso de Bus HDD</h1>
         <!-- Campo oculto para seleccionar automáticamente-->
-        <input type="hidden" name="tipo_hardware" value="bus" />
+        <input type="hidden" name="tipo_hardware" value="bus_hdd" />
 
         <div class="mb-3">
-            <label for="bus" class="form-label">Bus</label>
-            <input type="text" name="bus" class="form-control" id="bus" required>
+            <label for="bus_hdd" class="form-label">Bus</label>
+            <input type="text" name="bus_hdd" class="form-control" id="bus_hdd" required>
         </div>
         
         <!-- Contenedor para alinear los botones -->

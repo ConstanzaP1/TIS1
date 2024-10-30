@@ -60,7 +60,8 @@ if ($categoria_producto === 'teclado') {
 } elseif ($categoria_producto === 'gpu') {
     $caracteristicas = [
         'frecuencia_gpu' => $_POST['frecuencia_gpu'],
-        'memoria_gpu' => $_POST['memoria_gpu']
+        'memoria_gpu' => $_POST['memoria_gpu'],
+        'bus_de_entrada_gpu' => $_POST['bus_de_entrada_gpu'],
     ];
 } elseif ($categoria_producto === 'ram') {
     $caracteristicas = [
