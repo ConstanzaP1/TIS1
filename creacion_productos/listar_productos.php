@@ -37,7 +37,7 @@
                             <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
                             <td>
                                 <a href="modificar_productos.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-warning btn-sm mx-1">Modificar</a>
-                                <a href="eliminar_producto.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-danger btn-sm mx-1">Eliminar</a>
+                                <a href="../catalogo_productos/eliminar_producto.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-danger btn-sm mx-1">Eliminar</a>
                             </td>
                         </tr>
                     <?php endwhile; ?>

@@ -20,6 +20,6 @@ if (isset($_GET['id_producto'])) {
     echo "ID de producto no especificado.";
 }
 ?>
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- Botón para regresar al catálogo de productos -->
 <button type="button" class="btn btn-primary" onclick="window.location.href='../index.php';">Volver al Catálogo</button>
