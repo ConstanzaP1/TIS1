@@ -65,3 +65,10 @@ function register() {
     caja_trasera_login.style.opacity = "1";
     caja_trasera_register.style.opacity = "0";
 }
+document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        header.classList.toggle('active');
+    });
+});

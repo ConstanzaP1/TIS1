@@ -77,12 +77,15 @@
     backdrop-filter: blur(10px);
     background-color: rgba(0, 128, 255, 0.5);
     align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 2%;
 }
 
 .caja__trasera div {
     margin: 100px 40px;
     color: white;
     transition: all 500ms;
+
 }
 
 .caja__trasera button {
@@ -161,12 +164,13 @@
     opacity: 1;
     display: block;
     transition: opacity 0.5s ease;
-}
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);}
 
 .formulario__register {
     display: none;
     opacity: 0;
     transition: opacity 0.5s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* Ajustes responsivos para pantallas pequeñas */
@@ -226,4 +230,23 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+.accordion-item {
+    margin-bottom: 5px;
+}
+
+.accordion-header {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #e9ecef;
+    border: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.accordion-content {
+    display: none;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-top: none;
+    background: #f1f1f1;
 }

@@ -4,10 +4,10 @@ require('../conexion.php');
 // Consulta para obtener datos de la tabla bus_de_entrada_gpu que no sean NULL
 $query = "
     SELECT p.id_hardware, 
-           bus_de_entrada_gpu.bus_de_entrada_gpu
+           beg.bus_de_entrada_gpu
     FROM hardware p
-    LEFT JOIN bus_de_entrada_gpu ON p.id_hardware = bus_de_entrada_gpu.id_hardware
-    WHERE bus_de_entrada_gpu.bus_de_entrada_gpu IS NOT NULL
+    LEFT JOIN bus_de_entrada_gpu beg ON p.id_hardware = beg.id_hardware
+    WHERE beg.bus_de_entrada_gpu IS NOT NULL
 ";
 
 $result = mysqli_query($conexion, $query);
@@ -70,9 +70,9 @@ $result = mysqli_query($conexion, $query);
 
     <!-- Formulario oculto inicialmente -->
     <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
-        <h1 class="mb-4">Ingreso de Bus de Entrada Gpu</h1>
+        <h1 class="mb-4">Ingreso de Bus de Entrada Gpu </h1>
         <!-- Campo oculto para seleccionar automáticamente-->
-        <input type="hidden" name="tipo_hardware" value="bus_de_entrada_gpu" />
+        <input type="hidden" name="tipo_hardware" value="bus_de_entrada_gpu">
 
         <div class="mb-3">
             <label for="bus_de_entrada_gpu" class="form-label">Bus de Entrada Gpu</label>
@@ -85,7 +85,7 @@ $result = mysqli_query($conexion, $query);
             <button type="submit" class="btn btn-success">Guardar</button>
             
             <!-- Botón para volver al inicio al lado del botón de guardar -->
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver a Inicio</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='../admin_panel.php';">Volver a Inicio</button>
         </div>
     </form>
 </div>

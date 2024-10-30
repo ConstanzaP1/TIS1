@@ -364,7 +364,6 @@ $result_users = mysqli_query($conexion, $sql_users);
         <div class="accordion-content">
             <ul>
                 <li><a href="../creacion_productos/index_crear_producto.php">Crear producto</a></li>
-                <li><a href="../index.php">Catalogo productos</a></li>
                 <li><a href="../creacion_productos/listar_productos.php">Modificar productos</a></li>
             </ul>
         </div>
@@ -379,7 +378,41 @@ $result_users = mysqli_query($conexion, $sql_users);
         padding-left: 20px; /* Indentación para la subcategoría */
     }
 </style>
-
+<div class="accordion-item">
+    <div class="accordion-header">Registrar Usuario</div>
+    <div class="accordion-content">
+        <form method="POST" action="">
+            <div class="mb-1 mt-1">
+                <label for="username" class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" name="username" required>
+            </div>
+            <div class="mb-1 mt-1">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="mb-1 mt-1">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <div class="mb-1 mt-1">
+                <label for="role" class="form-label">Rol</label>
+                <select name="role" class="form-select">
+                    <option value="user">Usuario</option>
+                    <option value="admin">Administrador</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </form>
+        <div class="message">
+            <?php if (!empty($message)): ?>
+                <div class="alert alert-success"><?php echo $message; ?></div>
+            <?php endif; ?>
+            <?php if (!empty($error_message)): ?>
+                <div class="alert alert-danger"><?php echo $error_message; ?></div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
 
 
 
@@ -391,46 +424,13 @@ $result_users = mysqli_query($conexion, $sql_users);
         });
     });
 </script>
-
+<hr><a href="../index.php" class="btn btn-primary">Catálogo productos</a>
 
         <a href="?logout" class="btn btn-danger logout">Cerrar Sesión</a>
     </aside>
 
-    <div id="content">
-        
-        <div class="registro">
-    <h2>Registrar Usuario</h2>
-    <form method="POST" action="">
-        <div class="mb-1 mt-1">
-            <label for="username" class="form-label">Nombre de Usuario</label>
-            <input type="text" class="form-control" name="username" required>
-        </div>
-        <div class="mb-1 mt-1">
-            <label for="email" class="form-label">Correo Electrónico</label>
-            <input type="email" class="form-control" name="email" required>
-        </div>
-        <div class="mb-1 mt-1">
-            <label for="password" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" name="password" required>
-        </div>
-        <div class="mb-1 mt-1">
-            <label for="role" class="form-label">Rol</label>
-            <select name="role" class="form-select">
-                <option value="user">Usuario</option>
-                <option value="admin">Administrador</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Registrar</button>
-    </form>
-    <div class="message">
-        <?php if (!empty($message)): ?>
-            <div class="alert alert-success"><?php echo $message; ?></div>
-        <?php endif; ?>
-        <?php if (!empty($error_message)): ?>
-            <div class="alert alert-danger"><?php echo $error_message; ?></div>
-        <?php endif; ?>
-    </div>
-</div>
+
+
 
 <style>
     .registro {
