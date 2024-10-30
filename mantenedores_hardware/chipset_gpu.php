@@ -38,11 +38,11 @@ $result = mysqli_query($conexion, $query);
     <div id="tabla">
         <div class="row">
             <div class="col">
-                <h2>chipset GPU</h2>
+                <h2>Chipset gpu</h2>
                 <table class="table table-bordered mt-4">
                     <thead>
                         <tr>
-                            <th>chipset GPU</th>
+                            <th>Chipset gpu</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -70,12 +70,12 @@ $result = mysqli_query($conexion, $query);
 
     <!-- Formulario oculto inicialmente -->
     <form action="ingresar_hardware.php" method="POST" id="formulario" style="display: none;" class="mt-4">
-        <h1 class="mb-4">Ingreso de chipset GPU</h1>
+        <h1 class="mb-4">Ingreso de Chipset gpu </h1>
         <!-- Campo oculto para seleccionar automáticamente-->
         <input type="hidden" name="tipo_hardware" value="chipset_gpu">
 
         <div class="mb-3">
-            <label for="chipset_gpu" class="form-label">chipset GPU</label>
+            <label for="chipset_gpu" class="form-label">Chipset gpu</label>
             <input type="text" name="chipset_gpu" class="form-control" id="chipset_gpu" required>
         </div>
         
@@ -85,7 +85,7 @@ $result = mysqli_query($conexion, $query);
             <button type="submit" class="btn btn-success">Guardar</button>
             
             <!-- Botón para volver al inicio al lado del botón de guardar -->
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver a Inicio</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='../admin_panel.php';">Volver a Inicio</button>
         </div>
     </form>
 </div>

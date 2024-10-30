@@ -2,7 +2,6 @@
 
 namespace Transbank\Patpass\PatpassByWebpay;
 
-use Transbank\Patpass\PatpassByWebpay;
 use Transbank\Patpass\PatpassByWebpay\Exceptions\TransactionCommitException;
 use Transbank\Patpass\PatpassByWebpay\Exceptions\TransactionCreateException;
 use Transbank\Patpass\PatpassByWebpay\Exceptions\TransactionStatusException;
@@ -36,12 +35,7 @@ class Transaction
         try {
             $response = $this->sendRequest('POST', $endpoint, $payload);
         } catch (WebpayRequestException $exception) {
-            throw new TransactionCreateException($exception->getMessage(),
-                $exception->getTransbankErrorMessage(),
-                $exception->getHttpCode(),
-                $exception->getFailedRequest(),
-                $exception
-            );
+            throw TransactionCreateException::raise($exception);
         }
 
         return new TransactionCreateResponse($response);
@@ -53,14 +47,9 @@ class Transaction
         $endpoint = static::COMMIT_TRANSACTION_ENDPOINT;
 
         try {
-            $response = $this->sendRequest('PUT', $endpoint.'/'.$token, $payload);
+            $response = $this->sendRequest('PUT', $endpoint, $payload);
         } catch (WebpayRequestException $exception) {
-            throw new TransactionCommitException($exception->getMessage(),
-                $exception->getTransbankErrorMessage(),
-                $exception->getHttpCode(),
-                $exception->getFailedRequest(),
-                $exception
-            );
+            throw TransactionCommitException::raise($exception);
         }
 
         return new TransactionCommitResponse($response);
@@ -74,29 +63,9 @@ class Transaction
         try {
             $response = $this->sendRequest('GET', $endpoint, $payload);
         } catch (WebpayRequestException $exception) {
-            throw new TransactionStatusException($exception->getMessage(),
-                $exception->getTransbankErrorMessage(),
-                $exception->getHttpCode(),
-                $exception->getFailedRequest(),
-                $exception
-            );
+            throw TransactionStatusException::raise($exception);
         }
 
         return new TransactionStatusResponse($response);
-    }
-
-    /**
-     * Get the default options if none are given.
-     *
-     * @return Transbank\Patpass\Options|null
-     */
-    public static function getGlobalOptions()
-    {
-        return PatpassByWebpay::getOptions();
-    }
-
-    public static function getDefaultOptions()
-    {
-        return PatpassByWebpay::getDefaultOptions();
     }
 }

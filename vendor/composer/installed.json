@@ -622,32 +622,32 @@
         },
         {
             "name": "transbank/transbank-sdk",
-            "version": "4.0.0",
-            "version_normalized": "4.0.0.0",
+            "version": "2.0",
+            "version_normalized": "2.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TransbankDevelopers/transbank-sdk-php.git",
-                "reference": "0f25b383d6162ccdc9f7676a8e44fde874694873"
+                "reference": "3358b277154b293aa7344a8a32bf46b4d3929e3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TransbankDevelopers/transbank-sdk-php/zipball/0f25b383d6162ccdc9f7676a8e44fde874694873",
-                "reference": "0f25b383d6162ccdc9f7676a8e44fde874694873",
+                "url": "https://api.github.com/repos/TransbankDevelopers/transbank-sdk-php/zipball/3358b277154b293aa7344a8a32bf46b4d3929e3f",
+                "reference": "3358b277154b293aa7344a8a32bf46b4d3929e3f",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "guzzlehttp/guzzle": "^5.3.1|^6.5.8|^7.4.5",
-                "php": ">=7.0"
+                "guzzlehttp/guzzle": "^5|^6|^7",
+                "php": ">=5.6.0"
             },
             "require-dev": {
                 "dms/phpunit-arraysubset-asserts": "^0.2.1",
                 "phpunit/phpunit": "^9",
                 "squizlabs/php_codesniffer": "~2.0"
             },
-            "time": "2023-12-12T18:01:53+00:00",
+            "time": "2021-04-13T22:11:34+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -670,7 +670,7 @@
             ],
             "support": {
                 "issues": "https://github.com/TransbankDevelopers/transbank-sdk-php/issues",
-                "source": "https://github.com/TransbankDevelopers/transbank-sdk-php/tree/4.0.0"
+                "source": "https://github.com/TransbankDevelopers/transbank-sdk-php/tree/2.0"
             },
             "install-path": "../transbank/transbank-sdk"
         }

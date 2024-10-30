@@ -5,7 +5,6 @@ namespace Transbank\Webpay\WebpayPlus\Responses;
 use Transbank\Utils\HasTransactionStatus;
 use Transbank\Utils\ResponseCodesEnum;
 use Transbank\Utils\TransactionStatusEnum;
-use Transbank\Utils\Utils;
 
 class TransactionStatusResponse
 {
@@ -14,7 +13,7 @@ class TransactionStatusResponse
 
     public function __construct($json)
     {
-        $this->vci = Utils::returnValueIfExists($json, 'vci');
+        $this->vci = isset($json['vci']) ? $json['vci'] : null;
         $this->setTransactionStatusFields($json);
     }
 
@@ -25,20 +24,8 @@ class TransactionStatusResponse
      */
     public function isApproved()
     {
-        if($this->getResponseCode() !== ResponseCodesEnum::RESPONSE_CODE_APPROVED) {
-            return false;
-        }
-
-        switch($this->getStatus()) {
-            case TransactionStatusEnum::STATUS_CAPTURED:
-            case TransactionStatusEnum::STATUS_REVERSED:
-            case TransactionStatusEnum::STATUS_NULLIFIED:
-            case TransactionStatusEnum::STATUS_AUTHORIZED:
-            case TransactionStatusEnum::STATUS_PARTIALLY_NULLIFIED:
-                return true;
-            default :
-                return false;
-        }
+        return $this->getResponseCode() === ResponseCodesEnum::RESPONSE_CODE_APPROVED &&
+            $this->getStatus() !== TransactionStatusEnum::STATUS_FAILED;
     }
 
     /**

@@ -1,5 +1,6 @@
 {
     "require": {
-        "transbank/transbank-sdk": "^4.0"
+        "transbank/transbank-sdk": "2.0",
+        "guzzlehttp/guzzle": "^7.9"
     }
 }

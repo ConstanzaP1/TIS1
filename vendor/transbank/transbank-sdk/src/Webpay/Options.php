@@ -34,24 +34,24 @@ class Options
 
     public function __construct($apiKey, $commerceCode, $integrationType = self::ENVIRONMENT_INTEGRATION)
     {
-        $this->apiKey = $apiKey;
-        $this->commerceCode = $commerceCode;
-        $this->integrationType = $integrationType;
+        $this->setApiKey($apiKey);
+        $this->setCommerceCode($commerceCode);
+        $this->setIntegrationType($integrationType);
     }
 
     public static function forProduction($commerceCode, $apiKey)
     {
-        return new static($apiKey, $commerceCode, static::ENVIRONMENT_PRODUCTION);
+        return new static($apiKey, $commerceCode, self::ENVIRONMENT_PRODUCTION);
     }
 
     public static function forIntegration($commerceCode, $apiKey = Options::DEFAULT_API_KEY)
     {
-        return new static($apiKey, $commerceCode, static::ENVIRONMENT_INTEGRATION);
+        return new static($apiKey, $commerceCode, self::ENVIRONMENT_INTEGRATION);
     }
 
     public function isProduction()
     {
-        return $this->getIntegrationType() === static::ENVIRONMENT_PRODUCTION;
+        return $this->getIntegrationType() === self::ENVIRONMENT_PRODUCTION;
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Transbank\Utils;
 
+use Transbank\Webpay\WebpayPlus\Responses\TransactionStatusResponse;
+
 trait HasTransactionStatus
 {
     public $status;
@@ -22,7 +24,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $amount
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setAmount($amount)
     {
@@ -34,7 +36,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $buyOrder
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setBuyOrder($buyOrder)
     {
@@ -62,7 +64,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $cardNumber
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setCardNumber($cardNumber)
     {
@@ -92,13 +94,13 @@ trait HasTransactionStatus
      */
     public function getResponseCode()
     {
-        return $this->responseCode;
+        return (int) $this->responseCode;
     }
 
     /**
      * @param mixed $status
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setStatus($status)
     {
@@ -110,7 +112,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $sessionId
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setSessionId($sessionId)
     {
@@ -122,7 +124,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $paymentTypeCode
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setPaymentTypeCode($paymentTypeCode)
     {
@@ -134,7 +136,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $installmentsAmount
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setInstallmentsAmount($installmentsAmount)
     {
@@ -146,7 +148,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $accountingDate
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setAccountingDate($accountingDate)
     {
@@ -166,7 +168,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $responseCode
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setResponseCode($responseCode)
     {
@@ -188,21 +190,20 @@ trait HasTransactionStatus
      */
     public function setTransactionStatusFields($json)
     {
-        $this->amount =  Utils::returnValueIfExists($json, 'amount');
-        $this->status = Utils::returnValueIfExists($json, 'status');
-        $this->buyOrder = Utils::returnValueIfExists($json, 'buy_order');
-        $this->sessionId = Utils::returnValueIfExists($json, 'session_id');
-        $this->cardDetail = Utils::returnValueIfExists($json, 'card_detail');
-        $this->cardNumber = Utils::returnValueIfExists($this->cardDetail, 'card_number');
-        $this->accountingDate = Utils::returnValueIfExists($json, 'accounting_date');
-        $this->transactionDate = Utils::returnValueIfExists($json, 'transaction_date');
-        $this->authorizationCode = Utils::returnValueIfExists($json, 'authorization_code');
-        $this->paymentTypeCode = Utils::returnValueIfExists($json, 'payment_type_code');
-        $this->responseCode = Utils::returnValueIfExists($json, 'response_code');
-        $this->installmentsAmount = Utils::returnValueIfExists($json, 'installments_amount');
-        $this->installmentsNumber = Utils::returnValueIfExists($json, 'installments_number');
-        $this->balance = Utils::returnValueIfExists($json, 'balance');
-
+        $this->amount = isset($json['amount']) ? $json['amount'] : null;
+        $this->status = isset($json['status']) ? $json['status'] : null;
+        $this->buyOrder = isset($json['buy_order']) ? $json['buy_order'] : null;
+        $this->sessionId = isset($json['session_id']) ? $json['session_id'] : null;
+        $this->cardDetail = isset($json['card_detail']) ? $json['card_detail'] : null;
+        $this->cardNumber = isset($json['card_detail']['card_number']) ? $json['card_detail']['card_number'] : null;
+        $this->accountingDate = isset($json['accounting_date']) ? $json['accounting_date'] : null;
+        $this->transactionDate = isset($json['transaction_date']) ? $json['transaction_date'] : null;
+        $this->authorizationCode = isset($json['authorization_code']) ? $json['authorization_code'] : null;
+        $this->paymentTypeCode = isset($json['payment_type_code']) ? $json['payment_type_code'] : null;
+        $this->responseCode = isset($json['response_code']) ? $json['response_code'] : null;
+        $this->installmentsAmount = isset($json['installments_amount']) ? $json['installments_amount'] : null;
+        $this->installmentsNumber = isset($json['installments_number']) ? $json['installments_number'] : null;
+        $this->balance = isset($json['balance']) ? $json['balance'] : null;
     }
 
     /**
@@ -224,7 +225,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $transactionDate
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setTransactionDate($transactionDate)
     {
@@ -276,7 +277,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $installmentsNumber
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setInstallmentsNumber($installmentsNumber)
     {
@@ -296,7 +297,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $balance
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setBalance($balance)
     {
@@ -308,7 +309,7 @@ trait HasTransactionStatus
     /**
      * @param mixed $authorizationCode
      *
-     * @return static
+     * @return TransactionStatusResponse
      */
     public function setAuthorizationCode($authorizationCode)
     {
