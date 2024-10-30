@@ -88,7 +88,7 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                     <select name="categoria" id="categoria" class="form-select">
                         <option value="">Selecciona una categoría</option>
                         <?php
-                        $categorias = ["Teclado", "Monitor", "Audifono", "Mouse", "Procesador", "Tarjeta de video", "Memoria Ram", "Placa Madre", "Fuente de Poder", "Gabinete", "Notebook"];
+                        $categorias = ["Teclado", "Monitor", "Audifono", "Mouse", "Procesador", "Tarjeta de video", "Memoria Ram", "Placa", "Fuente de Poder", "Gabinete", "Notebook"];
                         foreach ($categorias as $cat) {
                             $selected = ($cat == $categoria) ? "selected" : "";
                             echo "<option value='$cat' $selected>$cat</option>";
