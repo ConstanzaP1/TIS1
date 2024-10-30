@@ -108,11 +108,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../admin_panel/style.css">
 </head>
-<body>
-    <div class="container">
-        <div class="row text-center d-flex justify-content-center py-1">
-            <div class="col-6">  
-                <img class="logo img-fluid w-75" src="../logo.jpg" alt="">
+<body class="bodylogin">
+<div class="mainlogin">
+<main>
+    <button class="boton__volver" onclick="history.back()">Volver Atrás</button>
+    <div class="contenedor__todo">
+        
+        <div class="caja__trasera">
+            <div class="caja__trasera-login">
+                <h3>¿Ya tienes una cuenta?</h3>
+                <p>Inicia sesión para acceder</p>
+                <button id="btn__iniciar-sesion">Iniciar Sesión</button>
+            </div>
+            <div class="caja__trasera-register">
+                <h3>¿Aún no tienes cuenta?</h3>
+                <p>Regístrate para que puedas iniciar sesión</p>
+                <button id="btn__registrarse">Registrarse</button>
             </div>
         </div>
 
