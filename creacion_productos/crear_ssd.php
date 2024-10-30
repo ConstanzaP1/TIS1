@@ -8,7 +8,7 @@ $resultCapacidadAlmacenamiento = mysqli_query($conexion, $queryCapacidadAlmacena
 $queryBusSsd = "SELECT id_hardware, bus_ssd FROM bus_ssd";
 $resultBusSsd = mysqli_query($conexion, $queryBusSsd);
 
-$queryFormatoSsd = "SELECT id_hardware, formato_ssd FROM formato_sdd";
+$queryFormatoSsd = "SELECT id_hardware, formato_ssd FROM formato_ssd";
 $resultFormatoSsd = mysqli_query($conexion, $queryFormatoSsd);
 
 $queryMarca = "SELECT id_marca, nombre_marca FROM marca";
@@ -25,9 +25,9 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Ingreso de RAM</h1>
+    <h1 class="mb-4">Ingreso de SSD</h1>
     <form action="procesar_producto.php" method="POST">
-        <input type="hidden" name="categoria_producto" value="ram">
+        <input type="hidden" name="categoria_producto" value="ssd">
 
         <div class="mb-3">
             <label for="nombre_producto" class="form-label">Nombre del Producto</label>

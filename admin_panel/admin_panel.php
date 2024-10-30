@@ -386,7 +386,7 @@ $result_users = mysqli_query($conexion, $sql_users);
         padding-left: 20px; /* Indentación para la subcategoría */
     }
 </style>
-<div class="accordion-item">
+<div class="accordion-item mt-2">
     <div class="accordion-header">Registrar Usuario</div>
     <div class="accordion-content">
         <form method="POST" action="">

@@ -221,12 +221,14 @@
                                 CASE 
                                     WHEN pa.caracteristica = 'frecuencia_gpu' THEN CONCAT('Frecuencia: ', fg.frecuencia_gpu)
                                     WHEN pa.caracteristica = 'memoria_gpu' THEN CONCAT('Memoria: ', mg.memoria_gpu)
+                                    WHEN pa.caracteristica = 'bus_de_entrada_gpu' THEN CONCAT('Bus: ', bg.bus_de_entrada_gpu)
                                     ELSE NULL
                                 END AS caracteristica
                             FROM 
                                 producto_caracteristica pa
                             LEFT JOIN frecuencia_gpu fg ON pa.valor_caracteristica = fg.id_hardware AND pa.caracteristica = 'frecuencia_gpu'
                             LEFT JOIN memoria_gpu mg ON pa.valor_caracteristica = mg.id_hardware AND pa.caracteristica = 'memoria_gpu'
+                            LEFT JOIN bus_de_entrada_gpu bg ON pa.valor_caracteristica = bg.id_hardware AND pa.caracteristica = 'bus_de_entrada_gpu'
                             WHERE pa.id_producto = '$id_producto'
                         ";
                             break;
@@ -267,6 +269,25 @@
                             LEFT JOIN velocidad_ram vr ON pa.valor_caracteristica = vr.id_hardware AND pa.caracteristica = 'velocidad_ram'
                             LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
                             LEFT JOIN formato_ram fr ON pa.valor_caracteristica = fr.id_hardware AND pa.caracteristica = 'formato_ram'
+                            WHERE pa.id_producto = '$id_producto'
+                        ";
+                            break;
+                    case 'hdd':
+                        $query_caracteristicas = "
+                            SELECT 
+                                CASE 
+                                    WHEN pa.caracteristica = 'capacidad_almacenamiento' THEN CONCAT('Capacidad almacenamiento: ', ca.capacidad_almacenamiento)
+                                    WHEN pa.caracteristica = 'bus_hdd' THEN CONCAT('Bus: ', bh.bus_hdd)
+                                    WHEN pa.caracteristica = 'rpm_hdd' THEN CONCAT('Velocidad (RPM): ', rh.rpm_hdd)
+                                    WHEN pa.caracteristica = 'tamanio_hdd' THEN CONCAT('Tamaño: ', th.tamanio_hdd)
+                                    ELSE NULL
+                                END AS caracteristica
+                            FROM 
+                                producto_caracteristica pa
+                            LEFT JOIN capacidad_almacenamiento ca ON pa.valor_caracteristica = ca.id_hardware AND pa.caracteristica = 'capacidad_almacenamiento'
+                            LEFT JOIN bus_hdd bh ON pa.valor_caracteristica = bh.id_hardware AND pa.caracteristica = 'bus_hdd'
+                            LEFT JOIN rpm_hdd rh ON pa.valor_caracteristica = rh.id_hardware AND pa.caracteristica = 'rpm_hdd'
+                            LEFT JOIN tamanio_hdd th ON pa.valor_caracteristica = th.id_hardware AND pa.caracteristica = 'tamanio_hdd'
                             WHERE pa.id_producto = '$id_producto'
                         ";
                             break;
@@ -352,12 +373,7 @@
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
-                        echo "
-                                <form method='POST' action='../cotizador/agregar_al_cotizador.php'>
-                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <button type='submit' name='agregar_cotizador' class='btn btn-secondary'>Agregar al Comparador</button>
-                                </form>
-                                ";
+
                                 
                                 // Asegurarse de que el parámetro id_producto está definido antes de construir el enlace
                                 if (isset($_GET['id_producto'])) {

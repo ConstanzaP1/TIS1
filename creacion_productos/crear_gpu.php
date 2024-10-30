@@ -82,7 +82,7 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         <div class="mb-3">
             <label for="bus_de_entrada_gpu" class="form-label">Bus entrada</label>
             <select name="bus_de_entrada_gpu" class="form-select" required>
-                <option value="" selected disabled>Seleccione una memoria</option>
+                <option value="" selected disabled>Seleccione una opcion</option>
                 <?php while ($row = mysqli_fetch_assoc($resultBusEntrada)): ?>
                     <option value="<?= $row['id_hardware'] ?>"><?= $row['bus_de_entrada_gpu'] ?></option>
                 <?php endwhile; ?>

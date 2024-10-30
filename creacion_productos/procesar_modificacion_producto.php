@@ -70,7 +70,14 @@ if ($categoria_producto === 'teclado') {
         'capacidad_ram' => $_POST['capacidad_ram'],
         'formato_ram' => $_POST['formato_ram']
     ];
-} elseif ($categoria_producto === 'placa') {
+} elseif ($categoria_producto === 'hdd') {
+    $caracteristicas = [
+        'capacidad_almacenamiento' => $_POST['capacidad_almacenamiento'],
+        'bus_hdd' => $_POST['bus_hdd'],
+        'rpm_hdd' => $_POST['rpm_hdd'],
+        'tamanio_hdd' => $_POST['tamanio_hdd']
+    ];
+}elseif ($categoria_producto === 'placa') {
     $caracteristicas = [
         'formato_placa' => $_POST['formato_placa'],
         'slot_memoria_placa' => $_POST['slot_memoria_placa'],

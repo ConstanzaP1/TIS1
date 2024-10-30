@@ -86,6 +86,7 @@ if (mysqli_query($conexion, $query_producto)) {
         if (isset($_POST['formato_ssd'])) $caracteristicas['formato_ssd'] = $_POST['iluminacion'];
 
     } elseif ($categoria_producto == 'hdd') {
+        if (isset($_POST['capacidad_almacenamiento'])) $caracteristicas['capacidad_almacenamiento'] = $_POST['capacidad_almacenamiento'];
         if (isset($_POST['bus_hdd'])) $caracteristicas['bus_hdd'] = $_POST['bus_hdd'];
         if (isset($_POST['rpm_hdd'])) $caracteristicas['rpm_hdd'] = $_POST['rpm_hdd'];
         if (isset($_POST['tamanio_hdd'])) $caracteristicas['tamanio_hdd'] = $_POST['tamanio_hdd'];
