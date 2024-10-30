@@ -352,6 +352,12 @@
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
+                        echo "
+                                <form method='POST' action='../cotizador/agregar_al_cotizador.php'>
+                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
+                                    <button type='submit' name='agregar_cotizador' class='btn btn-secondary'>Agregar al Comparador</button>
+                                </form>
+                                ";
                                 
                                 // Asegurarse de que el parámetro id_producto está definido antes de construir el enlace
                                 if (isset($_GET['id_producto'])) {
@@ -369,6 +375,12 @@
                                     <label>Cantidad:</label>
                                     <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
+                                </form>
+                                ";
+                        echo "
+                                <form method='POST' action='../cotizador/agregar_al_cotizador.php'>
+                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
+                                    <button type='submit' name='agregar_cotizador' class='btn btn-secondary'>Agregar al Comparador</button>
                                 </form>
                                 ";
                     }
