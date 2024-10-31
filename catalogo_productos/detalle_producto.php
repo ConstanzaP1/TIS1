@@ -434,12 +434,7 @@
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
-                            echo "
-                                <form method='POST' action='../cotizador/agregar_al_cotizador.php'>
-                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <button type='submit' name='agregar_cotizador' class='btn btn-secondary'>Agregar al Comparador</button>
-                                </form>
-                                ";
+                            
                         }
                         
                         echo "<a href='../index.php' class='btn btn-secondary mt-3'>Volver al Catálogo</a>
