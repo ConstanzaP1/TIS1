@@ -5,10 +5,23 @@ use Transbank\Webpay\WebpayPlus\Transaction;
 
 // Configurar Transbank para el entorno de integración
 Transbank\Webpay\WebpayPlus::configureForTesting();
+require('../conexion.php'); // Conexión a la base de datos
 
 // Inicializar el carrito si no existe
 if (!isset($_SESSION['carrito'])) {
     $_SESSION['carrito'] = [];
+}
+
+// Aquí asumo que el ID del usuario está almacenado en la sesión
+$id_usuario = $_SESSION['id_usuario'] ?? null;
+
+// Cargar el carrito desde la base de datos al iniciar sesión
+if ($id_usuario) {
+    $query = "SELECT productos FROM carrito WHERE id_usuario = '$id_usuario' LIMIT 1";
+    $result = mysqli_query($conexion, $query);
+    if ($row = mysqli_fetch_assoc($result)) {
+        $_SESSION['carrito'] = json_decode($row['productos'], true); // Cargar el carrito
+    }
 }
 
 // Agregar productos al carrito
@@ -44,7 +57,7 @@ if (isset($_POST['pagar'])) {
             session_id(), // ID de sesión
             uniqid(), // Orden de compra única
             $total, // Monto total
-            'http://localhost/xampp/TIS1/TIS1/index.php', // URL de éxito
+            'http://localhost/xampp/TIS1/TIS1/carrito/carrito.php', // URL de éxito
             'http://localhost/xampp/TIS1/TIS1/carrito/carrito.php' // URL de fallo
         );
         header("Location: " . $response->getUrl() . "?token_ws=" . $response->getToken());
@@ -61,13 +74,36 @@ if (isset($_GET['token_ws'])) {
     try {
         $response = $transaction->commit($token);
         if ($response->isApproved()) {
+            // Guardar detalles de la compra en la base de datos
+            $productos_comprados = json_encode($_SESSION['carrito']); // Guardar los productos como JSON
+            if ($id_usuario) {
+                $query = "INSERT INTO historial_de_compras (id_usuario, productos, total) VALUES ('$id_usuario', '$productos_comprados', '$total')";
+                mysqli_query($conexion, $query);
+                
+                // Actualizar la cantidad de cada producto en la base de datos
+                foreach ($_SESSION['carrito'] as $id_producto => $cantidad) {
+                    $id_producto = mysqli_real_escape_string($conexion, $id_producto); // Sanitizar ID del producto
+                   
+                    $query = "UPDATE producto SET cantidad = cantidad - $cantidad WHERE id_producto = '$id_producto'";
+                    mysqli_query($conexion, $query);
+                }
+                
+                // Guardar el carrito en la base de datos
+                $query = "INSERT INTO carrito (id_usuario, productos) VALUES ('$id_usuario', '$productos_comprados')
+                          ON DUPLICATE KEY UPDATE productos = '$productos_comprados'";
+                mysqli_query($conexion, $query);
+            }
+
             echo "<div class='alert alert-success text-center' role='alert'>";
             echo "<h1 class='alert-heading'>¡Pago Exitoso!</h1>";
             echo "<p>Tu pago ha sido aprobado. Código de autorización: <strong>" . $response->getAuthorizationCode() . "</strong></p>";
             echo "<hr>";
             echo "<p class='mb-0'>Gracias por tu compra. Puedes volver al <a href='../index.php' class='alert-link'>catálogo</a>.</p>";
             echo "</div>";
-            unset($_SESSION['carrito']); // Vaciar el carrito
+            
+            // Vaciar el carrito
+            unset($_SESSION['carrito']); // Esto se asegura de que el carrito se vacíe
+
         } else {
             echo "<div class='alert alert-danger text-center' role='alert'>";
             echo "<h1 class='alert-heading'>Pago Rechazado</h1>";
@@ -132,7 +168,6 @@ if (isset($_GET['token_ws'])) {
             <tbody>
                 <?php
                 $total = 0; // Inicializar total
-                require('../conexion.php'); // Asegúrate de incluir tu archivo de conexión aquí
                 foreach ($_SESSION['carrito'] as $id_producto => $cantidad):
                     $id_producto = mysqli_real_escape_string($conexion, $id_producto); // Sanitizar ID del producto
                     $query = "SELECT nombre_producto, imagen_url, precio FROM producto WHERE id_producto = '$id_producto'";
@@ -148,8 +183,8 @@ if (isset($_GET['token_ws'])) {
                         <td>
                             <form method="POST" action="carrito.php" class="form-inline">
                                 <input type="hidden" name="id_producto" value="<?php echo $id_producto; ?>">
-                                <input type="number" name="cantidad" value="<?php echo $cantidad; ?>" min="1" class="form-control w-25 mb-3" onchange="this.form.submit()">
-                                <button type="submit" name="editar_carrito" class="btn btn-actualizar d-none">Actualizar</button>
+                                <input type="number" name="cantidad" value="<?php echo $cantidad; ?>" min="1" class="form-control w-25 mb-3">
+                                <button type="submit" name="editar_carrito" class="btn btn-actualizar">Actualizar</button>
                             </form>
                         </td>
                         <td><?php echo "$" . number_format($precio_total, 0, ',', '.'); ?></td>
