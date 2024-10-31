@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
         // Enviar el correo
         $mail->send();
         echo 'El correo con la boleta ha sido enviado correctamente.';
+        echo "<a href='../carrito/carrito.php' class='btn btn-secondary mt-3'>Volver al carrito</a>";
     } catch (Exception $e) {
         echo "No se pudo enviar el correo. Error: {$mail->ErrorInfo}";
     }

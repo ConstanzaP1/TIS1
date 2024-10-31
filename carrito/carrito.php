@@ -250,13 +250,23 @@ if (isset($_GET['token_ws'])) {
         <form method="POST" action="carrito.php">
             <input type="hidden" name="total" value="<?php echo $total; ?>">
             <button type="submit" name="pagar" class="btn btn-primary" <?php echo $hay_stock ? '' : 'disabled'; ?>>Proceder al Pago</button>
+            <a href='../index.php' class='btn btn-secondary'>Volver al Catálogo</a>
         </form>
     <?php endif; ?>
+
+    <hr>
+        <div class="row col-6">
+            <h2>Enviar Cotizacion</h2>
+            <form action="../boleta_cotizacion/cotizacion.php" method="POST">
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="correo" name="correo" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
     
     <!-- Botón Volver al Índice -->
-    <form method="get" action="../index.php" class="mt-4">
-        <button type="submit" class="btn btn-secondary">Volver al Índice</button>
-    </form>
+    
 </div>
 </body>
 </html>
