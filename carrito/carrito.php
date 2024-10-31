@@ -93,11 +93,7 @@ if (isset($_GET['token_ws'])) {
             $productos_comprados = json_encode($_SESSION['carrito']); // Guardar los productos como JSON
             if ($id_usuario) {
                 // Guardar en historial de compras
-                $estado = 'Aprobado'; // Estado de la compra
-                $query = "INSERT INTO historial_compra (id_usuario, productos, total, estado) VALUES ('$id_usuario', '$productos_comprados', '$total', '$estado')";
-                if (!mysqli_query($conexion, $query)) {
-                    echo "Error al guardar el historial de compras: " . mysqli_error($conexion);
-                }
+            
 
                 // Actualizar la cantidad de cada producto en la base de datos
                 foreach ($_SESSION['carrito'] as $id_producto => $cantidad) {
@@ -125,11 +121,7 @@ if (isset($_GET['token_ws'])) {
                 }
                 
                 // Guardar el carrito en la base de datos
-                $query = "INSERT INTO carrito (id_usuario, productos) VALUES ('$id_usuario', '$productos_comprados')
-                          ON DUPLICATE KEY UPDATE productos = '$productos_comprados'";
-                if (!mysqli_query($conexion, $query)) {
-                    echo "Error al guardar el carrito: " . mysqli_error($conexion);
-                }
+                
             }
 
             echo "<div class='alert alert-success text-center' role='alert'>";
