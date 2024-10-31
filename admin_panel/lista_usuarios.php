@@ -58,9 +58,9 @@
                     <td><?php echo $row['role']; ?></td>
                     <td>
                             <!-- Botón para ver la lista de deseos del usuario -->
-                        <a href="lista_deseos.php?user_id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Lista de deseo</a>
+                        <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm" disabled >Lista de deseo</a>
                             <!-- Botón para ver el historial de compras del usuario -->
-                        <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Historial de compras</a>
+                        <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm" disabled>Historial de compras</a>
 
                         <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</a>
                     </td>
