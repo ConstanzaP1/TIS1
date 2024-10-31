@@ -13,9 +13,37 @@ if (isset($_GET['token_ws'])) {
             $productos_comprados = json_encode($_SESSION['carrito']);
             $id_usuario = $_SESSION['id_usuario'] ?? null;
 
-            // Guardar historial de compras
-            $query = "INSERT INTO historial_compra (id_usuario, productos, total, estado) VALUES ('$id_usuario', '$productos_comprados', '{total}', 'Aprobado')";
-            mysqli_query($conexion, $query);
+            // Calcular el total
+            $total = array_sum(array_map(function($id_producto) {
+                global $conexion;
+                $query = "SELECT precio FROM producto WHERE id_producto = '$id_producto'";
+                $resultado = mysqli_query($conexion, $query);
+                $producto = mysqli_fetch_assoc($resultado);
+                return isset($producto['precio']) ? $producto['precio'] * $_SESSION['carrito'][$id_producto] : 0;
+            }, array_keys($_SESSION['carrito'])));
+
+            // Intentar actualizar el historial de compras
+            $query_update = "UPDATE historial_compra 
+                             SET 
+                                 productos = JSON_MERGE_PATCH(productos, '$productos_comprados'),
+                                 total = total + $total,
+                                 estado = 'Aprobado',
+                                 fecha = CURRENT_TIMESTAMP
+                             WHERE 
+                                 id_usuario = '$id_usuario' AND
+                                 estado = 'Pendiente'";
+                             
+            $resultado_update = mysqli_query($conexion, $query_update);
+
+            // Verificar si la actualización fue exitosa
+            if (mysqli_affected_rows($conexion) === 0) {
+                // Insertar un nuevo registro si no se encontró uno existente
+                $query_insert = "INSERT INTO historial_compra (id_usuario, productos, total, estado) 
+                                 VALUES ('$id_usuario', '$productos_comprados', '$total', 'Aprobado')";
+                if (!mysqli_query($conexion, $query_insert)) {
+                    echo "Error al insertar en el historial de compras: " . mysqli_error($conexion);
+                }
+            }
 
             // Actualizar cantidades de productos
             foreach ($_SESSION['carrito'] as $id_producto => $cantidad) {
@@ -39,4 +67,3 @@ if (isset($_GET['token_ws'])) {
     }
 }
 ?>
-
