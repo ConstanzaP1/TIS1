@@ -221,12 +221,6 @@ if (isset($_GET['token_ws'])) {
         <h4>Total: <?php echo "$" . number_format($total, 0, ',', '.'); ?></h4>
         <form method="POST" action="carrito.php" class="mt-3">
             <input type="hidden" name="total" value="<?php echo $total; ?>"> <!-- Pasar total -->
-<<<<<<< Updated upstream
-            <button type="submit" name="pagar" class="btn btn-primary">Proceder al Pago</button>
-        </form>
-    <?php endif; ?>
-    <a href="../index.php" class="btn btn-secondary mt-3">Volver a la Tienda</a>
-=======
             <button type="submit" name="pagar" class="btn btn-primary" <?php echo $hay_stock ? '' : 'disabled'; ?>>Proceder al Pago</button>
             <a href="../index.php" class="btn btn-secondary">Volver a la Tienda</a>
         </form>
@@ -251,7 +245,6 @@ if (isset($_GET['token_ws'])) {
     <form method="get" action="../index.php" class="mt-4">
         <button type="submit" class="btn btn-secondary">Volver al Índice</button>
     </form>
->>>>>>> Stashed changes
 </div>
 </body>
 </html>
