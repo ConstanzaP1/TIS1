@@ -2,6 +2,7 @@
 session_start();
 require('../vendor/autoload.php');
 use Transbank\Webpay\WebpayPlus\Transaction;
+require('../conexion.php'); // Conexión a la base de datos
 
 // Configurar Transbank para el entorno de integración
 Transbank\Webpay\WebpayPlus::configureForTesting();
@@ -11,11 +12,37 @@ if (!isset($_SESSION['carrito'])) {
     $_SESSION['carrito'] = [];
 }
 
+// Aquí asumo que el ID del usuario está almacenado en la sesión
+$id_usuario = $_SESSION['id_usuario'] ?? null;
+
+// Cargar el carrito desde la base de datos al iniciar sesión
+if ($id_usuario) {
+    $query = "SELECT id_producto, cantidad FROM carrito WHERE id_usuario = '$id_usuario'";
+    $result = mysqli_query($conexion, $query);
+    while ($row = mysqli_fetch_assoc($result)) {
+        $_SESSION['carrito'][$row['id_producto']] = $row['cantidad']; // Cargar el carrito
+    }
+}
+
+// Función para guardar el carrito en la base de datos
+function guardarCarrito($conexion, $id_usuario, $carrito) {
+    // Primero, eliminar los productos existentes
+    $query = "DELETE FROM carrito WHERE id_usuario = '$id_usuario'";
+    mysqli_query($conexion, $query);
+
+    // Luego, insertar los nuevos productos
+    foreach ($carrito as $id_producto => $cantidad) {
+        $query = "INSERT INTO carrito (id_usuario, id_producto, cantidad) VALUES ('$id_usuario', '$id_producto', '$cantidad')";
+        mysqli_query($conexion, $query);
+    }
+}
+
 // Agregar productos al carrito
 if (isset($_POST['agregar_carrito'])) {
     $id_producto = $_POST['id_producto'];
     $cantidad = $_POST['cantidad'];
     $_SESSION['carrito'][$id_producto] = ($_SESSION['carrito'][$id_producto] ?? 0) + $cantidad; // Aumentar cantidad
+    guardarCarrito($conexion, $id_usuario, $_SESSION['carrito']); // Guardar en la base de datos
 }
 
 // Editar la cantidad en el carrito
@@ -27,12 +54,14 @@ if (isset($_POST['editar_carrito'])) {
     } else {
         $_SESSION['carrito'][$id_producto] = $cantidad; // Actualizar cantidad
     }
+    guardarCarrito($conexion, $id_usuario, $_SESSION['carrito']); // Guardar en la base de datos
 }
 
 // Eliminar un producto del carrito
 if (isset($_POST['eliminar_producto'])) {
     $id_producto = $_POST['id_producto'];
     unset($_SESSION['carrito'][$id_producto]); // Eliminar producto
+    guardarCarrito($conexion, $id_usuario, $_SESSION['carrito']); // Guardar en la base de datos
 }
 
 // Proceder al pago
@@ -41,10 +70,10 @@ if (isset($_POST['pagar'])) {
     $transaction = new Transaction();
     try {
         $response = $transaction->create(
-            session_id(), // ID de sesión
-            uniqid(), // Orden de compra única
-            $total, // Monto total
-            'http://localhost/xampp/TIS1/TIS1/index.php', // URL de éxito
+            session_id(),
+            uniqid(),
+            $total,
+            'http://localhost/xampp/TIS1/TIS1/carrito/carrito.php', // URL de éxito
             'http://localhost/xampp/TIS1/TIS1/carrito/carrito.php' // URL de fallo
         );
         header("Location: " . $response->getUrl() . "?token_ws=" . $response->getToken());
@@ -61,13 +90,23 @@ if (isset($_GET['token_ws'])) {
     try {
         $response = $transaction->commit($token);
         if ($response->isApproved()) {
+            // Guardar detalles de la compra en la base de datos
+            $productos_comprados = json_encode($_SESSION['carrito']); // Guardar los productos como JSON
+            if ($id_usuario) {
+                $query = "INSERT INTO historial_de_compras (id_usuario, productos, total) VALUES ('$id_usuario', '$productos_comprados', '$total')";
+                mysqli_query($conexion, $query);
+            }
+
             echo "<div class='alert alert-success text-center' role='alert'>";
             echo "<h1 class='alert-heading'>¡Pago Exitoso!</h1>";
             echo "<p>Tu pago ha sido aprobado. Código de autorización: <strong>" . $response->getAuthorizationCode() . "</strong></p>";
             echo "<hr>";
             echo "<p class='mb-0'>Gracias por tu compra. Puedes volver al <a href='../index.php' class='alert-link'>catálogo</a>.</p>";
             echo "</div>";
-            unset($_SESSION['carrito']); // Vaciar el carrito
+            
+            // Vaciar el carrito
+            unset($_SESSION['carrito']); // Esto se asegura de que el carrito se vacíe
+
         } else {
             echo "<div class='alert alert-danger text-center' role='alert'>";
             echo "<h1 class='alert-heading'>Pago Rechazado</h1>";
@@ -95,10 +134,6 @@ if (isset($_GET['token_ws'])) {
         body {
             background-color: #f8f9fa;
         }
-        .btn-actualizar {
-            background-color: #28a745; /* Verde */
-            color: white;
-        }
         .table img {
             width: 50px;
             height: auto;
@@ -122,37 +157,27 @@ if (isset($_GET['token_ws'])) {
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Imagen</th>
                     <th>Producto</th>
                     <th>Cantidad</th>
-                    <th>Precio</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $total = 0; // Inicializar total
-                require('../conexion.php'); // Asegúrate de incluir tu archivo de conexión aquí
                 foreach ($_SESSION['carrito'] as $id_producto => $cantidad):
-                    $id_producto = mysqli_real_escape_string($conexion, $id_producto); // Sanitizar ID del producto
-                    $query = "SELECT nombre_producto, imagen_url, precio FROM producto WHERE id_producto = '$id_producto'";
+                    $query = "SELECT nombre_producto FROM producto WHERE id_producto = '$id_producto'";
                     $result = mysqli_query($conexion, $query);
                     $producto = mysqli_fetch_assoc($result);
-                    if ($producto) {
-                        $precio_total = $producto['precio'] * $cantidad; // Calcular precio total por producto
-                        $total += $precio_total; // Sumar al total
                 ?>
                     <tr>
-                        <td><img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>"></td>
                         <td><?php echo htmlspecialchars($producto['nombre_producto']); ?></td>
                         <td>
-                            <form method="POST" action="carrito.php" class="form-inline">
+                            <form method="POST" action="carrito.php">
                                 <input type="hidden" name="id_producto" value="<?php echo $id_producto; ?>">
-                                <input type="number" name="cantidad" value="<?php echo $cantidad; ?>" min="1" class="form-control w-25 mb-3" onchange="this.form.submit()">
-                                <button type="submit" name="editar_carrito" class="btn btn-actualizar d-none">Actualizar</button>
+                                <input type="number" name="cantidad" value="<?php echo $cantidad; ?>" min="1" class="form-control w-25 mb-3">
+                                <button type="submit" name="editar_carrito" class="btn btn-primary">Actualizar</button>
                             </form>
                         </td>
-                        <td><?php echo "$" . number_format($precio_total, 0, ',', '.'); ?></td>
                         <td>
                             <form method="POST" action="carrito.php">
                                 <input type="hidden" name="id_producto" value="<?php echo $id_producto; ?>">
@@ -160,16 +185,17 @@ if (isset($_GET['token_ws'])) {
                             </form>
                         </td>
                     </tr>
-                <?php 
-                    } // Cerrar la verificación de producto
-                endforeach; 
-                ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
-        <h4>Total: <?php echo "$" . number_format($total, 0, ',', '.'); ?></h4>
-        <form method="POST" action="carrito.php" class="mt-3">
-            <input type="hidden" name="total" value="<?php echo $total; ?>"> <!-- Pasar total -->
-            <button type="submit" name="pagar" class="btn btn-primary">Proceder al Pago</button>
+        <form method="POST" action="carrito.php">
+            <input type="hidden" name="total" value="<?php echo array_sum(array_map(function($id_producto) use ($conexion) {
+                $query = "SELECT precio FROM producto WHERE id_producto = '$id_producto'";
+                $result = mysqli_query($conexion, $query);
+                $producto = mysqli_fetch_assoc($result);
+                return $producto['precio'] * $_SESSION['carrito'][$id_producto];
+            }, array_keys($_SESSION['carrito']))); ?>">
+            <button type="submit" name="pagar" class="btn btn-success">Proceder al Pago</button>
         </form>
     <?php endif; ?>
     <a href="../index.php" class="btn btn-secondary mt-3">Volver a la Tienda</a>
