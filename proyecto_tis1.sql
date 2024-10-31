@@ -353,8 +353,13 @@ INSERT INTO `hardware` (`id_hardware`, `id_producto`) VALUES
 --
 
 CREATE TABLE `historial_compra` (
-  `id_historal` int(11) NOT NULL,
-  `estado` varchar(255) DEFAULT NULL
+  `id_historal` INT AUTO_INCREMENT PRIMARY KEY,
+  `id_usuario` INT NOT NULL,
+  `productos` JSON,
+  `total` DECIMAL(10, 2) NOT NULL,
+  `estado` VARCHAR(50) NOT NULL,
+  `fecha` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

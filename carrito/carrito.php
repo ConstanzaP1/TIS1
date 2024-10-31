@@ -72,7 +72,7 @@ if (isset($_POST['pagar'])) {
             session_id(), // ID de sesión
             uniqid(), // Orden de compra única
             $total, // Monto total
-            'http://localhost/xampp/TIS1/TIS1/carrito/actualizar_productos.php', // URL de éxito
+            'http://localhost/xampp/TIS1/TIS1/carrito/  actualizar_productos.php', // URL de éxito
             'http://localhost/xampp/TIS1/TIS1/carrito/carrito.php' // URL de fallo
         );
         header("Location: " . $response->getUrl() . "?token_ws=" . $response->getToken());
