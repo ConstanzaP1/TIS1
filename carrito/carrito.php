@@ -72,7 +72,7 @@ if (isset($_POST['pagar'])) {
             session_id(), // ID de sesión
             uniqid(), // Orden de compra única
             $total, // Monto total
-            'http://localhost/xampp/TIS1/TIS1/carrito/  actualizar_productos.php', // URL de éxito
+            'http://localhost/xampp/TIS1/TIS1/carrito/actualizar_productos.php', // URL de éxito
             'http://localhost/xampp/TIS1/TIS1/carrito/carrito.php' // URL de fallo
         );
         header("Location: " . $response->getUrl() . "?token_ws=" . $response->getToken());
@@ -252,16 +252,21 @@ if (isset($_GET['token_ws'])) {
             <button type="submit" name="pagar" class="btn btn-primary" <?php echo $hay_stock ? '' : 'disabled'; ?>>Proceder al Pago</button>
         </form>
     <?php endif; ?>
+
+    <hr>
+        <div class="row col-6">
+            <h2>Enviar Cotizacion</h2>
+            <form action="../boleta_cotizacion/cotizacion.php" method="POST">
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="correo" name="correo" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
     
     <!-- Botón Volver al Índice -->
-<<<<<<< Updated upstream
-    <form method="get" action="../index.php" class="mt-4">
-        <button type="submit" class="btn btn-secondary">Volver al Índice</button>
-    </form>
-</div>
-=======
-     <hr>
     <a href='../index.php' class='btn btn-secondary'>Volver al Catálogo</a></div>
->>>>>>> Stashed changes
+
+</div>
 </body>
 </html>
