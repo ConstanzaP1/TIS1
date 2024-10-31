@@ -221,10 +221,37 @@ if (isset($_GET['token_ws'])) {
         <h4>Total: <?php echo "$" . number_format($total, 0, ',', '.'); ?></h4>
         <form method="POST" action="carrito.php" class="mt-3">
             <input type="hidden" name="total" value="<?php echo $total; ?>"> <!-- Pasar total -->
+<<<<<<< Updated upstream
             <button type="submit" name="pagar" class="btn btn-primary">Proceder al Pago</button>
         </form>
     <?php endif; ?>
     <a href="../index.php" class="btn btn-secondary mt-3">Volver a la Tienda</a>
+=======
+            <button type="submit" name="pagar" class="btn btn-primary" <?php echo $hay_stock ? '' : 'disabled'; ?>>Proceder al Pago</button>
+            <a href="../index.php" class="btn btn-secondary">Volver a la Tienda</a>
+        </form>
+        <hr>
+        <div class="row col-6">
+            <h2>Enviar Cotizacion</h2>
+            <form action="../boleta_cotizacion/cotizacion.php" method="POST">
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="correo" name="correo" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+    </form>
+        <form method="POST" action="carrito.php">
+            <input type="hidden" name="total" value="<?php echo $total; ?>">
+        </form>
+    <?php endif; ?>
+    
+    
+    <!-- Botón Volver al Índice -->
+    <form method="get" action="../index.php" class="mt-4">
+        <button type="submit" class="btn btn-secondary">Volver al Índice</button>
+    </form>
+>>>>>>> Stashed changes
 </div>
 </body>
 </html>
