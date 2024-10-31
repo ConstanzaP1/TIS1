@@ -121,53 +121,82 @@ $result_users = mysqli_query($conexion, $sql_users);
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
-            display: flex;
-            height: 100vh;
-            margin: 0;
-        }
-        #sidebar {
-            width: 250px;
-            background: #f8f9fa;
-            border-right: 1px solid #ddd;
-            padding: 10px;
-        }
-        #content {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto; /* Para permitir desplazamiento si hay mucho contenido */
-        }
-        .accordion-item {
-            margin-bottom: 5px;
-        }
-        .accordion-header {
-            cursor: pointer;
-            padding: 10px;
-            background-color: #e9ecef;
-            border: 1px solid #ddd;
-        }
-        .accordion-content {
-            display: none;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-top: none;
-            background: #f1f1f1;
-        }
-        .active {
-            background-color: #d3d3d3;
-        }
-        .logout {
-            margin-top: 20px;
-        }
-        .registro {
-            margin-bottom: 20px; /* Añadir margen inferior para separación */
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .message {
-            margin-top: 10px;
-        }
+        display: flex;
+        height: 100vh;
+        margin: 0;
+    }
+
+    #sidebar {
+        width: 250px;
+        background: #f8f9fa;
+        border-right: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    #content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    /* Estilo del botón "Lista de Usuarios" */
+    .lista-usuarios-btn {
+        display: block; /* Para que ocupe todo el ancho como en el acordeón */
+        cursor: pointer;
+        padding: 10px;
+        background-color: #e9ecef;
+        border: 1px solid #ddd;
+        color: #000;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-bottom: 5px;
+        text-align: left; 
+
+    }
+
+    .lista-usuarios-btn:hover {
+        background-color: #d3d3d3;
+    }
+
+    .accordion-item {
+        margin-bottom: 5px;
+    }
+
+    .accordion-header {
+        cursor: pointer;
+        padding: 10px;
+        background-color: #e9ecef;
+        border: 1px solid #ddd;
+    }
+
+    .accordion-content {
+        display: none;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-top: none;
+        background: #f1f1f1;
+    }
+
+    .active {
+        background-color: #d3d3d3;
+    }
+
+    .logout {
+        margin-top: 20px;
+    }
+
+    .registro {
+        margin-bottom: 20px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .message {
+        margin-top: 10px;
+    }
+</style>
     </style>
 </head>
 
@@ -378,7 +407,7 @@ $result_users = mysqli_query($conexion, $sql_users);
         padding-left: 20px; /* Indentación para la subcategoría */
     }
 </style>
-<div class="accordion-item">
+<div class="accordion-item mt-1">
     <div class="accordion-header">Registrar Usuario</div>
     <div class="accordion-content">
         <form method="POST" action="">
@@ -424,6 +453,12 @@ $result_users = mysqli_query($conexion, $sql_users);
         });
     });
 </script>
+<div class="usuarios-container">
+    <!-- Botón para redirigir a lista_usuarios.php -->
+    <a href="lista_usuarios.php" class="btn lista-usuarios-btn">Lista de Usuarios</a>
+</div>
+
+
 <hr><a href="../index.php" class="btn btn-primary">Catálogo productos</a>
 
         <a href="?logout" class="btn btn-danger logout">Cerrar Sesión</a>
@@ -458,70 +493,6 @@ $result_users = mysqli_query($conexion, $sql_users);
     .message .alert {
         max-height: 50px; /* Altura máxima para los mensajes */
         overflow: hidden; /* Ocultar contenido que se salga */
-    }
-</style>
-
-
-
-
-
-
-<div class="usuarios-container">
-<h2>Lista de Usuarios</h2>
-
-<!-- Formulario de búsqueda -->
-<form method="GET" action="">
-    <input type="text" name="search" placeholder="Buscar por ID, Nombre de Usuario o Correo Electrónico" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
-    <button type="submit">Buscar</button>
-    <a href="admin_panel.php" class="btn btn-secondary">Cancelar</a> <!-- Botón de cancelar -->
-</form>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre de Usuario</th>
-            <th>Correo Electrónico</th>
-            <th>Rol</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        // Modifica la consulta SQL para buscar por ID, Nombre de Usuario o Correo Electrónico
-        $search = isset($_GET['search']) ? mysqli_real_escape_string($conexion, $_GET['search']) : '';
-        $query = "SELECT * FROM users";
-
-        if ($search) {
-            // Buscar en las columnas 'id', 'username' o 'email'
-            $query .= " WHERE id LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
-        }
-
-        $result_users = mysqli_query($conexion, $query);
-
-        // Renderiza los resultados de la consulta
-        while ($row = mysqli_fetch_assoc($result_users)):
-        ?>
-            <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo $row['username']; ?></td>
-                <td><?php echo $row['email']; ?></td>
-                <td><?php echo $row['role']; ?></td>
-                <td>
-                    <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</a>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </tbody>
-</table>
-
-<style>
-    .usuarios-container {
-        max-height: 50vh; /* Altura máxima de media pantalla */
-        overflow-y: auto; /* Habilitar scroll vertical */
-        border: 1px solid #ccc; /* Opcional: borde para el contenedor */
-        padding: 10px; /* Opcional: padding para el contenedor */
     }
 </style>
 
