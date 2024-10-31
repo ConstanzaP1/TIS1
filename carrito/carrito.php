@@ -250,7 +250,6 @@ if (isset($_GET['token_ws'])) {
         <form method="POST" action="carrito.php">
             <input type="hidden" name="total" value="<?php echo $total; ?>">
             <button type="submit" name="pagar" class="btn btn-primary" <?php echo $hay_stock ? '' : 'disabled'; ?>>Proceder al Pago</button>
-            <a href='../index.php' class='btn btn-secondary'>Volver al Catálogo</a>
         </form>
     <?php endif; ?>
 
@@ -266,7 +265,8 @@ if (isset($_GET['token_ws'])) {
         </div>
     
     <!-- Botón Volver al Índice -->
-    
+    <a href='../index.php' class='btn btn-secondary'>Volver al Catálogo</a>
+
 </div>
 </body>
 </html>
