@@ -265,6 +265,7 @@ if (isset($_GET['token_ws'])) {
         </div>
     
     <!-- Botón Volver al Índice -->
+     <br>
     <a href='../index.php' class='btn btn-secondary'>Volver al Catálogo</a>
 
 </div>
