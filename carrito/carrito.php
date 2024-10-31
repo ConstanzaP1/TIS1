@@ -77,21 +77,30 @@ if (isset($_GET['token_ws'])) {
             // Guardar detalles de la compra en la base de datos
             $productos_comprados = json_encode($_SESSION['carrito']); // Guardar los productos como JSON
             if ($id_usuario) {
-                $query = "INSERT INTO historial_de_compras (id_usuario, productos, total) VALUES ('$id_usuario', '$productos_comprados', '$total')";
-                mysqli_query($conexion, $query);
-                
+                // Guardar en historial de compras
+                $estado = 'Aprobado'; // Estado de la compra
+                $query = "INSERT INTO historial_compra (id_usuario, productos, total, estado) VALUES ('$id_usuario', '$productos_comprados', '$total', '$estado')";
+                if (!mysqli_query($conexion, $query)) {
+                    echo "Error al guardar el historial de compras: " . mysqli_error($conexion);
+                }
+
                 // Actualizar la cantidad de cada producto en la base de datos
                 foreach ($_SESSION['carrito'] as $id_producto => $cantidad) {
                     $id_producto = mysqli_real_escape_string($conexion, $id_producto); // Sanitizar ID del producto
-                   
+                    
+                    // Actualizar la cantidad en producto
                     $query = "UPDATE producto SET cantidad = cantidad - $cantidad WHERE id_producto = '$id_producto'";
-                    mysqli_query($conexion, $query);
+                    if (!mysqli_query($conexion, $query)) {
+                        echo "Error al actualizar cantidad del producto: " . mysqli_error($conexion);
+                    }
                 }
                 
                 // Guardar el carrito en la base de datos
                 $query = "INSERT INTO carrito (id_usuario, productos) VALUES ('$id_usuario', '$productos_comprados')
                           ON DUPLICATE KEY UPDATE productos = '$productos_comprados'";
-                mysqli_query($conexion, $query);
+                if (!mysqli_query($conexion, $query)) {
+                    echo "Error al guardar el carrito: " . mysqli_error($conexion);
+                }
             }
 
             echo "<div class='alert alert-success text-center' role='alert'>";
@@ -145,6 +154,9 @@ if (isset($_GET['token_ws'])) {
         .alert {
             margin-top: 20px;
         }
+        .text-danger {
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -168,14 +180,18 @@ if (isset($_GET['token_ws'])) {
             <tbody>
                 <?php
                 $total = 0; // Inicializar total
+                $hay_stock = true; // Variable para verificar stock
                 foreach ($_SESSION['carrito'] as $id_producto => $cantidad):
                     $id_producto = mysqli_real_escape_string($conexion, $id_producto); // Sanitizar ID del producto
-                    $query = "SELECT nombre_producto, imagen_url, precio FROM producto WHERE id_producto = '$id_producto'";
+                    $query = "SELECT nombre_producto, imagen_url, precio, cantidad FROM producto WHERE id_producto = '$id_producto'";
                     $result = mysqli_query($conexion, $query);
                     $producto = mysqli_fetch_assoc($result);
                     if ($producto) {
                         $precio_total = $producto['precio'] * $cantidad; // Calcular precio total por producto
                         $total += $precio_total; // Sumar al total
+                        if ($cantidad > $producto['cantidad']) {
+                            $hay_stock = false; // No hay stock suficiente
+                        }
                 ?>
                     <tr>
                         <td><img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>"></td>
@@ -183,9 +199,12 @@ if (isset($_GET['token_ws'])) {
                         <td>
                             <form method="POST" action="carrito.php" class="form-inline">
                                 <input type="hidden" name="id_producto" value="<?php echo $id_producto; ?>">
-                                <input type="number" name="cantidad" value="<?php echo $cantidad; ?>" min="1" class="form-control w-25 mb-3">
+                                <input type="number" name="cantidad" value="<?php echo $cantidad; ?>" min="1" max="<?php echo $producto['cantidad']; ?>" class="form-control w-25 mb-3">
                                 <button type="submit" name="editar_carrito" class="btn btn-actualizar">Actualizar</button>
                             </form>
+                            <?php if ($cantidad > $producto['cantidad']): ?>
+                                <div class="text-danger">Sin stock suficiente</div>
+                            <?php endif; ?>
                         </td>
                         <td><?php echo "$" . number_format($precio_total, 0, ',', '.'); ?></td>
                         <td>
@@ -195,20 +214,20 @@ if (isset($_GET['token_ws'])) {
                             </form>
                         </td>
                     </tr>
-                <?php 
-                    } // Cerrar la verificación de producto
-                endforeach; 
-                ?>
+                <?php } endforeach; ?>
             </tbody>
         </table>
         <h4>Total: <?php echo "$" . number_format($total, 0, ',', '.'); ?></h4>
-        <form method="POST" action="carrito.php" class="mt-3">
-            <input type="hidden" name="total" value="<?php echo $total; ?>"> <!-- Pasar total -->
-            <button type="submit" name="pagar" class="btn btn-primary">Proceder al Pago</button>
+        <form method="POST" action="carrito.php">
+            <input type="hidden" name="total" value="<?php echo $total; ?>">
+            <button type="submit" name="pagar" class="btn btn-primary" <?php echo $hay_stock ? '' : 'disabled'; ?>>Proceder al Pago</button>
         </form>
     <?php endif; ?>
-    <a href="../index.php" class="btn btn-secondary mt-3">Volver a la Tienda</a>
+    
+    <!-- Botón Volver al Índice -->
+    <form method="get" action="../index.php" class="mt-4">
+        <button type="submit" class="btn btn-secondary">Volver al Índice</button>
+    </form>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
