@@ -380,47 +380,66 @@
                 echo "
                         </ul>";
 
-                // Botones de acción según el rol del usuario
-                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
-                        echo "
-                                <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <label>Cantidad:</label>
-                                    <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
-                                    <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
-                                </form>
-                                ";
-
-                                
-                                // Asegurarse de que el parámetro id_producto está definido antes de construir el enlace
-                                if (isset($_GET['id_producto'])) {
-                                    $id_producto = $_GET['id_producto'];
-                                    echo "<a href='eliminar_producto.php?id_producto=" . $id_producto . "' class='btn btn-danger mt-3 mx-1'>Eliminar producto</a>";
-                                } else {
-                                    echo "ID de producto no especificado.";
-                                }
-                                
+                        // Supongamos que $id_producto ya está definido
+                        $id_producto = $_GET['id_producto']; // o de otra manera según tu lógica
                         
-                    } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
-                        echo "
+                        // Inicializar la variable
+                        $cantidad_disponible = 0;
+                        
+                        // Preparar la consulta
+                        $stmt = $conexion->prepare("SELECT cantidad FROM producto WHERE id_producto = ?");
+                        $stmt->bind_param("i", $id_producto); // 'i' indica que es un entero
+                        
+                        // Ejecutar la consulta
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        
+                        // Obtener la cantidad disponible
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $cantidad_disponible = $row['cantidad'];
+                        } else {
+                            echo "<p>Producto no encontrado.</p>";
+                        }
+                        
+                        // Cerrar la declaración
+                        $stmt->close();
+                   
+                        
+                        // Botones de acción según el rol del usuario
+                        if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                            echo "
                                 <form method='POST' action='../carrito/agregar_al_carrito.php'>
                                     <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <label>Cantidad:</label>
-                                    <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
+                                    <label>Cantidad (Máx: {$cantidad_disponible}):</label>
+                                    <input type='number' name='cantidad' value='1' min='1' max='{$cantidad_disponible}' class='form-control w-25 mb-3'>
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
-                        echo "
-                                <form method='POST' action='../cotizador/agregar_al_cotizador.php'>
+                        
+                            // Enlace para eliminar el producto
+                            if (isset($_GET['id_producto'])) {
+                                $id_producto = $_GET['id_producto'];
+                                echo "<a href='eliminar_producto.php?id_producto=" . $id_producto . "' class='btn btn-danger mt-3 mx-1'>Eliminar producto</a>";
+                            } else {
+                                echo "ID de producto no especificado.";
+                            }
+                            
+                        } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
+                            echo "
+                                <form method='POST' action='../carrito/agregar_al_carrito.php'>
                                     <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <button type='submit' name='agregar_cotizador' class='btn btn-secondary'>Agregar al Comparador</button>
+                                    <label>Cantidad (Unidades disponibles: {$cantidad_disponible}):</label>
+                                    <input type='number' name='cantidad' value='1' min='1' max='{$cantidad_disponible}' class='form-control w-25 mb-3'>
+                                    <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
-                    }
-
-                echo "<a href='../index.php' class='btn btn-secondary mt-3'>Volver al Catálogo</a>
-                </div>
-            </div>";
+                            
+                        }
+                        
+                        echo "<a href='../index.php' class='btn btn-secondary mt-3'>Volver al Catálogo</a>
+                        </div>
+                        </div>";
             } else {
                 echo "<p>Producto no encontrado.</p>";
             }
