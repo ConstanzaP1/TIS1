@@ -254,9 +254,14 @@ if (isset($_GET['token_ws'])) {
     <?php endif; ?>
     
     <!-- Botón Volver al Índice -->
+<<<<<<< Updated upstream
     <form method="get" action="../index.php" class="mt-4">
         <button type="submit" class="btn btn-secondary">Volver al Índice</button>
     </form>
 </div>
+=======
+     <hr>
+    <a href='../index.php' class='btn btn-secondary'>Volver al Catálogo</a></div>
+>>>>>>> Stashed changes
 </body>
 </html>
