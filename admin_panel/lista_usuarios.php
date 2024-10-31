@@ -1,3 +1,37 @@
+<?php
+// Conexión a la base de datos
+$conexion = new mysqli("localhost", "root", "", "proyecto_tis1");
+if ($conexion->connect_error) {
+    die("Error de conexión: " . $conexion->connect_error);
+}
+
+// Verificar si se ha solicitado la eliminación de un usuario
+if (isset($_GET['delete'])) {
+    $user_id = intval($_GET['delete']); // Asegurarse de que el ID es un número entero
+
+    // Eliminar el usuario de la base de datos
+    $query_delete = "DELETE FROM users WHERE id = ?";
+    $stmt = $conexion->prepare($query_delete);
+    $stmt->bind_param("i", $user_id);
+
+    if ($stmt->execute()) {
+        echo "<script>alert('Usuario eliminado exitosamente.'); window.location.href='lista_usuarios.php';</script>";
+    } else {
+        echo "<script>alert('Error al eliminar el usuario. Inténtalo de nuevo.');</script>";
+    }
+
+    $stmt->close();
+}
+
+// Consulta SQL para buscar usuarios por ID, Nombre o Correo
+$search = isset($_GET['search']) ? $conexion->real_escape_string($_GET['search']) : '';
+$query = "SELECT * FROM users";
+if ($search) {
+    $query .= " WHERE id LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
+}
+$result_users = $conexion->query($query);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
