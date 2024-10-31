@@ -1,8 +1,7 @@
 <?php
 // Incluye el archivo de funciones PHP
-require_once 'crear_notificacion.php';
+require('notificacion/crear_notificacion.php');
 
-// Resto del código PHP...
 ?>
 
 <!DOCTYPE html>
@@ -14,10 +13,10 @@ require_once 'crear_notificacion.php';
     <link rel="stylesheet" type="text/css" href="notificacion.css">
 </head>
 <body>
-    <!-- Contenido de tu página -->
+   
     <div id="notificaciones-container"></div>
 
-    <!-- Scripts -->
+  
     <script src="obtener_notificacion.js"></script>
 </body>
 </html>
