@@ -433,7 +433,6 @@ $result_users = mysqli_query($conexion, $sql_users);
     });
 </script>
 <hr><a href="../index.php" class="btn btn-primary">Catálogo productos</a>
-    <a href="../boleta/enviar_correo.php" class="btn btn-primary">Enviar coreos</a>
 
         <a href="?logout" class="btn btn-danger logout">Cerrar Sesión</a>
     </aside>
