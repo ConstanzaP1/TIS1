@@ -18,6 +18,10 @@ if (isset($_POST['categoria_producto'])) {
         header('Location: crear_gpu.php');
     } elseif ($categoria == 'ram') {
         header('Location: crear_ram.php');
+    } elseif ($categoria == 'ssd') {
+        header('Location: crear_ssd.php');
+    } elseif ($categoria == 'hdd') {
+        header('Location: crear_hdd.php');
     } elseif ($categoria == 'placa') {
         header('Location: crear_placa_madre.php');
     } elseif ($categoria == 'fuente') {

@@ -23,7 +23,8 @@
                 <option value="mouse">Mouse</option>
                 <option value="cpu">Procesador</option>
                 <option value="gpu">Tarjeta de video</option>
-                <option value="ram">Memoria Ram</option>
+                <option value="ssd">SSD</option>
+                <option value="hdd">HDD</option>
                 <option value="placa">Placa Madre</option>
                 <option value="fuente">Fuente de poder</option>
                 <option value="gabinete">Gabinete</option>

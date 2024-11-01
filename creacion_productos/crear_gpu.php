@@ -8,6 +8,9 @@ $resultFrencuenciaGpu = mysqli_query($conexion, $queryFrecuenciaGpu);
 $queryMemoriaGpu = "SELECT id_hardware, memoria_gpu FROM memoria_gpu";
 $resultMemoriaGpu = mysqli_query($conexion, $queryMemoriaGpu);
 
+$queryBusEntrada = "SELECT id_hardware, bus_de_entrada_gpu FROM bus_de_entrada_gpu";
+$resultBusEntrada = mysqli_query($conexion, $queryBusEntrada);
+
 $queryMarca = "SELECT id_marca, nombre_marca FROM marca";
 $resultMarca = mysqli_query($conexion, $queryMarca);
 ?>
@@ -17,7 +20,7 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear CPU</title>
+    <title>Crear GPU</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -72,6 +75,16 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
                 <option value="" selected disabled>Seleccione una memoria</option>
                 <?php while ($row = mysqli_fetch_assoc($resultMemoriaGpu)): ?>
                     <option value="<?= $row['id_hardware'] ?>"><?= $row['memoria_gpu'] ?></option>
+                <?php endwhile; ?>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="bus_de_entrada_gpu" class="form-label">Bus entrada</label>
+            <select name="bus_de_entrada_gpu" class="form-select" required>
+                <option value="" selected disabled>Seleccione una opcion</option>
+                <?php while ($row = mysqli_fetch_assoc($resultBusEntrada)): ?>
+                    <option value="<?= $row['id_hardware'] ?>"><?= $row['bus_de_entrada_gpu'] ?></option>
                 <?php endwhile; ?>
             </select>
         </div>

@@ -42,13 +42,8 @@ class MallTransaction
                 static::AUTHORIZE_TRANSACTION_ENDPOINT,
                 $payload
             );
-        } catch (WebpayRequestException $exception) {
-            throw new MallTransactionAuthorizeException($exception->getMessage(),
-                $exception->getTransbankErrorMessage(),
-                $exception->getHttpCode(),
-                $exception->getFailedRequest(),
-                $exception
-            );
+        } catch (WebpayRequestException $e) {
+            throw MallTransactionAuthorizeException::raise($e);
         }
 
         return new MallTransactionAuthorizeResponse($response);
@@ -69,13 +64,8 @@ class MallTransaction
                 static::TRANSACTION_CAPTURE_ENDPOINT,
                 $payload
             );
-        } catch (WebpayRequestException $exception) {
-            throw new MallTransactionCaptureException($exception->getMessage(),
-                $exception->getTransbankErrorMessage(),
-                $exception->getHttpCode(),
-                $exception->getFailedRequest(),
-                $exception
-            );
+        } catch (WebpayRequestException $e) {
+            throw MallTransactionCaptureException::raise($e);
         }
 
         return new MallTransactionCaptureResponse($response);
@@ -86,22 +76,17 @@ class MallTransaction
         try {
             $response = $this->sendRequest(
                 'GET',
-                str_replace('{buy_order}', $buyOrder, static::TRANSACTION_STATUS_ENDPOINT),
+                str_replace('{buy_order}', $buyOrder, self::TRANSACTION_STATUS_ENDPOINT),
                 null
             );
-        } catch (WebpayRequestException $exception) {
-            throw new MallTransactionStatusException($exception->getMessage(),
-                $exception->getTransbankErrorMessage(),
-                $exception->getHttpCode(),
-                $exception->getFailedRequest(),
-                $exception
-            );
+        } catch (WebpayRequestException $e) {
+            throw MallTransactionStatusException::raise($e);
         }
 
         return new MallTransactionStatusResponse($response);
     }
 
-    public function refund($buyOrder, $childCommerceCode, $childBuyOrder, $amount)
+    public function refund($buyOrder, $childCommerceCode, $childBuyOrder, $amount, $options = null)
     {
         $payload = [
             'detail_buy_order' => $childBuyOrder,
@@ -112,16 +97,11 @@ class MallTransaction
         try {
             $response = $this->sendRequest(
                 'POST',
-                str_replace('{buy_order}', $buyOrder, static::TRANSACTION_REFUND_ENDPOINT),
+                str_replace('{buy_order}', $buyOrder, self::TRANSACTION_REFUND_ENDPOINT),
                 $payload
             );
-        } catch (WebpayRequestException $exception) {
-            throw new MallRefundTransactionException($exception->getMessage(),
-                $exception->getTransbankErrorMessage(),
-                $exception->getHttpCode(),
-                $exception->getFailedRequest(),
-                $exception
-            );
+        } catch (WebpayRequestException $e) {
+            throw MallRefundTransactionException::raise($e);
         }
 
         return new MallTransactionRefundResponse($response);

@@ -119,61 +119,93 @@ $result_users = mysqli_query($conexion, $sql_users);
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
-            display: flex;
-            height: 100vh;
-            margin: 0;
-        }
-        #sidebar {
-            width: 250px;
-            background: #f8f9fa;
-            border-right: 1px solid #ddd;
-            padding: 10px;
-        }
-        #content {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto; /* Para permitir desplazamiento si hay mucho contenido */
-        }
-        .accordion-item {
-            margin-bottom: 5px;
-        }
-        .accordion-header {
-            cursor: pointer;
-            padding: 10px;
-            background-color: #e9ecef;
-            border: 1px solid #ddd;
-        }
-        .accordion-content {
-            display: none;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-top: none;
-            background: #f1f1f1;
-        }
-        .active {
-            background-color: #d3d3d3;
-        }
-        .logout {
-            margin-top: 20px;
-        }
-        .registro {
-            margin-bottom: 20px; /* Añadir margen inferior para separación */
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .message {
-            margin-top: 10px;
-        }
-    </style>
+        display: flex;
+        height: 100vh;
+        margin: 0;
+    }
+
+    #sidebar {
+        width: 33%;
+        background: #f8f9fa;
+        border-right: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    #content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    /* Estilo del botón "Lista de Usuarios" */
+    .lista-usuarios-btn {
+        display: block; /* Para que ocupe todo el ancho como en el acordeón */
+        cursor: pointer;
+        padding: 10px;
+        background-color: #e9ecef;
+        border: 1px solid #ddd;
+        color: #000;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-bottom: 5px;
+        text-align: left; 
+
+    }
+
+    .lista-usuarios-btn:hover {
+        background-color: #d3d3d3;
+    }
+
+    .accordion-item {
+        margin-bottom: 5px;
+    }
+
+    .accordion-header {
+        cursor: pointer;
+        padding: 10px;
+        background-color: #e9ecef;
+        border: 1px solid #ddd;
+    }
+
+    .accordion-content {
+        display: none;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-top: none;
+        background: #f1f1f1;
+    }
+
+    .active {
+        background-color: #d3d3d3;
+    }
+
+    .logout {
+        margin-top: 20px;
+    }
+
+    .registro {
+        margin-bottom: 20px;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .message {
+        margin-top: 10px;
+    }
+</style>
 </head>
 
 <body>
     <aside id="sidebar">
-        <h2>Panel de Administración</h2>
+    <img class="logo img-fluid w-100" src="../logo.jpg" alt="Logo">
+
+        <h4>Panel de Administración</h4>
         
         <div class="accordion-item">
     <div class="accordion-header">Hardware</div>
@@ -181,12 +213,20 @@ $result_users = mysqli_query($conexion, $sql_users);
         <ul>
             <!-- Subcategoría: Almacenamiento -->
             <li>
-            <a href="#" class="sub-category-header">Almacenamiento</a>
+            <a href="#" class="sub-category-header">SSD</a>
+                        <ul class="sub-category-content" style="display: none;">
+                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
+                            <li><a href="../mantenedores_hardware/bus_ssd.php">Bus SSD</a></li>
+                            <li><a href="../mantenedores_hardware/formato_ssd.php">Formato SSD</a></li>
+
+                        </ul>
+                    </li>
+            </li>
+            <li>
+            <a href="#" class="sub-category-header">HDD</a>
                         <ul class="sub-category-content" style="display: none;">
                             <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
                             <li><a href="../mantenedores_hardware/bus_hdd.php">Bus HDD</a></li>
-                            <li><a href="../mantenedores_hardware/bus_ssd.php">Bus SSD</a></li>
-                            <li><a href="../mantenedores_hardware/formato_ssd.php">Formato SSD</a></li>
                             <li><a href="../mantenedores_hardware/rpm_hdd.php">RPM HDD</a></li>
                             <li><a href="../mantenedores_hardware/tamanio_hdd.php">Tamaño HDD</a></li>
                         </ul>
@@ -280,7 +320,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                 <a href="#" class="sub-category-header">Monitores</a>
                 <ul class="sub-category-content" style="display: none;">
                     <li><a href="../mantenedores_periferico/resolucion_monitor.php">Resolución Monitor</a></li>
-                    <li><a href="../mantenedores_periferico/tamano_monitor.php">Tamaño Monitor</a></li>
+                    <li><a href="../mantenedores_periferico/tamanio_monitor.php">Tamaño Monitor</a></li>
                     <li><a href="../mantenedores_periferico/tasa_refresco.php">Tasa de Refresco</a></li>
                     <li><a href="../mantenedores_periferico/tiempo_respuesta.php">Tiempo de Respuesta</a></li>
                     <li><a href="../mantenedores_periferico/soporte_monitor.php">Soporte Monitor</a></li>
@@ -364,7 +404,6 @@ $result_users = mysqli_query($conexion, $sql_users);
         <div class="accordion-content">
             <ul>
                 <li><a href="../creacion_productos/index_crear_producto.php">Crear producto</a></li>
-                <li><a href="../index.php">Catalogo productos</a></li>
                 <li><a href="../creacion_productos/listar_productos.php">Modificar productos</a></li>
             </ul>
         </div>
@@ -379,11 +418,8 @@ $result_users = mysqli_query($conexion, $sql_users);
         padding-left: 20px; /* Indentación para la subcategoría */
     }
 </style>
-
-
-
-
 <script>
+
     document.querySelectorAll('.sub-category-header').forEach(header => {
         header.addEventListener('click', function () {
             const subCategory = this.nextElementSibling;
@@ -391,46 +427,98 @@ $result_users = mysqli_query($conexion, $sql_users);
         });
     });
 </script>
+<div class="usuarios-container mt-2">
+    <!-- Botón para redirigir a lista_usuarios.php -->
+    <a href="lista_usuarios.php" class="btn lista-usuarios-btn">Lista de Usuarios</a>
+</div>
+<hr>
 
+<div class="sidebar-container p-3">
+    <div class="d-flex flex-row gap-2">
+        <!-- Botón en el sidebar para abrir el modal de registro de usuario -->
+        <button type="button" class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
+            Registrar Usuario
+        </button>
 
-        <a href="?logout" class="btn btn-danger logout">Cerrar Sesión</a>
-    </aside>
+        <!-- Botón para el catálogo de productos -->
+        <a href="../index.php" class="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center">
+            Catálogo productos
+        </a>
 
-    <div id="content">
-        
-        <div class="registro">
-    <h2>Registrar Usuario</h2>
-    <form method="POST" action="">
-        <div class="mb-1 mt-1">
-            <label for="username" class="form-label">Nombre de Usuario</label>
-            <input type="text" class="form-control" name="username" required>
-        </div>
-        <div class="mb-1 mt-1">
-            <label for="email" class="form-label">Correo Electrónico</label>
-            <input type="email" class="form-control" name="email" required>
-        </div>
-        <div class="mb-1 mt-1">
-            <label for="password" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" name="password" required>
-        </div>
-        <div class="mb-1 mt-1">
-            <label for="role" class="form-label">Rol</label>
-            <select name="role" class="form-select">
-                <option value="user">Usuario</option>
-                <option value="admin">Administrador</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Registrar</button>
-    </form>
-    <div class="message">
-        <?php if (!empty($message)): ?>
-            <div class="alert alert-success"><?php echo $message; ?></div>
-        <?php endif; ?>
-        <?php if (!empty($error_message)): ?>
-            <div class="alert alert-danger"><?php echo $error_message; ?></div>
-        <?php endif; ?>
+        <!-- Botón para cerrar sesión -->
+        <a href="?logout" class="btn btn-danger flex-grow-1 d-flex align-items-center justify-content-center">
+            Cerrar Sesión
+        </a>
     </div>
 </div>
+
+<!-- Modal para el formulario de registro de usuario -->
+<div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registrarUsuarioLabel">Registrar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Rol</label>
+                        <select name="role" class="form-select">
+                            <option value="user">Usuario</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar</button>
+                </form>
+                <div class="message mt-3">
+                    <?php if (!empty($message)): ?>
+                        <div class="alert alert-success"><?php echo $message; ?></div>
+                    <?php endif; ?>
+                    <?php if (!empty($error_message)): ?>
+                        <div class="alert alert-danger"><?php echo $error_message; ?></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php if (!empty($message)): ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: '<?php echo $message; ?>',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+<?php endif; ?>
+
+<?php if (!empty($error_message)): ?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '<?php echo $error_message; ?>',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+<?php endif; ?>
+
+
+</aside>
 
 <style>
     .registro {
@@ -461,70 +549,6 @@ $result_users = mysqli_query($conexion, $sql_users);
     }
 </style>
 
-
-
-
-
-
-<div class="usuarios-container">
-<h2>Lista de Usuarios</h2>
-
-<!-- Formulario de búsqueda -->
-<form method="GET" action="">
-    <input type="text" name="search" placeholder="Buscar por ID, Nombre de Usuario o Correo Electrónico" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
-    <button type="submit">Buscar</button>
-    <a href="admin_panel.php" class="btn btn-secondary">Cancelar</a> <!-- Botón de cancelar -->
-</form>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre de Usuario</th>
-            <th>Correo Electrónico</th>
-            <th>Rol</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        // Modifica la consulta SQL para buscar por ID, Nombre de Usuario o Correo Electrónico
-        $search = isset($_GET['search']) ? mysqli_real_escape_string($conexion, $_GET['search']) : '';
-        $query = "SELECT * FROM users";
-
-        if ($search) {
-            // Buscar en las columnas 'id', 'username' o 'email'
-            $query .= " WHERE id LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
-        }
-
-        $result_users = mysqli_query($conexion, $query);
-
-        // Renderiza los resultados de la consulta
-        while ($row = mysqli_fetch_assoc($result_users)):
-        ?>
-            <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo $row['username']; ?></td>
-                <td><?php echo $row['email']; ?></td>
-                <td><?php echo $row['role']; ?></td>
-                <td>
-                    <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</a>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </tbody>
-</table>
-
-<style>
-    .usuarios-container {
-        max-height: 50vh; /* Altura máxima de media pantalla */
-        overflow-y: auto; /* Habilitar scroll vertical */
-        border: 1px solid #ccc; /* Opcional: borde para el contenedor */
-        padding: 10px; /* Opcional: padding para el contenedor */
-    }
-</style>
-
 <script>
     // Script para manejar el acordeón
     const headers = document.querySelectorAll('.accordion-header');
@@ -536,3 +560,4 @@ $result_users = mysqli_query($conexion, $sql_users);
         });
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

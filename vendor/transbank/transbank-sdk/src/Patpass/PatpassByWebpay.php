@@ -15,9 +15,4 @@ class PatpassByWebpay extends EnvironmentManager
     {
         self::configureForIntegration(static::DEFAULT_COMMERCE_CODE, static::DEFAULT_API_KEY);
     }
-
-    public static function getDefaultOptions()
-    {
-        return Options::forIntegration(static::DEFAULT_COMMERCE_CODE, static::DEFAULT_API_KEY);
-    }
 }

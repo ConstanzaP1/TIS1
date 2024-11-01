@@ -67,7 +67,7 @@ class WebpayPlusTransactionTest extends TestCase
         $this->sessionId = 'some_session_id_'.uniqid();
         $this->buyOrder = '123999555';
         $this->returnUrl = 'https://comercio.cl/callbacks/transaccion_finalizada';
-        $this->mockBaseUrl = 'https://mockurl.cl';
+        $this->mockBaseUrl = 'http://mockurl.cl';
     }
 
     /** @test */
@@ -106,7 +106,7 @@ class WebpayPlusTransactionTest extends TestCase
         $requestServiceMock->expects($this->once())->method('request')->willReturn(
             [
                 'token' => 'mock',
-                'url'   => 'https://mock.cl/',
+                'url'   => 'http://mock.cl/',
             ]
         );
 
@@ -135,7 +135,7 @@ class WebpayPlusTransactionTest extends TestCase
             ->willReturn(
                 [
                     'token' => $tokenMock,
-                    'url'   => 'https://mock.cl/',
+                    'url'   => 'http://mock.cl/',
                 ]
             );
 
@@ -143,7 +143,7 @@ class WebpayPlusTransactionTest extends TestCase
         $response = $transaction->create($this->buyOrder, $this->sessionId, $this->amount, $this->returnUrl);
         $this->assertInstanceOf(TransactionCreateResponse::class, $response);
         $this->assertEquals($response->getToken(), $tokenMock);
-        $this->assertEquals($response->getUrl(), 'https://mock.cl/');
+        $this->assertEquals($response->getUrl(), 'http://mock.cl/');
     }
 
     /** @test */
@@ -194,29 +194,6 @@ class WebpayPlusTransactionTest extends TestCase
         $this->assertSame($response->getInstallmentsNumber(), 0);
         $this->assertSame($response->getInstallmentsAmount(), null);
         $this->assertSame($response->getTransactionDate(), '2021-03-22T21:01:20.374Z');
-    }
-
-    /** @test */
-    public function it_commits_a_transaction_with_response_null()
-    {
-        $this->setBaseMocks();
-
-        $tokenMock = uniqid();
-
-        $expectedUrl = str_replace(
-            '{token}',
-            $tokenMock,
-            Transaction::ENDPOINT_COMMIT
-        );
-
-        $this->requestServiceMock->method('request')
-            ->with('PUT', $expectedUrl, null)
-            ->willReturn(null);
-
-        $transaction = new Transaction($this->optionsMock, $this->requestServiceMock);
-        $response = $transaction->commit($tokenMock);
-        $this->assertInstanceOf(TransactionCommitResponse::class, $response);
-        $this->assertSame($response->isApproved(), false);
     }
 
     /** @test */

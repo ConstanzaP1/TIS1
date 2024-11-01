@@ -46,70 +46,68 @@ if ($tipo_hardware == 'memoria') {
     $velocidad_ram = $_POST['velocidad_ram'];
     $query = "UPDATE velocidad_ram SET velocidad_ram = '$velocidad_ram' WHERE id_hardware = '$id_hardware'";
 
-} elseif ($tipo_hardware == 'capacidad_almacenamiento') {
+} 
+elseif ($tipo_hardware == 'capacidad_almacenamiento') {
     $capacidad_almacenamiento = $_POST['capacidad_almacenamiento'];
     $query = "UPDATE capacidad_almacenamiento SET capacidad_almacenamiento = '$capacidad_almacenamiento' WHERE id_hardware = '$id_hardware'";
 
-} elseif ($tipo_hardware == 'formato_placa') {
+}
+elseif ($tipo_hardware == 'formato_placa') {
     $formato_placa = $_POST['formato_placa'];
     $query = "UPDATE formato_placa SET formato_placa = '$formato_placa' WHERE id_hardware = '$id_hardware'";
 
-} elseif ($tipo_hardware == 'capacidad_ram') {
+}
+elseif ($tipo_hardware == 'capacidad_ram') {
     $capacidad_ram = $_POST['capacidad_ram'];
     $query = "UPDATE capacidad_ram SET capacidad_ram = '$capacidad_ram' WHERE id_hardware = '$id_hardware'";
 
 } elseif ($tipo_hardware == 'tipo_ram') {
     $tipo_ram = $_POST['tipo_ram'];
     $query = "UPDATE tipo_ram SET tipo_ram = '$tipo_ram' WHERE id_hardware = '$id_hardware'";
-
-} elseif ($tipo_hardware == 'certificacion_fuente') {
+}
+elseif ($tipo_hardware == 'certificacion_fuente') {
     $certificacion_fuente = $_POST['certificacion_fuente'];
     $query = "UPDATE certificacion_fuente SET certificacion_fuente = '$certificacion_fuente' WHERE id_hardware = '$id_hardware'";
 
-} elseif ($tipo_hardware == 'tamanio_fuente') {
+}elseif ($tipo_hardware == 'tamanio_fuente') {
     $tamanio_fuente = $_POST['tamanio_fuente'];
     $query = "UPDATE tamanio_fuente SET tamanio_fuente = '$tamanio_fuente' WHERE id_hardware = '$id_hardware'";
 
-} elseif ($tipo_hardware == 'potencia_fuente') {
+}elseif ($tipo_hardware == 'potencia_fuente') {
     $potencia_fuente = $_POST['potencia_fuente'];
     $query = "UPDATE potencia_fuente SET potencia_fuente = '$potencia_fuente' WHERE id_hardware = '$id_hardware'";
 
-} elseif ($tipo_hardware == 'chipset_placa') {
+}elseif ($tipo_hardware == 'chipset_placa') {
     $chipset_placa = $_POST['chipset_placa'];
     $query = "UPDATE chipset_placa SET chipset_placa = '$chipset_placa' WHERE id_hardware = '$id_hardware'";
-
-} elseif ($tipo_hardware == 'tamanio_max_gabinete') {
+}elseif ($tipo_hardware == 'tamanio_max_gabinete') {
     $tamanio_max_gabinete = $_POST['tamanio_max_gabinete'];
     $query = "UPDATE tamanio_max_gabinete SET tamanio_max_gabinete = '$tamanio_max_gabinete' WHERE id_hardware = '$id_hardware'";
-
-} elseif ($tipo_hardware == 'chipset_gpu') {
+}elseif ($tipo_hardware == 'chipset_gpu') {
     $chipset_gpu = $_POST['chipset_gpu'];
     $query = "UPDATE chipset_gpu SET chipset_gpu = '$chipset_gpu' WHERE id_hardware = '$id_hardware'";
-
-} elseif ($tipo_hardware == 'bus_de_entrada_gpu') {
+}elseif ($tipo_hardware == 'bus_de_entrada_gpu') {
     $bus_de_entrada_gpu = $_POST['bus_de_entrada_gpu'];
     $query = "UPDATE bus_de_entrada_gpu SET bus_de_entrada_gpu = '$bus_de_entrada_gpu' WHERE id_hardware = '$id_hardware'";
-
-} elseif ($tipo_hardware == 'bus_hdd') {
+}elseif ($tipo_hardware == 'bus_hdd') {
     $bus_hdd = $_POST['bus_hdd'];
-    $query = "UPDATE bus_hdd SET bus = '$bus_hdd' WHERE id_hardware = '$id_hardware'";
-
-} elseif ($tipo_hardware == 'bus_ssd') {
+    $query = "UPDATE bus_hdd SET bus_hdd = '$bus_hdd' WHERE id_hardware = '$id_hardware'";
+}elseif ($tipo_hardware == 'bus_ssd') {
     $bus_ssd = $_POST['bus_ssd'];
-    $query = "UPDATE bus_ssd SET bus = '$bus_ssd' WHERE id_hardware = '$id_hardware'";
-
-} elseif ($tipo_hardware == 'formato_ssd') {
+    $query = "UPDATE bus_ssd SET bus_ssd = '$bus_ssd' WHERE id_hardware = '$id_hardware'";
+}elseif ($tipo_hardware == 'formato_ssd') {
     $formato_ssd = $_POST['formato_ssd'];
-    $query = "UPDATE formato_ssd SET formato = '$formato_ssd' WHERE id_hardware = '$id_hardware'";
-
-} elseif ($tipo_hardware == 'rpm_hdd') {
+    $query = "UPDATE formato_ssd SET formato_ssd = '$formato_ssd' WHERE id_hardware = '$id_hardware'";
+}elseif ($tipo_hardware == 'rpm_hdd') {
     $rpm_hdd = $_POST['rpm_hdd'];
-    $query = "UPDATE rpm_hdd SET rpm = '$rpm_hdd' WHERE id_hardware = '$id_hardware'";
-
-} elseif ($tipo_hardware == 'tamanio_hdd') {
+    $query = "UPDATE rpm_hdd SET rpm_hdd = '$rpm_hdd' WHERE id_hardware = '$id_hardware'";
+}elseif ($tipo_hardware == 'tamanio_hdd') {
     $tamanio_hdd = $_POST['tamanio_hdd'];
-    $query = "UPDATE tamanio_hdd SET tamanio = '$tamanio_hdd' WHERE id_hardware = '$id_hardware'";
+    $query = "UPDATE tamanio_hdd SET tamanio_hdd = '$tamanio_hdd' WHERE id_hardware = '$id_hardware'";
 }
+
+
+
 
 // Ejecutar la consulta
 mysqli_query($conexion, $query);

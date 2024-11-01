@@ -49,7 +49,7 @@ class WebpayPlus extends EnvironmentManager
      */
     public static function transaction(Options $options = null, RequestService $requestService = null)
     {
-        return new static::$transactionClass($options, $requestService);
+        return new self::$transactionClass($options, $requestService);
     }
 
     /**
@@ -60,7 +60,7 @@ class WebpayPlus extends EnvironmentManager
      */
     public static function mallTransaction(Options $options = null, RequestService $requestService = null)
     {
-        return new static::$mallTransactionClass($options, $requestService);
+        return new self::$mallTransactionClass($options, $requestService);
     }
 
     /**
@@ -68,7 +68,7 @@ class WebpayPlus extends EnvironmentManager
      */
     public static function setTransactionClass($transactionClass)
     {
-        static::$transactionClass = $transactionClass;
+        self::$transactionClass = $transactionClass;
     }
 
     /**
@@ -76,7 +76,7 @@ class WebpayPlus extends EnvironmentManager
      */
     public static function setMallTransactionClass($mallTransactionClass)
     {
-        static::$mallTransactionClass = $mallTransactionClass;
+        self::$mallTransactionClass = $mallTransactionClass;
     }
 
     /*
@@ -87,21 +87,21 @@ class WebpayPlus extends EnvironmentManager
 
     public static function configureForTesting()
     {
-        static::configureForIntegration(static::DEFAULT_COMMERCE_CODE);
+        self::configureForIntegration(static::DEFAULT_COMMERCE_CODE);
     }
 
     public static function configureForTestingDeferred()
     {
-        static::configureForIntegration(static::DEFAULT_DEFERRED_COMMERCE_CODE);
+        self::configureForIntegration(static::DEFAULT_DEFERRED_COMMERCE_CODE);
     }
 
     public static function configureForTestingMall()
     {
-        static::configureForIntegration(static::DEFAULT_MALL_COMMERCE_CODE);
+        self::configureForIntegration(static::DEFAULT_MALL_COMMERCE_CODE);
     }
 
     public static function configureForTestingMallDeferred()
     {
-        static::configureForIntegration(static::DEFAULT_MALL_DEFERRED_COMMERCE_CODE);
+        self::configureForIntegration(static::DEFAULT_MALL_DEFERRED_COMMERCE_CODE);
     }
 }

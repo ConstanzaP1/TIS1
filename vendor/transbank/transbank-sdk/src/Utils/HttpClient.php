@@ -24,11 +24,9 @@ class HttpClient implements HttpClientInterface
     {
         $installedVersion = 'unknown';
 
-        if (class_exists('\Composer\InstalledVersions')) {
-            try {
-                $installedVersion = InstalledVersions::getVersion('transbank/transbank-sdk');
-            } catch (\Exception $e) {
-            }
+        try {
+            $installedVersion = InstalledVersions::getVersion('transbank/transbank-sdk');
+        } catch (\Exception $exception) {
         }
 
         $baseHeaders = [
@@ -66,19 +64,17 @@ class HttpClient implements HttpClientInterface
     {
         $client = new Client();
 
-        $request = $client->createRequest($method, $url, [
+        return $client->request($method, $url, [
             'headers' => $headers,
             'body'    => $payload,
         ]);
-
-        return $client->send($request);
     }
 
     /**
      * @param $method
      * @param $url
-     * @param array       $headers
-     * @param string|null $payload
+     * @param array $headers
+     * @param array $payload
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
