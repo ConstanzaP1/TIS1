@@ -10,6 +10,8 @@
         <title>Detalle del Producto</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
         
@@ -221,14 +223,12 @@
                                 CASE 
                                     WHEN pa.caracteristica = 'frecuencia_gpu' THEN CONCAT('Frecuencia: ', fg.frecuencia_gpu)
                                     WHEN pa.caracteristica = 'memoria_gpu' THEN CONCAT('Memoria: ', mg.memoria_gpu)
-                                    WHEN pa.caracteristica = 'bus_de_entrada_gpu' THEN CONCAT('Bus: ', bg.bus_de_entrada_gpu)
                                     ELSE NULL
                                 END AS caracteristica
                             FROM 
                                 producto_caracteristica pa
                             LEFT JOIN frecuencia_gpu fg ON pa.valor_caracteristica = fg.id_hardware AND pa.caracteristica = 'frecuencia_gpu'
                             LEFT JOIN memoria_gpu mg ON pa.valor_caracteristica = mg.id_hardware AND pa.caracteristica = 'memoria_gpu'
-                            LEFT JOIN bus_de_entrada_gpu bg ON pa.valor_caracteristica = bg.id_hardware AND pa.caracteristica = 'bus_de_entrada_gpu'
                             WHERE pa.id_producto = '$id_producto'
                         ";
                             break;
@@ -269,42 +269,6 @@
                             LEFT JOIN velocidad_ram vr ON pa.valor_caracteristica = vr.id_hardware AND pa.caracteristica = 'velocidad_ram'
                             LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
                             LEFT JOIN formato_ram fr ON pa.valor_caracteristica = fr.id_hardware AND pa.caracteristica = 'formato_ram'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                            break;
-                    case 'ssd':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'capacidad_almacenamiento' THEN CONCAT('Capacidad almacenamiento: ', ca.capacidad_almacenamiento)
-                                    WHEN pa.caracteristica = 'bus_ssd' THEN CONCAT('Bus: ', bs.bus_ssd)
-                                    WHEN pa.caracteristica = 'formato_ssd' THEN CONCAT('Formato: ', fs.formato_ssd)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN capacidad_almacenamiento ca ON pa.valor_caracteristica = ca.id_hardware AND pa.caracteristica = 'capacidad_almacenamiento'
-                            LEFT JOIN bus_ssd bs ON pa.valor_caracteristica = bs.id_hardware AND pa.caracteristica = 'bus_ssd'
-                            LEFT JOIN formato_ssd fs ON pa.valor_caracteristica = fs.id_hardware AND pa.caracteristica = 'formato_ssd'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                            break;
-                    case 'hdd':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'capacidad_almacenamiento' THEN CONCAT('Capacidad almacenamiento: ', ca.capacidad_almacenamiento)
-                                    WHEN pa.caracteristica = 'bus_hdd' THEN CONCAT('Bus: ', bh.bus_hdd)
-                                    WHEN pa.caracteristica = 'rpm_hdd' THEN CONCAT('Velocidad (RPM): ', rh.rpm_hdd)
-                                    WHEN pa.caracteristica = 'tamanio_hdd' THEN CONCAT('Tamaño: ', th.tamanio_hdd)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN capacidad_almacenamiento ca ON pa.valor_caracteristica = ca.id_hardware AND pa.caracteristica = 'capacidad_almacenamiento'
-                            LEFT JOIN bus_hdd bh ON pa.valor_caracteristica = bh.id_hardware AND pa.caracteristica = 'bus_hdd'
-                            LEFT JOIN rpm_hdd rh ON pa.valor_caracteristica = rh.id_hardware AND pa.caracteristica = 'rpm_hdd'
-                            LEFT JOIN tamanio_hdd th ON pa.valor_caracteristica = th.id_hardware AND pa.caracteristica = 'tamanio_hdd'
                             WHERE pa.id_producto = '$id_producto'
                         ";
                             break;
@@ -380,66 +344,41 @@
                 echo "
                         </ul>";
 
-                        // Supongamos que $id_producto ya está definido
-                        $id_producto = $_GET['id_producto']; // o de otra manera según tu lógica
-                        
-                        // Inicializar la variable
-                        $cantidad_disponible = 0;
-                        
-                        // Preparar la consulta
-                        $stmt = $conexion->prepare("SELECT cantidad FROM producto WHERE id_producto = ?");
-                        $stmt->bind_param("i", $id_producto); // 'i' indica que es un entero
-                        
-                        // Ejecutar la consulta
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        
-                        // Obtener la cantidad disponible
-                        if ($result->num_rows > 0) {
-                            $row = $result->fetch_assoc();
-                            $cantidad_disponible = $row['cantidad'];
-                        } else {
-                            echo "<p>Producto no encontrado.</p>";
-                        }
-                        
-                        // Cerrar la declaración
-                        $stmt->close();
-                   
-                        
-                        // Botones de acción según el rol del usuario
-                        if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
-                            echo "
+                // Botones de acción según el rol del usuario
+                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                        echo "
                                 <form method='POST' action='../carrito/agregar_al_carrito.php'>
                                     <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <label>Cantidad (Máx: {$cantidad_disponible}):</label>
-                                    <input type='number' name='cantidad' value='1' min='1' max='{$cantidad_disponible}' class='form-control w-25 mb-3'>
+                                    <label>Cantidad:</label>
+                                    <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
+                                
+                                // Asegurarse de que el parámetro id_producto está definido antes de construir el enlace
+                                if (isset($_GET['id_producto'])) {
+                                    $id_producto = $_GET['id_producto'];
+                                    echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1'>Eliminar producto</button>";
+                                } else {
+                                    echo "ID de producto no especificado.";
+                                }
+                                
+                                
                         
-                            // Enlace para eliminar el producto
-                            if (isset($_GET['id_producto'])) {
-                                $id_producto = $_GET['id_producto'];
-                                echo "<a href='eliminar_producto.php?id_producto=" . $id_producto . "' class='btn btn-danger mt-3 mx-1'>Eliminar producto</a>";
-                            } else {
-                                echo "ID de producto no especificado.";
-                            }
-                            
-                        } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
-                            echo "
+                    } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
+                        echo "
                                 <form method='POST' action='../carrito/agregar_al_carrito.php'>
                                     <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <label>Cantidad (Unidades disponibles: {$cantidad_disponible}):</label>
-                                    <input type='number' name='cantidad' value='1' min='1' max='{$cantidad_disponible}' class='form-control w-25 mb-3'>
+                                    <label>Cantidad:</label>
+                                    <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
-                            
-                        }
-                        
-                        echo "<a href='../index.php' class='btn btn-secondary mt-3'>Volver al Catálogo</a>
-                        </div>
-                        </div>";
+                    }
+
+                echo "<a href='../index.php' class='btn btn-secondary mt-3'>Volver al Catálogo</a>
+                </div>
+            </div>";
             } else {
                 echo "<p>Producto no encontrado.</p>";
             }
@@ -450,7 +389,59 @@
         ?>
         
     </div>
-
+    <script>
+function eliminarProducto(id_producto) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta acción eliminará el producto de forma permanente.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Realizar la solicitud AJAX para eliminar el producto
+            fetch('eliminar_producto.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'id_producto=' + id_producto
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Producto eliminado',
+                        text: data.message,
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        window.location.href = '../index.php';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message,
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un error en la solicitud.',
+                    confirmButtonText: 'Aceptar'
+                });
+            });
+        }
+    });
+}
+</script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     </body>
