@@ -1,7 +1,0 @@
-{
-    "require": {
-        "transbank/transbank-sdk": "2.0",
-        "guzzlehttp/guzzle": "^7.9",
-        "phpmailer/phpmailer": "^6.9"
-    }
-}
