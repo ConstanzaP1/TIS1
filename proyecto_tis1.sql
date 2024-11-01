@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 25, 2024 at 04:58 AM
+-- Generation Time: Oct 31, 2024 at 10:04 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -67,6 +67,78 @@ CREATE TABLE `bateria_notebook` (
 
 INSERT INTO `bateria_notebook` (`id_notebook`, `bateria_notebook`) VALUES
 (24, '60000 mWh');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `boleta`
+--
+
+CREATE TABLE `boleta` (
+  `id_boleta` int(20) NOT NULL,
+  `usuario` varchar(100) NOT NULL,
+  `nro_transaccion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `boleta_config`
+--
+
+CREATE TABLE `boleta_config` (
+  `id` int(55) NOT NULL,
+  `id_boleta` int(55) NOT NULL,
+  `id_producto` int(55) NOT NULL,
+  `cantidad` int(55) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bus_de_entrada_gpu`
+--
+
+CREATE TABLE `bus_de_entrada_gpu` (
+  `id_hardware` int(11) NOT NULL,
+  `bus_de_entrada_gpu` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bus_de_entrada_gpu`
+--
+
+INSERT INTO `bus_de_entrada_gpu` (`id_hardware`, `bus_de_entrada_gpu`) VALUES
+(84, 'PCI Express 2.0 x16');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bus_hdd`
+--
+
+CREATE TABLE `bus_hdd` (
+  `id_hardware` int(11) NOT NULL,
+  `bus_hdd` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bus_hdd`
+--
+
+INSERT INTO `bus_hdd` (`id_hardware`, `bus_hdd`) VALUES
+(76, 'asdas');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bus_ssd`
+--
+
+CREATE TABLE `bus_ssd` (
+  `id_hardware` int(11) NOT NULL,
+  `bus_ssd` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -141,7 +213,8 @@ CREATE TABLE `certificacion_fuente` (
 --
 
 INSERT INTO `certificacion_fuente` (`id_hardware`, `certificacion_fuente`) VALUES
-(65, '80PLUS Bronze');
+(65, '80PLUS Bronze'),
+(70, '70plus');
 
 -- --------------------------------------------------------
 
@@ -255,6 +328,24 @@ INSERT INTO `formato_ram` (`id_hardware`, `formato_ram`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `formato_ssd`
+--
+
+CREATE TABLE `formato_ssd` (
+  `id_hardware` int(11) NOT NULL,
+  `formato_ssd` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `formato_ssd`
+--
+
+INSERT INTO `formato_ssd` (`id_hardware`, `formato_ssd`) VALUES
+(83, 'M.2 (2280)');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `frecuencia_cpu`
 --
 
@@ -268,7 +359,8 @@ CREATE TABLE `frecuencia_cpu` (
 --
 
 INSERT INTO `frecuencia_cpu` (`id_hardware`, `frecuencia_cpu`) VALUES
-(24, '1000');
+(24, '1000'),
+(69, '2000');
 
 -- --------------------------------------------------------
 
@@ -344,7 +436,23 @@ INSERT INTO `hardware` (`id_hardware`, `id_producto`) VALUES
 (65, NULL),
 (66, NULL),
 (67, NULL),
-(68, NULL);
+(68, NULL),
+(69, NULL),
+(70, NULL),
+(71, NULL),
+(72, NULL),
+(73, NULL),
+(74, NULL),
+(75, NULL),
+(76, NULL),
+(77, NULL),
+(78, NULL),
+(79, NULL),
+(80, NULL),
+(81, NULL),
+(82, NULL),
+(83, NULL),
+(84, NULL);
 
 -- --------------------------------------------------------
 
@@ -353,13 +461,8 @@ INSERT INTO `hardware` (`id_hardware`, `id_producto`) VALUES
 --
 
 CREATE TABLE `historial_compra` (
-  `id_historal` INT AUTO_INCREMENT PRIMARY KEY,
-  `id_usuario` INT NOT NULL,
-  `productos` JSON,
-  `total` DECIMAL(10, 2) NOT NULL,
-  `estado` VARCHAR(50) NOT NULL,
-  `fecha` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+  `id_historal` int(11) NOT NULL,
+  `estado` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -552,7 +655,8 @@ INSERT INTO `periferico` (`id_periferico`, `id_producto`) VALUES
 (175, NULL),
 (176, NULL),
 (177, NULL),
-(178, NULL);
+(178, NULL),
+(179, NULL);
 
 -- --------------------------------------------------------
 
@@ -622,10 +726,18 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio`, `cantidad`, `tipo_producto`, `marca`, `imagen_url`) VALUES
-(35, 'Teclado gamer', 60000.00, 1, 'teclado', '1', 'https://i.blogs.es/e20f36/comprar-teclado-razer-cynosa-v2-al-mejor-precio/450_1000.jpg'),
-(36, 'Monitor Gamer', 120000.00, 1, 'monitor', '1', 'https://www.alcaplus.cl/media/2022/05/cl-odyssey-g3-g32a-422024-ls24ag320nlxzs-532138048.webp'),
+(35, 'Teclado gamer', 60000.00, 2, 'teclado', '1', 'https://cdnx.jumpseller.com/centralgamer/image/53204539/thumb/610/610?1728278926'),
+(36, 'Monitor Gamer', 120000.00, 3, 'monitor', '1', 'https://www.alcaplus.cl/media/2022/05/cl-odyssey-g3-g32a-422024-ls24ag320nlxzs-532138048.webp'),
 (37, 'Audifono generico', 10000.00, 1, 'audifono', '1', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG9AY8LJWEDgZJsKdw77Dc2uTGH7DwyJa4AQ&s'),
-(39, 'Mouse generico', 5000.00, 1, 'mouse', '1', 'https://http2.mlstatic.com/D_NQ_NP_781312-MLA45385798113_032021-O.webp');
+(39, 'Mouse generico', 5000.00, 1, 'mouse', '1', 'https://http2.mlstatic.com/D_NQ_NP_781312-MLA45385798113_032021-O.webp'),
+(40, 'Ryzen 7 5700X [100-100000926WOF]', 123.00, 2, 'cpu', '1', 'https://media.solotodo.com/media/products/1569342_picture_1672268351.jpg'),
+(41, 'MSI GeForce RTX 4060', 123.00, 1, 'gpu', '1', 'https://media.solotodo.com/media/products/1777144_picture_1688474884.png'),
+(42, 'PRIME A520M-K', 123.00, 1, 'placa', '1', 'https://media.solotodo.com/media/products/1222862_picture_1601387191.jfif'),
+(46, 'ASUS TUF A15 FA506NF-HN003W', 123.00, 1, 'notebook', '1', 'https://media.solotodo.com/media/products/1892827_picture_1709951044.jpg'),
+(49, 'Kingston KVR26N19S6/4 (1 x 4GB | DIMM DDR4-2666)', 123.00, 1, 'ram', '1', 'https://media.solotodo.com/media/products/732660_picture_1523339830.jpg'),
+(50, 'Corsair CX Series CX750 2023 (CP-9020279-NA) (750 W)', 123.00, 1, 'fuente', '1', 'https://media.solotodo.com/media/products/1899906_picture_1712043196.jpg'),
+(51, 'Casecom C412-3B', 123.00, 1, 'gabinete', '1', 'https://media.solotodo.com/media/products/1964761_picture_1727723565.jpg'),
+(55, 'MSI GT 710 ', 100000.00, 20, 'gpu', '1', 'https://media.solotodo.com/media/products/502719_picture_1466891249.png');
 
 -- --------------------------------------------------------
 
@@ -645,28 +757,54 @@ CREATE TABLE `producto_caracteristica` (
 --
 
 INSERT INTO `producto_caracteristica` (`id_caracteristica`, `id_producto`, `caracteristica`, `valor_caracteristica`) VALUES
-(115, 35, 'tipo_teclado', '66'),
-(116, 35, 'tipo_switch', '159'),
-(117, 35, 'conectividad', '76'),
-(118, 35, 'iluminacion', '155'),
-(119, 35, 'categoria_teclado', '173'),
 (120, 36, 'resolucion_monitor', '81'),
 (121, 36, 'tamanio_monitor', '78'),
 (122, 36, 'tasa_refresco', '168'),
-(123, 36, 'tiempo_respuesta', '80'),
+(123, 36, 'tiempo_respuesta', '179'),
 (124, 36, 'soporte_monitor', '170'),
 (125, 36, 'tipo_panel', '82'),
 (126, 36, 'tipo_curvatura', '79'),
 (127, 37, 'tipo_audifono', '176'),
 (128, 37, 'tipo_microfono', '177'),
 (129, 37, 'anc', '178'),
-(130, 37, 'conectividad', '76'),
+(130, 37, 'conectividad', '141'),
 (131, 37, 'iluminacion', '155'),
 (135, 39, 'dpi_mouse', '77'),
 (136, 39, 'peso_mouse', '161'),
 (137, 39, 'sensor_mouse', '75'),
 (138, 39, 'iluminacion', '155'),
-(139, 39, 'conectividad', '141');
+(139, 39, 'conectividad', '76'),
+(140, 40, 'frecuencia_cpu', '69'),
+(141, 40, 'nucleo_hilo_cpu', '47'),
+(142, 40, 'socket_cpu', '54'),
+(143, 41, 'frecuencia_gpu', '58'),
+(144, 41, 'memoria_gpu', '59'),
+(145, 42, 'formato_placa', '60'),
+(146, 42, 'slot_memoria_placa', '34'),
+(147, 42, 'socket_placa', '61'),
+(148, 42, 'chipset_placa', '63'),
+(158, 46, 'bateria_notebook', '24'),
+(159, 46, 'cpu_notebook', '23'),
+(160, 46, 'gpu_notebook', '26'),
+(161, 46, 'capacidad_ram', '56'),
+(162, 46, 'pantalla_notebook', '25'),
+(175, 35, 'tipo_teclado', '154'),
+(176, 35, 'tipo_switch', '159'),
+(177, 35, 'conectividad', '76'),
+(178, 35, 'iluminacion', '155'),
+(179, 35, 'categoria_teclado', '173'),
+(180, 49, 'tipo_ram', '44'),
+(181, 49, 'velocidad_ram', '55'),
+(182, 49, 'capacidad_ram', '56'),
+(183, 49, 'formato_ram', '57'),
+(184, 50, 'certificacion_fuente', '70'),
+(185, 50, 'potencia_fuente', '66'),
+(186, 50, 'tamanio_fuente', '67'),
+(187, 51, 'tamanio_max_gabinete', '68'),
+(188, 51, 'iluminacion', '155'),
+(206, 55, 'frecuencia_gpu', '58'),
+(207, 55, 'memoria_gpu', '59'),
+(208, 55, 'bus_de_entrada_gpu', '84');
 
 -- --------------------------------------------------------
 
@@ -700,6 +838,24 @@ CREATE TABLE `resolucion_monitor` (
 
 INSERT INTO `resolucion_monitor` (`id_periferico`, `resolucion_monitor`) VALUES
 (81, 'Full HD (1920x1080)');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rpm_hdd`
+--
+
+CREATE TABLE `rpm_hdd` (
+  `id_hardware` int(11) NOT NULL,
+  `rpm_hdd` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rpm_hdd`
+--
+
+INSERT INTO `rpm_hdd` (`id_hardware`, `rpm_hdd`) VALUES
+(80, 'asdasd');
 
 -- --------------------------------------------------------
 
@@ -812,6 +968,24 @@ INSERT INTO `tamanio_fuente` (`id_hardware`, `tamanio_fuente`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tamanio_hdd`
+--
+
+CREATE TABLE `tamanio_hdd` (
+  `id_hardware` int(11) NOT NULL,
+  `tamanio_hdd` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tamanio_hdd`
+--
+
+INSERT INTO `tamanio_hdd` (`id_hardware`, `tamanio_hdd`) VALUES
+(78, 'asd');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tamanio_max_gabinete`
 --
 
@@ -879,7 +1053,8 @@ CREATE TABLE `tiempo_respuesta` (
 --
 
 INSERT INTO `tiempo_respuesta` (`id_periferico`, `tiempo_respuesta`) VALUES
-(80, '5 ms');
+(80, '5 ms'),
+(179, '1ms');
 
 -- --------------------------------------------------------
 
@@ -1040,7 +1215,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`) VALUES
-(46, 'admin', 'admin@admin.cl', '$2y$10$hnEq7BCps9MjNagRZbMkoO64Y9u7SDComOz8hPrNiRbQA3tAnjiKu', 'admin');
+(46, 'admin', 'admin@admin.cl', '$2y$10$hnEq7BCps9MjNagRZbMkoO64Y9u7SDComOz8hPrNiRbQA3tAnjiKu', 'admin'),
+(47, 'maty', 'matias@matias.cl', '$2y$10$1EF01TysLiHJkPLD3UTfoes/f1ocQmAJfR5IV.ODk.0P8VUJsc13S', 'user');
 
 -- --------------------------------------------------------
 
@@ -1111,6 +1287,37 @@ ALTER TABLE `bateria_notebook`
   ADD PRIMARY KEY (`id_notebook`);
 
 --
+-- Indexes for table `boleta`
+--
+ALTER TABLE `boleta`
+  ADD PRIMARY KEY (`id_boleta`);
+
+--
+-- Indexes for table `boleta_config`
+--
+ALTER TABLE `boleta_config`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_boleta` (`id_boleta`);
+
+--
+-- Indexes for table `bus_de_entrada_gpu`
+--
+ALTER TABLE `bus_de_entrada_gpu`
+  ADD PRIMARY KEY (`id_hardware`);
+
+--
+-- Indexes for table `bus_hdd`
+--
+ALTER TABLE `bus_hdd`
+  ADD PRIMARY KEY (`id_hardware`);
+
+--
+-- Indexes for table `bus_ssd`
+--
+ALTER TABLE `bus_ssd`
+  ADD PRIMARY KEY (`id_hardware`);
+
+--
 -- Indexes for table `capacidad_almacenamiento`
 --
 ALTER TABLE `capacidad_almacenamiento`
@@ -1168,6 +1375,12 @@ ALTER TABLE `formato_placa`
 -- Indexes for table `formato_ram`
 --
 ALTER TABLE `formato_ram`
+  ADD PRIMARY KEY (`id_hardware`);
+
+--
+-- Indexes for table `formato_ssd`
+--
+ALTER TABLE `formato_ssd`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
@@ -1311,6 +1524,12 @@ ALTER TABLE `resolucion_monitor`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
+-- Indexes for table `rpm_hdd`
+--
+ALTER TABLE `rpm_hdd`
+  ADD PRIMARY KEY (`id_hardware`);
+
+--
 -- Indexes for table `sensor_mouse`
 --
 ALTER TABLE `sensor_mouse`
@@ -1344,6 +1563,12 @@ ALTER TABLE `soporte_monitor`
 -- Indexes for table `tamanio_fuente`
 --
 ALTER TABLE `tamanio_fuente`
+  ADD PRIMARY KEY (`id_hardware`);
+
+--
+-- Indexes for table `tamanio_hdd`
+--
+ALTER TABLE `tamanio_hdd`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
@@ -1447,10 +1672,22 @@ ALTER TABLE `voltaje_ram`
 --
 
 --
+-- AUTO_INCREMENT for table `boleta`
+--
+ALTER TABLE `boleta`
+  MODIFY `id_boleta` int(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `boleta_config`
+--
+ALTER TABLE `boleta_config`
+  MODIFY `id` int(55) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `hardware`
 --
 ALTER TABLE `hardware`
-  MODIFY `id_hardware` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id_hardware` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `historial_compra`
@@ -1480,19 +1717,19 @@ ALTER TABLE `orden_compra`
 -- AUTO_INCREMENT for table `periferico`
 --
 ALTER TABLE `periferico`
-  MODIFY `id_periferico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=179;
+  MODIFY `id_periferico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
 
 --
 -- AUTO_INCREMENT for table `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `producto_caracteristica`
 --
 ALTER TABLE `producto_caracteristica`
-  MODIFY `id_caracteristica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
+  MODIFY `id_caracteristica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
 
 --
 -- AUTO_INCREMENT for table `resena_valoracion`
@@ -1504,7 +1741,7 @@ ALTER TABLE `resena_valoracion`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- Constraints for dumped tables
@@ -1528,6 +1765,30 @@ ALTER TABLE `asocia`
 --
 ALTER TABLE `bateria_notebook`
   ADD CONSTRAINT `bateria_notebook_ibfk_1` FOREIGN KEY (`id_notebook`) REFERENCES `notebook` (`id_notebook`);
+
+--
+-- Constraints for table `boleta_config`
+--
+ALTER TABLE `boleta_config`
+  ADD CONSTRAINT `fk_boleta` FOREIGN KEY (`id_boleta`) REFERENCES `boleta` (`id_boleta`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `bus_de_entrada_gpu`
+--
+ALTER TABLE `bus_de_entrada_gpu`
+  ADD CONSTRAINT `bus_de_entrada_gpu_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
+
+--
+-- Constraints for table `bus_hdd`
+--
+ALTER TABLE `bus_hdd`
+  ADD CONSTRAINT `bus_hdd_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
+
+--
+-- Constraints for table `bus_ssd`
+--
+ALTER TABLE `bus_ssd`
+  ADD CONSTRAINT `bus_ssd_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
 
 --
 -- Constraints for table `capacidad_almacenamiento`
@@ -1582,6 +1843,12 @@ ALTER TABLE `formato_placa`
 --
 ALTER TABLE `formato_ram`
   ADD CONSTRAINT `formato_ram_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
+
+--
+-- Constraints for table `formato_ssd`
+--
+ALTER TABLE `formato_ssd`
+  ADD CONSTRAINT `formato_ssd_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
 
 --
 -- Constraints for table `frecuencia_cpu`
@@ -1688,6 +1955,12 @@ ALTER TABLE `resolucion_monitor`
   ADD CONSTRAINT `resolucion_monitor_ibfk_1` FOREIGN KEY (`id_periferico`) REFERENCES `periferico` (`id_periferico`);
 
 --
+-- Constraints for table `rpm_hdd`
+--
+ALTER TABLE `rpm_hdd`
+  ADD CONSTRAINT `rpm_hdd_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
+
+--
 -- Constraints for table `sensor_mouse`
 --
 ALTER TABLE `sensor_mouse`
@@ -1722,6 +1995,12 @@ ALTER TABLE `soporte_monitor`
 --
 ALTER TABLE `tamanio_fuente`
   ADD CONSTRAINT `tamanio_fuente_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
+
+--
+-- Constraints for table `tamanio_hdd`
+--
+ALTER TABLE `tamanio_hdd`
+  ADD CONSTRAINT `tamanio_hdd_ibfk_1` FOREIGN KEY (`id_hardware`) REFERENCES `hardware` (`id_hardware`);
 
 --
 -- Constraints for table `tamanio_max_gabinete`
