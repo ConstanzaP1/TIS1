@@ -88,13 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
             }
         } else {
             $_SESSION['error_message'] = 'Error al preparar la consulta de inserción.';
-            mysqli_stmt_close($stmt_check);
+            mysqli_stmt_close($stmt_check);  // Este es el único cierre necesario si el insert falla
             header('Location: login.php');
             exit();
         }
     }
-
-    mysqli_stmt_close($stmt_check);
 }
 ?>
 
