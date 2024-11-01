@@ -58,6 +58,9 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                                 <a class="dropdown-item" href="carrito/carrito.php">Mi Carro</a>
                             </li>
                             <li>
+                                <a class="dropdown-item" href="admin_panel/EN_PROCESO.php">Comparador</a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
                             </li>
                         </ul>
@@ -106,17 +109,22 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                 </div>
 
                 <!-- Filtro de categoría -->
+                <!-- Filtro de categoría -->
                 <div class="mb-3">
                     <label for="categoria" class="form-label">Categoría</label>
                     <select name="categoria" id="categoria" class="form-select">
                         <option value="">Selecciona una categoría</option>
-                        <?php
-                        $categorias = ["Teclado", "Monitor", "Audifono", "Mouse", "Procesador", "Tarjeta de video", "Memoria Ram", "Placa Madre", "Fuente de Poder", "Gabinete", "Notebook"];
-                        foreach ($categorias as $cat) {
-                            $selected = ($cat == $categoria) ? "selected" : "";
-                            echo "<option value='$cat' $selected>$cat</option>";
-                        }
-                        ?>
+                        <option value="audifono">Audífono</option>
+                        <option value="cpu">Procesador</option>
+                        <option value="fuente">Fuente de Poder</option>
+                        <option value="gabinete">Gabinete</option>
+                        <option value="gpu">Tarjeta de Video</option>
+                        <option value="monitor">Monitor</option>
+                        <option value="mouse">Mouse</option>
+                        <option value="notebook">Notebook</option>
+                        <option value="placa">Placa Madre</option>
+                        <option value="ram">Memoria RAM</option>
+                        <option value="teclado">Teclado</option>
                     </select>
                 </div>
 

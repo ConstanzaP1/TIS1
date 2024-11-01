@@ -58,6 +58,7 @@ if (mysqli_query($conexion, $query_producto)) {
     } elseif ($categoria_producto == 'gpu') {
         if (isset($_POST['frecuencia_gpu'])) $caracteristicas['frecuencia_gpu'] = $_POST['frecuencia_gpu'];
         if (isset($_POST['memoria_gpu'])) $caracteristicas['memoria_gpu'] = $_POST['memoria_gpu'];
+        if (isset($_POST['bus_de_entrada_gpu'])) $caracteristicas['bus_de_entrada_gpu'] = $_POST['bus_de_entrada_gpu'];
 
     } elseif ($categoria_producto == 'ram') {
         if (isset($_POST['tipo_ram'])) $caracteristicas['tipo_ram'] = $_POST['tipo_ram'];
@@ -79,6 +80,17 @@ if (mysqli_query($conexion, $query_producto)) {
     } elseif ($categoria_producto == 'gabinete') {
         if (isset($_POST['tamanio_max_gabinete'])) $caracteristicas['tamanio_max_gabinete'] = $_POST['tamanio_max_gabinete'];
         if (isset($_POST['iluminacion'])) $caracteristicas['iluminacion'] = $_POST['iluminacion'];
+
+    } elseif ($categoria_producto == 'ssd') {
+        if (isset($_POST['capacidad_almacenamiento'])) $caracteristicas['capacidad_almacenamiento'] = $_POST['capacidad_almacenamiento'];
+        if (isset($_POST['bus_ssd'])) $caracteristicas['bus_ssd'] = $_POST['bus_ssd'];
+        if (isset($_POST['formato_ssd'])) $caracteristicas['formato_ssd'] = $_POST['formato_ssd'];
+
+    } elseif ($categoria_producto == 'hdd') {
+        if (isset($_POST['capacidad_almacenamiento'])) $caracteristicas['capacidad_almacenamiento'] = $_POST['capacidad_almacenamiento'];
+        if (isset($_POST['bus_hdd'])) $caracteristicas['bus_hdd'] = $_POST['bus_hdd'];
+        if (isset($_POST['rpm_hdd'])) $caracteristicas['rpm_hdd'] = $_POST['rpm_hdd'];
+        if (isset($_POST['tamanio_hdd'])) $caracteristicas['tamanio_hdd'] = $_POST['tamanio_hdd'];
 
     } elseif ($categoria_producto == 'notebook') {
         if (isset($_POST['bateria_notebook'])) $caracteristicas['bateria_notebook'] = $_POST['bateria_notebook'];
@@ -105,3 +117,4 @@ if (mysqli_query($conexion, $query_producto)) {
     echo "Error al insertar el producto: " . mysqli_error($conexion);
 }
 ?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
