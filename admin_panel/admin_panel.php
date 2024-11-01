@@ -119,6 +119,8 @@ $result_users = mysqli_query($conexion, $sql_users);
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
         display: flex;
@@ -127,7 +129,7 @@ $result_users = mysqli_query($conexion, $sql_users);
     }
 
     #sidebar {
-        width: 250px;
+        width: 33%;
         background: #f8f9fa;
         border-right: 1px solid #ddd;
         padding: 10px;
@@ -197,7 +199,6 @@ $result_users = mysqli_query($conexion, $sql_users);
         margin-top: 10px;
     }
 </style>
-    </style>
 </head>
 
 <body>
@@ -409,45 +410,8 @@ $result_users = mysqli_query($conexion, $sql_users);
         padding-left: 20px; /* Indentación para la subcategoría */
     }
 </style>
-<div class="accordion-item mt-1">
-    <div class="accordion-header">Registrar Usuario</div>
-    <div class="accordion-content">
-        <form method="POST" action="">
-            <div class="mb-1 mt-1">
-                <label for="username" class="form-label">Nombre de Usuario</label>
-                <input type="text" class="form-control" name="username" required>
-            </div>
-            <div class="mb-1 mt-1">
-                <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" name="email" required>
-            </div>
-            <div class="mb-1 mt-1">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" name="password" required>
-            </div>
-            <div class="mb-1 mt-1">
-                <label for="role" class="form-label">Rol</label>
-                <select name="role" class="form-select">
-                    <option value="user">Usuario</option>
-                    <option value="admin">Administrador</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Registrar</button>
-        </form>
-        <div class="message">
-            <?php if (!empty($message)): ?>
-                <div class="alert alert-success"><?php echo $message; ?></div>
-            <?php endif; ?>
-            <?php if (!empty($error_message)): ?>
-                <div class="alert alert-danger"><?php echo $error_message; ?></div>
-            <?php endif; ?>
-        </div>
-    </div>
-</div>
-
-
-
 <script>
+
     document.querySelectorAll('.sub-category-header').forEach(header => {
         header.addEventListener('click', function () {
             const subCategory = this.nextElementSibling;
@@ -455,19 +419,98 @@ $result_users = mysqli_query($conexion, $sql_users);
         });
     });
 </script>
-<div class="usuarios-container">
+<div class="usuarios-container mt-2">
     <!-- Botón para redirigir a lista_usuarios.php -->
     <a href="lista_usuarios.php" class="btn lista-usuarios-btn">Lista de Usuarios</a>
 </div>
+<hr>
+
+<div class="sidebar-container p-3">
+    <div class="d-flex flex-row gap-2">
+        <!-- Botón en el sidebar para abrir el modal de registro de usuario -->
+        <button type="button" class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
+            Registrar Usuario
+        </button>
+
+        <!-- Botón para el catálogo de productos -->
+        <a href="../index.php" class="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center">
+            Catálogo productos
+        </a>
+
+        <!-- Botón para cerrar sesión -->
+        <a href="?logout" class="btn btn-danger flex-grow-1 d-flex align-items-center justify-content-center">
+            Cerrar Sesión
+        </a>
+    </div>
+</div>
+
+<!-- Modal para el formulario de registro de usuario -->
+<div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registrarUsuarioLabel">Registrar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Rol</label>
+                        <select name="role" class="form-select">
+                            <option value="user">Usuario</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar</button>
+                </form>
+                <div class="message mt-3">
+                    <?php if (!empty($message)): ?>
+                        <div class="alert alert-success"><?php echo $message; ?></div>
+                    <?php endif; ?>
+                    <?php if (!empty($error_message)): ?>
+                        <div class="alert alert-danger"><?php echo $error_message; ?></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php if (!empty($message)): ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: '<?php echo $message; ?>',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+<?php endif; ?>
+
+<?php if (!empty($error_message)): ?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '<?php echo $error_message; ?>',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+<?php endif; ?>
 
 
-<hr><a href="../index.php" class="btn btn-primary">Catálogo productos</a>
-
-        <a href="?logout" class="btn btn-danger logout">Cerrar Sesión</a>
-    </aside>
-
-
-
+</aside>
 
 <style>
     .registro {
@@ -509,3 +552,4 @@ $result_users = mysqli_query($conexion, $sql_users);
         });
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

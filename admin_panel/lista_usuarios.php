@@ -5,115 +5,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<nav class="navbar navbar-expand-lg bg-body-tertiary w-100 m-0">
-    <div class="container-fluid">
-        <img class="logo img-fluid" src="../logo.jpg" alt="Logo" style="width: 50px;">
-        <!-- Otros elementos del navbar -->
-    </div>
-</nav>
 
-<body class="container my-4">
-    
-    <!-- Botón de Volver al panel de administración -->
-    <div class="mb-4">
-        <a href="admin_panel.php" class="btn btn-secondary">Volver al Panel de Administración</a>
-    </div>
-    <div class="usuarios-container">
-        <h2 class="text-center mb-4">Lista de Usuarios</h2>
+<body>
+    <!-- Navbar y otros contenidos del encabezado -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary w-100">
+        <div class="container-fluid">
+            <img class="logo img-fluid" src="../logo.jpg" alt="Logo" style="width: 10%;">
+            <!-- Otros elementos del navbar -->
+        </div>
+    </nav>
 
-        <!-- Formulario de búsqueda -->
-        <form method="GET" action="" class="mb-4 d-flex justify-content-center">
-            <input type="text" name="search" class="form-control w-50" placeholder="Buscar por ID, Nombre de Usuario o Correo Electrónico" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
-            <button type="submit" class="btn btn-primary ms-2">Buscar</button>
-            <a href="lista_usuarios.php" class="btn btn-secondary ms-2">Restablecer</a>
-        </form>
+    <!-- Contenedor principal centrado -->
+    <div class="container my-4">
+        <div class="usuarios-container">
+            <h2 class="text-center mb-4">Lista de Usuarios</h2>
 
-        <?php
-        // Conexión a la base de datos
-        $conexion = new mysqli("localhost", "root", "", "proyecto_tis1");
-        if ($conexion->connect_error) {
-            die("Error de conexión: " . $conexion->connect_error);
-        }
+            <!-- Formulario de búsqueda -->
+            <form method="GET" action="" class="mb-4 d-flex justify-content-center align-items-center">
+                <input type="text" name="search" class="form-control w-50" placeholder="Buscar por ID, Nombre de Usuario o Correo Electrónico" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+                
+                <div class="d-flex ms-2" style="width: 150px;">
+                    <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                </div>
+                
+                <div class="d-flex ms-2" style="width: 150px;">
+                    <a href="lista_usuarios.php" class="btn btn-secondary w-100">Restablecer</a>
+                </div>
+                
+                <div class="d-flex ms-2" style="width: 150px;">
+                    <a href="admin_panel.php" class="btn btn-secondary w-100">Volver al panel</a>
+                </div>
+            </form>
 
-        // Verificar si se ha solicitado cambiar el rol de un usuario
-        if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
-            $user_id = intval($_POST['user_id']);
-            $new_role = $conexion->real_escape_string($_POST['new_role']);
-
-            // Cambiar el rol del usuario en la tabla users
-            $query_update_role = "UPDATE users SET role = ? WHERE id = ?";
-            $stmt = $conexion->prepare($query_update_role);
-            $stmt->bind_param("si", $new_role, $user_id);
-
-            if ($stmt->execute()) {
-                echo "<script>alert('El rol del usuario ha sido cambiado exitosamente.'); window.location.href='lista_usuarios.php';</script>";
-            } else {
-                echo "<script>alert('Error al cambiar el rol del usuario. Inténtalo de nuevo.');</script>";
+            <!-- Código PHP para obtener usuarios de la base de datos -->
+            <?php
+            $conexion = new mysqli("localhost", "root", "", "proyecto_tis1");
+            if ($conexion->connect_error) {
+                die("Error de conexión: " . $conexion->connect_error);
             }
 
-            $stmt->close();
-        }
+            if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
+                $user_id = intval($_POST['user_id']);
+                $new_role = $conexion->real_escape_string($_POST['new_role']);
 
-        // Consulta SQL para buscar usuarios por ID, Nombre o Correo
-        $search = isset($_GET['search']) ? $conexion->real_escape_string($_GET['search']) : '';
-        $query = "SELECT id, username, email, role FROM users";
-        if ($search) {
-            $query .= " WHERE id LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
-        }
-        $result_users = $conexion->query($query);
+                $query_update_role = "UPDATE users SET role = ? WHERE id = ?";
+                $stmt = $conexion->prepare($query_update_role);
+                $stmt->bind_param("si", $new_role, $user_id);
 
-        // Roles disponibles (por ejemplo, 'admin' y 'user')
-        $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar'];
-        ?>
+                if ($stmt->execute()) {
+                    echo "<script>
+                            Swal.fire('Rol actualizado', 'El rol del usuario ha sido cambiado exitosamente.', 'success')
+                            .then(() => {
+                                window.location.href = 'lista_usuarios.php';
+                            });
+                          </script>";
+                } else {
+                    echo "<script>Swal.fire('Error', 'Error al cambiar el rol del usuario. Inténtalo de nuevo.', 'error');</script>";
+                }
 
-        <!-- Tabla de usuarios -->
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre de Usuario</th>
-                    <th>Correo Electrónico</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $result_users->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $row['id']; ?></td>
-                    <td><?php echo $row['username']; ?></td>
-                    <td><?php echo $row['email']; ?></td>
-                    <td><?php echo $roles[$row['role']]; ?></td>
-                    <td>
-                        <!-- Formulario para cambiar rol -->
-                        <form method="POST" action="" class="d-inline">
-                            <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
-                            <select name="new_role" class="form-select form-select-sm d-inline w-auto">
-                                <?php foreach ($roles as $role_key => $role_name): ?>
-                                    <option value="<?php echo $role_key; ?>" <?php if ($role_key == $row['role']) echo 'selected'; ?>>
-                                        <?php echo $role_name; ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <button type="submit" class="btn btn-warning btn-sm">Cambiar</button>
-                        </form>
-                        <!-- Botones adicionales -->
-                        <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseo</a>
-                        <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+                $stmt->close();
+            }
+
+            $search = isset($_GET['search']) ? $conexion->real_escape_string($_GET['search']) : '';
+            $query = "SELECT id, username, email, role FROM users";
+            if ($search) {
+                $query .= " WHERE id LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
+            }
+            $result_users = $conexion->query($query);
+
+            $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar'];
+            ?>
+
+            <!-- Tabla de usuarios -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre de Usuario</th>
+                        <th>Correo Electrónico</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result_users->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row['username']; ?></td>
+                        <td><?php echo $row['email']; ?></td>
+                        <td><?php echo $roles[$row['role']]; ?></td>
+                        <td>
+                            <!-- Formulario para cambiar rol -->
+                            <form method="POST" action="" class="d-inline change-role-form">
+                                <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                                <input type="hidden" name="current_role" value="<?php echo $row['role']; ?>">
+                                <select name="new_role" class="form-select form-select-sm d-inline w-auto">
+                                    <?php foreach ($roles as $role_key => $role_name): ?>
+                                        <option value="<?php echo $role_key; ?>" <?php if ($role_key == $row['role']) echo 'selected'; ?>>
+                                            <?php echo $role_name; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <button type="button" class="btn btn-warning btn-sm btn-change-role">Cambiar</button>
+                            </form>
+                            <!-- Botones adicionales -->
+                            <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseo</a>
+                            <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <script>
+        // SweetAlert2 para confirmar cambio de rol
+        document.querySelectorAll('.btn-change-role').forEach(button => {
+            button.addEventListener('click', function () {
+                const form = this.closest('.change-role-form');
+                const currentRole = form.querySelector('input[name="current_role"]').value;
+                const newRole = form.querySelector('select[name="new_role"]').value;
+                
+                if (currentRole === newRole) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'El rol seleccionado es el mismo que el rol actual. Por favor, elige un rol diferente.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                } else {
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: '¿Quieres cambiar el rol de este usuario?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, cambiar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
     <style>
         .usuarios-container {
-            max-height: 70vh; /* Ajuste opcional para la altura máxima */
-            overflow-y: auto; /* Habilitar scroll vertical */
-            border: 1px solid #ccc; /* Opcional: borde para el contenedor */
-            padding: 10px; /* Espaciado interno */
+            max-height: 70vh;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
         }
     </style>
 
