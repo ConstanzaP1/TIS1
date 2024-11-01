@@ -202,7 +202,9 @@ $result_users = mysqli_query($conexion, $sql_users);
 
 <body>
     <aside id="sidebar">
-        <h2>Panel de Administración</h2>
+    <img class="logo img-fluid w-100" src="../logo.jpg" alt="Logo">
+
+        <h4>Panel de Administración</h4>
         
         <div class="accordion-item">
     <div class="accordion-header">Hardware</div>

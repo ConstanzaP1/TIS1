@@ -1,37 +1,3 @@
-<?php
-// Conexión a la base de datos
-$conexion = new mysqli("localhost", "root", "", "proyecto_tis1");
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
-}
-
-// Verificar si se ha solicitado la eliminación de un usuario
-if (isset($_GET['delete'])) {
-    $user_id = intval($_GET['delete']); // Asegurarse de que el ID es un número entero
-
-    // Eliminar el usuario de la base de datos
-    $query_delete = "DELETE FROM users WHERE id = ?";
-    $stmt = $conexion->prepare($query_delete);
-    $stmt->bind_param("i", $user_id);
-
-    if ($stmt->execute()) {
-        echo "<script>alert('Usuario eliminado exitosamente.'); window.location.href='lista_usuarios.php';</script>";
-    } else {
-        echo "<script>alert('Error al eliminar el usuario. Inténtalo de nuevo.');</script>";
-    }
-
-    $stmt->close();
-}
-
-// Consulta SQL para buscar usuarios por ID, Nombre o Correo
-$search = isset($_GET['search']) ? $conexion->real_escape_string($_GET['search']) : '';
-$query = "SELECT * FROM users";
-if ($search) {
-    $query .= " WHERE id LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
-}
-$result_users = $conexion->query($query);
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -40,9 +6,17 @@ $result_users = $conexion->query($query);
     <title>Lista de Usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<nav class="navbar navbar-expand-lg bg-body-tertiary w-100 m-0">
+    <div class="container-fluid">
+        <img class="logo img-fluid" src="../logo.jpg" alt="Logo" style="width: 50px;">
+        <!-- Otros elementos del navbar -->
+    </div>
+</nav>
+
 <body class="container my-4">
-        <!-- Botón de Volver al panel de administración -->
-        <div class="mb-4">
+    
+    <!-- Botón de Volver al panel de administración -->
+    <div class="mb-4">
         <a href="admin_panel.php" class="btn btn-secondary">Volver al Panel de Administración</a>
     </div>
     <div class="usuarios-container">
@@ -54,6 +28,44 @@ $result_users = $conexion->query($query);
             <button type="submit" class="btn btn-primary ms-2">Buscar</button>
             <a href="lista_usuarios.php" class="btn btn-secondary ms-2">Restablecer</a>
         </form>
+
+        <?php
+        // Conexión a la base de datos
+        $conexion = new mysqli("localhost", "root", "", "proyecto_tis1");
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+
+        // Verificar si se ha solicitado cambiar el rol de un usuario
+        if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
+            $user_id = intval($_POST['user_id']);
+            $new_role = $conexion->real_escape_string($_POST['new_role']);
+
+            // Cambiar el rol del usuario en la tabla users
+            $query_update_role = "UPDATE users SET role = ? WHERE id = ?";
+            $stmt = $conexion->prepare($query_update_role);
+            $stmt->bind_param("si", $new_role, $user_id);
+
+            if ($stmt->execute()) {
+                echo "<script>alert('El rol del usuario ha sido cambiado exitosamente.'); window.location.href='lista_usuarios.php';</script>";
+            } else {
+                echo "<script>alert('Error al cambiar el rol del usuario. Inténtalo de nuevo.');</script>";
+            }
+
+            $stmt->close();
+        }
+
+        // Consulta SQL para buscar usuarios por ID, Nombre o Correo
+        $search = isset($_GET['search']) ? $conexion->real_escape_string($_GET['search']) : '';
+        $query = "SELECT id, username, email, role FROM users";
+        if ($search) {
+            $query .= " WHERE id LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
+        }
+        $result_users = $conexion->query($query);
+
+        // Roles disponibles (por ejemplo, 'admin' y 'user')
+        $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar'];
+        ?>
 
         <!-- Tabla de usuarios -->
         <table class="table table-bordered">
@@ -67,36 +79,28 @@ $result_users = $conexion->query($query);
                 </tr>
             </thead>
             <tbody>
-                <?php
-                // Conexión a la base de datos
-                $conexion = new mysqli("localhost", "root", "", "proyecto_tis1");
-                if ($conexion->connect_error) {
-                    die("Error de conexión: " . $conexion->connect_error);
-                }
-
-                // Consulta SQL para buscar usuarios por ID, Nombre o Correo
-                $search = isset($_GET['search']) ? $conexion->real_escape_string($_GET['search']) : '';
-                $query = "SELECT * FROM users";
-                if ($search) {
-                    $query .= " WHERE id LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
-                }
-                $result_users = $conexion->query($query);
-
-                // Mostrar todos los usuarios encontrados
-                while ($row = $result_users->fetch_assoc()):
-                ?>
+                <?php while ($row = $result_users->fetch_assoc()): ?>
                 <tr>
                     <td><?php echo $row['id']; ?></td>
                     <td><?php echo $row['username']; ?></td>
                     <td><?php echo $row['email']; ?></td>
-                    <td><?php echo $row['role']; ?></td>
+                    <td><?php echo $roles[$row['role']]; ?></td>
                     <td>
-                            <!-- Botón para ver la lista de deseos del usuario -->
-                        <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm" disabled >Lista de deseo</a>
-                            <!-- Botón para ver el historial de compras del usuario -->
-                        <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm" disabled>Historial de compras</a>
-
-                        <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</a>
+                        <!-- Formulario para cambiar rol -->
+                        <form method="POST" action="" class="d-inline">
+                            <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                            <select name="new_role" class="form-select form-select-sm d-inline w-auto">
+                                <?php foreach ($roles as $role_key => $role_name): ?>
+                                    <option value="<?php echo $role_key; ?>" <?php if ($role_key == $row['role']) echo 'selected'; ?>>
+                                        <?php echo $role_name; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button type="submit" class="btn btn-warning btn-sm">Cambiar</button>
+                        </form>
+                        <!-- Botones adicionales -->
+                        <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseo</a>
+                        <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
                     </td>
                 </tr>
                 <?php endwhile; ?>
