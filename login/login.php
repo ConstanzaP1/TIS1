@@ -108,10 +108,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../admin_panel/style.css">
 </head>
+
 <body class="bodylogin">
 <div class="mainlogin">
 <main>
-    <button class="boton__volver" onclick="history.back()">Volver Atrás</button>
+    <button  href="index.php" class="boton__volver" onclick="history.back() ">Volver Atrás</button>
     <div class="contenedor__todo">
         
         <div class="caja__trasera">

@@ -10,6 +10,8 @@
         <title>Detalle del Producto</title>
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
         
@@ -380,8 +382,26 @@
                 echo "
                         </ul>";
 
-                        // Supongamos que $id_producto ya está definido
-                        $id_producto = $_GET['id_producto']; // o de otra manera según tu lógica
+                // Botones de acción según el rol del usuario
+                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                        echo "
+                                <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
+                                    <label>Cantidad:</label>
+                                    <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
+                                    <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
+                                </form>
+                                ";
+                                
+                                // Asegurarse de que el parámetro id_producto está definido antes de construir el enlace
+                                if (isset($_GET['id_producto'])) {
+                                    $id_producto = $_GET['id_producto'];
+                                    echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1'>Eliminar producto</button>";
+                                } else {
+                                    echo "ID de producto no especificado.";
+                                }
+                                
+                                
                         
                         // Inicializar la variable
                         $cantidad_disponible = 0;
@@ -450,7 +470,59 @@
         ?>
         
     </div>
-
+    <script>
+function eliminarProducto(id_producto) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta acción eliminará el producto de forma permanente.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Realizar la solicitud AJAX para eliminar el producto
+            fetch('eliminar_producto.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'id_producto=' + id_producto
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Producto eliminado',
+                        text: data.message,
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        window.location.href = '../index.php';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message,
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un error en la solicitud.',
+                    confirmButtonText: 'Aceptar'
+                });
+            });
+        }
+    });
+}
+</script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     </body>
