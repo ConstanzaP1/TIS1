@@ -134,7 +134,7 @@ if (isset($_POST['eliminar_producto'])) {
         </form>
         <hr>
         <div class="row col-6">
-            <h2>Enviar Cotizacion</h2>
+            <h2>Enviar cotizacion de su carrito de compras</h2>
             <form action="../boleta_cotizacion/cotizacion.php" method="POST">
             <div class="mb-3">
                 <label for="correo" class="form-label">Correo Electrónico</label>
