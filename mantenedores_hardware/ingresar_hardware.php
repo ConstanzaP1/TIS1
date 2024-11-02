@@ -261,18 +261,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             header('location: tamanio_max_gabinete.php');
         } 
-        elseif ($tipo_hardware == 'chipset_gpu') {
-            $chipset_gpu  = $_POST['chipset_gpu'];
-            // Insertar en las tablas asociadas para procesadores
-            $querychipset_gpu = "INSERT INTO chipset_gpu (id_hardware, chipset_gpu) VALUES ('$id_hardware', '$chipset_gpu')";
-
-            if (mysqli_query($conexion, $querychipset_gpu)) {
-                echo "Ingreso exitoso.";
-            } else {
-                echo "Error al insertar." . mysqli_error($conexion);
-            }
-            header('location: chipset_gpu.php');
-        } 
         elseif ($tipo_hardware == 'bus_de_entrada_gpu') {
             $bus_de_entrada_gpu  = $_POST['bus_de_entrada_gpu'];
             // Insertar en las tablas asociadas para procesadores

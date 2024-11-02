@@ -25,7 +25,6 @@ $query = "SELECT * FROM hardware p
           LEFT JOIN chipset_placa cp ON p.id_hardware = cp.id_hardware
           LEFT JOIN tipo_ram tr ON p.id_hardware = tr.id_hardware
           LEFT JOIN tamanio_max_gabinete tmg ON p.id_hardware = tmg.id_hardware
-          LEFT JOIN chipset_gpu cg ON p.id_hardware = cg.id_hardware
           LEFT JOIN bus_de_entrada_gpu beg ON p.id_hardware = beg.id_hardware
           LEFT JOIN bus_hdd bh ON p.id_hardware = bh.id_hardware
           LEFT JOIN bus_ssd bs ON p.id_hardware = bs.id_hardware
@@ -85,7 +84,6 @@ $row = mysqli_fetch_assoc($result);
                 <option value="chipset_placa" <?php if ($row['chipset_placa']) echo 'selected'; ?>>Chipset Placa</option>
                 <option value="tipo_ram" <?php if ($row['tipo_ram']) echo 'selected'; ?>>Tipo RAM</option>
                 <option value="tamanio_max_gabinete" <?php if ($row['tamanio_max_gabinete']) echo 'selected'; ?>>tamaño maximo placa</option>
-                <option value="chipset_gpu" <?php if ($row['chipset_gpu']) echo 'selected'; ?>>Chipset Gpu</option>
                 <option value="bus_de_entrada_gpu" <?php if ($row['bus_de_entrada_gpu']) echo 'selected'; ?>>bus de entrada Gpu</option>
                 <option value="bus_hdd" <?php if ($row['bus_hdd']) echo 'selected'; ?>>Bus Hdd</option>
                 <option value="bus_ssd" <?php if ($row['bus_ssd']) echo 'selected'; ?>>Bus Ssd</option>
@@ -172,10 +170,6 @@ $row = mysqli_fetch_assoc($result);
         <div class="mb-3" id="camposTamanio_max_gabinete" style="display: none;">       
             <label for="tamanio_max_gabinete" class="form-label mt-3">Tamaño maximo placa</label>
             <input type="text" name="tamanio_max_gabinete" class="form-control" id="tamanio_max_gabinete" value="<?php echo $row['tamanio_max_gabinete']; ?>">
-        </div>
-        <div class="mb-3" id="camposchipset_gpu" style="display: none;">       
-            <label for="chipset_gpu" class="form-label mt-3">Chipset</label>
-            <input type="text" name="chipset_gpu" class="form-control" id="chipset_gpu" value="<?php echo $row['chipset_gpu']; ?>">
         </div>
         <div class="mb-3" id="camposbus_de_entrada_gpu" style="display: none;">       
             <label for="bus_de_entrada_gpu" class="form-label mt-3">Bus De Entrada Gpu</label>
