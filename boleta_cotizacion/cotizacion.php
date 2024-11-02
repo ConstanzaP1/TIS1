@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
         $mail->Port       = 587;
 
         // Configurar destinatario y remitente
-        $mail->setFrom('tisnology1@gmail.com', 'Administrador');
+        $mail->setFrom('tisnology1@gmail.com', 'Tisnology');
         $mail->addAddress($correoE);
 
         // Adjuntar el PDF

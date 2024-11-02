@@ -11,15 +11,27 @@
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
-    <body>
+<style>
+    .navbar{
+        background-color: rgba(0, 128, 255, 0.5);   
+    }
+    .celeste-background{
+        background-color: rgba(0, 128, 255, 0.5); 
+        border-color: rgba(0, 128, 255, 0.5);   
+    }
+    .card-body{
+        background-color: #e0e0e0;
+    }
+</style>
+<body>
         
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <!-- Logo -->
         <div class="navbar-brand col-2  ">
-            <img class="logo img-fluid w-75" src="../logo.jpg" alt="Logo">
+            <img class="logo img-fluid w-75 rounded-pill" src="../logo.jpg" alt="Logo">
         </div>
 
         <!-- Botón para colapsar el menú en pantallas pequeñas -->
@@ -38,7 +50,7 @@
             <ul class="navbar-nav ms-auto">
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -49,6 +61,9 @@
                             <?php endif; ?>
                             <li>
                                 <a class="dropdown-item" href="../carrito/carrito.php">Mi Carro</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="../admin_panel/EN_PROCESO.php">Comparador</a>
                             </li>
                             <li>
                                 <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
@@ -64,6 +79,7 @@
         </div>
     </div>
 </nav>
+
     <div class="container py-5">
         <?php
         // Conexión a la base de datos
