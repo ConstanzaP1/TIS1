@@ -1,4 +1,4 @@
-    <?php
+<?php
     session_start();
     ?>
 
@@ -80,14 +80,15 @@
                     p.precio, 
                     p.imagen_url, 
                     m.nombre_marca AS marca,
-                    p.tipo_producto
+                    p.tipo_producto,
+                    p.cantidad AS stock_disponible
                 FROM 
                     producto p
                 LEFT JOIN marca m ON p.marca = m.id_marca
                 WHERE p.id_producto = '$id_producto'
             ";
             
-            $result_producto = mysqli_query($conexion, $query_producto);
+            $result_producto = mysqli_query($conexion, query: $query_producto);
 
             if ($result_producto->num_rows > 0) {
                 $producto = mysqli_fetch_assoc($result_producto);
@@ -350,7 +351,8 @@
                                 <form method='POST' action='../carrito/agregar_al_carrito.php'>
                                     <input type='hidden' name='id_producto' value='{$id_producto}'>
                                     <label>Cantidad:</label>
-                                    <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
+                                    <input type='number' name='cantidad' value='1' min='1' max='<?php echo $producto[stock_disponible]; ?>' class='form-control w-25 mb-3'>
+                                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
@@ -370,7 +372,8 @@
                                 <form method='POST' action='../carrito/agregar_al_carrito.php'>
                                     <input type='hidden' name='id_producto' value='{$id_producto}'>
                                     <label>Cantidad:</label>
-                                    <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
+                                    <input type='number' name='cantidad' value='1' min='1' max='<?php echo $producto[stock_disponible]; ?>' class='form-control w-25 mb-3'>
+                                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
@@ -390,6 +393,7 @@
         
     </div>
     <script>
+
 function eliminarProducto(id_producto) {
     Swal.fire({
         title: '¿Estás seguro?',

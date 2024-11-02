@@ -1,0 +1,389 @@
+<a class ="tbk_btn tbk_danger_btn" data-toggle="modal" id="tbk_button_modal" class="informationButton">Información</a>
+
+<div id="popup-modal" class="tbk-modal-body" style="display:none">
+    <div class="tbk-tab">
+        <button id="tab_modal_info" class="tbk-tablinks" onclick="openInfoTab('tab_modal_info', 'modal_info')">Información</button>
+        <button id="tab_modal_logs" class="tbk-tablinks" onclick="openInfoTab('tab_modal_logs', 'modal_logs')">Registros</button>
+    </div>
+
+    <div id="modal_info" class="tbk-tab-content">
+        <div class="tbk-box">
+            <div class="tbk-grid-title">Información de Plugin / Ambiente</div>
+            <div class="tbk-grid-container">
+                <div class="tbk_column_title" >
+                <span title="Nombre del E-commerce instalado en el servidor" class="tbk-label-info">?</span>
+                Software E-commerce:
+                </div>
+                <div class="tbk_column_value" >
+                <?php echo $this->tbk_data['ecommerce']; ?>
+                </div>
+
+                <div class="tbk_column_title" >
+                <span title="Versión de <?php echo $this->tbk_data['ecommerce']; ?> instalada en el servidor" class="tbk-label-info">?</span>
+                Versión E-commerce:
+                </div>
+                <div class="tbk_column_value" >
+                <?php echo $this->tbk_data['ecommerce_version']; ?>
+                </div>
+
+                <div class="tbk_column_title" >
+                <span title="Última versión de magento disponible" class="tbk-label-info">?</span>
+                Última versión E-commerce:
+                </div>
+                <div class="tbk_column_value" >
+                <?php echo $this->tbk_data['last_ecommerce_version']; ?>
+                </div>
+
+                <div class="tbk_column_title" >
+                <span title="Versión del plugin Webpay para <?php echo $this->tbk_data['ecommerce']; ?> instalada actualmente" class="tbk-label-info">?</span>
+                Versión actual del plugin:
+                </div>
+                <div class="tbk_column_value" >
+                <?php echo $this->tbk_data['current_plugin_version']; ?>
+                </div>
+
+                <div class="tbk_column_title" >
+                <span title="Última versión del plugin Webpay para <?php echo $this->tbk_data['ecommerce']; ?> disponible" class="tbk-label-info">?</span>
+                Última versión del plugin:
+                </div>
+                <div class="tbk_column_value" >
+                <?php echo $this->tbk_data['last_plugin_version']; ?>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="tbk-grid-title">Información Principal</div>
+            <div class="tbk-grid-container">
+                <div class="tbk_column_title" >
+                    <span title="Descripción del Servidor Web instalado" class="tbk-label-info">?</span>
+                    Software Servidor:
+                </div>
+                <div class="tbk_column_value" >
+                    <?php echo $this->tbk_data['server_version']; ?>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="tbk-grid-title">PHP</div>
+            <div class="tbk-grid-container">
+                <div class="tbk_column_title" >
+                <span title="Informa si la versión de PHP instalada en el servidor es compatible con el plugin de Webpay" class="tbk-label-info">?</span>
+                Estado de PHP:
+                </div>
+                <div class="tbk_column_value" >
+                <span class= <?php
+                    if($this->tbk_data['php_status']  == 'OK'){
+                    echo '"tbk-label-success">';}
+                    else{
+                    echo '"tbk-label-danger">';}
+                    echo  $this->tbk_data['php_status'];
+                    ?></span>
+                </div>
+                <div class="tbk_column_title" >
+                    <span title="Versión de PHP instalada en el servidor" class="tbk-label-info">?</span>
+                    Versión:
+                </div>
+                <div class="tbk_column_value" >
+                    <?php echo $this->tbk_data['php_version']; ?>
+                </div>
+            </div>
+            <hr>
+
+            <div class="tbk-grid-title">Extensiones PHP requeridas</div>
+            <div class="tbk-grid3-container">
+                <div class="tbk_column_title" >Extensión</div>
+                <div class="tbk_column_title" >Estado</div>
+                <div class="tbk_column_title" >Versión</div>
+
+                <div class="tbk_column_title" >
+                dom:
+                </div>
+                <div class="tbk_column_value" >
+                <span class= <?php
+                if( $this->tbk_data['dom_status']  == 'OK'){
+                    echo '"tbk-label-success">';}
+                else{
+                    echo '"tbk-label-danger">';
+                }
+                    echo $this->tbk_data['dom_status'];
+                ?></span>
+                </div>
+                <div class="tbk_column_value" >
+                    <?php echo $this->tbk_data['dom_version']; ?>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="tbk-box">
+            <div class="tbk-box-title">Verificar configuración Webpay Plus</div>
+            <p>
+                Esta herramienta permite probar tu configuración (ambiente, código de comercio y llave secreta).
+                Al verificar conexión se envía una solicitud para crear una transacción de prueba.
+                Si ocurre algún problema, puedes obtener más información en el tab de "registros (logs)"
+            </p>
+            <div>
+                <button type="button" class="check_conn btn btn-sm btn-primary">Verificar Conexión</button>
+            </div>
+
+            <hr>
+
+            <div class="tbk-grid-title">Respuesta de Transbank</div>
+            <div class="tbk-grid-container" id="row_response_status" style="display:none">
+                <div class="tbk_column_title" >
+                <span title="Informa el estado de la comunicación con Transbank mediante método init_transaction" class="tbk-label-info">?</span>
+                Estado:
+                </div>
+                <div class="tbk_column_value" >
+                    <span class="status-label label" style="display:none"></span>
+                </div>
+            </div>
+
+            <div class="tbk-grid-container" id="row_response_url" style="display:none">
+                <div class="tbk_column_title" >
+                <span title="URL entregada por Transbank para realizar la transacción" class="tbk-label-info">?</span>
+                URL:
+                </div>
+                <div class="tbk_column_value" >
+                    <span class="tbk_table_trans content_url"></span>
+                </div>
+            </div>
+
+            <div class="tbk-grid-container" id="row_response_token" style="display:none">
+                <div class="tbk_column_title" >
+                <span title="Token entregada por Transbank para realizar la transacción" class="tbk-label-info">?</span>
+                Token:
+                </div>
+                <div class="tbk_column_value" >
+                    <span class="tbk_table_trans content_token"></span>
+                </div>
+            </div>
+
+            <div class="tbk-grid-container" id="row_error_message" style="display:none">
+                <div class="tbk_column_title" >
+                <span title="Mensaje de error devuelto por Transbank al fallar init_transaction" class="tbk-label-info">?</span>
+                Error:
+                </div>
+                <div class="tbk_column_value" >
+                    <span class="tbk_table_trans error_content"></span>
+                </div>
+            </div>
+
+            <div class="tbk-grid-container" id="row_error_detail" style="display:none">
+                <div class="tbk_column_title" >
+                <span title="Detalle del error devuelto por Transbank al fallar init_transaction" class="tbk-label-info">?</span>
+                Detalle:
+                </div>
+                <div class="tbk_column_value" >
+                    <span class="tbk_table_trans error_detail_content"></span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="modal_logs" class="tbk-tab-content" >
+        <div class="tbk-box">
+            <div class="tbk-grid-title">Información de Registros</div>
+            <div class="tbk-grid-container">
+                <div class="tbk_column_title" >
+                <span title="Carpeta en el servidor en donde se guardan los archivos con la informacón de cada compra mediante Webpay" class="tbk-label-info">?</span>
+                Directorio de registros:
+                </div>
+                <div class="tbk_column_value" >
+                <?php echo $this->tbk_data['log_dir']; ?>
+                </div>
+
+                <div class="tbk_column_title" >
+                <span title="Cantidad de archivos que guardan la información de cada compra mediante Webpay" class="tbk-label-info">?</span>
+                Cantidad de Registros en Directorio:
+                </div>
+                <div class="tbk_column_value" >
+                <?php echo $this->tbk_data['logs_count']; ?>
+                </div>
+
+                <div class="tbk_column_title" >
+                <span title="Lista los archivos archivos que guardan la información de cada compra mediante Webpay" class="tbk-label-info">?</span>
+                Listado de Registros Disponibles:
+                </div>
+                <div class="tbk_column_value" >
+                <ul style="font-size:0.8em;list-style: disc">
+                    <?php
+                    $logs_list = $this->tbk_data['logs_list'];
+                    foreach ($logs_list as $index){
+                        $item = <<<HTML
+                            <li>$index</li>
+                            HTML;
+                        echo $item;
+                    }
+                    ?>
+                </ul>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="tbk-grid-title">Últimos Registros</div>
+            <div class="tbk-grid-container">
+                <div class="tbk_column_title" >
+                <span title="Nombre del útimo archivo de registro creado" class="tbk-label-info">?</span>
+                    Último Documento:
+                </div>
+                <div class="tbk_column_value" >
+                    <?php echo $this->tbk_data['log_file']; ?>
+                </div>
+
+                <div class="tbk_column_title" >
+                <span title="Peso del último archivo de registro creado" class="tbk-label-info">?</span>
+                    Peso del Documento:
+                </div>
+                <div class="tbk_column_value" >
+                    <?php echo $this->tbk_data['log_weight']; ?>
+                </div>
+
+                <div class="tbk_column_title" >
+                <span title="Cantidad de líneas que posee el último archivo de registro creado" class="tbk-label-info">?</span>
+                    Cantidad de Líneas:
+                </div>
+                <div class="tbk_column_value" >
+                    <?php echo $this->tbk_data['log_regs_lines']; ?>
+                </div>
+            </div>
+
+            <hr>
+
+            <pre>
+                <span style="font-size: 10px; font-family:monospace; display: block; background: white;width: fit-content;" >
+                <?php echo $this->tbk_data['logs']; ?>
+                </span>
+            </pre>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+	jQuery().ready(function($){
+
+        $(".check_conn").click(function() {
+
+            $(".check_conn").prop('disabled', true);
+
+            $(".btn_status").hide();
+            $(".check_conn").text("Verificando ...");
+            $("#row_response_url").hide();
+            $("#row_response_token").hide();
+            $("#row_error_message").hide();
+            $("#row_error_detail").hide();
+            $("#row_response_status").hide();
+            $(".error-content").empty();
+            $(".error_detail_content").empty();
+            $(".content_url").empty();
+            $(".content_token").empty();
+
+            var url = '<?php echo $this->tbk_data['url_request']; ?>';
+            var params = {
+                "type": "checkInit"
+            };
+
+            $.post(url, params, function(response) {
+
+                $(".status-label").show();
+                $(".check_conn").text("Verificar Conexión");
+                $("#row_response_status").show();
+
+                if(response.success) {
+                    $(".status-label").removeClass("tbk-label-success");
+                    $(".status-label").removeClass("tbk-label-danger");
+                    if(response.msg.status.string == "OK") {
+                        $(".status-label").text("OK");
+                        $(".status-label").addClass("tbk-label-success");
+                        $(".content_url").append(response.msg.response.url);
+                        $(".content_token").append('<pre>'+response.msg.response.token_ws+'</pre>');
+                        $("#row_response_url").show();
+                        $("#row_response_token").show();
+                    } else {
+                        $(".status-label").addClass("tbk-label-danger");
+                        $(".status-label").text("ERROR");
+                        $("#row_error_message").show();
+                        $("#row_error_detail").show();
+                        $(".error_content").append(response.msg.response.error);
+                        $(".error_detail_content").append('<pre><code>'+response.msg.response.detail+'</code></pre>');
+                    }
+                } else {
+                    $(".status-label").removeClass("tbk-label-success");
+                    $(".status-label").removeClass("tbk-label-danger");
+                    $(".status-label").addClass("tbk-label-danger");
+                    $(".status-label").text("ERROR");
+                    $(".error_content").append(response.msg.response.error);
+                    $(".error_detail_content").append('<pre><code>'+response.msg+'</code></pre>');
+                    $("#row_error_message").show();
+                    $("#row_error_detail").show();
+                }
+
+                $(".check_conn").prop('disabled', false);
+            },'json').fail(function() {
+                $(".status-label").removeClass("tbk-label-success");
+                $(".status-label").removeClass("tbk-label-danger");
+                $(".status-label").addClass("tbk-label-danger");
+                $(".status-label").text("ERROR");
+
+                $(".check_conn").prop('disabled', false);
+            });
+        });
+
+	});
+
+
+    require(
+            [
+                'jquery',
+                'Magento_Ui/js/modal/modal'
+            ],
+            function($, modal, url) {
+                let options = {
+                    type: 'popup',
+                    responsive: true,
+                    buttons: [{
+                        text: $.mage.__('Cerrar'),
+                        class: '',
+                        click: function () {
+                            this.closeModal();
+                        }
+                    }]
+                };
+
+                let popup = modal(options, $('#popup-modal'));
+
+                $("#tbk_button_modal").click(function() {
+                    $('#popup-modal').modal('openModal');
+                    $("#row_response_url").hide();
+                    $("#row_response_token").hide();
+                    $("#row_error_message").hide();
+                    $("#row_error_detail").hide();
+                    $("#row_response_status").hide();
+                });
+            }
+        );
+
+        function openInfoTab(tabLinkId, tabId) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tbk-tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tbk-tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabId).style.display = "block";
+            document.getElementById(tabLinkId).className += " active";
+        }
+        openInfoTab('tab_modal_info', 'modal_info');
+
+</script>
