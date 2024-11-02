@@ -24,6 +24,9 @@
     .card-body{
         background-color: #e0e0e0;
     }
+    body{
+        background-color: #e0e0e0;
+    }
 </style>
 <body>
         
@@ -60,15 +63,19 @@
                                 </li>
                             <?php endif; ?>
                             <li>
-                                <a class="dropdown-item" href="../carrito/carrito.php">Mi Carro</a>
-                            </li>
-                            <li>
                                 <a class="dropdown-item" href="../admin_panel/EN_PROCESO.php">Comparador</a>
                             </li>
                             <li>
                                 <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
                             </li>
                         </ul>
+                        <li class="nav-item">
+                        <button type="btn btn-light" class="p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                            </svg>
+                        </button>
+                    </li>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
@@ -110,11 +117,11 @@
 
                 // Mostrar los detalles del producto
                 echo "
-                <div class='producto-detalle shadow d-flex align-items-center'>
-                    <div class='col-6 text-center'>
+                <div class='producto-detalle shadow d-flex align-items-center bg-white'>
+                    <div class='col-6 text-center me-1'>
                         <img class='img-fluid' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}'>
                     </div>
-                    <div class='producto-info col-6 shadow p-5'>
+                    <div class='producto-info col-6 p-5'>
                         <h1>{$producto['nombre_producto']}</h1>
                         <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
                         <p><strong>Marca:</strong> {$producto['marca']}</p>
@@ -367,14 +374,14 @@
                                     <input type='hidden' name='id_producto' value='{$id_producto}'>
                                     <label>Cantidad:</label>
                                     <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
-                                    <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
+                                    <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5 '>Agregar al Carrito</button>
                                 </form>
                                 ";
                                 
                                 // Asegurarse de que el parámetro id_producto está definido antes de construir el enlace
                                 if (isset($_GET['id_producto'])) {
                                     $id_producto = $_GET['id_producto'];
-                                    echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1'>Eliminar producto</button>";
+                                    echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1 px-5  rounded-pill '>Eliminar producto</button>";
                                 } else {
                                     echo "ID de producto no especificado.";
                                 }
@@ -387,12 +394,12 @@
                                     <input type='hidden' name='id_producto' value='{$id_producto}'>
                                     <label>Cantidad:</label>
                                     <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
-                                    <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
+                                    <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
                                 </form>
                                 ";
                     }
 
-                echo "<a href='../index.php' class='btn btn-secondary mt-3'>Volver al Catálogo</a>
+                echo "<a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
                 </div>
             </div>";
             } else {
