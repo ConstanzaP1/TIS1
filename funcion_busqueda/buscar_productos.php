@@ -29,7 +29,8 @@ if (!empty($searchQuery)) {
 
 $result = mysqli_query($conexion, $query);
 
-// Generar HTML para los productos encontrados
+// Contenedor para mantener el formato de las cards
+echo "<div class='d-flex flex-wrap justify-content-center'>";
 if ($result->num_rows > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         // Variables del producto
@@ -41,12 +42,12 @@ if ($result->num_rows > 0) {
 
         // HTML del producto con enlace al detalle
         echo "
-          <div class='card mx-1 mb-3 p-1 shadow' style='width: 18rem;'>
-            <img src='$imagen_url' alt='$nombre_producto'>
+          <div class='card mx-1 mb-3 p-0 shadow' style='width: 18rem; height: 26rem;'>
+            <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid' style='height: 20rem; object-fit: cover;'>
               <div class='card-body text-begin'>
                 <a class='text-decoration-none' href='catalogo_productos/detalle_producto.php?id_producto=$id_producto'>
-                    <p class='text-secondary'>$marca</p>
-                    <h5 class='text-black'>$nombre_producto</h5>
+                    <p class='text-secondary m-0'>$marca</p>
+                    <h5 class='text-black my-1'>$nombre_producto</h5>
                     <p class='text-secondary'>$$precio</p>
                 </a>
               </div>
@@ -56,5 +57,6 @@ if ($result->num_rows > 0) {
 } else {
     echo "<p>No hay productos disponibles.</p>";
 }
+echo "</div>"; // Cierre del contenedor
 mysqli_close($conexion);
 ?>
