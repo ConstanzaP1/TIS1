@@ -13,7 +13,7 @@ if (isset($_GET['id_hardware'])) {
         'velocidad_ram','capacidad_almacenamiento','formato_placa',
         'capacidad_ram','tipo_ram','certificacion_fuente',
         'tamanio_fuente','potencia_fuente',
-        'chipset_placa', 'tamanio_max_gabinete', 'chipset_gpu', 'bus_de_entrada_gpu', 'bus_hdd', 'bus_ssd','formato_ssd'
+        'chipset_placa', 'tamanio_max_gabinete', 'bus_de_entrada_gpu', 'bus_hdd', 'bus_ssd','formato_ssd'
         ,'rpm_hdd', 'tamanio_hdd'
     ];
 
