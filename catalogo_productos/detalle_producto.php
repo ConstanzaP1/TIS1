@@ -399,7 +399,14 @@
                                 </form>
                                 ";
                     }
-
+                    
+                    echo "<br>
+                    <form method='POST' action='../comparador/agregar_al_comparador.php'>
+                        <input type='hidden' name='id_producto' value='{$id_producto}'>
+                        <button type='submit' name='agregar_comparador' class='btn btn-primary'>Agregar al Comparador
+                        </button>
+                    </form>
+                    ";
                 echo "<a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
                 </div>
             </div>";

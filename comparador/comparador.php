@@ -62,20 +62,33 @@ require('../conexion.php');
             $query_caracteristicas = getCaracteristicasQuery($row['tipo_producto'], $row['id_producto']);
             $result_caracteristicas = mysqli_query($conexion, $query_caracteristicas);
 
-            $caracteristicas = '';
+            $caracteristicas = [];
             if ($result_caracteristicas && mysqli_num_rows($result_caracteristicas) > 0) {
                 while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
-                    $caracteristicas .= "<li>" . htmlspecialchars($caracteristica['caracteristica']) . "</li>";
+                    if (!empty($caracteristica['caracteristica'])) {
+                        $caracteristicas[] = htmlspecialchars($caracteristica['caracteristica']);
+                    }
                 }
-            } else {
-                $caracteristicas = "<li>No hay características disponibles</li>";
-            }
+            } 
 
             echo "<tr>";
             echo "<td><img src='" . htmlspecialchars($row['imagen_url']) . "' alt='" . htmlspecialchars($row['nombre_producto']) . "' class='product-img'></td>";
             echo "<td>" . htmlspecialchars($row['nombre_producto']) . "</td>";
             echo "<td>$" . number_format($row['precio'], 0, ',', '.') . "</td>";
-            echo "<td><ul>" . $caracteristicas . "</ul></td>";
+            
+            // Mostrar características solo si hay
+            echo "<td>";
+            if (!empty($caracteristicas)) {
+                echo "<ul>";
+                foreach ($caracteristicas as $caracteristica) {
+                    echo "<li>" . $caracteristica . "</li>";
+                }
+                echo "</ul>";
+            } else {
+                echo "No hay características disponibles"; // Mensaje en caso de no tener características
+            }
+            echo "</td>";
+
             echo "<td>
                     <form method='POST' action='comparador.php'>
                         <input type='hidden' name='id_producto' value='" . $row['id_producto'] . "'>
@@ -101,7 +114,6 @@ require('../conexion.php');
     }
 
     // Función para obtener la consulta de características según el tipo de producto
-
     function getCaracteristicasQuery($tipo_producto, $id_producto) {
         switch ($tipo_producto) {
             case 'teclado':
@@ -289,7 +301,6 @@ require('../conexion.php');
                     LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
                     WHERE pa.id_producto = '$id_producto'
                 ";
-            // Agrega más casos según los tipos de productos...
             default:
                 return "SELECT 'No hay características disponibles' AS caracteristica WHERE 1=0"; // Consulta que no devuelve filas
         }
@@ -303,5 +314,4 @@ require('../conexion.php');
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
 
