@@ -65,9 +65,7 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                                     <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>
                             <?php endif; ?>
-                            <li>
-                                <a class="dropdown-item" href="admin_panel/EN_PROCESO.php">Comparador</a>
-                            </li>
+                            
                             <li>
                                 <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
                             </li>

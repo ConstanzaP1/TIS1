@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
     $pdf->Ln();
 
     // Guardar el PDF en un archivo temporal
-    $pdf_filename = '../boleta_cotizacion/cotizacion_carrito.pdf';
+    $pdf_filename = '../boleta_cotizacion/cotizacion_productos.pdf';
     $pdf->Output('F', $pdf_filename);
 
     try {
@@ -79,12 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
         $mail->addAddress($correoE);
 
         // Adjuntar el PDF
-        $mail->addAttachment($pdf_filename, 'Cotizacion_Carrito.pdf');
+        $mail->addAttachment($pdf_filename, 'Cotizacion_productos.pdf');
 
         // Configuración del contenido del correo
         $mail->isHTML(true);
-        $mail->Subject = 'Cotizacion de carrito';
-        $mail->Body    = 'Adjunto encontrará la cotización de su carrito.';
+        $mail->Subject = 'Cotizacion de productos';
+        $mail->Body    = 'Adjunto la cotización de sus productos.';
 
         // Enviar el correo
         $mail->send();
