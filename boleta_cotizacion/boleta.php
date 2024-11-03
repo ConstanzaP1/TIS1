@@ -27,8 +27,9 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
         $precio_total = $precio_unitario * $cantidad;
         $total += $precio_total;
 
-        // Guardar el detalle de cada producto en un array
+        // Guardar el detalle de cada producto en un array, incluyendo id_producto
         $detalle_boleta[] = [
+            'id_producto' => $id_producto,
             'producto' => $nombre_producto,
             'cantidad' => $cantidad,
             'precio_unitario' => $precio_unitario,
@@ -38,6 +39,9 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
 
     // Convertir el detalle de la compra en JSON para guardarlo en la base de datos
     $detalle_boleta_json = json_encode($detalle_boleta);
+
+    // Establecer la zona horaria de Santiago
+    date_default_timezone_set('America/Santiago');
 
     // Guardar la boleta en la base de datos
     $fecha = date('Y-m-d H:i:s');
@@ -52,32 +56,51 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
         die("Error al guardar la boleta en la base de datos: " . mysqli_error($conexion));
     }
 
+    // Obtener el ID de la boleta recién insertada y guardarlo en la sesión
+    $id_boleta = mysqli_insert_id($conexion);
+    $_SESSION['id_boleta'] = $id_boleta;
+
     // Guardar los detalles de la compra para el PDF
     $_SESSION['pdf_detalle_compra'] = $detalle_compra;
+
+    // Insertar los detalles de cada producto en la tabla `detalle_boletas`
+    foreach ($detalle_boleta as $detalle) {
+        $id_producto = mysqli_real_escape_string($conexion, $detalle['id_producto']);
+        $cantidad = $detalle['cantidad'];
+        $precio_unitario = $detalle['precio_unitario'];
+        $precio_total = $detalle['total'];
+
+        $query_detalle = "INSERT INTO detalle_boletas (id_boleta, id_producto, cantidad, precio_unitario, precio_total) 
+                          VALUES ('$id_boleta', '$id_producto', '$cantidad', '$precio_unitario', '$precio_total')";
+
+        // Ejecutar la consulta y verificar si hay errores
+        if (!mysqli_query($conexion, $query_detalle)) {
+            die("Error al guardar el detalle de la boleta en la base de datos: " . mysqli_error($conexion));
+        }
+    }
 
     // Limpiar la sesión del carrito después de completar la compra
     unset($_SESSION['carrito']);
     unset($_SESSION['detalle_compra']);
 }
 
-
 function generarPDF($detalle_compra, $conexion, $total) {
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->SetFillColor(33, 37, 41); // Color de fondo oscuro similar a Bootstrap
-    $pdf->SetTextColor(255, 255, 255); // Texto blanco para el encabezado
+    $pdf->SetFillColor(33, 37, 41);
+    $pdf->SetTextColor(255, 255, 255);
 
     // Encabezado del PDF
     $pdf->Cell(190, 10, 'Boleta de Compra - Componentes de Computadora', 0, 1, 'C', true);
     $pdf->SetFont('Arial', '', 12);
-    $pdf->SetTextColor(0, 0, 0); // Texto en color negro
+    $pdf->SetTextColor(0, 0, 0);
     $pdf->Cell(190, 10, 'Fecha: ' . date('d/m/Y'), 0, 1, 'C');
     $pdf->Ln(10);
 
     // Tabla de productos
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->SetFillColor(220, 220, 220); // Fondo gris claro para encabezado de tabla
+    $pdf->SetFillColor(220, 220, 220);
     $pdf->Cell(80, 10, 'Producto', 1, 0, 'C', true);
     $pdf->Cell(30, 10, 'Cantidad', 1, 0, 'C', true);
     $pdf->Cell(40, 10, 'Precio Unitario', 1, 0, 'C', true);
@@ -110,7 +133,6 @@ if (isset($_GET['descargar']) && $_GET['descargar'] === 'pdf') {
     $detalle_compra = $_SESSION['pdf_detalle_compra'] ?? [];
     $total = 0;
 
-    // Calcular el total
     foreach ($detalle_compra as $id_producto => $cantidad) {
         $result = mysqli_query($conexion, "SELECT precio FROM producto WHERE id_producto = '$id_producto'");
         $producto = mysqli_fetch_assoc($result);
@@ -138,15 +160,17 @@ if (isset($_GET['descargar']) && $_GET['descargar'] === 'pdf') {
         </div>
         <div class="card-body">
             <?php if (isset($_GET['status']) && $_GET['status'] == 'success' && isset($_SESSION['pdf_detalle_compra'])): ?>
-                <p class="alert alert-success text-center">
-                    Transacción exitosa. Código de autorización: 
-                    <strong><?php echo htmlspecialchars($_GET['auth_code']); ?></strong>
-                </p>
-                
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">
                         <thead class="table-dark">
+                            <!-- Fila para mostrar "Información de la compra" como título -->
                             <tr>
+                                <th colspan="6" class="text-center">Información de la compra</th>
+                            </tr>
+                            <!-- Encabezados de la tabla con nombres ajustados -->
+                            <tr>
+                                <th style="width: 10%;">Codigo Autorización</th>
+                                <th style="width: 10%;">N° Boleta</th>
                                 <th>Producto</th>
                                 <th>Cantidad</th>
                                 <th>Precio Unitario</th>
@@ -156,7 +180,19 @@ if (isset($_GET['descargar']) && $_GET['descargar'] === 'pdf') {
                         <tbody>
                             <?php
                             $total = 0;
+                            $primera_fila = true;
                             foreach ($detalle_compra as $id_producto => $cantidad) {
+                                // Mostrar Código de Autorización y N° de Boleta solo en la primera fila
+                                if ($primera_fila) {
+                                    echo "<tr>
+                                            <td>" . htmlspecialchars($_GET['auth_code']) . "</td>
+                                            <td>" . $_SESSION['id_boleta'] . "</td>";
+                                    $primera_fila = false;
+                                } else {
+                                    echo "<tr><td></td><td></td>";
+                                }
+
+                                // Obtener información del producto
                                 $result = mysqli_query($conexion, "SELECT nombre_producto, precio FROM producto WHERE id_producto = '$id_producto'");
                                 $producto = mysqli_fetch_assoc($result);
                                 $nombre_producto = $producto['nombre_producto'];
@@ -164,19 +200,22 @@ if (isset($_GET['descargar']) && $_GET['descargar'] === 'pdf') {
                                 $precio_total = $precio_unitario * $cantidad;
                                 $total += $precio_total;
 
-                                echo "<tr>
-                                        <td>{$nombre_producto}</td>
-                                        <td>{$cantidad}</td>
-                                        <td>$" . number_format($precio_unitario, 0, ',', '.') . "</td>
-                                        <td>$" . number_format($precio_total, 0, ',', '.') . "</td>
+                                // Mostrar detalles del producto
+                                echo "<td>{$nombre_producto}</td>
+                                      <td>{$cantidad}</td>
+                                      <td>$" . number_format($precio_unitario, 0, ',', '.') . "</td>
+                                      <td>$" . number_format($precio_total, 0, ',', '.') . "</td>
                                       </tr>";
                             }
                             ?>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="text-end fw-bold">Total a pagar</td>
+                                <td class="fw-bold">$<?php echo number_format($total, 0, ',', '.'); ?></td>
+                            </tr>
+                        </tfoot>
                     </table>
-                </div>
-                <div class="text-end">
-                    <p class="fw-bold fs-5">Total a pagar: $<?php echo number_format($total, 0, ',', '.'); ?></p>
                 </div>
 
                 <div class="d-flex justify-content-center">
@@ -185,6 +224,7 @@ if (isset($_GET['descargar']) && $_GET['descargar'] === 'pdf') {
                     </a>
                 </div>
 
+                <?php unset($_SESSION['id_boleta']); // Limpiar el ID de la boleta de la sesión ?>
             <?php elseif (isset($_GET['status']) && $_GET['status'] == 'failed'): ?>
                 <p class="alert alert-danger text-center">La transacción no fue exitosa. Por favor, intenta de nuevo.</p>
             <?php else: ?>
@@ -199,4 +239,3 @@ if (isset($_GET['descargar']) && $_GET['descargar'] === 'pdf') {
 </div>
 </body>
 </html>
-

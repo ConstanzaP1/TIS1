@@ -427,23 +427,27 @@ $result_users = mysqli_query($conexion, $sql_users);
         });
     });
 </script>
-<div class="usuarios-container mt-2">
-    <!-- Botón para redirigir a lista_usuarios.php -->
-    <a href="lista_usuarios.php" class="btn lista-usuarios-btn">Lista de Usuarios</a>
-</div>
 <hr>
 
 <div class="sidebar-container p-3">
-    <div class="d-flex flex-row gap-2">
-        <!-- Botón en el sidebar para abrir el modal de registro de usuario -->
-        <button type="button" class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
-            Registrar Usuario
-        </button>
+<div class="d-flex flex-column gap-2">
+    <!-- Botón para redirigir a lista_usuarios.php -->
+    <a href="lista_usuarios.php" class="btn lista-usuarios-btn">Lista de Usuarios</a>
+    
+    <!-- Botón en el sidebar para abrir el modal de registro de usuario -->
+    <button type="button" class="btn lista-usuarios-btn" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
+        Registrar Usuario
+    </button>
 
-        <!-- Botón para el catálogo de productos -->
-        <a href="../index.php" class="btn btn-primary flex-grow-1 d-flex align-items-center justify-content-center">
-            Catálogo productos
-        </a>
+    <!-- Nuevo botón para recuperar boletas -->
+    <a href="../boleta_cotizacion/recuperar_boletas.php" class="btn lista-usuarios-btn">
+        Recuperar Boletas
+    </a>
+
+    <!-- Botón para el catálogo de productos -->
+    <a href="../index.php" class="btn lista-usuarios-btn">
+        Catálogo productos
+    </a>
 
         <!-- Botón para cerrar sesión -->
         <a href="?logout" class="btn btn-danger flex-grow-1 d-flex align-items-center justify-content-center">
@@ -451,6 +455,7 @@ $result_users = mysqli_query($conexion, $sql_users);
         </a>
     </div>
 </div>
+
 
 <!-- Modal para el formulario de registro de usuario -->
 <div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
