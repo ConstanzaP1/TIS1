@@ -374,7 +374,7 @@
                                     <label>Cantidad:</label>
                                     <input type='number' name='cantidad' value='1' min='1' max='<?php echo $producto[stock_disponible]; ?>' class='form-control w-25 mb-3'>
                                     <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
-                                    <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
+                                    <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
                                 </form>
                                 ";
                                 
