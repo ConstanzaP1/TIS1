@@ -37,7 +37,7 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
     <div class="container-fluid">
         <!-- Logo -->
         <div class="navbar-brand col-2  ">
-            <img class="logo img-fluid w-75 rounded-pill" src="logo.jpg" alt="Logo">
+            <img class="logo img-fluid w-75 rounded-pill" src="logopng.png" alt="Logo">
         </div>
 
         <!-- Botón para colapsar el menú en pantallas pequeñas -->
