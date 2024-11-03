@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(0, 10, 'Cotización', 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Cotizacion', 0, 1, 'C');
     $pdf->Ln(10);
 
     $pdf->SetFont('Arial', 'B', 12);
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
 
         // Configuración del contenido del correo
         $mail->isHTML(true);
-        $mail->Subject = 'Cotización de carrito';
+        $mail->Subject = 'Cotizacion de carrito';
         $mail->Body    = 'Adjunto encontrará la cotización de su carrito.';
 
         // Enviar el correo

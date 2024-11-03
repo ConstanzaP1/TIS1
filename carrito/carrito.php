@@ -177,6 +177,16 @@ if (isset($_POST['pagar'])) {
                 <p class="text-danger mt-2">Algunos productos en el carrito exceden el stock disponible.</p>
             <?php endif; ?>
         </form>
+        <hr>
+        <div class="row col-6">
+            <h2>Enviar cotizacion de su carrito de compras</h2>
+            <form action="../boleta_cotizacion/cotizacion.php" method="POST">
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="correo" name="correo" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
     <?php endif; ?>
     <a href="../index.php" class="btn btn-secondary mt-3">Volver al Catálogo</a>
 </div>
