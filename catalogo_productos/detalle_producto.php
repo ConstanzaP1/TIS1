@@ -62,7 +62,9 @@
                                     <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>
                             <?php endif; ?>
-                                
+                            <li>
+                                <a class="dropdown-item" href="../comparador/comparador.php">Comparador Productos</a>
+                            </li>
                             <li>
                                 <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
                             </li>
@@ -385,7 +387,13 @@
                                 } else {
                                     echo "ID de producto no especificado.";
                                 }
-                                
+                                echo "
+                                <br>
+                                    <form method='POST' action='../comparador/agregar_al_comparador.php'>
+                                        <input type='hidden' name='id_producto' value='{$id_producto}'>
+                                        <button type='submit' name='agregar_comparador' class='btn btn-primary rounded-pill px-5''>Agregar al Comparador</button>
+                                    </form>
+                                    ";
                                 
                         
                     } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
@@ -398,15 +406,14 @@
                                     <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
                                 </form>
                                 ";
+                        echo "<br>
+                                <form method='POST' action='../comparador/agregar_al_comparador.php'>
+                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
+                                    <button type='submit' name='agregar_comparador' class='btn btn-primary'>Agregar al Comparador
+                                    </button>
+                                </form>
+                                ";
                     }
-                    
-                    echo "<br>
-                    <form method='POST' action='../comparador/agregar_al_comparador.php'>
-                        <input type='hidden' name='id_producto' value='{$id_producto}'>
-                        <button type='submit' name='agregar_comparador' class='btn btn-primary'>Agregar al Comparador
-                        </button>
-                    </form>
-                    ";
                 echo "<a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
                 </div>
             </div>";
