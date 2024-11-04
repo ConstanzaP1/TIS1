@@ -2,14 +2,13 @@
 session_start();
 require('../conexion.php');
 require('../vendor/setasign/fpdf/fpdf.php');
-require('../vendor/autoload.php'); // Asegúrate de incluir Composer y PHPMailer
+require('../vendor/autoload.php');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 $correoE = $_SESSION['email'];
-$username= $_SESSION['username'];
-
+$username = $_SESSION['username'];
 
 // Verificar si la transacción fue exitosa y si el carrito tiene datos
 $detalle_compra = $_SESSION['detalle_compra'] ?? null;
@@ -35,9 +34,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
         $precio_total = $precio_unitario * $cantidad;
         $total += $precio_total;
 
-        // Guardar el detalle de cada producto en un array, incluyendo id_producto
         $detalle_boleta[] = [
-            'id_producto' => $id_producto,
             'producto' => $nombre_producto,
             'cantidad' => $cantidad,
             'precio_unitario' => $precio_unitario,
@@ -45,19 +42,11 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
         ];
     }
 
-    // Convertir el detalle de la compra en JSON para guardarlo en la base de datos
-    $detalle_boleta_json = json_encode($detalle_boleta);
-
     // Establecer la zona horaria de Santiago
     date_default_timezone_set('America/Santiago');
-
-    // Guardar la boleta en la base de datos
     $fecha = date('Y-m-d H:i:s');
     $codigo_autorizacion = mysqli_real_escape_string($conexion, $_GET['auth_code']);
-
-    // Consulta para insertar en la tabla `boletas`
-    $query_boleta = "INSERT INTO boletas (fecha, total, codigo_autorizacion, detalles) 
-                     VALUES ('$fecha', '$total', '$codigo_autorizacion', '$detalle_boleta_json')";
+    $query_boleta = "INSERT INTO boletas (fecha, total, codigo_autorizacion, detalles) VALUES ('$fecha', '$total', '$codigo_autorizacion', '" . json_encode($detalle_boleta) . "')";
 
     if (!mysqli_query($conexion, $query_boleta)) {
         die("Error al guardar la boleta en la base de datos: " . mysqli_error($conexion));
@@ -66,80 +55,138 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
     $id_boleta = mysqli_insert_id($conexion);
     $_SESSION['id_boleta'] = $id_boleta;
 
-    // Crear y generar el PDF en memoria
-    ob_start();
+    // Crear el PDF en memoria
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->SetFillColor(33, 37, 41);
-    $pdf->SetTextColor(255, 255, 255);
-    $pdf->Cell(190, 10, 'Boleta de Compra - Componentes de Computadora', 0, 1, 'C', true);
+    $pdf->Cell(0, 10, 'Boleta de Compra Tisnology', 0, 1, 'C');
     $pdf->SetFont('Arial', '', 12);
-    $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(190, 10, 'Fecha: ' . date('d/m/Y'), 0, 1, 'C');
+    $pdf->Cell(0, 10, 'ID Boleta: ' . $id_boleta, 0, 1);
+    $pdf->Cell(0, 10, 'Fecha: ' . date('d/m/Y H:i', strtotime($fecha)), 0, 1);
+    $pdf->Cell(0, 10, 'Codigo de Autorizacion: ' . $codigo_autorizacion, 0, 1);
     $pdf->Ln(10);
 
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->SetFillColor(220, 220, 220);
-    $pdf->Cell(80, 10, 'Producto', 1, 0, 'C', true);
-    $pdf->Cell(30, 10, 'Cantidad', 1, 0, 'C', true);
-    $pdf->Cell(40, 10, 'Precio Unitario', 1, 0, 'C', true);
-    $pdf->Cell(40, 10, 'Total', 1, 1, 'C', true);
+    $pdf->Cell(80, 10, 'Producto', 1);
+    $pdf->Cell(30, 10, 'Cantidad', 1, 0, 'C');
+    $pdf->Cell(40, 10, 'Precio Unitario', 1, 0, 'R');
+    $pdf->Cell(40, 10, 'Total', 1, 1, 'R');
 
     $pdf->SetFont('Arial', '', 12);
-    foreach ($detalle_compra as $id_producto => $cantidad) {
-        $result = mysqli_query($conexion, "SELECT nombre_producto, precio FROM producto WHERE id_producto = '$id_producto'");
-        $producto = mysqli_fetch_assoc($result);
-        $nombre_producto = $producto['nombre_producto'];
-        $precio_unitario = $producto['precio'];
-        $precio_total = $precio_unitario * $cantidad;
-
-        $pdf->Cell(80, 10, $nombre_producto, 1);
-        $pdf->Cell(30, 10, $cantidad, 1, 0, 'C');
-        $pdf->Cell(40, 10, "$" . number_format($precio_unitario, 0, ',', '.'), 1, 0, 'R');
-        $pdf->Cell(40, 10, "$" . number_format($precio_total, 0, ',', '.'), 1, 1, 'R');
+    foreach ($detalle_boleta as $item) {
+        $pdf->Cell(80, 10, $item['producto'], 1);
+        $pdf->Cell(30, 10, $item['cantidad'], 1, 0, 'C');
+        $pdf->Cell(40, 10, "$" . number_format($item['precio_unitario'], 0, ',', '.'), 1, 0, 'R');
+        $pdf->Cell(40, 10, "$" . number_format($item['total'], 0, ',', '.'), 1, 1, 'R');
     }
 
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(150, 10, 'Total a pagar', 1, 0, 'R');
+    $pdf->Cell(150, 10, 'Total a Pagar', 1, 0, 'R');
     $pdf->Cell(40, 10, "$" . number_format($total, 0, ',', '.'), 1, 1, 'R');
-    $pdf_content = $pdf->Output('S'); // Guardar el contenido del PDF en memoria
-    ob_end_clean();
+    $pdf_content = $pdf->Output('S');
 
-    // Configurar PHPMailer para enviar el correo con el PDF adjunto
+    // Enviar PDF por correo
     $mail = new PHPMailer(true);
     try {
-        // Configuración del servidor SMTP
-        $mail->SMTPDebug = 0;
         $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'tisnology1@gmail.com';
-        $mail->Password   = 'kkayajvlxqjtelsn';
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'tisnology1@gmail.com';
+        $mail->Password = 'kkayajvlxqjtelsn';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->Port = 587;
 
-        // Configurar destinatario y remitente
         $mail->setFrom('tisnology1@gmail.com', 'Tisnology');
         $mail->addAddress($correoE);
 
         $mail->Subject = 'Boleta de Compra - Tisnology';
-        $mail->Body = 'Estimado usuario, adjuntamos su boleta de compra en formato PDF. ¡Gracias por su compra!';
+        $mail->Body = 'Estimado usuario, adjuntamos su boleta de compra . ¡Gracias por su preferencia!';
+        $mail->addStringAttachment($pdf_content, "Boleta_Compra_$id_boleta.pdf");
 
-        // Adjuntar el PDF al correo
-        $mail->addStringAttachment($pdf_content, 'Boleta_Compra.pdf');
-
-        // Enviar correo
         $mail->send();
-        echo 'La boleta ha sido enviada a su correo electrónico.';
-        echo "<a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
-                </div>";
 
+        echo "
+        <script>
+            window.addEventListener('load', function() {
+                toastr.options = {
+                    'closeButton': true,
+                    'positionClass': 'toast-top-right',
+                    'timeOut': '5000'
+                };
+                toastr.success('La boleta ha sido enviada a su correo electrónico.');
+            });
+        </script>";
     } catch (Exception $e) {
-        echo "Error al enviar la boleta: {$mail->ErrorInfo}";
+        echo "
+        <script>
+            window.addEventListener('load', function() {
+                toastr.options = {
+                    'closeButton': true,
+                    'positionClass': 'toast-top-right',
+                    'timeOut': '5000'
+                };
+                toastr.error('Error al enviar la boleta: {$mail->ErrorInfo}');
+            });
+        </script>";
     }
 
-    // Limpiar la sesión del carrito después de completar la compra
+    // Mostrar la boleta en pantalla con opción de descarga
+    echo "
+    <!DOCTYPE html>
+    <html lang='es'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Boleta de Compra</title>
+        <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css' rel='stylesheet'>
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css' rel='stylesheet'/>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js'></script>
+    </head>
+    <body class='bg-light'>
+        <div class='container my-5'>
+            <div class='card'>
+                <div class='card-header bg-primary text-white'>
+                    <h4 class='mb-0'>Boleta de Compra</h4>
+                </div>
+                <div class='card-body'>
+                    <p><strong>ID Boleta:</strong> $id_boleta</p>
+                    <p><strong>Fecha:</strong> $fecha</p>
+                    <p><strong>Código de Autorización:</strong> $codigo_autorizacion</p>
+                    <hr>
+                    <table class='table table-bordered'>
+                        <thead class='table-light'>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+                        foreach ($detalle_boleta as $item) {
+                            echo "
+                            <tr>
+                                <td>{$item['producto']}</td>
+                                <td>{$item['cantidad']}</td>
+                                <td>$" . number_format($item['precio_unitario'], 0, ',', '.') . "</td>
+                                <td>$" . number_format($item['total'], 0, ',', '.') . "</td>
+                            </tr>";
+                        }
+                        echo "
+                        </tbody>
+                    </table>
+                    <h5 class='text-end'>Total a Pagar: $" . number_format($total, 0, ',', '.') . "</h5>
+                    <div class='text-center mt-4'>
+                        <a href='data:application/pdf;base64," . base64_encode($pdf_content) . "' download='Boleta_Compra_$id_boleta.pdf' class='btn btn-primary'>Descargar Boleta en PDF</a>
+                        <a href='../index.php' class='btn btn-secondary'>Volver al Catálogo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>";
+
     unset($_SESSION['carrito']);
     unset($_SESSION['detalle_compra']);
 }

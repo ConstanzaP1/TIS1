@@ -34,7 +34,7 @@
     <div class="container-fluid">
         <!-- Logo -->
         <div class="navbar-brand col-2  ">
-            <img class="logo img-fluid w-75 rounded-pill" src="../logo.jpg" alt="Logo">
+            <img class="logo img-fluid w-75 rounded-pill" src="../Logopng.png" alt="Logo">
         </div>
 
         <!-- Botón para colapsar el menú en pantallas pequeñas -->
@@ -46,7 +46,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Barra de búsqueda -->
             <form class="d-flex ms-auto col-8 shadow" role="search">
-                <input class="form-control" type="search" placeholder="Buscar" aria-label="Buscar">
+                <input class="form-control" type="search" placeholder="Buscar en tisnology" aria-label="Buscar">
             </form>
 
             <!-- Menú desplegable -->
@@ -68,11 +68,11 @@
                             </li>
                         </ul>
                         <li class="nav-item">
-                        <button type="btn btn-light" class="p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                            </svg>
-                        </button>
+                        <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+    </svg>
+</button>
                     </li>
                     </li>
                 <?php else: ?>
@@ -118,7 +118,7 @@
                 echo "
                 <div class='producto-detalle shadow d-flex align-items-center bg-white'>
                     <div class='col-6 text-center me-1'>
-                        <img class='img-fluid' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}'>
+                        <img class='img-fluid ' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}'>
                     </div>
                     <div class='producto-info col-6 p-5'>
                         <h1>{$producto['nombre_producto']}</h1>
