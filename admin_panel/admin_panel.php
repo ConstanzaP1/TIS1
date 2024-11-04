@@ -201,13 +201,25 @@ $result_users = mysqli_query($conexion, $sql_users);
     .message {
         margin-top: 10px;
     }
+    .logo-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        width: 100%; /* Para que ocupe todo el ancho del sidebar */
+    }
+
+    .logo {
+        width: 50%; /* Ajusta el ancho de la imagen según sea necesario */
+    }
 </style>
 </head>
 
 <body>
 
     <aside id="sidebar">
-    <img class="logo display-flex w-50 justify-content center" src="../logo.jpg" alt="Logo">
+    <div class="logo-container">
+    <img class="logo img-fluid" src="../logo.jpg" alt="Logo">
+</div>
 
         <h4>Panel de Administración</h4>
         
