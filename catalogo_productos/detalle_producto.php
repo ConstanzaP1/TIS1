@@ -27,6 +27,24 @@
     body{
         background-color: #e0e0e0;
     }
+    .star-rating {
+    direction: rtl;
+    font-size: 2em;
+    display: inline-flex;
+}
+.star-rating input[type="radio"] {
+    display: none;
+}
+.star-rating label {
+    color: #ccc;
+    cursor: pointer;
+}
+.star-rating input[type="radio"]:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #f5c518;
+}
+
 </style>
 <body>
         
@@ -68,12 +86,12 @@
                             </li>
                         </ul>
                         <li class="nav-item">
-                        <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-    </svg>
-</button>
-                    </li>
+                            <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                                </svg>
+                            </button>
+                        </li>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
@@ -85,47 +103,43 @@
     </div>
 </nav>
 
-    <div class="container py-5">
-        <?php
-        // Conexión a la base de datos
-        require('../conexion.php');
+<div class="container py-5">
+    <?php
+    require('../conexion.php');
 
-        // Verificar si recibimos el id_producto
-        if (isset($_GET['id_producto'])) {
-            $id_producto = $_GET['id_producto'];
+    if (isset($_GET['id_producto'])) {
+        $id_producto = $_GET['id_producto'];
 
-            // Consulta para obtener los detalles del producto, incluyendo su tipo
-            $query_producto = "
-                SELECT 
-                    p.nombre_producto, 
-                    p.precio, 
-                    p.imagen_url, 
-                    m.nombre_marca AS marca,
-                    p.tipo_producto,
-                    p.cantidad AS stock_disponible
-                FROM 
-                    producto p
-                LEFT JOIN marca m ON p.marca = m.id_marca
-                WHERE p.id_producto = '$id_producto'
-            ";
-            
-            $result_producto = mysqli_query($conexion, query: $query_producto);
+        $query_producto = "
+            SELECT 
+                p.nombre_producto, 
+                p.precio, 
+                p.imagen_url, 
+                m.nombre_marca AS marca,
+                p.tipo_producto,
+                p.cantidad AS stock_disponible
+            FROM 
+                producto p
+            LEFT JOIN marca m ON p.marca = m.id_marca
+            WHERE p.id_producto = '$id_producto'
+        ";
+        
+        $result_producto = mysqli_query($conexion, query: $query_producto);
 
-            if ($result_producto->num_rows > 0) {
-                $producto = mysqli_fetch_assoc($result_producto);
+        if ($result_producto->num_rows > 0) {
+            $producto = mysqli_fetch_assoc($result_producto);
 
-                // Mostrar los detalles del producto
-                echo "
-                <div class='producto-detalle shadow d-flex align-items-center bg-white'>
-                    <div class='col-6 text-center me-1'>
-                        <img class='img-fluid ' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}'>
-                    </div>
-                    <div class='producto-info col-6 p-5'>
-                        <h1>{$producto['nombre_producto']}</h1>
-                        <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
-                        <p><strong>Marca:</strong> {$producto['marca']}</p>
-                        <p><strong>Características:</strong></p>
-                        <ul>";
+            echo "
+            <div class='producto-detalle shadow d-flex align-items-center bg-white'>
+                <div class='col-6 text-center me-1'>
+                    <img class='img-fluid ' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}'>
+                </div>
+                <div class='producto-info col-6 p-5'>
+                    <h1>{$producto['nombre_producto']}</h1>
+                    <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
+                    <p><strong>Marca:</strong> {$producto['marca']}</p>
+                    <p><strong>Características:</strong></p>
+                    <ul>";
                         
                 // Mostrar características según el tipo de producto
                 switch ($producto['tipo_producto']) {
@@ -350,70 +364,138 @@
 
                 }
 
-                // Ejecutar la consulta de características
                 $result_caracteristicas = mysqli_query($conexion, $query_caracteristicas);
 
-                // Iterar sobre las características y mostrarlas en una lista
-                if ($result_caracteristicas->num_rows > 0) {
-                    while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
-                        if ($caracteristica['caracteristica'] !== null) {
-                            echo "<li>" . $caracteristica['caracteristica'] . "</li>";
-                        }
+            if ($result_caracteristicas->num_rows > 0) {
+                while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
+                    if ($caracteristica['caracteristica'] !== null) {
+                        echo "<li>" . $caracteristica['caracteristica'] . "</li>";
                     }
-                } else {
-                    echo "<li>No hay características disponibles.</li>";
-                }            
-                echo "
-                        </ul>";
-
-                // Botones de acción según el rol del usuario
-                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
-                        echo "
-                                <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <label>Cantidad:</label>
-                                    <input type='number' name='cantidad' value='1' min='1' max='<?php echo $producto[stock_disponible]; ?>' class='form-control w-25 mb-3'>
-                                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
-                                    <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
-                                </form>
-                                ";
-                                
-                                // Asegurarse de que el parámetro id_producto está definido antes de construir el enlace
-                                if (isset($_GET['id_producto'])) {
-                                    $id_producto = $_GET['id_producto'];
-                                    echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
-                                } else {
-                                    echo "ID de producto no especificado.";
-                                }
-                                
-                                
-                        
-                    } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
-                        echo "
-                                <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <label>Cantidad:</label>
-                                    <input type='number' name='cantidad' value='1' min='1' max='<?php echo $producto[stock_disponible]; ?>' class='form-control w-25 mb-3'>
-                                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
-                                    <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
-                                </form>
-                                ";
-                    }
-
-                echo "<a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
-                </div>
-            </div>";
+                }
             } else {
-                echo "<p>Producto no encontrado.</p>";
+                echo "<li>No hay características disponibles.</li>";
+            }            
+            echo "
+                    </ul>";
+
+            if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                echo "
+                        <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <label>Cantidad:</label>
+                            <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
+                            <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                            <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
+                        </form>
+                        ";
+                if (isset($_GET['id_producto'])) {
+                    $id_producto = $_GET['id_producto'];
+                    echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
+                }
+            } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
+                echo "
+                        <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <label>Cantidad:</label>
+                            <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
+                            <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                            <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
+                        </form>
+                        ";
             }
-        } else {
-            echo "<p>ID de producto no proporcionado.</p>";
-        }
-        mysqli_close($conexion);
-        ?>
+
+            echo "<a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
+                </div>
+            </div>"; ?>
+
+            <?php if ($id_producto) {
+                $query_resenas = "SELECT rv.valoracion, rv.comentario, rv.fecha, u.username
+                                FROM resena_valoracion AS rv
+                                JOIN users AS u ON rv.user_id = u.id
+                                WHERE rv.id_producto = '$id_producto'
+                                ORDER BY rv.fecha DESC";
+                $result_resenas = mysqli_query($conexion, $query_resenas);
+
+                if (mysqli_num_rows($result_resenas) > 0) {
+                    echo "<div class='container'>";
+                    ?> <br> <?php
+                    echo "<div class='row bg-white px-5 py-3 shadow'>";
+                    echo "<h3>Reseñas</h3>";
+                    while ($resena = mysqli_fetch_assoc($result_resenas)) {
+                        $valoracion = intval($resena['valoracion']);
+                        echo "<div class='card mb-3'>";
+                        echo "<div class='card-bodyy'>";
         
-    </div>
-    <script>
+                        echo "<h5 class='card-title'>";
+                        for ($i = 1; $i <= 5; $i++) {
+                            echo $i <= $valoracion ? "&#9733;" : "&#9734;";
+                        }
+                        echo " - " . htmlspecialchars($resena['username']) . "</h5>";
+        
+                        echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
+                        echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
+                        echo "</div>";
+                     echo "</div>";
+                    }
+                    echo "</div>";
+                } else {
+                    echo "<div class='alert alert-dark'>Aún no hay reseñas para este producto.</div>";
+                }
+            } else {
+                echo "<div class='alert alert-danger'>Error: ID de producto no encontrado.</div>";
+            }
+            if (isset($_SESSION['user_id'])) { ?>   
+                <!-- Botón para abrir el modal de agregar reseña -->
+                <button type="button" class="btn btn-primary mt-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalAgregarResena">
+                    Agregar Reseña
+                </button>
+
+                <!-- Modal para agregar reseña -->
+                <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Agregar Reseña</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action='../reseñas_valoraciones/procesar_resena.php?id_producto=<?php echo $id_producto; ?>' method='POST'>
+                                    <div class='form-group'>
+                                        <label for='valoracion'>Valoración:</label>
+                                        <div class="star-rating">
+                                            <input type="radio" name="valoracion" value="5" id="star-5">
+                                            <label for="star-5" title="5 estrellas">&#9733;</label>
+                                            <input type="radio" name="valoracion" value="4" id="star-4">
+                                            <label for="star-4" title="4 estrellas">&#9733;</label>
+                                            <input type="radio" name="valoracion" value="3" id="star-3">
+                                            <label for="star-3" title="3 estrellas">&#9733;</label>
+                                            <input type="radio" name="valoracion" value="2" id="star-2">
+                                            <label for="star-2" title="2 estrellas">&#9733;</label>
+                                            <input type="radio" name="valoracion" value="1" id="star-1">
+                                            <label for="star-1" title="1 estrella">&#9733;</label>
+                                        </div>
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='comentario'>Comentario:</label>
+                                        <textarea name='comentario' class='form-control' rows='3' required></textarea>
+                                    </div>
+                                    <button type='submit' name='enviar_reseña' class='btn btn-primary mt-2'>Enviar Reseña</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php } 
+        } else {
+            echo "<p>Producto no encontrado.</p>";
+        }
+    } else {
+        echo "<p>ID de producto no proporcionado.</p>";
+    }
+    mysqli_close($conexion);
+    ?>
+</div>
+<script>
 
 function eliminarProducto(id_producto) {
     Swal.fire({
