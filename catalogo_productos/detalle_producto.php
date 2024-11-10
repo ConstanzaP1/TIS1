@@ -12,6 +12,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     </head>
 <style>
     .navbar{
@@ -61,6 +63,9 @@
                             <?php endif; ?>
                             <li>
                                 <a class="dropdown-item" href="../carrito/carrito.php">Mi Carro</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="../lista_deseos/lista_deseos.php">Lista de Deseos</a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="../admin_panel/EN_PROCESO.php">Comparador</a>
@@ -382,14 +387,18 @@
                                 
                         
                     } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
+                        echo "<button onclick='addToWishlist({$id_producto})' class='btn btn-outline-danger '>
+                                <i class='fas fa-heart'></i>
+                            </button>";
                         echo "
-                                <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                                    <label>Cantidad:</label>
-                                    <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
-                                    <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
-                                </form>
-                                ";
+                        <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <label>Cantidad:</label>
+                            <input type='number' name='cantidad' value='1' min='1' class='form-control w-25 mb-3'>
+                            <button type='submit' name='agregar_carrito' class='btn btn-primary'>Agregar al Carrito</button>
+                        </form>
+                        ";
+                        
                     }
 
                 echo "<a href='../index.php' class='btn btn-secondary mt-3'>Volver al Catálogo</a>
@@ -458,6 +467,32 @@ function eliminarProducto(id_producto) {
     });
 }
 </script>
+<script>
+function addToWishlist(idProducto) {
+    fetch('../lista_deseos/agregar_a_lista.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'id_producto=' + idProducto
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log("Respuesta recibida del servidor:", data); // Imprime la respuesta completa
+        if (data.includes('success')) {
+            alert("Producto agregado a la lista de deseos.");
+        } else if (data.includes('exists')) {
+            alert("Este producto ya está en tu lista de deseos.");
+        } else {
+            alert("Error al agregar el producto. Detalle: " + data);
+        }
+    })
+    .catch(error => {
+        console.error("Error en la solicitud:", error); // Muestra el error detallado en la consola
+        alert("Error en la solicitud: " + error);
+    });
+}
+
+</script>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     </body>
