@@ -108,13 +108,36 @@ if (mysqli_query($conexion, $query_producto)) {
         mysqli_query($conexion, $query_caracteristica);
     }
 
-    echo "Producto y caracteristicas insertados correctamente.";
-    ?>
-
-    <button type="button" class="btn btn-primary" onclick="window.location.href='../admin_panel/admin_panel.php';">Aceptar</button>
-    <?php
+    echo "
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' rel='stylesheet'>
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Producto creado',
+                text: 'Producto y características insertados correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '../admin_panel/admin_panel.php';
+                }
+            });
+        });
+    </script>";
 } else {
-    echo "Error al insertar el producto: " . mysqli_error($conexion);
+    echo "
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' rel='stylesheet'>
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Error',
+                text: 'Error al insertar el producto: " . mysqli_error($conexion) . "',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        });
+    </script>";
 }
 ?>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">

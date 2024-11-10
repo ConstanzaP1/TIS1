@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2024 at 10:04 PM
+-- Generation Time: Nov 03, 2024 at 09:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -37,7 +37,8 @@ CREATE TABLE `anc` (
 --
 
 INSERT INTO `anc` (`id_periferico`, `anc`) VALUES
-(178, 'Si');
+(178, 'Si'),
+(196, 'No');
 
 -- --------------------------------------------------------
 
@@ -66,32 +67,59 @@ CREATE TABLE `bateria_notebook` (
 --
 
 INSERT INTO `bateria_notebook` (`id_notebook`, `bateria_notebook`) VALUES
-(24, '60000 mWh');
+(24, '60000 mWh'),
+(27, '45000 mWh');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `boleta`
+-- Table structure for table `boletas`
 --
 
-CREATE TABLE `boleta` (
-  `id_boleta` int(20) NOT NULL,
-  `usuario` varchar(100) NOT NULL,
-  `nro_transaccion` varchar(100) NOT NULL
+CREATE TABLE `boletas` (
+  `id_boleta` int(11) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `codigo_autorizacion` varchar(50) NOT NULL,
+  `detalles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`detalles`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `boleta_config`
+-- Dumping data for table `boletas`
 --
 
-CREATE TABLE `boleta_config` (
-  `id` int(55) NOT NULL,
-  `id_boleta` int(55) NOT NULL,
-  `id_producto` int(55) NOT NULL,
-  `cantidad` int(55) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `boletas` (`id_boleta`, `fecha`, `total`, `codigo_autorizacion`, `detalles`) VALUES
+(1, '2024-11-03 02:04:34', 120000.00, '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":2,\"precio_unitario\":\"60000.00\",\"total\":120000}]'),
+(2, '2024-11-03 02:28:27', 120000.00, '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":2,\"precio_unitario\":\"60000.00\",\"total\":120000}]'),
+(3, '2024-11-03 02:52:13', 60000.00, '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(4, '2024-11-03 03:04:08', 120000.00, '1213', '[{\"producto\":\"Monitor Gamer\",\"cantidad\":1,\"precio_unitario\":\"120000.00\",\"total\":120000}]'),
+(5, '2024-11-03 03:32:40', 60000.00, '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(6, '2024-11-03 03:34:10', 180000.00, '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":3,\"precio_unitario\":\"60000.00\",\"total\":180000}]'),
+(7, '2024-11-03 03:37:23', 60000.00, '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(8, '2024-11-03 03:46:18', 120000.00, '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":2,\"precio_unitario\":\"60000.00\",\"total\":120000}]'),
+(9, '2024-11-03 16:44:50', 60000.00, '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(10, '2024-11-03 16:48:46', 60000.00, '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(11, '2024-11-03 16:50:17', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(12, '2024-11-03 16:50:43', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(13, '2024-11-03 12:54:41', 120000.00, '1213', '[{\"id_producto\":\"36\",\"producto\":\"Monitor Gamer\",\"cantidad\":1,\"precio_unitario\":\"120000.00\",\"total\":120000}]'),
+(14, '2024-11-03 13:06:42', 660000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000},{\"id_producto\":\"36\",\"producto\":\"Monitor Gamer\",\"cantidad\":5,\"precio_unitario\":\"120000.00\",\"total\":600000}]'),
+(15, '2024-11-03 13:07:17', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(16, '2024-11-03 13:07:55', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(17, '2024-11-03 17:08:38', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(18, '2024-11-03 17:10:15', 120000.00, '1213', '[{\"id_producto\":\"36\",\"producto\":\"Monitor Gamer\",\"cantidad\":1,\"precio_unitario\":\"120000.00\",\"total\":120000}]'),
+(19, '2024-11-03 17:14:18', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(20, '2024-11-03 17:16:26', 120000.00, '1213', '[{\"id_producto\":\"36\",\"producto\":\"Monitor Gamer\",\"cantidad\":1,\"precio_unitario\":\"120000.00\",\"total\":120000}]'),
+(21, '2024-11-03 17:20:00', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(22, '2024-11-03 17:21:09', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(23, '2024-11-03 17:23:08', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(24, '2024-11-03 17:25:18', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(25, '2024-11-03 17:27:58', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(26, '2024-11-03 17:35:07', 120000.00, '1213', '[{\"id_producto\":\"36\",\"producto\":\"Monitor Gamer\",\"cantidad\":1,\"precio_unitario\":\"120000.00\",\"total\":120000}]'),
+(27, '2024-11-03 17:40:11', 120000.00, '1213', '[{\"id_producto\":\"36\",\"producto\":\"Monitor Gamer\",\"cantidad\":1,\"precio_unitario\":\"120000.00\",\"total\":120000}]'),
+(28, '2024-11-03 17:43:27', 720000.00, '1213', '[{\"id_producto\":\"36\",\"producto\":\"Monitor Gamer\",\"cantidad\":6,\"precio_unitario\":\"120000.00\",\"total\":720000}]'),
+(29, '2024-11-03 13:47:57', 60000.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
+(30, '2024-11-03 15:29:29', 180246.00, '1213', '[{\"id_producto\":\"35\",\"producto\":\"Teclado gamer\",\"cantidad\":3,\"precio_unitario\":\"60000.00\",\"total\":180000},{\"id_producto\":\"49\",\"producto\":\"Kingston KVR26N19S6/4 (1 x 4GB | DIMM DDR4-2666)\",\"cantidad\":2,\"precio_unitario\":\"123.00\",\"total\":246}]'),
+(31, '2024-11-03 16:56:58', 123.00, '1213', '[{\"id_producto\":\"40\",\"producto\":\"Ryzen 7 5700X \",\"cantidad\":1,\"precio_unitario\":\"123.00\",\"total\":123}]');
 
 -- --------------------------------------------------------
 
@@ -109,7 +137,8 @@ CREATE TABLE `bus_de_entrada_gpu` (
 --
 
 INSERT INTO `bus_de_entrada_gpu` (`id_hardware`, `bus_de_entrada_gpu`) VALUES
-(84, 'PCI Express 2.0 x16');
+(84, 'PCI Express 2.0 x16'),
+(100, 'PCI Express 4.0 x8');
 
 -- --------------------------------------------------------
 
@@ -127,7 +156,7 @@ CREATE TABLE `bus_hdd` (
 --
 
 INSERT INTO `bus_hdd` (`id_hardware`, `bus_hdd`) VALUES
-(76, 'asdas');
+(76, 'SATA 3 (6.0 Gb/s)');
 
 -- --------------------------------------------------------
 
@@ -139,6 +168,14 @@ CREATE TABLE `bus_ssd` (
   `id_hardware` int(11) NOT NULL,
   `bus_ssd` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bus_ssd`
+--
+
+INSERT INTO `bus_ssd` (`id_hardware`, `bus_ssd`) VALUES
+(89, 'SATA 3 (6.0 Gb/s)'),
+(90, 'PCIe 4.0 x4');
 
 -- --------------------------------------------------------
 
@@ -156,8 +193,9 @@ CREATE TABLE `capacidad_almacenamiento` (
 --
 
 INSERT INTO `capacidad_almacenamiento` (`id_hardware`, `capacidad_almacenamiento`) VALUES
-(40, '1gb'),
-(41, '2gb');
+(40, '500GB'),
+(41, '1TB'),
+(87, '2TB');
 
 -- --------------------------------------------------------
 
@@ -175,7 +213,8 @@ CREATE TABLE `capacidad_ram` (
 --
 
 INSERT INTO `capacidad_ram` (`id_hardware`, `capacidad_ram`) VALUES
-(56, '8GB');
+(56, '1 x 8 GB'),
+(96, '1 x 4 GB');
 
 -- --------------------------------------------------------
 
@@ -193,8 +232,8 @@ CREATE TABLE `categoria_teclado` (
 --
 
 INSERT INTO `categoria_teclado` (`id_periferico`, `categoria_teclado`) VALUES
-(173, '100%'),
-(174, '80%'),
+(173, '100% (Teclado full)'),
+(174, '80% (Tenkeyless)'),
 (175, '60%');
 
 -- --------------------------------------------------------
@@ -214,7 +253,7 @@ CREATE TABLE `certificacion_fuente` (
 
 INSERT INTO `certificacion_fuente` (`id_hardware`, `certificacion_fuente`) VALUES
 (65, '80PLUS Bronze'),
-(70, '70plus');
+(70, 'Sin certificación');
 
 -- --------------------------------------------------------
 
@@ -232,7 +271,8 @@ CREATE TABLE `chipset_placa` (
 --
 
 INSERT INTO `chipset_placa` (`id_hardware`, `chipset_placa`) VALUES
-(63, 'AMD B550 (AM4)');
+(63, 'AMD B550 (AM4)'),
+(106, 'AMD A68H (FM2+)');
 
 -- --------------------------------------------------------
 
@@ -269,7 +309,51 @@ CREATE TABLE `cpu_notebook` (
 --
 
 INSERT INTO `cpu_notebook` (`id_notebook`, `cpu_notebook`) VALUES
-(23, 'Intel Core i7-13620H (2400 MHz - 4900 MHz)');
+(23, 'Intel Core i7-13620H (2400 MHz - 4900 MHz)'),
+(28, 'AMD Ryzen 5 6600H (3300 MHz - 4500 MHz)');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `detalle_boletas`
+--
+
+CREATE TABLE `detalle_boletas` (
+  `id_detalle_boleta` int(11) NOT NULL,
+  `id_boleta` int(11) DEFAULT NULL,
+  `id_producto` int(11) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `precio_unitario` decimal(10,2) DEFAULT NULL,
+  `precio_total` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `detalle_boletas`
+--
+
+INSERT INTO `detalle_boletas` (`id_detalle_boleta`, `id_boleta`, `id_producto`, `cantidad`, `precio_unitario`, `precio_total`) VALUES
+(2, 11, 35, 1, 60000.00, 60000.00),
+(3, 12, 35, 1, 60000.00, 60000.00),
+(4, 13, 36, 1, 120000.00, 120000.00),
+(5, 14, 35, 1, 60000.00, 60000.00),
+(6, 14, 36, 5, 120000.00, 600000.00),
+(7, 15, 35, 1, 60000.00, 60000.00),
+(8, 16, 35, 1, 60000.00, 60000.00),
+(9, 17, 35, 1, 60000.00, 60000.00),
+(10, 18, 36, 1, 120000.00, 120000.00),
+(11, 19, 35, 1, 60000.00, 60000.00),
+(12, 20, 36, 1, 120000.00, 120000.00),
+(13, 21, 35, 1, 60000.00, 60000.00),
+(14, 22, 35, 1, 60000.00, 60000.00),
+(15, 23, 35, 1, 60000.00, 60000.00),
+(16, 24, 35, 1, 60000.00, 60000.00),
+(17, 25, 35, 1, 60000.00, 60000.00),
+(18, 26, 36, 1, 120000.00, 120000.00),
+(19, 27, 36, 1, 120000.00, 120000.00),
+(20, 28, 36, 6, 120000.00, 720000.00),
+(21, 29, 35, 1, 60000.00, 60000.00),
+(22, 30, 35, 3, 60000.00, 180000.00),
+(23, 30, 49, 2, 123.00, 246.00);
 
 -- --------------------------------------------------------
 
@@ -287,7 +371,9 @@ CREATE TABLE `dpi_mouse` (
 --
 
 INSERT INTO `dpi_mouse` (`id_periferico`, `dpi_mouse`) VALUES
-(77, '16000DPI');
+(77, '16000'),
+(191, '12000'),
+(193, '8000');
 
 -- --------------------------------------------------------
 
@@ -341,7 +427,8 @@ CREATE TABLE `formato_ssd` (
 --
 
 INSERT INTO `formato_ssd` (`id_hardware`, `formato_ssd`) VALUES
-(83, 'M.2 (2280)');
+(83, 'M.2 (2280)'),
+(91, '2.5\"');
 
 -- --------------------------------------------------------
 
@@ -359,8 +446,9 @@ CREATE TABLE `frecuencia_cpu` (
 --
 
 INSERT INTO `frecuencia_cpu` (`id_hardware`, `frecuencia_cpu`) VALUES
-(24, '1000'),
-(69, '2000');
+(24, '3000 MHz'),
+(69, '3600 MHz'),
+(98, '3800 MHz');
 
 -- --------------------------------------------------------
 
@@ -378,7 +466,8 @@ CREATE TABLE `frecuencia_gpu` (
 --
 
 INSERT INTO `frecuencia_gpu` (`id_hardware`, `frecuencia_gpu`) VALUES
-(58, '2125 MHz');
+(58, '2125 MHz'),
+(102, '2000 MHz');
 
 -- --------------------------------------------------------
 
@@ -396,7 +485,8 @@ CREATE TABLE `gpu_notebook` (
 --
 
 INSERT INTO `gpu_notebook` (`id_notebook`, `gpu_notebook`) VALUES
-(26, 'NVIDIA GeForce RTX 4060 (8 GB)');
+(26, 'NVIDIA GeForce RTX 4060 (8 GB)'),
+(29, 'NVIDIA GeForce RTX 3050 (4 GB)');
 
 -- --------------------------------------------------------
 
@@ -452,7 +542,28 @@ INSERT INTO `hardware` (`id_hardware`, `id_producto`) VALUES
 (81, NULL),
 (82, NULL),
 (83, NULL),
-(84, NULL);
+(84, NULL),
+(87, NULL),
+(89, NULL),
+(90, NULL),
+(91, NULL),
+(92, NULL),
+(93, NULL),
+(94, NULL),
+(95, NULL),
+(96, NULL),
+(97, NULL),
+(98, NULL),
+(99, NULL),
+(100, NULL),
+(101, NULL),
+(102, NULL),
+(103, NULL),
+(104, NULL),
+(105, NULL),
+(106, NULL),
+(107, NULL),
+(108, NULL);
 
 -- --------------------------------------------------------
 
@@ -481,7 +592,8 @@ CREATE TABLE `iluminacion` (
 --
 
 INSERT INTO `iluminacion` (`id_periferico`, `iluminacion`) VALUES
-(155, 'RGB');
+(155, 'RGB'),
+(197, 'No');
 
 -- --------------------------------------------------------
 
@@ -509,7 +621,15 @@ CREATE TABLE `marca` (
 --
 
 INSERT INTO `marca` (`id_marca`, `nombre_marca`) VALUES
-(1, 'Asus');
+(1, 'Asus'),
+(2, 'AMD'),
+(3, 'Intel'),
+(4, 'NVIDIA'),
+(5, 'Gigabyte'),
+(6, 'MSI'),
+(7, 'HyperX'),
+(8, 'Corsair'),
+(9, 'Samsung');
 
 -- --------------------------------------------------------
 
@@ -538,7 +658,8 @@ CREATE TABLE `memoria_gpu` (
 --
 
 INSERT INTO `memoria_gpu` (`id_hardware`, `memoria_gpu`) VALUES
-(59, '8 GB GDDR6 ');
+(59, '8 GB GDDR6 '),
+(101, '4 GB GDDR6');
 
 -- --------------------------------------------------------
 
@@ -559,7 +680,11 @@ INSERT INTO `notebook` (`id_notebook`, `id_producto`) VALUES
 (23, NULL),
 (24, NULL),
 (25, NULL),
-(26, NULL);
+(26, NULL),
+(27, NULL),
+(28, NULL),
+(29, NULL),
+(30, NULL);
 
 -- --------------------------------------------------------
 
@@ -578,7 +703,7 @@ CREATE TABLE `nucleo_hilo_cpu` (
 
 INSERT INTO `nucleo_hilo_cpu` (`id_hardware`, `nucleo_hilo_cpu`) VALUES
 (39, '2 Nucleos / 2 Hilos'),
-(47, '4 Nucleos / 4 Hilos');
+(47, '4 núcleos / 8 hilos');
 
 -- --------------------------------------------------------
 
@@ -612,7 +737,8 @@ CREATE TABLE `pantalla_notebook` (
 --
 
 INSERT INTO `pantalla_notebook` (`id_notebook`, `pantalla_notebook`) VALUES
-(25, 'LED 15.6\" (1920x1080) / 144 Hz');
+(25, 'LED 15.6\" (1920x1080) / 144 Hz'),
+(30, 'LED 15.6\" (1920x1080) / 60 Hz');
 
 -- --------------------------------------------------------
 
@@ -641,7 +767,6 @@ INSERT INTO `periferico` (`id_periferico`, `id_producto`) VALUES
 (82, NULL),
 (86, NULL),
 (141, NULL),
-(154, NULL),
 (155, NULL),
 (158, NULL),
 (159, NULL),
@@ -656,7 +781,26 @@ INSERT INTO `periferico` (`id_periferico`, `id_producto`) VALUES
 (176, NULL),
 (177, NULL),
 (178, NULL),
-(179, NULL);
+(179, NULL),
+(180, NULL),
+(181, NULL),
+(182, NULL),
+(183, NULL),
+(184, NULL),
+(185, NULL),
+(186, NULL),
+(187, NULL),
+(188, NULL),
+(189, NULL),
+(190, NULL),
+(191, NULL),
+(192, NULL),
+(193, NULL),
+(194, NULL),
+(195, NULL),
+(196, NULL),
+(197, NULL),
+(198, NULL);
 
 -- --------------------------------------------------------
 
@@ -685,7 +829,8 @@ CREATE TABLE `peso_mouse` (
 --
 
 INSERT INTO `peso_mouse` (`id_periferico`, `peso_mouse`) VALUES
-(161, '120g');
+(161, '99 g'),
+(194, ' 85 g');
 
 -- --------------------------------------------------------
 
@@ -703,7 +848,8 @@ CREATE TABLE `potencia_fuente` (
 --
 
 INSERT INTO `potencia_fuente` (`id_hardware`, `potencia_fuente`) VALUES
-(66, '500 W');
+(66, '500 W'),
+(107, '650 W');
 
 -- --------------------------------------------------------
 
@@ -726,18 +872,17 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio`, `cantidad`, `tipo_producto`, `marca`, `imagen_url`) VALUES
-(35, 'Teclado gamer', 60000.00, 2, 'teclado', '1', 'https://cdnx.jumpseller.com/centralgamer/image/53204539/thumb/610/610?1728278926'),
-(36, 'Monitor Gamer', 120000.00, 3, 'monitor', '1', 'https://www.alcaplus.cl/media/2022/05/cl-odyssey-g3-g32a-422024-ls24ag320nlxzs-532138048.webp'),
-(37, 'Audifono generico', 10000.00, 1, 'audifono', '1', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG9AY8LJWEDgZJsKdw77Dc2uTGH7DwyJa4AQ&s'),
+(35, 'Teclado gamer', 60000.00, 48, 'teclado', '7', 'https://cdnx.jumpseller.com/centralgamer/image/53204539/thumb/610/610?1728278926'),
+(36, 'Monitor Gamer', 120000.00, 0, 'monitor', '9', 'https://www.alcaplus.cl/media/2022/05/cl-odyssey-g3-g32a-422024-ls24ag320nlxzs-532138048.webp'),
+(37, 'Audifono generico', 10000.00, 1, 'audifono', '5', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG9AY8LJWEDgZJsKdw77Dc2uTGH7DwyJa4AQ&s'),
 (39, 'Mouse generico', 5000.00, 1, 'mouse', '1', 'https://http2.mlstatic.com/D_NQ_NP_781312-MLA45385798113_032021-O.webp'),
-(40, 'Ryzen 7 5700X [100-100000926WOF]', 123.00, 2, 'cpu', '1', 'https://media.solotodo.com/media/products/1569342_picture_1672268351.jpg'),
+(40, 'Ryzen 7 5700X ', 123.00, 0, 'cpu', '1', 'https://media.solotodo.com/media/products/1569342_picture_1672268351.jpg'),
 (41, 'MSI GeForce RTX 4060', 123.00, 1, 'gpu', '1', 'https://media.solotodo.com/media/products/1777144_picture_1688474884.png'),
 (42, 'PRIME A520M-K', 123.00, 1, 'placa', '1', 'https://media.solotodo.com/media/products/1222862_picture_1601387191.jfif'),
 (46, 'ASUS TUF A15 FA506NF-HN003W', 123.00, 1, 'notebook', '1', 'https://media.solotodo.com/media/products/1892827_picture_1709951044.jpg'),
 (49, 'Kingston KVR26N19S6/4 (1 x 4GB | DIMM DDR4-2666)', 123.00, 1, 'ram', '1', 'https://media.solotodo.com/media/products/732660_picture_1523339830.jpg'),
 (50, 'Corsair CX Series CX750 2023 (CP-9020279-NA) (750 W)', 123.00, 1, 'fuente', '1', 'https://media.solotodo.com/media/products/1899906_picture_1712043196.jpg'),
-(51, 'Casecom C412-3B', 123.00, 1, 'gabinete', '1', 'https://media.solotodo.com/media/products/1964761_picture_1727723565.jpg'),
-(55, 'MSI GT 710 ', 100000.00, 20, 'gpu', '1', 'https://media.solotodo.com/media/products/502719_picture_1466891249.png');
+(51, 'Casecom C412-3B', 123.00, 12, 'gabinete', '1', 'https://media.solotodo.com/media/products/1964761_picture_1727723565.jpg');
 
 -- --------------------------------------------------------
 
@@ -766,9 +911,9 @@ INSERT INTO `producto_caracteristica` (`id_caracteristica`, `id_producto`, `cara
 (126, 36, 'tipo_curvatura', '79'),
 (127, 37, 'tipo_audifono', '176'),
 (128, 37, 'tipo_microfono', '177'),
-(129, 37, 'anc', '178'),
+(129, 37, 'anc', '196'),
 (130, 37, 'conectividad', '141'),
-(131, 37, 'iluminacion', '155'),
+(131, 37, 'iluminacion', '197'),
 (135, 39, 'dpi_mouse', '77'),
 (136, 39, 'peso_mouse', '161'),
 (137, 39, 'sensor_mouse', '75'),
@@ -788,7 +933,7 @@ INSERT INTO `producto_caracteristica` (`id_caracteristica`, `id_producto`, `cara
 (160, 46, 'gpu_notebook', '26'),
 (161, 46, 'capacidad_ram', '56'),
 (162, 46, 'pantalla_notebook', '25'),
-(175, 35, 'tipo_teclado', '154'),
+(175, 35, 'tipo_teclado', '86'),
 (176, 35, 'tipo_switch', '159'),
 (177, 35, 'conectividad', '76'),
 (178, 35, 'iluminacion', '155'),
@@ -801,10 +946,7 @@ INSERT INTO `producto_caracteristica` (`id_caracteristica`, `id_producto`, `cara
 (185, 50, 'potencia_fuente', '66'),
 (186, 50, 'tamanio_fuente', '67'),
 (187, 51, 'tamanio_max_gabinete', '68'),
-(188, 51, 'iluminacion', '155'),
-(206, 55, 'frecuencia_gpu', '58'),
-(207, 55, 'memoria_gpu', '59'),
-(208, 55, 'bus_de_entrada_gpu', '84');
+(188, 51, 'iluminacion', '155');
 
 -- --------------------------------------------------------
 
@@ -837,7 +979,8 @@ CREATE TABLE `resolucion_monitor` (
 --
 
 INSERT INTO `resolucion_monitor` (`id_periferico`, `resolucion_monitor`) VALUES
-(81, 'Full HD (1920x1080)');
+(81, 'Full HD (1920x1080)'),
+(189, 'Ultra HD (3840x2160)');
 
 -- --------------------------------------------------------
 
@@ -855,7 +998,8 @@ CREATE TABLE `rpm_hdd` (
 --
 
 INSERT INTO `rpm_hdd` (`id_hardware`, `rpm_hdd`) VALUES
-(80, 'asdasd');
+(80, '7200 rpm'),
+(92, '5400 rpm');
 
 -- --------------------------------------------------------
 
@@ -873,7 +1017,8 @@ CREATE TABLE `sensor_mouse` (
 --
 
 INSERT INTO `sensor_mouse` (`id_periferico`, `sensor_mouse`) VALUES
-(75, 'Optico');
+(75, 'Optico'),
+(192, 'Laser');
 
 -- --------------------------------------------------------
 
@@ -891,7 +1036,9 @@ CREATE TABLE `slot_memoria_placa` (
 --
 
 INSERT INTO `slot_memoria_placa` (`id_hardware`, `slot_memoria_placa`) VALUES
-(34, '4x DDR4');
+(34, '4x DDR4'),
+(103, '2x DDR4'),
+(105, '2x DDR3');
 
 -- --------------------------------------------------------
 
@@ -909,7 +1056,9 @@ CREATE TABLE `socket_cpu` (
 --
 
 INSERT INTO `socket_cpu` (`id_hardware`, `socket_cpu`) VALUES
-(54, 'ATX');
+(54, 'LGA 1150'),
+(97, 'LGA 1200'),
+(99, 'AM4');
 
 -- --------------------------------------------------------
 
@@ -927,7 +1076,8 @@ CREATE TABLE `socket_placa` (
 --
 
 INSERT INTO `socket_placa` (`id_hardware`, `socket_placa`) VALUES
-(61, 'AM4');
+(61, 'AM4'),
+(104, 'FM2+');
 
 -- --------------------------------------------------------
 
@@ -945,7 +1095,10 @@ CREATE TABLE `soporte_monitor` (
 --
 
 INSERT INTO `soporte_monitor` (`id_periferico`, `soporte_monitor`) VALUES
-(170, 'G-Sync / FreeSync');
+(170, 'G-Sync / FreeSync'),
+(182, 'No'),
+(183, 'G-Sync'),
+(184, 'FreeSync');
 
 -- --------------------------------------------------------
 
@@ -981,7 +1134,8 @@ CREATE TABLE `tamanio_hdd` (
 --
 
 INSERT INTO `tamanio_hdd` (`id_hardware`, `tamanio_hdd`) VALUES
-(78, 'asd');
+(78, '3.5\"'),
+(93, '2.5\"');
 
 -- --------------------------------------------------------
 
@@ -999,7 +1153,8 @@ CREATE TABLE `tamanio_max_gabinete` (
 --
 
 INSERT INTO `tamanio_max_gabinete` (`id_hardware`, `tamanio_max_gabinete`) VALUES
-(68, 'ATX');
+(68, 'ATX'),
+(108, 'Micro ATX');
 
 -- --------------------------------------------------------
 
@@ -1017,7 +1172,9 @@ CREATE TABLE `tamanio_monitor` (
 --
 
 INSERT INTO `tamanio_monitor` (`id_periferico`, `tamanio_monitor`) VALUES
-(78, '24.0\"');
+(78, '24.0\"'),
+(180, '27.0\"'),
+(190, '32.0\"');
 
 -- --------------------------------------------------------
 
@@ -1035,7 +1192,8 @@ CREATE TABLE `tasa_refresco` (
 --
 
 INSERT INTO `tasa_refresco` (`id_periferico`, `tasa_refresco`) VALUES
-(168, '60hz');
+(168, '60 Hz'),
+(181, '165 Hz');
 
 -- --------------------------------------------------------
 
@@ -1054,7 +1212,7 @@ CREATE TABLE `tiempo_respuesta` (
 
 INSERT INTO `tiempo_respuesta` (`id_periferico`, `tiempo_respuesta`) VALUES
 (80, '5 ms'),
-(179, '1ms');
+(179, '1 ms');
 
 -- --------------------------------------------------------
 
@@ -1072,7 +1230,8 @@ CREATE TABLE `tipo_audifono` (
 --
 
 INSERT INTO `tipo_audifono` (`id_periferico`, `tipo_audifono`) VALUES
-(176, 'Over-Ear / Headset');
+(176, 'Over-Ear / Headset'),
+(198, 'True Wireless');
 
 -- --------------------------------------------------------
 
@@ -1101,7 +1260,8 @@ CREATE TABLE `tipo_curvatura` (
 --
 
 INSERT INTO `tipo_curvatura` (`id_periferico`, `tipo_curvatura`) VALUES
-(79, 'Si');
+(79, 'Si'),
+(188, 'No');
 
 -- --------------------------------------------------------
 
@@ -1119,7 +1279,8 @@ CREATE TABLE `tipo_microfono` (
 --
 
 INSERT INTO `tipo_microfono` (`id_periferico`, `tipo_microfono`) VALUES
-(177, 'Montado (invisible)');
+(177, 'Montado (invisible)'),
+(195, 'Externo (estilo headset)');
 
 -- --------------------------------------------------------
 
@@ -1137,7 +1298,10 @@ CREATE TABLE `tipo_panel` (
 --
 
 INSERT INTO `tipo_panel` (`id_periferico`, `tipo_panel`) VALUES
-(82, 'LED');
+(82, 'LED'),
+(185, 'IPS'),
+(186, 'VA'),
+(187, 'TN');
 
 -- --------------------------------------------------------
 
@@ -1155,7 +1319,8 @@ CREATE TABLE `tipo_ram` (
 --
 
 INSERT INTO `tipo_ram` (`id_hardware`, `tipo_ram`) VALUES
-(44, 'ddr5');
+(44, 'DDR4'),
+(94, 'DDR5');
 
 -- --------------------------------------------------------
 
@@ -1193,8 +1358,7 @@ CREATE TABLE `tipo_teclado` (
 
 INSERT INTO `tipo_teclado` (`id_periferico`, `tipo_teclado`) VALUES
 (66, 'Mecanico'),
-(86, 'Membrana'),
-(154, 'brazo de 35');
+(86, 'Membrana');
 
 -- --------------------------------------------------------
 
@@ -1250,7 +1414,8 @@ CREATE TABLE `velocidad_ram` (
 --
 
 INSERT INTO `velocidad_ram` (`id_hardware`, `velocidad_ram`) VALUES
-(55, '3200');
+(55, ' 4800 MT/s'),
+(95, '2666 MT/s');
 
 -- --------------------------------------------------------
 
@@ -1287,17 +1452,10 @@ ALTER TABLE `bateria_notebook`
   ADD PRIMARY KEY (`id_notebook`);
 
 --
--- Indexes for table `boleta`
+-- Indexes for table `boletas`
 --
-ALTER TABLE `boleta`
+ALTER TABLE `boletas`
   ADD PRIMARY KEY (`id_boleta`);
-
---
--- Indexes for table `boleta_config`
---
-ALTER TABLE `boleta_config`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_boleta` (`id_boleta`);
 
 --
 -- Indexes for table `bus_de_entrada_gpu`
@@ -1358,6 +1516,14 @@ ALTER TABLE `conectividad`
 --
 ALTER TABLE `cpu_notebook`
   ADD PRIMARY KEY (`id_notebook`);
+
+--
+-- Indexes for table `detalle_boletas`
+--
+ALTER TABLE `detalle_boletas`
+  ADD PRIMARY KEY (`id_detalle_boleta`),
+  ADD KEY `id_boleta` (`id_boleta`),
+  ADD KEY `id_producto` (`id_producto`);
 
 --
 -- Indexes for table `dpi_mouse`
@@ -1672,22 +1838,22 @@ ALTER TABLE `voltaje_ram`
 --
 
 --
--- AUTO_INCREMENT for table `boleta`
+-- AUTO_INCREMENT for table `boletas`
 --
-ALTER TABLE `boleta`
-  MODIFY `id_boleta` int(20) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `boletas`
+  MODIFY `id_boleta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
--- AUTO_INCREMENT for table `boleta_config`
+-- AUTO_INCREMENT for table `detalle_boletas`
 --
-ALTER TABLE `boleta_config`
-  MODIFY `id` int(55) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `detalle_boletas`
+  MODIFY `id_detalle_boleta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `hardware`
 --
 ALTER TABLE `hardware`
-  MODIFY `id_hardware` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id_hardware` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT for table `historial_compra`
@@ -1699,13 +1865,13 @@ ALTER TABLE `historial_compra`
 -- AUTO_INCREMENT for table `marca`
 --
 ALTER TABLE `marca`
-  MODIFY `id_marca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_marca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `notebook`
 --
 ALTER TABLE `notebook`
-  MODIFY `id_notebook` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_notebook` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `orden_compra`
@@ -1717,19 +1883,19 @@ ALTER TABLE `orden_compra`
 -- AUTO_INCREMENT for table `periferico`
 --
 ALTER TABLE `periferico`
-  MODIFY `id_periferico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
+  MODIFY `id_periferico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
 
 --
 -- AUTO_INCREMENT for table `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `producto_caracteristica`
 --
 ALTER TABLE `producto_caracteristica`
-  MODIFY `id_caracteristica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
+  MODIFY `id_caracteristica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
 
 --
 -- AUTO_INCREMENT for table `resena_valoracion`
@@ -1741,7 +1907,7 @@ ALTER TABLE `resena_valoracion`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- Constraints for dumped tables
@@ -1765,12 +1931,6 @@ ALTER TABLE `asocia`
 --
 ALTER TABLE `bateria_notebook`
   ADD CONSTRAINT `bateria_notebook_ibfk_1` FOREIGN KEY (`id_notebook`) REFERENCES `notebook` (`id_notebook`);
-
---
--- Constraints for table `boleta_config`
---
-ALTER TABLE `boleta_config`
-  ADD CONSTRAINT `fk_boleta` FOREIGN KEY (`id_boleta`) REFERENCES `boleta` (`id_boleta`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `bus_de_entrada_gpu`
@@ -1825,6 +1985,13 @@ ALTER TABLE `conectividad`
 --
 ALTER TABLE `cpu_notebook`
   ADD CONSTRAINT `cpu_notebook_ibfk_1` FOREIGN KEY (`id_notebook`) REFERENCES `notebook` (`id_notebook`);
+
+--
+-- Constraints for table `detalle_boletas`
+--
+ALTER TABLE `detalle_boletas`
+  ADD CONSTRAINT `detalle_boletas_ibfk_1` FOREIGN KEY (`id_boleta`) REFERENCES `boletas` (`id_boleta`),
+  ADD CONSTRAINT `detalle_boletas_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
 
 --
 -- Constraints for table `dpi_mouse`

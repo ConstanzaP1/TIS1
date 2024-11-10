@@ -1,8 +1,11 @@
 <?php
 session_start();
-require('../vendor/autoload.php');
+require('../vendor/autoload.php'); // Asegúrate de que esta ruta sea correcta
 use Transbank\Webpay\WebpayPlus\Transaction;
 require('../conexion.php'); // Conexión a la base de datos
+
+// Resto de tu código aquí...
+
 
 if (isset($_GET['token_ws'])) {
     $token = $_GET['token_ws'];
@@ -28,15 +31,17 @@ if (isset($_GET['token_ws'])) {
                 mysqli_query($conexion, $query);
             }
 
-            // Vaciar el carrito
-            unset($_SESSION['carrito']);
+            // Vaciar el carrito solo si existe en la sesión
+            if (isset($_SESSION['carrito'])) {
+                unset($_SESSION['carrito']);
+            }
 
-            // Redirigir al carrito
-            header("Location: carrito.php?status=success&auth_code=" . $response->getAuthorizationCode());
+            // Redirigir a boleta.php con mensaje de éxito
+            header("Location: ../boleta_cotizacion/boleta.php?status=success&auth_code=" . $response->getAuthorizationCode());
             exit;
         } else {
-            // Redirigir al carrito con un mensaje de rechazo
-            header("Location: carrito.php?status=failed");
+            // Redirigir a boleta.php con mensaje de rechazo
+            header("Location: ../boleta_cotizacion/boleta.php?status=failed");
             exit;
         }
     } catch (Exception $e) {

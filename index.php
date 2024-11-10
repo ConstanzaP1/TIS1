@@ -37,7 +37,7 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
     <div class="container-fluid">
         <!-- Logo -->
         <div class="navbar-brand col-2  ">
-            <img class="logo img-fluid w-75 rounded-pill" src="logo.jpg" alt="Logo">
+            <img class="logo img-fluid w-75 rounded-pill" src="logopng.png" alt="Logo">
         </div>
 
         <!-- Botón para colapsar el menú en pantallas pequeñas -->
@@ -57,7 +57,7 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <?php if ($_SESSION['role'] === 'admin'): ?>
@@ -80,11 +80,12 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="p-3 ms-2 rounded-pill" onclick="window.location.href='carrito/carrito.php'">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                            </svg>
-                        </button>
+                    <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='carrito/carrito.php'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+    </svg>
+</button>
+
                     </li>
 
                 <?php else: ?>
@@ -175,7 +176,7 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                             echo "
                                 <a href='catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
                                     <div class='card mx-1 mb-3 p-0 shadow' style='width: 18rem; height: 26rem;'>
-                                        <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid' style='height: 20rem; object-fit: cover;'>
+                                            <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image'>
                                         <div class='card-body text-begin'>
                                             <h6 class='text-secondary m-0'>$marca_producto</h6>
                                             <h5 class='text-black my-1'>$nombre_producto</h5>
