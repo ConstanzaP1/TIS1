@@ -164,6 +164,24 @@ $result = $stmt->get_result();
     <a href='../index.php' class='btn btn-secondary'>Volver al Catálogo</a>
     <br>
 </div>
+<script>
+    function removeFromWishlist(producto_id) {
+    fetch('../lista_deseos/eliminar_producto.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `producto_id=${producto_id}`
+    })
+    .then(() => {
+        // Elimina el elemento del DOM sin mostrar ningún mensaje
+        const item = document.getElementById(`wishlist-item-${producto_id}`);
+        if (item) {
+            item.remove();
+        }
+    })
+    .catch(error => console.error('Error:', error)); // Esto solo se mostrará en caso de error
+}
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+3eS2bZqD1zwwu7oZXQAKdf4aJwEr" crossorigin="anonymous"></script>

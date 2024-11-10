@@ -12,16 +12,12 @@ if (isset($_POST['producto_id'])) {
 
     if ($stmt) {
         $stmt->bind_param("ii", $producto_id, $user_id);
-        $stmt->execute();
+        $stmt->execute(); // Ejecuta la eliminación
         $stmt->close();
-    } else {
-        echo "Error al preparar la declaración SQL.";
     }
-
-    // Redirigir de nuevo a la lista de deseos
-    header("Location: lista_deseos.php");
-    exit();
-} else {
-    echo "ID de producto no proporcionado.";
 }
+
+// Redirige a la misma página después de la eliminación
+header("Location: lista_deseos.php");
+exit;
 ?>

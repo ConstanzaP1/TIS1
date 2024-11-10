@@ -66,13 +66,7 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                                 </li>
                             <?php endif; ?>
                             <li>
-                                <a class="dropdown-item" href="carrito/carrito.php">Mi Carro</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="lista_deseos/lista_deseos.php">Lista de Deseos</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="admin_panel/EN_PROCESO.php">Comparador</a>
+                                <a class="dropdown-item text-danger" href="lista_deseos/lista_deseos.php">Lista deseos</a>
                             </li>
                             <li>
                                 <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>

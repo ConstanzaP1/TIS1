@@ -2,14 +2,16 @@
 session_start();
 include '../conexion.php';
 
+header('Content-Type: application/json'); // Asegura que la respuesta sea JSON
+
 if (!$conexion) {
-    echo "Error en la conexión a la base de datos.";
+    echo json_encode(['status' => 'error', 'message' => 'Error en la conexión a la base de datos.']);
     exit;
 }
 
 // Verifica si el usuario ha iniciado sesión
 if (!isset($_SESSION['user_id'])) {
-    echo "Debe iniciar sesión para agregar productos a la lista de deseos.";
+    echo json_encode(['status' => 'error', 'message' => 'Debe iniciar sesión para agregar productos a la lista de deseos.']);
     exit();
 }
 
@@ -24,7 +26,7 @@ if (isset($_POST['id_producto'])) {
     $stmt = $conexion->prepare($query);
     
     if (!$stmt) {
-        echo "Error en la preparación de la consulta: " . $conexion->error;
+        echo json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta.']);
         exit;
     }
     
@@ -38,34 +40,22 @@ if (isset($_POST['id_producto'])) {
         $stmt = $conexion->prepare($query);
         
         if (!$stmt) {
-            echo "Error al preparar la inserción: " . $conexion->error;
+            echo json_encode(['status' => 'error', 'message' => 'Error al preparar la inserción.']);
             exit;
         }
 
         $stmt->bind_param("sii", $nombre_lista, $id_producto, $user_id);
 
         if ($stmt->execute()) {
-            echo "success";
+            echo json_encode(['status' => 'success', 'message' => 'Producto agregado a la lista de deseos.']);
         } else {
-            echo "Error al ejecutar la inserción: " . $stmt->error;
+            echo json_encode(['status' => 'error', 'message' => 'Error al ejecutar la inserción.']);
         }
     } else {
-        echo "exists";
+        echo json_encode(['status' => 'exists', 'message' => 'El producto ya está en la lista de deseos.']);
     }
 } else {
-    echo "ID de producto no proporcionado.";
-}
-function eliminarDeListaDeseos($productoId) {
-    // Asume que estás usando una sesión para almacenar la lista de deseos
-    session_start();
-
-    // Verifica si la lista de deseos existe
-    if (isset($_SESSION['lista_deseos'])) {
-        // Filtra la lista para eliminar el producto con el ID especificado
-        $_SESSION['lista_deseos'] = array_filter($_SESSION['lista_deseos'], function($producto) use ($productoId) {
-            return $producto['id'] != $productoId;
-        });
-    }
+    echo json_encode(['status' => 'error', 'message' => 'ID de producto no proporcionado.']);
 }
 
 $stmt->close();
