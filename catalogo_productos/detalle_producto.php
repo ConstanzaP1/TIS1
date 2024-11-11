@@ -92,6 +92,13 @@
                                 </svg>
                             </button>
                         </li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill" onclick="window.location.href='../comparador/comparador.php'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+                                </svg>
+                            </button>
+                        </li>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
@@ -388,6 +395,12 @@
                             <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
                         </form>
                         ";
+                echo "
+                        <form method='POST' action='../comparador/agregar_al_comparador.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <button type='submit' name='agregar_comparador' class='btn btn-primary rounded-pill px-5 mt-3'>Agregar al Comparador</button>
+                        </form>
+                        ";
                 if (isset($_GET['id_producto'])) {
                     $id_producto = $_GET['id_producto'];
                     echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
@@ -400,6 +413,12 @@
                             <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
                             <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
                             <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
+                        </form>
+                        ";
+                echo "
+                        <form method='POST' action='../comparador/agregar_al_comparador.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <button type='submit' name='agregar_comparador' class='btn btn-primary rounded-pill px-5 mt-3'>Agregar al Comparador</button>
                         </form>
                         ";
             }

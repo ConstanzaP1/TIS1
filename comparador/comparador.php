@@ -155,42 +155,6 @@ require('../conexion.php');
 // Mostrar título de la página
 echo "<h2 class='text-center mb-4'>Comparador de Productos</h2>";
 
-<<<<<<< Updated upstream
-            $caracteristicas = [];
-            if ($result_caracteristicas && mysqli_num_rows($result_caracteristicas) > 0) {
-                while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
-                    if (!empty($caracteristica['caracteristica'])) {
-                        $caracteristicas[] = htmlspecialchars($caracteristica['caracteristica']);
-                    }
-                }
-            } 
-
-            echo "<tr>";
-            echo "<td><img src='" . htmlspecialchars($row['imagen_url']) . "' alt='" . htmlspecialchars($row['nombre_producto']) . "' class='product-img'></td>";
-            echo "<td>" . htmlspecialchars($row['nombre_producto']) . "</td>";
-            echo "<td>$" . number_format($row['precio'], 0, ',', '.') . "</td>";
-            
-            // Mostrar características solo si hay
-            echo "<td>";
-            if (!empty($caracteristicas)) {
-                echo "<ul>";
-                foreach ($caracteristicas as $caracteristica) {
-                    echo "<li>" . $caracteristica . "</li>";
-                }
-                echo "</ul>";
-            } else {
-                echo "No hay características disponibles"; // Mensaje en caso de no tener características
-            }
-            echo "</td>";
-
-            echo "<td>
-                    <form method='POST' action='comparador.php'>
-                        <input type='hidden' name='id_producto' value='" . $row['id_producto'] . "'>
-                        <button type='submit' name='eliminar_comparador' class='btn btn-sm btn-danger'>Eliminar</button>
-                    </form>
-                  </td>";
-            echo "</tr>";
-=======
 // Mostrar tablas separadas por tipo de producto
 foreach ($productos_por_tipo as $tipo => $productos) {
     $tipo = ucfirst(strtolower(string: $tipo));
@@ -287,7 +251,6 @@ foreach ($productos_por_tipo as $tipo => $productos) {
             }
         }
         echo "</ul></td>";
->>>>>>> Stashed changes
         }
 
         // Botón para eliminar del comparador y otón para ir al producto
@@ -514,11 +477,6 @@ foreach ($productos_por_tipo as $tipo => $productos) {
                     LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
                     WHERE pa.id_producto = '$id_producto'
                 ";
-<<<<<<< Updated upstream
-            default:
-                return "SELECT 'No hay características disponibles' AS caracteristica WHERE 1=0"; // Consulta que no devuelve filas
-=======
->>>>>>> Stashed changes
         }
     }
     ?>
@@ -529,9 +487,4 @@ foreach ($productos_por_tipo as $tipo => $productos) {
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-<<<<<<< Updated upstream
 </html>
-
-=======
-</html>
->>>>>>> Stashed changes
