@@ -70,12 +70,27 @@
                             </li>
                         </ul>
                         <li class="nav-item">
+<<<<<<< Updated upstream
                         <button type="btn btn-light" class="p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
                             </svg>
                         </button>
                     </li>
+=======
+                            <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                                </svg>
+                            </button>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill" onclick="window.location.href='../comparador/comparador.php'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+                                </svg>
+                            </button>
+                        </li>
+>>>>>>> Stashed changes
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
@@ -355,11 +370,89 @@
                 // Ejecutar la consulta de características
                 $result_caracteristicas = mysqli_query($conexion, $query_caracteristicas);
 
+<<<<<<< Updated upstream
                 // Iterar sobre las características y mostrarlas en una lista
                 if ($result_caracteristicas->num_rows > 0) {
                     while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
                         if ($caracteristica['caracteristica'] !== null) {
                             echo "<li>" . $caracteristica['caracteristica'] . "</li>";
+=======
+            if ($result_caracteristicas->num_rows > 0) {
+                while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
+                    if ($caracteristica['caracteristica'] !== null) {
+                        echo "<li>" . $caracteristica['caracteristica'] . "</li>";
+                    }
+                }
+            } else {
+                echo "<li>No hay características disponibles.</li>";
+            }            
+            echo "
+                    </ul>";
+
+            if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                echo "
+                        <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <label>Cantidad:</label>
+                            <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
+                            <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                            <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
+                        </form>
+                        ";
+                        echo "
+                        <form method='POST' action='../comparador/agregar_al_comparador.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <button type='submit' name='agregar_comparador' class='btn btn-primary mt-3 mx-1 px-5 rounded-pill'>Agregar al Comparador</button>
+                        </form>
+                        ";
+                if (isset($_GET['id_producto'])) {
+                    $id_producto = $_GET['id_producto'];
+                    echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
+                }
+            } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
+                echo "
+                        <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <label>Cantidad:</label>
+                            <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
+                            <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                            <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
+                        </form>
+                        ";
+                        echo "
+                        <form method='POST' action='../comparador/agregar_al_comparador.php'>
+                            <input type='hidden' name='id_producto' value='{$id_producto}'>
+                            <button type='submit' name='agregar_comparador' class='btn btn-primary mt-3 mx-1 px-5 rounded-pill'>Agregar al Comparador</button>
+                        </form>
+                        ";
+            }
+
+            echo "<a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
+                </div>
+            </div>"; ?>
+
+            <?php if ($id_producto) {
+                $query_resenas = "SELECT rv.valoracion, rv.comentario, rv.fecha, u.username
+                                FROM resena_valoracion AS rv
+                                JOIN users AS u ON rv.user_id = u.id
+                                WHERE rv.id_producto = '$id_producto'
+                                ORDER BY rv.fecha DESC";
+                $result_resenas = mysqli_query($conexion, $query_resenas);
+
+                if (mysqli_num_rows($result_resenas) > 0) {
+                    echo "<div class='container'>";
+                    ?> <br> <?php
+                    echo "<div class='row bg-white px-5 py-3 shadow'>";
+                    echo "<h3>Reseñas</h3>";
+                    while ($resena = mysqli_fetch_assoc($result_resenas)) {
+                        $valoracion = intval($resena['valoracion']);
+                        echo "<div class='card mb-3'>";
+                        echo "<div class='card-bodyy'>";
+        
+                        echo "<h5 class='card-title'>";
+                        for ($i = 1; $i <= 5; $i++) {
+                            echo $i <= $valoracion ? "&#9733;" : "&#9734;";
+>>>>>>> Stashed changes
                         }
                     }
                 } else {
