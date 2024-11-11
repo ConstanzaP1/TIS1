@@ -129,10 +129,12 @@ $result_users = mysqli_query($conexion, $sql_users);
     }
 
     #sidebar {
-        width: 33%;
+        width: 50%;
         background: #f8f9fa;
         border-right: 1px solid #ddd;
         padding: 10px;
+        margin-left: 25%;
+        
     }
 
     #content {
@@ -140,6 +142,7 @@ $result_users = mysqli_query($conexion, $sql_users);
         padding: 20px;
         overflow-y: auto;
     }
+    
 
     /* Estilo del botón "Lista de Usuarios" */
     .lista-usuarios-btn {
@@ -198,12 +201,25 @@ $result_users = mysqli_query($conexion, $sql_users);
     .message {
         margin-top: 10px;
     }
+    .logo-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        width: 100%; /* Para que ocupe todo el ancho del sidebar */
+    }
+
+    .logo {
+        width: 50%; /* Ajusta el ancho de la imagen según sea necesario */
+    }
 </style>
 </head>
 
 <body>
+
     <aside id="sidebar">
-    <img class="logo img-fluid w-100" src="../logo.jpg" alt="Logo">
+    <div class="logo-container">
+    <img class="logo img-fluid" src="../logo.jpg" alt="Logo">
+</div>
 
         <h4>Panel de Administración</h4>
         
@@ -500,6 +516,7 @@ $result_users = mysqli_query($conexion, $sql_users);
         </div>
     </div>
 </div>
+
 <?php if (!empty($message)): ?>
     <script>
         Swal.fire({

@@ -18,8 +18,8 @@ if (isset($_SESSION['error_message'])) {
 
 // Manejar la acción de inicio de sesión
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = mysqli_real_escape_string($conexion, $_POST['email']);
+    $password = mysqli_real_escape_string($conexion, $_POST['password']);
 
     $query = "SELECT * FROM users WHERE email = '$email'";
     $result = mysqli_query($conexion, $query);
@@ -31,12 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['role'] = $user['role'];
             $_SESSION['username'] = $user['username'];
+            $_SESSION['email'] = $user['email'];
 
-            if ($user['role'] == 'admin') {
-                header('Location: ../index.php');
-            } else {
-                header('Location: ../index.php');
-            }
+            header('Location: ../index.php');
             exit();
         } else {
             $_SESSION['error_message'] = 'Correo o contraseña incorrectos.';
@@ -52,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 
 // Manejar la acción de registro
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
-    $username = $_POST['reg_username'];
-    $email = $_POST['reg_email'];
-    $password = $_POST['reg_password'];
+    $username = mysqli_real_escape_string($conexion, $_POST['reg_username']);
+    $email = mysqli_real_escape_string($conexion, $_POST['reg_email']);
+    $password = mysqli_real_escape_string($conexion, $_POST['reg_password']);
 
     $sql_check = "SELECT * FROM users WHERE email = ?";
     $stmt_check = mysqli_prepare($conexion, $sql_check);
@@ -65,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     if (mysqli_stmt_num_rows($stmt_check) > 0) {
         $_SESSION['error_message'] = 'El correo electrónico ya está registrado.';
         mysqli_stmt_close($stmt_check);
-        header('Location: ../login/login.php');
+        header('Location: login.php');
         exit();
     } else {
         $sql_insert = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, 'user')";
@@ -88,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
             }
         } else {
             $_SESSION['error_message'] = 'Error al preparar la consulta de inserción.';
-            mysqli_stmt_close($stmt_check);  // Este es el único cierre necesario si el insert falla
+            mysqli_stmt_close($stmt_check);
             header('Location: login.php');
             exit();
         }
@@ -106,63 +103,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../admin_panel/style.css">
 </head>
+<body class="bodylogin">
+<!-- Botón de Volver Atrás -->
+<button onclick="window.location.href='../index.php'" class="boton__volver" style="z-index: 10;">Volver Atrás</button>
+<div class="logo-container">
+    <img src="../Logopng.png" alt="Logo" class="logo-image">
+</div>
 
-<div class="container">
-    
-    <div class="row d-flex justify-content-center">
-        <div class="col-6">
-            <img class="img-fluid" src="../logo.jpg" alt="">
-        </div>
-    </div>
-    <div class="row d-flex justify-content-center">
-        <div class="col-7 mt-3">
-            <div class="caja__trasera">
-                <div class="caja__trasera-login">
-                    <h3>¿Ya tienes una cuenta?</h3>
-                    <p>Inicia sesión para acceder</p>
-                    <button id="btn__iniciar-sesion">Iniciar Sesión</button>
-                </div>
-                <div class="caja__trasera-register">
-                    <h3>¿Aún no tienes cuenta?</h3>
-                    <p>Regístrate para que puedas iniciar sesión</p>
-                    <button id="btn__registrarse">Registrarse</button>
-                </div>
-            </div>
+<div class="login-container" id="login-container">
+    <div class="login-info-container">
+        <h1 class="title">Iniciar Sesión</h1>
+        
+        <?php if (!empty($error_message)): ?>
+            <div class="alert alert-danger"><?= $error_message ?></div>
+        <?php elseif (!empty($message)): ?>
+            <div class="alert alert-success"><?= $message ?></div>
+        <?php endif; ?>
 
-            <div class="contenedor__login-register">
-            
-                <form action="login.php" method="POST" class="formulario__login">
-                    <h2>Iniciar Sesión</h2>
-                    <?php if (!empty($error_message)): ?>
-                        <div class="alert alert-danger"><?= $error_message ?></div>
-                    <?php elseif (!empty($message)): ?>
-                        <div class="alert alert-success"><?= $message ?></div>
-                    <?php endif; ?>
-                    <input type="email" placeholder="Correo Electrónico" name="email" required>
-                    <input type="password" placeholder="Contraseña" name="password" required>
-                    <button type="submit" name="login">Iniciar Sesión</button>
-                  </form>
-            
-                <form action="login.php" method="POST" class="formulario__register">
-                    <h2>Registrarse</h2>
-                    <input type="text" placeholder="Usuario" name="reg_username" required>
-                    <input type="email" placeholder="Correo Electrónico" name="reg_email" required>
-                    <input type="password" placeholder="Contraseña" name="reg_password" required>
-                    <button type="submit" name="register">Registrarse</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-1">
-        <div class="col-12">
-            <a href='../index.php' class='btn btn-secondary mt-3'>Volver atras</a>
-        </div>
+        <form class="inputs-container" method="POST" action="">
+            <input type="email" class="input" placeholder="Correo Electrónico" name="email" required>
+            <input type="password" class="input" placeholder="Contraseña" name="password" required>
+            <button type="submit" name="login" class="btn">Iniciar Sesión</button>
+        </form>
+
+        <p class="mt-3">¿No tienes una cuenta? <a href="#" onclick="toggleForms()" class="span">Regístrate aquí</a></p>
     </div>
 </div>
 
+<div class="login-container" id="register-container" style="display: none;">
+    <div class="login-info-container">
+        <h1 class="title">Registrarse</h1>
 
+        <form class="inputs-container" method="POST" action="">
+            <input type="text" class="input" placeholder="Usuario" name="reg_username" required>
+            <input type="email" class="input" placeholder="Correo Electrónico" name="reg_email" required>
+            <input type="password" class="input" placeholder="Contraseña" name="reg_password" required>
+            <button type="submit" name="register" class="btn">Registrarse</button>
+        </form>
 
-<script src="../admin_panel/script.js"></script> 
+        <p class="mt-3">¿Ya tienes una cuenta? <a href="#" onclick="toggleForms()" class="span">Inicia sesión aquí</a></p>
+    </div>
+</div>
+
+<script>
+function toggleForms() {
+    const loginContainer = document.getElementById('login-container');
+    const registerContainer = document.getElementById('register-container');
+    loginContainer.style.display = loginContainer.style.display === 'none' ? 'flex' : 'none';
+    registerContainer.style.display = registerContainer.style.display === 'none' ? 'flex' : 'none';
+}
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
