@@ -1,6 +1,14 @@
 <?php
 session_start();
 require('../conexion.php');
+if (isset($_POST['eliminar_comparador'])) {
+    $id_producto = $_POST['id_producto'];
+    $_SESSION['comparador'] = array_filter($_SESSION['comparador'], function($item) use ($id_producto) {
+        return $item != $id_producto;
+    });
+    header("Location: comparador.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -72,10 +80,7 @@ require('../conexion.php');
 .star-rating label:hover ~ label {
     color: #f5c518;
 }
-
 </style>
-<body>
-        
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <!-- Logo -->
@@ -109,12 +114,11 @@ require('../conexion.php');
                             </li>
                         </ul>
                         <li class="nav-item">
-                            <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                                </svg>
-                            </button>
-                        </li>
+                    <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                        </svg>
+                    </button>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
@@ -126,7 +130,6 @@ require('../conexion.php');
     </div>
 </nav>
 <body class="bg-light">
-
 <div class="container mt-5">
     <?php
     // Verificar si hay productos en el comparador
@@ -162,7 +165,6 @@ foreach ($productos_por_tipo as $tipo => $productos) {
     echo "<div class='table-comparison'>";
     echo "<table class='table table-hover table-bordered bg-white'>";
     echo "<thead class='thead-dark'><tr><th>Imagen</th><th>Producto</th><th>Precio</th>";
-
     // Verificar si hay más de un producto para decidir si se muestran similitudes y diferencias
     if (count($productos) > 1) {
         echo "<th>Similitudes</th><th>Diferencias</th>";
@@ -254,22 +256,20 @@ foreach ($productos_por_tipo as $tipo => $productos) {
         }
 
         // Botón para eliminar del comparador y otón para ir al producto
-        echo "<td>
-        <!-- Contenedor en línea para los botones -->
-        <div class='d-inline'>
-            <!-- Botón para eliminar del comparador -->
-            <form method='POST' action='comparador.php' class='d-inline'>
-                <input type='hidden' name='id_producto' value='" . $producto['id_producto'] . "'>
-                <button type='submit' name='eliminar_comparador' class='btn btn-sm btn-danger'>Eliminar</button>
-            </form>
-    
-            <!-- Botón para ir al producto -->
-            <a href='../catalogo_productos/detalle_producto.php?id_producto=" . $producto['id_producto'] . "' class='btn btn-sm btn-info d-inline align-middle'>Ir al Producto</a>
-        </div>
-    </td>";
-    
+                echo "<td>
+                <!-- Contenedor en línea para los botones -->
+                <div class='d-inline'>
+                    <!-- Botón para ir al producto -->
+                    <a href='../catalogo_productos/detalle_producto.php?id_producto=" . $producto['id_producto'] . "' class='btn btn-sm btn-info d-inline align-middle'>Ir al Producto</a>
+                <!-- Botón para eliminar del comparador -->
+                    <form method='POST' action='comparador.php' class='d-inline'>
+                        <input type='hidden' name='id_producto' value='" . $producto['id_producto'] . "'>
+                        <button type='submit' name='eliminar_comparador' class='btn btn-sm btn-danger'>Eliminar</button>
+                    </form>
+            </div>
+                    
+            </td>";
         }
-
     echo "</tbody></table>";
     echo "</div>";
 }
@@ -278,17 +278,6 @@ foreach ($productos_por_tipo as $tipo => $productos) {
     } else {
         echo "<h2 class='empty-comparator'>No se encontraron productos en el comparador.</h2>";
     }
-
-    // Eliminar un producto del comparador
-    if (isset($_POST['eliminar_comparador'])) {
-        $id_producto = $_POST['id_producto'];
-        $_SESSION['comparador'] = array_filter($_SESSION['comparador'], function($item) use ($id_producto) {
-            return $item != $id_producto;
-        });
-        header("Location: comparador.php");
-        exit();
-    }
-
     // Función para obtener la consulta de características según el tipo de producto
     function getCaracteristicasQuery($tipo_producto, $id_producto) {
         switch ($tipo_producto) {
