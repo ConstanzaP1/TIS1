@@ -23,7 +23,7 @@
             <h2 class="text-center mb-4">Lista de Usuarios</h2>
 
             <!-- Formulario de búsqueda -->
-            <form method="GET" action="" class="mb-4 d-flex justify-content-center align-items-center">
+            <form method="GET" action="" class="mb-2 d-flex justify-content-center align-items-center">
                 <input type="text" name="search" class="form-control w-50" placeholder="Buscar por ID, Nombre de Usuario o Correo Electrónico" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
                 
                 <div class="d-flex ms-2" style="width: 150px;">
@@ -33,10 +33,14 @@
                 <div class="d-flex ms-2" style="width: 150px;">
                     <a href="lista_usuarios.php" class="btn btn-secondary w-100">Restablecer</a>
                 </div>
+                <div class="d-flex ms-2" style="width: 150px;">
+                    <a href="historial_compras.php" class="btn btn-secondary w-100">Historial compras</a>
+                </div>
                 
                 <div class="d-flex ms-2" style="width: 150px;">
                     <a href="admin_panel.php" class="btn btn-secondary w-100">Volver al panel</a>
                 </div>
+                
             </form>
 
             <!-- Código PHP para obtener usuarios de la base de datos -->
@@ -112,7 +116,8 @@
                             </form>
                             <!-- Botones adicionales -->
                             <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseo</a>
-                            <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
+                            <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
+
                         </td>
                     </tr>
                     <?php endwhile; ?>

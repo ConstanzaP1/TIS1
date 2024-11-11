@@ -10,6 +10,13 @@ use PHPMailer\PHPMailer\Exception;
 $correoE = $_SESSION['email'];
 $username = $_SESSION['username'];
 
+// Verificar si el usuario está en sesión y obtener el ID del usuario
+$id_usuario = $_SESSION['user_id'] ?? null; // Cambiado a 'user_id'
+
+if ($id_usuario === null) {
+    die("Error: El ID del usuario no está definido en la sesión.");
+}
+
 // Verificar si la transacción fue exitosa y si el carrito tiene datos
 $detalle_compra = $_SESSION['detalle_compra'] ?? null;
 
@@ -46,8 +53,11 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
     date_default_timezone_set('America/Santiago');
     $fecha = date('Y-m-d H:i:s');
     $codigo_autorizacion = mysqli_real_escape_string($conexion, $_GET['auth_code']);
-    $query_boleta = "INSERT INTO boletas (fecha, total, codigo_autorizacion, detalles) VALUES ('$fecha', '$total', '$codigo_autorizacion', '" . json_encode($detalle_boleta) . "')";
 
+    // Insertar la boleta en la base de datos
+    $query_boleta = "INSERT INTO boletas (id_usuario, fecha, total, codigo_autorizacion, detalles) 
+                     VALUES ('$id_usuario', '$fecha', '$total', '$codigo_autorizacion', '" . json_encode($detalle_boleta) . "')";
+    
     if (!mysqli_query($conexion, $query_boleta)) {
         die("Error al guardar la boleta en la base de datos: " . mysqli_error($conexion));
     }
@@ -55,6 +65,11 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
     $id_boleta = mysqli_insert_id($conexion);
     $_SESSION['id_boleta'] = $id_boleta;
 
+    // Agregar el registro al historial de compras
+    $query_historial = "INSERT INTO historial_compras (id_usuario, id_boleta, total) VALUES ('$id_usuario', '$id_boleta', '$total')";
+    if (!mysqli_query($conexion, $query_historial)) {
+        die("Error al guardar en el historial de compras: " . mysqli_error($conexion));
+    }
     // Crear el PDF en memoria
     $pdf = new FPDF();
     $pdf->AddPage();

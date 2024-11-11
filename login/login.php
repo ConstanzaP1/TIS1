@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 </head>
 <body class="bodylogin">
 <!-- Botón de Volver Atrás -->
-<button onclick="window.location.href='../index.php'" class="boton__volver" style="z-index: 10;">Volver Atrás</button>
+<button onclick="window.location.href='../index.php'" class="boton__volver" style="z-index: 10;">Volver al catálogo</button>
 <div class="logo-container">
     <img src="../Logopng.png" alt="Logo" class="logo-image">
 </div>
