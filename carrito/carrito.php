@@ -125,98 +125,23 @@ if (isset($_POST['pagar'])) {
             display: flex;
             justify-content: center;
         align-items: center;
-}
+        }
         .table-comparison {
             margin-top: 20px;
         }
-    </style>
-</head>
-<style>
-    .navbar{
+        .navbar{
         background-color: rgba(0, 128, 255, 0.5);   
-    }
-    .celeste-background{
-        background-color: rgba(0, 128, 255, 0.5); 
-        border-color: rgba(0, 128, 255, 0.5);   
-    }
-    .card-body{
-        background-color: #e0e0e0;
-    }
-    body{
-        background-color: #e0e0e0;
-    }
-    .star-rating {
-    direction: rtl;
-    font-size: 2em;
-    display: inline-flex;
-}
-.star-rating input[type="radio"] {
-    display: none;
-}
-.star-rating label {
-    color: #ccc;
-    cursor: pointer;
-}
-.star-rating input[type="radio"]:checked ~ label,
-.star-rating label:hover,
-.star-rating label:hover ~ label {
-    color: #f5c518;
-}
-
-</style>
-<body>
-        
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <!-- Logo -->
-        <div class="navbar-brand col-2  ">
-            <img class="logo img-fluid w-75 rounded-pill" src="../Logopng.png" alt="Logo">
-        </div>
-
-        <!-- Botón para colapsar el menú en pantallas pequeñas -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Contenido de la navbar -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Menú desplegable -->
-            <ul class="navbar-nav ms-auto">
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if ($_SESSION['role'] === 'admin'): ?>
-                                <li>
-                                    <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
-                                </li>
-                            <?php endif; ?>
-                                
-                            <li>
-                                <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
-                            </li>
-                        </ul>
-                        <li class="nav-item">
-                            <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill" onclick="window.location.href='../comparador/comparador.php'">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
-                                </svg>
-                            </button>
-                        </li>
-                    </li>
-                <?php else: ?>
-                    <li class="nav-item">
-                        <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </div>
-    </div>
-</nav>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+        }
+        .celeste-background{
+            background-color: rgba(0, 128, 255, 0.5); 
+            border-color: rgba(0, 128, 255, 0.5);   
+        }
+        .card-body{
+            background-color: #e0e0e0;
+        }
+        body{
+            background-color: #e0e0e0;
+        }
         body {
             background-color: #f8f9fa;
         }
@@ -230,6 +155,48 @@ if (isset($_POST['pagar'])) {
             align-items: center;
         }
     </style>
+</head>
+<body>
+        
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <div class="navbar-brand col-2  ">
+            <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+        </div>
+
+        <!-- Botón para colapsar el menú en pantallas pequeñas -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Contenido de la navbar -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Menú desplegable -->
+            <ul class="navbar-nav ms-auto">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                                <li>
+                                    <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
+                                </li>
+                            <?php endif; ?>
+                            <li>
+                                <a class="dropdown-item" href="lista_deseos/lista_deseos.php">Lista deseos</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif ?>
+            </ul>
+        </div>
+    </div>
+</nav>
 </head>
 <body>
 <div class="container py-5">

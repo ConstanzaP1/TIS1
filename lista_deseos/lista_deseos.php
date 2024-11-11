@@ -57,14 +57,27 @@ $result = $stmt->get_result();
             color: #333;
             font-weight: bold;
         }
+        .navbar{
+        background-color: rgba(0, 128, 255, 0.5);   
+        }
+        .celeste-background{
+            background-color: rgba(0, 128, 255, 0.5); 
+            border-color: rgba(0, 128, 255, 0.5);   
+        }
+        .card-body{
+            background-color: #e0e0e0;
+        }
+        body{
+            background-color: #e0e0e0;
+        }   
     </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <!-- Logo -->
-        <div class="navbar-brand col-2">
-            <img class="logo img-fluid w-75 rounded-pill" src="../logo.jpg" alt="Logo">
+        <div class="navbar-brand col-2  ">
+            <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
         </div>
 
         <!-- Botón para colapsar el menú en pantallas pequeñas -->
@@ -74,17 +87,13 @@ $result = $stmt->get_result();
 
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Barra de búsqueda -->
-            <form class="d-flex ms-auto col-8 shadow" role="search">
-                <input class="form-control" type="search" placeholder="Buscar en Tisnology" aria-label="Buscar">
-            </form>
 
             <!-- Menú desplegable -->
             <ul class="navbar-nav ms-auto">
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <?php if ($_SESSION['role'] === 'admin'): ?>
@@ -93,13 +102,7 @@ $result = $stmt->get_result();
                                 </li>
                             <?php endif; ?>
                             <li>
-                                <a class="dropdown-item" href="../carrito/carrito.php">Mi Carro</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="../lista_deseos/lista_deseos.php">Lista de Deseos</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="../admin_panel/EN_PROCESO.php">Comparador</a>
+                                <a class="dropdown-item" href="../comparador/comparador.php">Comparador</a>
                             </li>
                             <li>
                                 <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
@@ -107,16 +110,15 @@ $result = $stmt->get_result();
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                            </svg>
-                        </button>
+                    <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                        </svg>
+                    </button>
                     </li>
-
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
+                        <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
                     </li>
                 <?php endif; ?>
             </ul>
@@ -183,7 +185,6 @@ $result = $stmt->get_result();
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+3eS2bZqD1zwwu7oZXQAKdf4aJwEr" crossorigin="anonymous"></script>
 </body>
 </html>
