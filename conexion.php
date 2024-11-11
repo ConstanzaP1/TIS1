@@ -2,7 +2,7 @@
 $host = "localhost"; // Cambia según tu configuración
 $usuario = "root"; // Cambia según tu configuración
 $contrasena = ""; // Cambia según tu configuración
-$base_de_datos = "proyecto"; // Cambia según tu base de datos
+$base_de_datos = "proyecto_tis1"; // Cambia según tu base de datos
 
 $conexion = mysqli_connect($host, $usuario, $contrasena, $base_de_datos);
 
