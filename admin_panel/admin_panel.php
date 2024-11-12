@@ -4,7 +4,7 @@ session_start();
 require_once '../conexion.php'; // Asegúrate de que el archivo conexion.php esté en la ruta correcta
 
 // Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
     header('Location: ../login/login.php');
     exit;
 }

@@ -50,27 +50,50 @@
                 die("Error de conexión: " . $conexion->connect_error);
             }
 
-            if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
-                $user_id = intval($_POST['user_id']);
-                $new_role = $conexion->real_escape_string($_POST['new_role']);
+            session_start();
+$role = $_SESSION['role'] ?? '';
+if ($role !== 'superadmin' && $role !== 'admin') {
+    die("Acceso denegado. Solo administradores pueden ver esta página.");
+}
 
-                $query_update_role = "UPDATE users SET role = ? WHERE id = ?";
-                $stmt = $conexion->prepare($query_update_role);
-                $stmt->bind_param("si", $new_role, $user_id);
+if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
+    $user_id = intval($_POST['user_id']);
+    $new_role = $conexion->real_escape_string($_POST['new_role']);
 
-                if ($stmt->execute()) {
-                    echo "<script>
-                            Swal.fire('Rol actualizado', 'El rol del usuario ha sido cambiado exitosamente.', 'success')
-                            .then(() => {
-                                window.location.href = 'lista_usuarios.php';
-                            });
-                          </script>";
-                } else {
-                    echo "<script>Swal.fire('Error', 'Error al cambiar el rol del usuario. Inténtalo de nuevo.', 'error');</script>";
-                }
+    // Verificar que el superadmin no pueda crear o asignar el rol de superadmin
+    if ($new_role === 'superadmin') {
+        echo "<script>
+            Swal.fire('Error', 'No tienes permiso para asignar el rol de superadmin.', 'error');
+        </script>";
+    } 
+    // Evitar que el superadmin cambie su propio rol
+    elseif ($user_id == $_SESSION['user_id']) {
+        echo "<script>
+            Swal.fire('Error', 'No puedes cambiar el rol del superadmin principal.', 'error');
+        </script>";
+    
+    } else {
+        // Si pasa las verificaciones, actualizar el rol
+        $query_update_role = "UPDATE users SET role = ? WHERE id = ?";
+        $stmt = $conexion->prepare($query_update_role);
+        $stmt->bind_param("si", $new_role, $user_id);
 
-                $stmt->close();
-            }
+        if ($stmt->execute()) {
+            echo "<script>
+                    Swal.fire('Rol actualizado', 'El rol del usuario ha sido cambiado exitosamente.', 'success')
+                    .then(() => {
+                        window.location.href = 'lista_usuarios.php';
+                    });
+                  </script>";
+        } else {
+            echo "<script>Swal.fire('Error', 'Error al cambiar el rol del usuario. Inténtalo de nuevo.', 'error');</script>";
+        }
+
+        $stmt->close();
+    }
+}
+
+
 
             $search = isset($_GET['search']) ? $conexion->real_escape_string($_GET['search']) : '';
             $query = "SELECT id, username, email, role FROM users";
@@ -79,50 +102,55 @@
             }
             $result_users = $conexion->query($query);
 
-            $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar'];
+            $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin' => 'Superadministrador'];
             ?>
 
             <!-- Tabla de usuarios -->
             <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre de Usuario</th>
-                        <th>Correo Electrónico</th>
-                        <th>Rol</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = $result_users->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo $row['id']; ?></td>
-                        <td><?php echo $row['username']; ?></td>
-                        <td><?php echo $row['email']; ?></td>
-                        <td><?php echo $roles[$row['role']]; ?></td>
-                        <td>
-                            <!-- Formulario para cambiar rol -->
-                            <form method="POST" action="" class="d-inline change-role-form">
-                                <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
-                                <input type="hidden" name="current_role" value="<?php echo $row['role']; ?>">
-                                <select name="new_role" class="form-select form-select-sm d-inline w-auto">
-                                    <?php foreach ($roles as $role_key => $role_name): ?>
-                                        <option value="<?php echo $role_key; ?>" <?php if ($role_key == $row['role']) echo 'selected'; ?>>
-                                            <?php echo $role_name; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <button type="button" class="btn btn-warning btn-sm btn-change-role">Cambiar</button>
-                            </form>
-                            <!-- Botones adicionales -->
-                            <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseo</a>
-                            <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre de Usuario</th>
+            <th>Correo Electrónico</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php while ($row = $result_users->fetch_assoc()): ?>
+        <tr>
+            <td><?php echo $row['id']; ?></td>
+            <td><?php echo $row['username']; ?></td>
+            <td><?php echo $row['email']; ?></td>
+            <td><?php echo $roles[$row['role']]; ?></td>
+            <td>
+                <!-- Formulario para cambiar rol solo visible para superadmin -->
+                <?php if ($role === 'superadmin'): ?>
+                <form method="POST" action="" class="d-inline change-role-form">
+                    <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                    <input type="hidden" name="current_role" value="<?php echo $row['role']; ?>">
+                    <select name="new_role" class="form-select form-select-sm d-inline w-auto">
+                        <?php foreach ($roles as $role_key => $role_name): ?>
+                            <?php if ($role_key !== 'superadmin'): // Excluir superadmin del select ?>
+                                <option value="<?php echo $role_key; ?>" <?php if ($role_key == $row['role']) echo 'selected'; ?>>
+                                    <?php echo $role_name; ?>
+                                </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                    <button type="button" class="btn btn-warning btn-sm btn-change-role">Cambiar</button>
+                </form>
+                <?php endif; ?>
 
-                        </td>
-                    </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
+                <!-- Botones adicionales -->
+                <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseo</a>
+                <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
+            </td>
+        </tr>
+        <?php endwhile; ?>
+    </tbody>
+</table>
+
         </div>
     </div>
 
