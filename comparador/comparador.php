@@ -16,10 +16,23 @@ if (isset($_POST['eliminar_comparador'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparador de Productos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
+</head>
+    <style>   
+        .navbar{
+            background-color: rgba(0, 128, 255, 0.5);   
+        }
+        .celeste-background{
+            background-color: rgba(0, 128, 255, 0.5); 
+            border-color: rgba(0, 128, 255, 0.5);   
+        }
+        .card-body{
+            background-color: #e0e0e0;
+        }
         .product-img {
             width: 80px;
             height: 80px;
@@ -42,47 +55,29 @@ if (isset($_POST['eliminar_comparador'])) {
             display: flex;
             justify-content: center;
         align-items: center;
-}
+        }
         .table-comparison {
             margin-top: 20px;
         }
-        .navbar{
-        background-color: rgba(0, 128, 255, 0.5);   
-    }
-    .celeste-background{
-        background-color: rgba(0, 128, 255, 0.5); 
-        border-color: rgba(0, 128, 255, 0.5);   
-    }
-    .card-body{
-        background-color: #e0e0e0;
-    }
-    body{
-        background-color: #e0e0e0;
-    }
     </style>
-</head>    
-
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <!-- Logo -->
         <div class="navbar-brand col-2  ">
-            <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+            <img class="logo img-fluid w-75 rounded-pill" src="../Logopng.png" alt="Logo">
         </div>
-
         <!-- Botón para colapsar el menú en pantallas pequeñas -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
-
             <!-- Menú desplegable -->
             <ul class="navbar-nav ms-auto">
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                            Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <?php if ($_SESSION['role'] === 'admin'): ?>
@@ -91,17 +86,10 @@ if (isset($_POST['eliminar_comparador'])) {
                                 </li>
                             <?php endif; ?>
                             <li>
-                                <a class="dropdown-item" href="../lista_deseos/lista_deseos.php">Lista deseos</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="../comparador/comparador.php">Comparador</a>
-                            </li>
-                            <li>
                                 <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
+                        <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
@@ -110,14 +98,13 @@ if (isset($_POST['eliminar_comparador'])) {
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
+                        <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
                     </li>
                 <?php endif; ?>
             </ul>
         </div>
     </div>
 </nav>
-
 <body class="bg-light">
 <div class="container mt-5">
     <?php
@@ -458,11 +445,10 @@ foreach ($productos_por_tipo as $tipo => $productos) {
         }
     }
     ?>
-    <div class="btnback-to-store"><a href="../index.php" class="btn btn-secondary ">Volver a la Tienda</a></div>
+<div class="btnback-to-store"><a href="../index.php" class="btn btn-secondary ">Volver a la Tienda</a></div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-7z8F9lOVeb47mTwqSvbmcxQFLRxhHIsKJ1eq9PCh4Qy1HjqxTe+d7ElqXZC2tX6A" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-
 </body>
 </html>
