@@ -1,6 +1,14 @@
 <?php
 session_start();
 require('../conexion.php');
+if (isset($_POST['eliminar_comparador'])) {
+    $id_producto = $_POST['id_producto'];
+    $_SESSION['comparador'] = array_filter($_SESSION['comparador'], function($item) use ($id_producto) {
+        return $item != $id_producto;
+    });
+    header("Location: comparador.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -8,8 +16,23 @@ require('../conexion.php');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparador de Productos</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+    <style>   
+        .navbar{
+            background-color: rgba(0, 128, 255, 0.5);   
+        }
+        .celeste-background{
+            background-color: rgba(0, 128, 255, 0.5); 
+            border-color: rgba(0, 128, 255, 0.5);   
+        }
+        .card-body{
+            background-color: #e0e0e0;
+        }
         .product-img {
             width: 80px;
             height: 80px;
@@ -28,10 +51,61 @@ require('../conexion.php');
             display: block;
             text-align: center;
         }
+        .btnback-to-store{
+            display: flex;
+            justify-content: center;
+        align-items: center;
+        }
+        .table-comparison {
+            margin-top: 20px;
+        }
     </style>
-</head>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <div class="navbar-brand col-2  ">
+            <img class="logo img-fluid w-75 rounded-pill" src="../Logopng.png" alt="Logo">
+        </div>
+        <!-- Botón para colapsar el menú en pantallas pequeñas -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Contenido de la navbar -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Menú desplegable -->
+            <ul class="navbar-nav ms-auto">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                                <li>
+                                    <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
+                                </li>
+                            <?php endif; ?>
+                            <li>
+                                <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
+                            </li>
+                        </ul>
+                        <li class="nav-item">
+                    <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                        </svg>
+                    </button>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </div>
+</nav>
 <body class="bg-light">
-
 <div class="container mt-5">
     <?php
     // Verificar si hay productos en el comparador
@@ -52,56 +126,135 @@ require('../conexion.php');
     }
 
     if (mysqli_num_rows($result) > 0) {
-        echo "<h2 class='text-center mb-4'>Comparador de Productos</h2>";
-        echo "<table class='table table-hover table-bordered bg-white'>";
-        echo "<thead class='thead-dark'><tr><th>Imagen</th><th>Producto</th><th>Precio</th><th>Características</th><th>Acciones</th></tr></thead>";
-        echo "<tbody>";
-
+        // Agrupar productos por tipo
+        $productos_por_tipo = [];
         while ($row = mysqli_fetch_assoc($result)) {
-            // Obtener características
-            $query_caracteristicas = getCaracteristicasQuery($row['tipo_producto'], $row['id_producto']);
-            $result_caracteristicas = mysqli_query($conexion, $query_caracteristicas);
+            $productos_por_tipo[$row['tipo_producto']][] = $row;
+        }
+// Mostrar título de la página
+echo "<h2 class='text-center mb-4'>Comparador de Productos</h2>";
 
-            $caracteristicas = '';
-            if ($result_caracteristicas && mysqli_num_rows($result_caracteristicas) > 0) {
-                while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
-                    $caracteristicas .= "<li>" . htmlspecialchars($caracteristica['caracteristica']) . "</li>";
+// Mostrar tablas separadas por tipo de producto
+foreach ($productos_por_tipo as $tipo => $productos) {
+    $tipo = ucfirst(strtolower(string: $tipo));
+    echo "<h3 class='mt-4'>Comparador $tipo</h3>";
+    echo "<div class='table-comparison'>";
+    echo "<table class='table table-hover table-bordered bg-white'>";
+    echo "<thead class='thead-dark'><tr><th>Imagen</th><th>Producto</th><th>Precio</th>";
+    // Verificar si hay más de un producto para decidir si se muestran similitudes y diferencias
+    if (count($productos) > 1) {
+        echo "<th>Similitudes</th><th>Diferencias</th>";
+    } else {
+        echo "<th>Características</th>";
+    }
+
+    echo "<th>Acciones</th></tr></thead><tbody>";
+
+    // Obtener todas las características de los productos del mismo tipo
+    $caracteristicas_producto = [];
+    foreach ($productos as $producto) {
+        $query_caracteristicas = getCaracteristicasQuery($producto['tipo_producto'], $producto['id_producto']);
+        $result_caracteristicas = mysqli_query($conexion, $query_caracteristicas);
+
+        $caracteristicas = [];
+        if ($result_caracteristicas && mysqli_num_rows($result_caracteristicas) > 0) {
+            while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
+                $caracteristicas[] = $caracteristica['caracteristica'];
+            }
+        }
+        $caracteristicas_producto[$producto['id_producto']] = $caracteristicas;
+    }
+
+    // Comparar características si hay más de un producto
+    $similitudes = [];
+    $diferencias = [];
+
+    if (count($productos) > 1) {
+        // Tomar la primera lista de características como referencia
+        $caracteristicas_referencia = array_values($caracteristicas_producto)[0];
+
+        foreach ($caracteristicas_referencia as $caracteristica) {
+            $es_similar = true;
+
+            // Comparar la característica con los otros productos
+            foreach ($caracteristicas_producto as $id => $caracteristicas) {
+                if (!in_array($caracteristica, $caracteristicas)) {
+                    $es_similar = false;
+                    break;
                 }
-            } else {
-                $caracteristicas = "<li>No hay características disponibles</li>";
             }
 
-            echo "<tr>";
-            echo "<td><img src='" . htmlspecialchars($row['imagen_url']) . "' alt='" . htmlspecialchars($row['nombre_producto']) . "' class='product-img'></td>";
-            echo "<td>" . htmlspecialchars($row['nombre_producto']) . "</td>";
-            echo "<td>$" . number_format($row['precio'], 0, ',', '.') . "</td>";
-            echo "<td><ul>" . $caracteristicas . "</ul></td>";
-            echo "<td>
-                    <form method='POST' action='comparador.php'>
-                        <input type='hidden' name='id_producto' value='" . $row['id_producto'] . "'>
-                        <button type='submit' name='eliminar_comparador' class='btn btn-sm btn-danger'>Eliminar</button>
-                    </form>
-                  </td>";
-            echo "</tr>";
+            if ($es_similar) {
+                $similitudes[] = $caracteristica;
+            } else {
+                $diferencias[] = $caracteristica;
+            }
+        }
+    }
+
+    // Mostrar productos en la tabla según su tipo
+    foreach ($productos as $producto) {
+        echo "<tr>";
+        echo "<td><img src='" . htmlspecialchars($producto['imagen_url']) . "' alt='" . htmlspecialchars($producto['nombre_producto']) . "' class='product-img'></td>";
+        echo "<td>" . htmlspecialchars($producto['nombre_producto']) . "</td>";
+        echo "<td>$" . number_format($producto['precio'], 0, ',', '.') . "</td>";
+
+        // Mostrar características o similitudes/diferencias
+        if (count($productos) > 1) {
+            // Mostrar similitudes
+            echo "<td><ul>";
+            foreach ($similitudes as $similitud) {
+                if (!empty(trim($similitud))) {
+                    echo "<li>" . htmlspecialchars($similitud) . "</li>";
+                 }
+             }
+             echo "</ul></td>";
+
+            // Mostrar diferencias específicas del producto
+            $diferencias_producto = array_diff($caracteristicas_producto[$producto['id_producto']], $similitudes);
+            echo "<td><ul>";
+            foreach ($diferencias_producto as $diferencia) {
+                if (!empty(trim($diferencia))) {
+                    echo "<li>" . htmlspecialchars($diferencia) . "</li>";
+                 }
+             }
+             echo "</ul></td>";
+        } else {
+            // Mostrar características si solo hay un producto
+            echo "<td><ul>";
+            foreach ($caracteristicas_producto[$producto['id_producto']] as $caracteristica) {
+               // Verificar que la característica no esté vacía
+                if (!empty(trim($caracteristica))) {
+               echo "<li>" . htmlspecialchars($caracteristica) . "</li>";
+            }
+        }
+        echo "</ul></td>";
         }
 
+        // Botón para eliminar del comparador y otón para ir al producto
+                echo "<td>
+                <!-- Contenedor en línea para los botones -->
+                <div class='d-inline'>
+                    <!-- Botón para ir al producto -->
+                    <a href='../catalogo_productos/detalle_producto.php?id_producto=" . $producto['id_producto'] . "' class='btn btn-sm btn-info d-inline align-middle'>Ir al Producto</a>
+                <!-- Botón para eliminar del comparador -->
+                    <form method='POST' action='comparador.php' class='d-inline'>
+                        <input type='hidden' name='id_producto' value='" . $producto['id_producto'] . "'>
+                        <button type='submit' name='eliminar_comparador' class='btn btn-sm btn-danger'>Eliminar</button>
+                    </form>
+            </div>
+                    
+            </td>";
+        }
+    echo "</tbody></table>";
+    echo "</div>";
+}
         echo "</tbody></table>";
+        echo "</div>";
     } else {
         echo "<h2 class='empty-comparator'>No se encontraron productos en el comparador.</h2>";
     }
-
-    // Eliminar un producto del comparador
-    if (isset($_POST['eliminar_comparador'])) {
-        $id_producto = $_POST['id_producto'];
-        $_SESSION['comparador'] = array_filter($_SESSION['comparador'], function($item) use ($id_producto) {
-            return $item != $id_producto;
-        });
-        header("Location: comparador.php");
-        exit();
-    }
-
     // Función para obtener la consulta de características según el tipo de producto
-
     function getCaracteristicasQuery($tipo_producto, $id_producto) {
         switch ($tipo_producto) {
             case 'teclado':
@@ -289,19 +442,13 @@ require('../conexion.php');
                     LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
                     WHERE pa.id_producto = '$id_producto'
                 ";
-            // Agrega más casos según los tipos de productos...
-            default:
-                return "SELECT 'No hay características disponibles' AS caracteristica WHERE 1=0"; // Consulta que no devuelve filas
         }
     }
     ?>
-    <a href="../index.php" class="btn btn-secondary back-to-store">Volver a la Tienda</a>
+<div class="btnback-to-store"><a href="../index.php" class="btn btn-secondary ">Volver a la Tienda</a></div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-7z8F9lOVeb47mTwqSvbmcxQFLRxhHIsKJ1eq9PCh4Qy1HjqxTe+d7ElqXZC2tX6A" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-

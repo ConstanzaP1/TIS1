@@ -15,6 +15,8 @@
 </style>
         <!-- Botón de Volver al panel de administración -->
         <div class="mb-4">
-        <a href="lista_usuarios.php" class="btn btn-secondary">Volver la Lista de Usuarios</a>
+        <button onclick="window.location.href='../index.php'" class="btn btn-secondary">Volver al menú principal</button>
+        <button onclick="history.back()">Volver Atrás</button>
+
     </div>
 
