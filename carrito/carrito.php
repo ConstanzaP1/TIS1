@@ -164,7 +164,9 @@ if (isset($_POST['pagar'])) {
     <div class="container-fluid">
         <!-- Logo -->
         <div class="navbar-brand col-2  ">
-            <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+            <a href="../index.php">
+                <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+            </a>
         </div>
 
         <!-- Botón para colapsar el menú en pantallas pequeñas -->
@@ -183,14 +185,17 @@ if (isset($_POST['pagar'])) {
                         <ul class="dropdown-menu dropdown-menu-end">
                             <?php if ($_SESSION['role'] === 'admin'): ?>
                                 <li>
-                                    <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
+                                    <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>
                             <?php endif; ?>
                             <li>
-                                <a class="dropdown-item" href="lista_deseos/lista_deseos.php">Lista deseos</a>
+                                <a class="dropdown-item" href="../lista_deseos/lista_deseos.php">Lista deseos</a>
                             </li>
                             <li>
-                                <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
+                                <a class="dropdown-item" href="../comparador/comparador.php">Comparador</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
                             </li>
                         </ul>
                     </li>

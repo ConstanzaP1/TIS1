@@ -218,7 +218,9 @@ $result_users = mysqli_query($conexion, $sql_users);
 
     <aside id="sidebar">
     <div class="logo-container">
-    <img class="logo img-fluid" src="../logo.jpg" alt="Logo">
+    <a href="../index.php" class="text-center">
+        <img class="logo img-fluid" src="../logo.jpg" alt="Logo">
+    </a>
 </div>
 
         <h4>Panel de Administración</h4>
