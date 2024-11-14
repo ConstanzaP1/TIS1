@@ -31,6 +31,9 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
     .card-body{
         background-color: #e0e0e0;
     }
+    body{
+        background-color: rgba(0, 128, 255, 0.1);
+    }
 </style>
 <body>
 <nav class="navbar navbar-expand-lg">
