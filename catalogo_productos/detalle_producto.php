@@ -386,14 +386,18 @@
             if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
                 
                 echo "
-                        <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                            <input type='hidden' name='id_producto' value='{$id_producto}'>
-                            <label>Cantidad:</label>
-                            <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
-                            <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
-                            <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
-                        </form>
-                        ";
+                <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                    <input type='hidden' name='id_producto' value='{$id_producto}'>
+                    <label>Cantidad:</label>
+                    <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
+                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                    <button type='submit' name='agregar_carrito' class='btn btn-outline-success mb-1  '>
+                        <i class='fa-solid fa-cart-shopping'></i>
+                    </button>
+                </form>
+            ";
+            
+
                 echo "
                         <button onclick='addToWishlist({$id_producto})' class='btn btn-outline-danger'>
                             <i class='fas fa-heart'></i>
