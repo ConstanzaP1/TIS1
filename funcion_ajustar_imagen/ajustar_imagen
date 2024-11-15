@@ -1,0 +1,58 @@
+<?php
+
+$nAncho = 600;
+$nAlto = 400;
+
+// Verifica si se ha proporcionado una URL de imagen
+if (isset($_POST['imagen_url']) && !empty($_POST['imagen_url'])) {
+    $imagen_url = $_POST['imagen_url'];
+
+    // Verifica si la URL es válida y la imagen existe
+    if (filter_var($imagen_url, FILTER_VALIDATE_URL) && @getimagesize($imagen_url)) {
+        // Descarga la imagen
+        $img_original = imagecreatefromjpeg($imagen_url);
+        if (!$img_original) {
+            echo "No se pudo cargar la imagen desde la URL.";
+            exit;
+        }
+
+        $ancho_original = imagesx($img_original);
+        $alto_original = imagesy($img_original);
+
+        // Ajusta las dimensiones si la imagen es más grande que los límites establecidos
+        if ($ancho_original <= $nAncho && $alto_original <= $nAlto) {
+            // No es necesario redimensionar
+            $destino = 'imagen_redimensionada.jpg';
+            imagejpeg($img_original, $destino, 100);
+        } else {
+            // Redimensiona la imagen manteniendo la relación de aspecto
+            if ($ancho_original >= $alto_original) { // Horizontal
+                $nAlto = ($nAncho * $alto_original) / $ancho_original;
+            } else { // Vertical
+                $nAncho = ($ancho_original / $alto_original) * $nAlto;
+            }
+
+            // Crea una imagen de destino con las nuevas dimensiones
+            $tmp = imagecreatetruecolor($nAncho, $nAlto);
+            imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $nAncho, $nAlto, $ancho_original, $alto_original);
+
+            // Guarda la imagen redimensionada
+            $destino = 'imagen_redimensionada.jpg';
+            imagejpeg($tmp, $destino, 100);
+
+            // Limpia la memoria
+            imagedestroy($tmp);
+        }
+
+        // Muestra la imagen redimensionada
+        header("Content-type: image/jpeg");
+        imagejpeg($img_original);
+        imagedestroy($img_original);
+
+    } else {
+        echo "La URL proporcionada no es válida o no se puede acceder a la imagen.";
+    }
+} else {
+    echo "No se ha proporcionado una URL de imagen.";
+}
+?>
