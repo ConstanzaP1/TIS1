@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Organización de Filtros</title>
+    <link rel="stylesheet" href="/funcion_drag_and_drop/estilo_drag_and_drop.css">
+    <script src="/funcion_drag_and_drop/organizacion_filtro.js"></script>
+
+    <style>
+        .filter-container {
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+        }
+        .filter-item {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            cursor: move;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="filter-container" id="filterContainer">
+        <div class="filter-item" draggable="true">Marca</div>
+        <div class="filter-item" draggable="true">Precio mínimo</div>
+        <div class="filter-item" draggable="true">Precio máximo</div>
+        <div class="filter-item" draggable="true">Categoría</div>
+    </div>
+
+    <script src="organizacion_filtro.js"></script>
+</body>
+</html>

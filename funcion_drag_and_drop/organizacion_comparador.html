@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparación de Productos</title>
+    <link rel="stylesheet" href="organizacion_comparador.css">
+</head>
+<body>
+    <div class="product-container">
+        <!-- Lista de productos para arrastrar -->
+        <div class="product-list">
+            <h2>Arrastra productos para comparar</h2>
+            <div class="product-item" draggable="true" data-id="1">
+                <img src="ruta_a_imagen1.jpg" alt="Producto 1">
+                <p>Producto 1 - $60.000</p>
+            </div>
+            <div class="product-item" draggable="true" data-id="2">
+                <img src="ruta_a_imagen2.jpg" alt="Producto 2">
+                <p>Producto 2 - $120.000</p>
+            </div>
+            <!-- Añade más productos según sea necesario -->
+        </div>
+
+        <!-- Área de comparación -->
+        <div class="compare-area" id="compareArea">
+            <h2>Comparar productos</h2>
+            <div class="compare-box" id="compareBox1" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <p>Arrastra aquí</p>
+            </div>
+            <div class="compare-box" id="compareBox2" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <p>Arrastra aquí</p>
+            </div>
+            <!-- Añade más cajas de comparación si deseas comparar más productos -->
+        </div>
+    </div>
+
+    <script src="organizacion_comparador.js"></script>
+</body>
+</html>
