@@ -1,5 +1,7 @@
 <?php
 
+require('../conexion.php');
+
 $nAncho = 600;
 $nAlto = 400;
 
