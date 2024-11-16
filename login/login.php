@@ -157,11 +157,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                     <form method="POST" class="mt-4">
                         <div class="mb-3">
                             <label for="email" class="form-label">Correo electrónico</label>
-                            <input type="email" class="form-control" id="email" placeholder="Correo electrónico" name="email" required>
+                            <input type="email" class="form-control" id="email" placeholder="ejemplo@ejemplo.cl" name="email" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="password" placeholder="Contraseña" name="password" required>
+                            <input type="password" class="form-control" id="password" placeholder="contraseña" name="password" required>
                         </div>
                         <button type="submit" name="login" class="btn btn-primary w-100">Iniciar Sesión</button>
                     </form>
@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="email" placeholder="Correo electrónico" name="reg_email" required>
+                            <input type="email" class="form-control" id="email" placeholder="ejemplo@ejemplo.cl" name="reg_email" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Contraseña</label>
