@@ -137,8 +137,11 @@
             echo "
             <div class='producto-detalle shadow d-flex align-items-center bg-white'>
                 <div class='col-6 text-center me-1'>
-                    <img class='img-fluid ' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}'>
+                    <div class='image-container' style='width: 100%; max-width: 100%; height: 100%; position: relative; overflow: hidden; margin: auto;'>
+                        <img class='img-fluid' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}' style='object-fit: contain; width: 100%; height: 100%;'>
+                    </div>
                 </div>
+
                 <div class='producto-info col-6 p-5'>
                     <h1>{$producto['nombre_producto']}</h1>
                     <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>

@@ -181,7 +181,9 @@ if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categori
                         echo "
                             <a href='catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
                                 <div class='card mx-1 mb-3 p-0 shadow' style='width: 18rem; height: 26rem;'>
-                                    <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image'>
+                                    <div class='image-container' style='width: 100%; height: 70%; position: relative; overflow: hidden;'>
+                                        <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
+                                    </div>
                                     <div class='card-body text-begin'>
                                         <h6 class='text-secondary m-0'>$marca_producto</h6>
                                         <h5 class='text-black my-1'>$nombre_producto</h5>
