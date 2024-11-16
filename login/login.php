@@ -139,7 +139,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 <body>
     <div class="container">
         <div class="text-center mb-4">
-            <img src="../Logopng.png" alt="Logo" class="img-fluid w-25">
+            <a href="../index.php">
+                <img class="logo img-fluid w-25 rounded-pill" src="../logopng.png" alt="Logo">
+            </a>
         </div>
         <!-- Contenedor de Login -->
         <div class="row justify-content-center" id="login-container">
