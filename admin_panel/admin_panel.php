@@ -4,7 +4,7 @@ session_start();
 require_once '../conexion.php'; // Asegúrate de que el archivo conexion.php esté en la ruta correcta
 
 // Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
     header('Location: ../login/login.php');
     exit;
 }
@@ -498,13 +498,26 @@ $result_users = mysqli_query($conexion, $sql_users);
                         <input type="password" class="form-control" name="password" required>
                     </div>
                     <div class="mb-3">
-                        <label for="role" class="form-label">Rol</label>
-                        <select name="role" class="form-select">
-                            <option value="user">Usuario</option>
-                            <option value="admin">Administrador</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
+                    <label for="role" class="form-label">Rol</label>
+                    <select name="role" class="form-select">
+                        <?php
+                        // Asumiendo que el rol del usuario actual está almacenado en la sesión
+                        session_start();
+                        $current_role = $_SESSION['role'] ?? 'user'; // Por defecto 'user' si no está definido
+
+                        // Lógica para mostrar opciones según el rol actual
+                        if ($current_role === 'superadmin') {
+                            // El superadmin puede asignar tanto 'user' como 'admin'
+                            echo '<option value="user">Usuario</option>';
+                            echo '<option value="admin">Administrador</option>';
+                        } elseif ($current_role === 'admin') {
+                            // El admin solo puede asignar el rol de 'user'
+                            echo '<option value="user">Usuario</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrar</button>
                 </form>
                 <div class="message mt-3">
                     <?php if (!empty($message)): ?>
