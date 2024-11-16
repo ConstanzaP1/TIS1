@@ -40,6 +40,16 @@ $resultado = mysqli_query($conexion, $query_productos);
                             <td>
                                 <a href="modificar_productos.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-warning btn-sm mx-1">Modificar</a>
                                 <button onclick="eliminarProducto(<?php echo $producto['id_producto']; ?>)" class="btn btn-danger btn-sm mx-1">Eliminar</button>
+                                <form method="POST" action="../catalogo_productos/actualizar_destacados.php" class="d-inline">
+                                    <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
+                                    <?php if ($producto['destacado']): ?>
+                                        <!-- Botón para quitar destacado -->
+                                        <button type="submit" name="quitar_destacado" class="btn btn-secondary btn-sm mx-1">Quitar Destacado</button>
+                                    <?php else: ?>
+                                        <!-- Botón para marcar como destacado -->
+                                        <button type="submit" name="destacar" class="btn btn-success btn-sm mx-1">Marcar Destacado</button>
+                                    <?php endif; ?>
+                                </form>
                             </td>
                         </tr>
                     <?php endwhile; ?>

@@ -1,9 +1,9 @@
 <?php
-function filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria) {
+function filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria, $soloDestacados = false) {
     // Conexión a la base de datos
     require('conexion.php');
 
-    // Consulta base para seleccionar productos y aplicar filtros
+    // Consulta base
     $query = "
         SELECT 
             p.id_producto, 
@@ -21,6 +21,9 @@ function filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_m
     // Inicializar los parámetros y tipos para la consulta preparada
     $params = [];
     $types = "";
+
+    // Filtro de productos destacados (siempre activo)
+    $query .= " AND p.destacado = 1";
 
     // Filtro de marca
     if ($marca !== "") {
@@ -43,7 +46,7 @@ function filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_m
         $types .= "d";
     }
 
-    // Filtro de categoría (buscando la palabra en el nombre del producto)
+    // Filtro de categoría
     if ($categoria !== "") {
         $query .= " AND p.tipo_producto LIKE ?";
         $params[] = "%" . $categoria . "%";
@@ -70,4 +73,5 @@ function filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_m
 
     return $productos;
 }
+
 ?>
