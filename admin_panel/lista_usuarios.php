@@ -96,7 +96,8 @@ if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
 
 
             $search = isset($_GET['search']) ? $conexion->real_escape_string($_GET['search']) : '';
-            $query = "SELECT id, username, email, role FROM users";
+            $query = "SELECT id, username, email, role, status FROM users";
+
             if ($search) {
                 $query .= " WHERE id LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
             }
@@ -145,6 +146,21 @@ if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
                 <!-- Botones adicionales -->
                 <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseo</a>
                 <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
+                <?php if ($row['status'] === 'activo'): ?>
+                    <!-- Botón para inhabilitar -->
+                    <form method="POST" action="inhabilitar_usuario.php" class="d-inline">
+                        <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                        <input type="hidden" name="action" value="inhabilitar">
+                        <button type="button" class="btn btn-danger btn-sm btn-inhabilitar">Inhabilitar</button>
+                    </form>
+                <?php else: ?>
+                    <!-- Botón para habilitar -->
+                    <form method="POST" action="inhabilitar_usuario.php" class="d-inline">
+                        <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                        <input type="hidden" name="action" value="habilitar">
+                        <button type="submit" class="btn btn-success btn-sm">Habilitar</button>
+                    </form>
+                <?php endif; ?>
             </td>
         </tr>
         <?php endwhile; ?>
@@ -187,7 +203,42 @@ if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
                 }
             });
         });
+        // SweetAlert2 para confirmar inhabilitación de usuario
+        document.querySelectorAll('.btn-inhabilitar').forEach(button => {
+    button.addEventListener('click', function () {
+        const form = this.closest('form');
+
+        Swal.fire({
+            title: 'Inhabilitar cuenta',
+            input: 'textarea',
+            inputLabel: 'Razón para inhabilitar la cuenta:',
+            inputPlaceholder: 'Escribe las razones aquí...',
+            inputAttributes: {
+                'aria-label': 'Escribe las razones aquí'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Inhabilitar',
+            cancelButtonText: 'Cancelar',
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'Debes escribir una razón para continuar';
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const reasonInput = document.createElement('input');
+                reasonInput.type = 'hidden';
+                reasonInput.name = 'reason';
+                reasonInput.value = result.value;
+
+                form.appendChild(reasonInput);
+                form.submit();
+            }
+        });
+    });
+});
     </script>
+    
 
     <style>
         .usuarios-container {
