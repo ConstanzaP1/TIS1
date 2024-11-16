@@ -50,7 +50,7 @@ $resultado = mysqli_query($conexion, $query_productos);
         <p>No hay productos disponibles.</p>
     <?php endif; ?>
 
-    <button type="button" class="btn btn-secondary mt-4" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver al Panel de Administración</button>
+    <button type="button" class="btn btn-secondary mt-1 mb-3" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver al Panel de Administración</button>
 </div>
 
 <script>
