@@ -19,13 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
 
     // Crea una instancia de PHPMailer
     $mail = new PHPMailer(true);
+    $mail->CharSet = 'UTF-8';
+    
 
     // Contenido del PDF de la cotización
     $total = 0;
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(0, 10, 'Cotizacion', 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Cotización', 0, 1, 'C');
     $pdf->Ln(10);
 
     $pdf->SetFont('Arial', 'B', 12);
@@ -83,13 +85,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
 
         // Configuración del contenido del correo
         $mail->isHTML(true);
-        $mail->Subject = 'Cotizacion de productos';
+        $mail->Subject = 'Cotización de productos';
         $mail->Body    = 'Adjunto la cotización de sus productos.';
 
         // Enviar el correo
         $mail->send();
-        echo 'El correo con la cotización de su carrito ha sido enviado correctamente.';
-        echo "<a href='../carrito/carrito.php' class='btn btn-secondary mt-3'>Volver al carrito</a>";
+        header("location: ../carrito/carrito.php");
 
         // Eliminar el archivo temporal
         unlink($pdf_filename);

@@ -17,6 +17,8 @@ if (!isset($_SESSION['total'])) {
 
 // Obtener el ID del usuario de la sesión, si está disponible
 $id_usuario = $_SESSION['id_usuario'] ?? null;
+$correoE = $_SESSION['email'];
+
 
 // Manejar la adición de productos al carrito
 if (isset($_POST['agregar_carrito'])) {
@@ -267,20 +269,34 @@ if (isset($_POST['pagar'])) {
                 <p class="text-danger mt-2">Algunos productos en el carrito exceden el stock disponible.</p>
             <?php endif; ?>
         </form>
-        <hr>
-        <div class="row col-6">
-            <h2>Enviar cotizacion de su carrito de compras</h2>
-            <form action="../boleta_cotizacion/cotizacion.php" method="POST">
-            <div class="mb-3">
-                <label for="correo" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" id="correo" name="correo" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Enviar</button>
+        <div class="mt-1">
+            <form id="formCotizacion" action="../boleta_cotizacion/cotizacion.php" method="POST">
+                <input type="hidden" name="correo" value="<?php echo $correoE; ?>">
+                <button type="button" class="btn btn-primary" onclick="confirmarEnvio()">Enviar cotización carro</button>
+            </form>
         </div>
     <?php endif; ?>
-    <a href="../index.php" class="btn btn-secondary mt-3">Volver al Catálogo</a>
+    <hr>
+    <h2>Seleccione su punto de retiro mas cercano</h2>
 </div>
-
+<script>
+function confirmarEnvio() {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Se enviará una cotización de los productos en tu carrito.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, enviar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('formCotizacion').submit();
+        }
+    });
+}
+</script>
 <script>
 // Funciones para incrementar y decrementar la cantidad de productos, actualizar el carrito y total.
 function increment(id_producto, maxCantidad) {
