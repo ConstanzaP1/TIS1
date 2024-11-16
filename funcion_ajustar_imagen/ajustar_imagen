@@ -5,6 +5,17 @@ require('creacion_productos');
 require('../index_crear_producto.php');
 require('../crear_audifonos.php');
 require('../crear_teclado.php');
+require('../crear_cpu.php');
+require('../crear_fuente.php');
+require('../crear_gabinete.php');
+require('../crear_gpu.php');
+require('../crear_hdd.php');
+require('../crear_monitor.php');
+require('../crear_mouse.php');
+require('../crear_notebook.php');
+require('../crear_placa_madre.php');
+require('../crear_ram.php');
+require('../crear_ssd.php');
 
 
 $nAncho = 600;
