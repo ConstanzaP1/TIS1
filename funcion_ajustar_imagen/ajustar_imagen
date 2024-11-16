@@ -1,6 +1,11 @@
 <?php
 
 require('../conexion.php');
+require('creacion_productos');
+require('../index_crear_producto.php');
+require('../crear_audifonos.php');
+require('../crear_teclado.php');
+
 
 $nAncho = 600;
 $nAlto = 400;
