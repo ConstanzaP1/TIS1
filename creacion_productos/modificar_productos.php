@@ -21,7 +21,7 @@ if (isset($_GET['id_producto'])) {
 $queryMarca = "SELECT id_marca, nombre_marca FROM marca";
 $resultMarca = mysqli_query($conexion, $queryMarca);
 
-// onsultas teclado
+// consultas teclado
 $queryTipoTeclado = "SELECT id_periferico, tipo_teclado FROM tipo_teclado";
 $resultTipoTeclado = mysqli_query($conexion, $queryTipoTeclado);
 
@@ -187,12 +187,12 @@ $resultPantalla = mysqli_query($conexion, $queryPantalla);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Modificar Producto</title>
+    <title>Modificar producto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container mt-5">
-        <h2 class="mb-4">Modificar Producto</h2>
+        <h2 class="mb-4">Modificar producto</h2>
 
         <form action="procesar_modificacion_producto.php" method="POST" class="row g-3">
             <input type="hidden" name="id_producto" value="<?php echo htmlspecialchars($producto['id_producto']); ?>">
@@ -206,6 +206,11 @@ $resultPantalla = mysqli_query($conexion, $queryPantalla);
             <div class="col-md-6">
                 <label for="precio" class="form-label">Precio:</label>
                 <input type="number" name="precio" id="precio" value="<?php echo htmlspecialchars($producto['precio']); ?>" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="costo" class="form-label">Costo:</label>
+                <input type="number" name="costo" id="costo" value="<?php echo htmlspecialchars($producto['costo']); ?>" class="form-control" required>
             </div>
 
             <div class="col-md-6">
