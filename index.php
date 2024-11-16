@@ -63,7 +63,7 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                             Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                        <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
                                 <li>
                                     <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>
