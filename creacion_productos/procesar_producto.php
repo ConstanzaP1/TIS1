@@ -6,12 +6,14 @@ $nombre_producto = mysqli_real_escape_string($conexion, $_POST['nombre_producto'
 $nombre_marca = mysqli_real_escape_string($conexion, $_POST['nombre_marca']);
 $precio = mysqli_real_escape_string($conexion, $_POST['precio']);
 $cantidad = mysqli_real_escape_string($conexion, $_POST['cantidad']);
-$categoria_producto = mysqli_real_escape_string($conexion, $_POST['categoria_producto']); // Ejemplo: 'teclado', 'monitor', 'audifono', etc.
+$categoria_producto = mysqli_real_escape_string($conexion, $_POST['categoria_producto']);
 $imagen_url = mysqli_real_escape_string($conexion, $_POST['imagen_url']);
+$costo = mysqli_real_escape_string($conexion, $_POST['costo']);
+
 
 // Insertar los datos generales del producto en la tabla producto
-$query_producto = "INSERT INTO producto (nombre_producto, precio, cantidad, tipo_producto, marca, imagen_url) 
-                   VALUES ('$nombre_producto', '$precio', '$cantidad', '$categoria_producto', '$nombre_marca', '$imagen_url')";
+$query_producto = "INSERT INTO producto (nombre_producto, precio, cantidad, tipo_producto, marca, imagen_url, costo) 
+                   VALUES ('$nombre_producto', '$precio', '$cantidad', '$categoria_producto', '$nombre_marca', '$imagen_url', '$costo')";
 if (mysqli_query($conexion, $query_producto)) {
     // Obtener el id del último producto insertado
     $id_producto = mysqli_insert_id($conexion);
