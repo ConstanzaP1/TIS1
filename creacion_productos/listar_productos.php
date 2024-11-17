@@ -25,6 +25,7 @@ $resultado = mysqli_query($conexion, $query_productos);
                     <tr>
                         <th>Nombre</th>
                         <th>Marca</th>
+                        <th>Costo</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
                         <th>Acciones</th>
@@ -35,6 +36,7 @@ $resultado = mysqli_query($conexion, $query_productos);
                         <tr id="producto-<?php echo $producto['id_producto']; ?>">
                             <td><?php echo htmlspecialchars($producto['nombre_producto']); ?></td>
                             <td><?php echo htmlspecialchars($producto['marca']); ?></td>
+                            <td><?php echo htmlspecialchars($producto['costo']); ?></td>
                             <td><?php echo htmlspecialchars($producto['precio']); ?></td>
                             <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
                             <td>

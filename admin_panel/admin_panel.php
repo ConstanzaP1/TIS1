@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once '../conexion.php'; // Asegúrate de que el archivo conexion.php esté en la ruta correcta
+require_once '../conexion.php'; 
 
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
@@ -122,20 +122,27 @@ $result_users = mysqli_query($conexion, $sql_users);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        body {
-        display: flex;
-        height: 100vh;
-        margin: 0;
-    }
+    body {
+    display: flex; /* Flexbox para alinear los hijos horizontalmente */
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    margin: 0; /* Eliminar márgenes del body */
+}
 
-    #sidebar {
-        width: 50%;
-        background: #f8f9fa;
-        border-right: 1px solid #ddd;
-        padding: 10px;
-        margin-left: 25%;
-        
-    }
+#sidebar {
+    width: 33%; /* Sidebar ocupa el 33% */
+    background: #f8f9fa;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box; /* Incluir padding en el ancho total */
+}
+
+#dashboard {
+    width: 67%; /* Dashboard ocupa el 67% */
+    background: #ffffff;
+    padding: 10px;
+    box-sizing: border-box; /* Incluir padding en el ancho total */
+    overflow-y: auto; /* Habilitar scroll si el contenido supera la altura */
+}
 
     #content {
         flex: 1;
@@ -203,13 +210,15 @@ $result_users = mysqli_query($conexion, $sql_users);
     }
     .logo-container {
         display: flex;
-        justify-content: center; /* Centrar horizontalmente */
+        justify-content: flex-start; 
         align-items: center; /* Centrar verticalmente */
         width: 100%; /* Para que ocupe todo el ancho del sidebar */
     }
 
     .logo {
-        width: 50%; /* Ajusta el ancho de la imagen según sea necesario */
+        justify-content: flex-start; 
+
+        width: 20%; /* Ajusta el ancho de la imagen según sea necesario */
     }
 </style>
 </head>
@@ -218,7 +227,7 @@ $result_users = mysqli_query($conexion, $sql_users);
 
     <aside id="sidebar">
     <div class="logo-container">
-    <a href="../index.php" class="text-center">
+    <a href="../index.php" class="text-left">
         <img class="logo img-fluid" src="../logo.jpg" alt="Logo">
     </a>
 </div>
@@ -556,6 +565,157 @@ $result_users = mysqli_query($conexion, $sql_users);
 
 
 </aside>
+<div class="container">
+    <h1 class="text-center mb-4">Dashboard</h1>
+    <div class="row">
+        <!-- Gráfico 1 -->
+        <div class="col-md-6 chart-container">
+            <canvas id="gananciasChart"></canvas>
+        </div>
+        <!-- Gráfico 2 -->
+        <div class="col-md-6 chart-container">
+            <canvas id="ventasDiariasChart"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Gráfico 3 -->
+        <div class="col-md-6 chart-container">
+            <canvas id="productosMasVendidosChart"></canvas>
+        </div>
+        <!-- Gráfico 4 -->
+        <div class="col-md-6 chart-container">
+            <canvas id="problemasStockChart"></canvas>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const metrics = ['ganancias_productos', 'ventas_diarias', 'productos_mas_vendidos', 'problemas_stock'];
+
+        metrics.forEach(metric => {
+            fetchData(metric).then(data => {
+                if (!data || data.error || data.length === 0) {
+                    console.warn(`No hay datos para ${metric}.`);
+                    return;
+                }
+
+                switch (metric) {
+                    case 'ganancias_productos':
+                        createChart('gananciasChart', 'bar', data.map(item => item.nombre_producto), data.map(item => item.ganancia), 'Ganancias');
+                        break;
+                    case 'ventas_diarias':
+                        createChart('ventasDiariasChart', 'line', data.map(item => item.dia), data.map(item => item.total_ventas), 'Ventas Diarias');
+                        break;
+                    case 'productos_mas_vendidos':
+                        createChart('productosMasVendidosChart', 'bar', data.map(item => item.nombre_producto), data.map(item => item.cantidad_vendida), 'Más Vendidos');
+                        break;
+                    case 'problemas_stock':
+                        createChart('problemasStockChart', 'bar', data.map(item => item.nombre_producto), data.map(item => item.cantidad), 'Problemas de Stock');
+                        break;
+                }
+            });
+        });
+    });
+
+    async function fetchData(metric) {
+        try {
+            const response = await fetch(`dashboard_datos.php?metric=${metric}`);
+            if (!response.ok) throw new Error('Error en la respuesta del servidor');
+            return await response.json();
+        } catch (error) {
+            console.error(`Error al obtener datos para "${metric}":`, error);
+            return [];
+        }
+    }
+
+    function createChart(canvasId, type, labels, data, label) {
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    new Chart(ctx, {
+        type,
+        data: {
+            labels, // Etiquetas en el eje X
+            datasets: [{
+                label, // Etiqueta del conjunto de datos
+                data,  // Datos en el eje Y
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1 // Grosor del borde de las barras o líneas
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true },
+                title: { display: true, text: label }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 0
+                    }
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+
+</script>
+<style>
+.container {
+    width: 100%; /* Contenedor ocupa todo el ancho */
+    max-width: 1200px; /* Límite opcional para pantallas grandes */
+    margin: 0 auto; /* Centrar contenedor en la pantalla */
+}
+
+.row {
+    display: flex; /* Flexbox para alinear gráficos en la misma fila */
+    justify-content: space-between; /* Espaciado entre gráficos */
+    margin-bottom: 20px; /* Espaciado entre filas */
+    flex-wrap: wrap; /* Permite que los gráficos se ajusten si el espacio es pequeño */
+}
+
+.col-md-6 {
+    flex: 1 1 48%; /* Cada gráfico ocupa el 48% del ancho */
+    max-width: 48%; /* Asegura que los gráficos no excedan el 48% */
+    margin-bottom: 20px; /* Espacio inferior entre gráficos */
+}
+
+.chart-container {
+    width: 100%; /* Ocupa todo el espacio de su contenedor */
+    height: auto; /* Permitir que el alto sea automático */
+}
+
+canvas {
+    width: 100% !important; /* Asegura que ocupe todo el ancho del contenedor */
+    height: 100% !important; /* Ajusta el alto a un tamaño visible */
+}
+
+@media (max-width: 768px) {
+    .col-md-6 {
+        flex: 1 1 100%; /* En pantallas pequeñas, cada gráfico ocupa el 100% */
+        max-width: 100%;
+    }
+}
+
+</style>
+</div>
 
 <style>
     .registro {
