@@ -218,7 +218,7 @@ $result_users = mysqli_query($conexion, $sql_users);
     .logo {
         justify-content: flex-start; 
 
-        width: 20%; /* Ajusta el ancho de la imagen según sea necesario */
+        width: 40%; /* Ajusta el ancho de la imagen según sea necesario */
     }
 </style>
 </head>
@@ -565,35 +565,86 @@ $result_users = mysqli_query($conexion, $sql_users);
 
 
 </aside>
-<div class="container">
-    <h1 class="text-center mb-4">Dashboard</h1>
-    <div class="row">
-        <!-- Gráfico 1 -->
-        <div class="col-md-6 chart-container">
-            <canvas id="gananciasChart"></canvas>
-        </div>
-        <!-- Gráfico 2 -->
-        <div class="col-md-6 chart-container">
-            <canvas id="ventasDiariasChart"></canvas>
-        </div>
-    </div>
-    <div class="row">
-        <!-- Gráfico 3 -->
-        <div class="col-md-6 chart-container">
-            <canvas id="productosMasVendidosChart"></canvas>
-        </div>
-        <!-- Gráfico 4 -->
-        <div class="col-md-6 chart-container">
-            <canvas id="problemasStockChart"></canvas>
-        </div>
-    </div>
+<div id="app">
+    <aside>
+        <h2 class="menu-title">Menú</h2>
+        <nav>
+            <ul class="menu-list">
+                <li><a href="#" class="menu-link active" data-target="section-ganancias">Ganancias por Producto</a></li>
+                <li><a href="#" class="menu-link" data-target="section-ventas">Ventas Diarias</a></li>
+                <li><a href="#" class="menu-link" data-target="section-vendidos">Productos Más Vendidos</a></li>
+                <li><a href="#" class="menu-link" data-target="section-stock">Problemas de Stock</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main>
+        <header class="dashboard-header">
+            <h1>poner otras coas aqui</h1>
+        </header>
+
+        <!-- Gráficos -->
+        <section id="section-ganancias" class="dashboard-section active">
+            <h2>Ganancias por Producto</h2>
+            <div class="card">
+                <canvas id="gananciasChart"></canvas>
+            </div>
+        </section>
+        <section id="section-ventas" class="dashboard-section">
+            <h2>Ventas Diarias</h2>
+            <div class="card">
+                <canvas id="ventasDiariasChart"></canvas>
+            </div>
+        </section>
+        <section id="section-vendidos" class="dashboard-section">
+            <h2>Productos Más Vendidos</h2>
+            <div class="card">
+                <canvas id="productosMasVendidosChart"></canvas>
+            </div>
+        </section>
+        <section id="section-stock" class="dashboard-section">
+            <h2>Problemas de Stock</h2>
+            <div class="card">
+                <canvas id="problemasStockChart"></canvas>
+            </div>
+        </section>
+    </main>
 </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const metrics = ['ganancias_productos', 'ventas_diarias', 'productos_mas_vendidos', 'problemas_stock'];
+        const menuLinks = document.querySelectorAll('.menu-link');
+        const sections = document.querySelectorAll('.dashboard-section');
 
+        // Mostrar solo la primera sección
+        sections.forEach(section => {
+            section.style.display = "none";
+        });
+        document.getElementById('section-ganancias').style.display = "block" ;
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Cambiar la clase activa en el menú
+                menuLinks.forEach(link => link.classList.remove('active'));
+                link.classList.add('active');
+
+                // Ocultar todas las secciones
+                sections.forEach(section => {
+                    section.style.display = "none";
+                });
+
+                // Mostrar la sección correspondiente
+                const targetId = link.getAttribute('data-target');
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.style.display = "block";
+                }
+            });
+        });
+
+        const metrics = ['ganancias_productos', 'ventas_diarias', 'productos_mas_vendidos', 'problemas_stock'];
         metrics.forEach(metric => {
             fetchData(metric).then(data => {
                 if (!data || data.error || data.length === 0) {
@@ -621,7 +672,7 @@ $result_users = mysqli_query($conexion, $sql_users);
 
     async function fetchData(metric) {
         try {
-            const response = await fetch(`dashboard_datos.php?metric=${metric}`);
+            const response = await fetch(`dashboard_data.php?metric=${metric}`);
             if (!response.ok) throw new Error('Error en la respuesta del servidor');
             return await response.json();
         } catch (error) {
@@ -631,91 +682,179 @@ $result_users = mysqli_query($conexion, $sql_users);
     }
 
     function createChart(canvasId, type, labels, data, label) {
-    const ctx = document.getElementById(canvasId).getContext('2d');
-    new Chart(ctx, {
-        type,
-        data: {
-            labels, // Etiquetas en el eje X
-            datasets: [{
-                label, // Etiqueta del conjunto de datos
-                data,  // Datos en el eje Y
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
-                ],
-                borderWidth: 1 // Grosor del borde de las barras o líneas
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: true },
-                title: { display: true, text: label }
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+            type,
+            data: {
+                labels,
+                datasets: [{
+                    label,
+                    data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
             },
-            scales: {
-                x: {
-                    ticks: {
-                        maxRotation: 45,
-                        minRotation: 0
-                    }
-                },
-                y: {
-                    beginAtZero: true
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
                 }
             }
-        }
-    });
-}
-
-
-</script>
-<style>
-.container {
-    width: 100%; /* Contenedor ocupa todo el ancho */
-    max-width: 1200px; /* Límite opcional para pantallas grandes */
-    margin: 0 auto; /* Centrar contenedor en la pantalla */
-}
-
-.row {
-    display: flex; /* Flexbox para alinear gráficos en la misma fila */
-    justify-content: space-between; /* Espaciado entre gráficos */
-    margin-bottom: 20px; /* Espaciado entre filas */
-    flex-wrap: wrap; /* Permite que los gráficos se ajusten si el espacio es pequeño */
-}
-
-.col-md-6 {
-    flex: 1 1 48%; /* Cada gráfico ocupa el 48% del ancho */
-    max-width: 48%; /* Asegura que los gráficos no excedan el 48% */
-    margin-bottom: 20px; /* Espacio inferior entre gráficos */
-}
-
-.chart-container {
-    width: 100%; /* Ocupa todo el espacio de su contenedor */
-    height: auto; /* Permitir que el alto sea automático */
-}
-
-canvas {
-    width: 100% !important; /* Asegura que ocupe todo el ancho del contenedor */
-    height: 100% !important; /* Ajusta el alto a un tamaño visible */
-}
-
-@media (max-width: 768px) {
-    .col-md-6 {
-        flex: 1 1 100%; /* En pantallas pequeñas, cada gráfico ocupa el 100% */
-        max-width: 100%;
+        });
     }
+</script>
+
+<style>
+    /* Estilos principales */
+    #app {
+        display: flex;
+        flex-direction: row; /* Alineación horizontal */
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+    }
+
+    aside {
+        width: 20%; /* Por defecto, el sidebar ocupa el 20% */
+        background-color: #f4f4f4;
+        padding: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        flex-shrink: 0; /* Evita que el sidebar se reduzca */
+    }
+
+    main {
+        flex: 1; /* Ocupa el resto del espacio */
+        padding: 20px;
+    }
+
+    .menu-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .menu-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .menu-list li {
+        margin-bottom: 10px;
+    }
+
+    .menu-link {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .menu-link.active {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .dashboard-header {
+        background-color: #007BFF;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-section {
+        display: none;
+    }
+
+    .dashboard-section.active {
+        display: block;
+    }
+
+    .dashboard-section h2 {
+        background-color: white;
+        color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Responsividad */
+    @media (max-width: 768px) {
+        #app {
+            flex-direction: column; /* Menú y contenido en columnas */
+        }
+
+        aside {
+            width: 100%; /* Sidebar ocupa el ancho completo */
+            order: 1; /* Sidebar se mueve debajo */
+            padding: 10px;
+        }
+
+        main {
+            width: 100%; /* El contenido principal ocupa el ancho completo */
+            order: 2;
+            padding: 10px;
+        }
+
+        .menu-link {
+            font-size: 1em;
+            padding: 8px;
+        }
+
+        .card {
+            height: 50vh; /* Ajustar la altura en pantallas pequeñas */
+        }
+    }
+    #section-ganancias {
+    background-color: white; /* Fondo blanco */
 }
 
+    @media (max-width: 480px) {
+        aside {
+            width: 100%; /* Sidebar siempre visible */
+        }
+
+        main {
+            width: 100%;
+        }
+
+        .menu-link {
+            font-size: 0.9em;
+            padding: 6px;
+        }
+
+        .card {
+            height: 40vh; /* Más bajo para pantallas pequeñas */
+        }
+    }
 </style>
-</div>
+
+
+
+
 
 <style>
     .registro {
@@ -745,7 +884,6 @@ canvas {
         overflow: hidden; /* Ocultar contenido que se salga */
     }
 </style>
-
 <script>
     // Script para manejar el acordeón
     const headers = document.querySelectorAll('.accordion-header');
