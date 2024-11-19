@@ -31,6 +31,9 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
     .card-body{
         background-color: #e0e0e0;
     }
+    body{
+        background-color: rgba(0, 128, 255, 0.1);
+    }
 </style>
 <body>
 <nav class="navbar navbar-expand-lg">
@@ -60,7 +63,7 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                             Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                        <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
                                 <li>
                                     <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>

@@ -52,8 +52,13 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         </div>
 
         <div class="mb-3">
-            <label for="precio" class="form-label">Precio</label>
+            <label for="precio" class="form-label">Precio de venta</label>
             <input type="number" name="precio" class="form-control" id="precio" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="costo" class="form-label">Costo de compra</label>
+            <input type="number" name="costo" class="form-control" id="costo" required>
         </div>
 
         <div class="mb-3">

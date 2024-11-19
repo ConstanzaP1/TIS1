@@ -26,7 +26,7 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Teclado</title>
+    <title>Crear notebook</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -51,8 +51,13 @@ $resultMarca = mysqli_query($conexion, $queryMarca);
         </div>
 
         <div class="mb-3">
-            <label for="precio" class="form-label">Precio</label>
+            <label for="precio" class="form-label">Precio de venta</label>
             <input type="number" name="precio" class="form-control" id="precio" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="costo" class="form-label">Costo de compra</label>
+            <input type="number" name="costo" class="form-control" id="costo" required>
         </div>
 
         <div class="mb-3">
