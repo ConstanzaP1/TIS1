@@ -25,6 +25,7 @@ $resultado = mysqli_query($conexion, $query_productos);
                     <tr>
                         <th>Nombre</th>
                         <th>Marca</th>
+                        <th>Costo</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
                         <th>Acciones</th>
@@ -35,11 +36,22 @@ $resultado = mysqli_query($conexion, $query_productos);
                         <tr id="producto-<?php echo $producto['id_producto']; ?>">
                             <td><?php echo htmlspecialchars($producto['nombre_producto']); ?></td>
                             <td><?php echo htmlspecialchars($producto['marca']); ?></td>
+                            <td><?php echo htmlspecialchars($producto['costo']); ?></td>
                             <td><?php echo htmlspecialchars($producto['precio']); ?></td>
                             <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
                             <td>
                                 <a href="modificar_productos.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-warning btn-sm mx-1">Modificar</a>
                                 <button onclick="eliminarProducto(<?php echo $producto['id_producto']; ?>)" class="btn btn-danger btn-sm mx-1">Eliminar</button>
+                                <form method="POST" action="../catalogo_productos/actualizar_destacados.php" class="d-inline">
+                                    <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
+                                    <?php if ($producto['destacado']): ?>
+                                        <!-- Botón para quitar destacado -->
+                                        <button type="submit" name="quitar_destacado" class="btn btn-secondary btn-sm mx-1">Quitar Destacado</button>
+                                    <?php else: ?>
+                                        <!-- Botón para marcar como destacado -->
+                                        <button type="submit" name="destacar" class="btn btn-success btn-sm mx-1">Marcar Destacado</button>
+                                    <?php endif; ?>
+                                </form>
                             </td>
                         </tr>
                     <?php endwhile; ?>
@@ -50,7 +62,7 @@ $resultado = mysqli_query($conexion, $query_productos);
         <p>No hay productos disponibles.</p>
     <?php endif; ?>
 
-    <button type="button" class="btn btn-secondary mt-4" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver al Panel de Administración</button>
+    <button type="button" class="btn btn-secondary mt-1 mb-3" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver al Panel de Administración</button>
 </div>
 
 <script>

@@ -27,7 +27,7 @@
         background-color: #e0e0e0;
     }
     body{
-        background-color: #e0e0e0;
+        background-color: rgba(0, 128, 255, 0.1);
     }
     .star-rating {
     direction: rtl;
@@ -137,8 +137,11 @@
             echo "
             <div class='producto-detalle shadow d-flex align-items-center bg-white'>
                 <div class='col-6 text-center me-1'>
-                    <img class='img-fluid ' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}'>
+                    <div class='image-container' style='width: 100%; max-width: 100%; height: 100%; position: relative; overflow: hidden; margin: auto;'>
+                        <img class='img-fluid' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}' style='object-fit: contain; width: 100%; height: 100%;'>
+                    </div>
                 </div>
+
                 <div class='producto-info col-6 p-5'>
                     <h1>{$producto['nombre_producto']}</h1>
                     <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
@@ -489,9 +492,9 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action='../reseñas_valoraciones/procesar_resena.php?id_producto=<?php echo $id_producto; ?>' method='POST'>
-                                    <div class='form-group'>
-                                        <label for='valoracion'>Valoración:</label>
+                                <form id="formAgregarResena">
+                                    <div class="form-group">
+                                        <label for="valoracion">Valoración:</label>
                                         <div class="star-rating">
                                             <input type="radio" name="valoracion" value="5" id="star-5">
                                             <label for="star-5" title="5 estrellas">&#9733;</label>
@@ -505,16 +508,16 @@
                                             <label for="star-1" title="1 estrella">&#9733;</label>
                                         </div>
                                     </div>
-                                    <div class='form-group'>
-                                        <label for='comentario'>Comentario:</label>
-                                        <textarea name='comentario' class='form-control' rows='3' required></textarea>
+                                    <div class="form-group">
+                                        <label for="comentario">Comentario:</label>
+                                        <textarea name="comentario" id="comentario" class="form-control" rows="3" required></textarea>
                                     </div>
-                                    <button type='submit' name='enviar_reseña' class='btn btn-primary mt-2'>Enviar Reseña</button>
+                                    <button type="button" onclick="agregarResena(<?php echo $id_producto; ?>)" class="btn btn-primary mt-2">Enviar Reseña</button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>                 
             <?php } 
         } else {
             echo "<p>Producto no encontrado.</p>";
@@ -526,7 +529,58 @@
     ?>
 </div>
 <script>
+function agregarResena(idProducto) {
+    const valoracion = document.querySelector('input[name="valoracion"]:checked');
+    const comentario = document.getElementById('comentario').value;
 
+    if (!valoracion) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Valoración requerida',
+            text: 'Por favor selecciona una valoración.'
+        });
+        return;
+    }
+
+    const formData = new URLSearchParams();
+    formData.append('valoracion', valoracion.value);
+    formData.append('comentario', comentario);
+
+    fetch(`../reseñas_valoraciones/procesar_resena.php?id_producto=${idProducto}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString()
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Reseña agregada',
+                text: 'Gracias por tu reseña. Ha sido agregada exitosamente.'
+            }).then(() => {
+                // Recargar la página para mostrar la reseña agregada
+                location.reload();
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al agregar tu reseña. Intenta de nuevo.'
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Error en la solicitud:", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error en la solicitud. Intenta de nuevo más tarde.'
+        });
+    });
+}
+</script>
+<script>
 function eliminarProducto(id_producto) {
     Swal.fire({
         title: '¿Estás seguro?',

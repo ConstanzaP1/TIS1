@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             
             // Insertar nuevo usuario
-            $query_insert = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$hashed_password')";
+            $query_insert = "INSERT INTO users (username, email, password, role) VALUES ('$username', '$email', '$hashed_password', 'user')";
             if (mysqli_query($conexion, $query_insert)) {
                 $_SESSION['user_id'] = mysqli_insert_id($conexion);
                 $_SESSION['role'] = 'user'; // Asignar rol por defecto

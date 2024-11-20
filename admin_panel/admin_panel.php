@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-require_once '../conexion.php'; // Asegúrate de que el archivo conexion.php esté en la ruta correcta
+require_once '../conexion.php'; 
 
 // Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
     header('Location: ../login/login.php');
     exit;
 }
@@ -122,20 +122,27 @@ $result_users = mysqli_query($conexion, $sql_users);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        body {
-        display: flex;
-        height: 100vh;
-        margin: 0;
-    }
+    body {
+    display: flex; /* Flexbox para alinear los hijos horizontalmente */
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    margin: 0; /* Eliminar márgenes del body */
+}
 
-    #sidebar {
-        width: 50%;
-        background: #f8f9fa;
-        border-right: 1px solid #ddd;
-        padding: 10px;
-        margin-left: 25%;
-        
-    }
+#sidebar {
+    width: 33%; /* Sidebar ocupa el 33% */
+    background: #f8f9fa;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box; /* Incluir padding en el ancho total */
+}
+
+#dashboard {
+    width: 67%; /* Dashboard ocupa el 67% */
+    background: #ffffff;
+    padding: 10px;
+    box-sizing: border-box; /* Incluir padding en el ancho total */
+    overflow-y: auto; /* Habilitar scroll si el contenido supera la altura */
+}
 
     #content {
         flex: 1;
@@ -203,13 +210,15 @@ $result_users = mysqli_query($conexion, $sql_users);
     }
     .logo-container {
         display: flex;
-        justify-content: center; /* Centrar horizontalmente */
+        justify-content: flex-start; 
         align-items: center; /* Centrar verticalmente */
         width: 100%; /* Para que ocupe todo el ancho del sidebar */
     }
 
     .logo {
-        width: 50%; /* Ajusta el ancho de la imagen según sea necesario */
+        justify-content: flex-start; 
+
+        width: 40%; /* Ajusta el ancho de la imagen según sea necesario */
     }
 </style>
 </head>
@@ -218,7 +227,7 @@ $result_users = mysqli_query($conexion, $sql_users);
 
     <aside id="sidebar">
     <div class="logo-container">
-    <a href="../index.php" class="text-center">
+    <a href="../index.php" class="text-left">
         <img class="logo img-fluid" src="../logo.jpg" alt="Logo">
     </a>
 </div>
@@ -498,13 +507,26 @@ $result_users = mysqli_query($conexion, $sql_users);
                         <input type="password" class="form-control" name="password" required>
                     </div>
                     <div class="mb-3">
-                        <label for="role" class="form-label">Rol</label>
-                        <select name="role" class="form-select">
-                            <option value="user">Usuario</option>
-                            <option value="admin">Administrador</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
+                    <label for="role" class="form-label">Rol</label>
+                    <select name="role" class="form-select">
+                        <?php
+                        // Asumiendo que el rol del usuario actual está almacenado en la sesión
+                        session_start();
+                        $current_role = $_SESSION['role'] ?? 'user'; // Por defecto 'user' si no está definido
+
+                        // Lógica para mostrar opciones según el rol actual
+                        if ($current_role === 'superadmin') {
+                            // El superadmin puede asignar tanto 'user' como 'admin'
+                            echo '<option value="user">Usuario</option>';
+                            echo '<option value="admin">Administrador</option>';
+                        } elseif ($current_role === 'admin') {
+                            // El admin solo puede asignar el rol de 'user'
+                            echo '<option value="user">Usuario</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrar</button>
                 </form>
                 <div class="message mt-3">
                     <?php if (!empty($message)): ?>
@@ -543,6 +565,296 @@ $result_users = mysqli_query($conexion, $sql_users);
 
 
 </aside>
+<div id="app">
+    <aside>
+        <h2 class="menu-title">Menú</h2>
+        <nav>
+            <ul class="menu-list">
+                <li><a href="#" class="menu-link active" data-target="section-ganancias">Ganancias por Producto</a></li>
+                <li><a href="#" class="menu-link" data-target="section-ventas">Ventas Diarias</a></li>
+                <li><a href="#" class="menu-link" data-target="section-vendidos">Productos Más Vendidos</a></li>
+                <li><a href="#" class="menu-link" data-target="section-stock">Problemas de Stock</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main>
+        <header class="dashboard-header">
+            <h1>poner otras coas aqui</h1>
+        </header>
+
+        <!-- Gráficos -->
+        <section id="section-ganancias" class="dashboard-section active">
+            <h2>Ganancias por Producto</h2>
+            <div class="card">
+                <canvas id="gananciasChart"></canvas>
+            </div>
+        </section>
+        <section id="section-ventas" class="dashboard-section">
+            <h2>Ventas Diarias</h2>
+            <div class="card">
+                <canvas id="ventasDiariasChart"></canvas>
+            </div>
+        </section>
+        <section id="section-vendidos" class="dashboard-section">
+            <h2>Productos Más Vendidos</h2>
+            <div class="card">
+                <canvas id="productosMasVendidosChart"></canvas>
+            </div>
+        </section>
+        <section id="section-stock" class="dashboard-section">
+            <h2>Problemas de Stock</h2>
+            <div class="card">
+                <canvas id="problemasStockChart"></canvas>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuLinks = document.querySelectorAll('.menu-link');
+        const sections = document.querySelectorAll('.dashboard-section');
+
+        // Mostrar solo la primera sección
+        sections.forEach(section => {
+            section.style.display = "none";
+        });
+        document.getElementById('section-ganancias').style.display = "block" ;
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Cambiar la clase activa en el menú
+                menuLinks.forEach(link => link.classList.remove('active'));
+                link.classList.add('active');
+
+                // Ocultar todas las secciones
+                sections.forEach(section => {
+                    section.style.display = "none";
+                });
+
+                // Mostrar la sección correspondiente
+                const targetId = link.getAttribute('data-target');
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.style.display = "block";
+                }
+            });
+        });
+
+        const metrics = ['ganancias_productos', 'ventas_diarias', 'productos_mas_vendidos', 'problemas_stock'];
+        metrics.forEach(metric => {
+            fetchData(metric).then(data => {
+                if (!data || data.error || data.length === 0) {
+                    console.warn(`No hay datos para ${metric}.`);
+                    return;
+                }
+
+                switch (metric) {
+                    case 'ganancias_productos':
+                        createChart('gananciasChart', 'bar', data.map(item => item.nombre_producto), data.map(item => item.ganancia), 'Ganancias');
+                        break;
+                    case 'ventas_diarias':
+                        createChart('ventasDiariasChart', 'line', data.map(item => item.dia), data.map(item => item.total_ventas), 'Ventas Diarias');
+                        break;
+                    case 'productos_mas_vendidos':
+                        createChart('productosMasVendidosChart', 'bar', data.map(item => item.nombre_producto), data.map(item => item.cantidad_vendida), 'Más Vendidos');
+                        break;
+                    case 'problemas_stock':
+                        createChart('problemasStockChart', 'bar', data.map(item => item.nombre_producto), data.map(item => item.cantidad), 'Problemas de Stock');
+                        break;
+                }
+            });
+        });
+    });
+
+    async function fetchData(metric) {
+        try {
+            const response = await fetch(`dashboard_data.php?metric=${metric}`);
+            if (!response.ok) throw new Error('Error en la respuesta del servidor');
+            return await response.json();
+        } catch (error) {
+            console.error(`Error al obtener datos para "${metric}":`, error);
+            return [];
+        }
+    }
+
+    function createChart(canvasId, type, labels, data, label) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+            type,
+            data: {
+                labels,
+                datasets: [{
+                    label,
+                    data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    }
+</script>
+
+<style>
+    /* Estilos principales */
+    #app {
+        display: flex;
+        flex-direction: row; /* Alineación horizontal */
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+    }
+
+    aside {
+        width: 20%; /* Por defecto, el sidebar ocupa el 20% */
+        background-color: #f4f4f4;
+        padding: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        flex-shrink: 0; /* Evita que el sidebar se reduzca */
+    }
+
+    main {
+        flex: 1; /* Ocupa el resto del espacio */
+        padding: 20px;
+    }
+
+    .menu-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .menu-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .menu-list li {
+        margin-bottom: 10px;
+    }
+
+    .menu-link {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .menu-link.active {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .dashboard-header {
+        background-color: #007BFF;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-section {
+        display: none;
+    }
+
+    .dashboard-section.active {
+        display: block;
+    }
+
+    .dashboard-section h2 {
+        background-color: white;
+        color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Responsividad */
+    @media (max-width: 768px) {
+        #app {
+            flex-direction: column; /* Menú y contenido en columnas */
+        }
+
+        aside {
+            width: 100%; /* Sidebar ocupa el ancho completo */
+            order: 1; /* Sidebar se mueve debajo */
+            padding: 10px;
+        }
+
+        main {
+            width: 100%; /* El contenido principal ocupa el ancho completo */
+            order: 2;
+            padding: 10px;
+        }
+
+        .menu-link {
+            font-size: 1em;
+            padding: 8px;
+        }
+
+        .card {
+            height: 50vh; /* Ajustar la altura en pantallas pequeñas */
+        }
+    }
+    #section-ganancias {
+    background-color: white; /* Fondo blanco */
+}
+
+    @media (max-width: 480px) {
+        aside {
+            width: 100%; /* Sidebar siempre visible */
+        }
+
+        main {
+            width: 100%;
+        }
+
+        .menu-link {
+            font-size: 0.9em;
+            padding: 6px;
+        }
+
+        .card {
+            height: 40vh; /* Más bajo para pantallas pequeñas */
+        }
+    }
+</style>
+
+
+
+
 
 <style>
     .registro {
@@ -572,7 +884,6 @@ $result_users = mysqli_query($conexion, $sql_users);
         overflow: hidden; /* Ocultar contenido que se salga */
     }
 </style>
-
 <script>
     // Script para manejar el acordeón
     const headers = document.querySelectorAll('.accordion-header');
