@@ -72,6 +72,9 @@ $categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
                                 <a class="dropdown-item" href="comparador/comparador.php">Comparador</a>
                             </li>
                             <li>
+                                <a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">Perfil de usuario</a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
                             </li>
                         </ul>
