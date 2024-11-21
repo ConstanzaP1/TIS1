@@ -98,7 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
             <tr>
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Pregunta</th>
@@ -109,7 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <tbody>
             <?php while ($row = $pendientes->fetch_assoc()): ?>
                 <tr>
-                    <td><?= $row['id'] ?></td>
                     <td><?= $row['cliente_nombre'] ?></td>
                     <td><?= $row['cliente_email'] ?></td>
                     <td><?= $row['pregunta'] ?></td>
@@ -131,7 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
             <tr>
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Pregunta</th>
@@ -143,7 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <tbody>
             <?php while ($row = $todas->fetch_assoc()): ?>
                 <tr>
-                    <td><?= $row['id'] ?></td>
                     <td><?= $row['cliente_nombre'] ?></td>
                     <td><?= $row['cliente_email'] ?></td>
                     <td><?= $row['pregunta'] ?></td>
