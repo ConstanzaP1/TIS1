@@ -20,6 +20,25 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
+// Definir el límite de stock bajo (puede hacerse configurable)
+$stock_limite = 10;
+
+// Consulta para obtener productos con bajo stock
+$sql_stock_bajo = "SELECT nombre_producto, cantidad FROM producto WHERE cantidad < ?";
+$stmt_stock = mysqli_prepare($conexion, $sql_stock_bajo);
+mysqli_stmt_bind_param($stmt_stock, 'i', $stock_limite);
+mysqli_stmt_execute($stmt_stock);
+$result_stock = mysqli_stmt_get_result($stmt_stock);
+
+// Generar notificaciones para cada producto con bajo stock
+$notificaciones_stock = [];
+while ($row = mysqli_fetch_assoc($result_stock)) {
+    $notificaciones_stock[] = $row;
+}
+
+mysqli_stmt_close($stmt_stock);
+
+
 // Manejar la acción de registro
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['update'])) {
     $username = $_POST['username'];
@@ -120,6 +139,9 @@ $result_users = mysqli_query($conexion, $sql_users);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/toastr/build/toastr.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/toastr/build/toastr.min.js"></script>
+
 
     <style>
     body {
@@ -884,6 +906,27 @@ $result_users = mysqli_query($conexion, $sql_users);
         overflow: hidden; /* Ocultar contenido que se salga */
     }
 </style>
+<script>
+    $(document).ready(function() {
+        toastr.options = {
+            'closeButton': true,
+            'positionClass': 'toast-top-right',
+            'timeOut': '50000'
+        };
+
+        // Generar notificaciones dinámicamente desde PHP
+        <?php if (!empty($notificaciones_stock)): ?>
+            <?php foreach ($notificaciones_stock as $producto): ?>
+                toastr.warning(
+                    'El producto "<?php echo $producto['nombre_producto']; ?>" tiene un stock bajo (<?php echo $producto['cantidad']; ?> unidades).'
+                );
+            <?php endforeach; ?>
+        <?php else: ?>
+            console.log('No hay productos con stock bajo.');
+        <?php endif; ?>
+    });
+</script>
+
 <script>
     // Script para manejar el acordeón
     const headers = document.querySelectorAll('.accordion-header');
