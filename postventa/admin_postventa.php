@@ -5,9 +5,11 @@ use PHPMailer\PHPMailer\Exception;
 require('../vendor/autoload.php'); // PHPMailer
 require('../conexion.php'); // Conexión a la base de datos
 
+$search = $_GET['search'] ?? ''; // Búsqueda
+
 // Consultas para cargar preguntas
-$pendientes = $conexion->query("SELECT * FROM atencion_postventa WHERE respuesta IS NULL ORDER BY fecha_pregunta ASC");
-$todas = $conexion->query("SELECT * FROM atencion_postventa ORDER BY fecha_pregunta DESC");
+$pendientes = $conexion->query("SELECT * FROM atencion_postventa WHERE respuesta IS NULL AND (cliente_nombre LIKE '%$search%' OR cliente_email LIKE '%$search%') ORDER BY fecha_pregunta ASC");
+$todas = $conexion->query("SELECT * FROM atencion_postventa WHERE cliente_nombre LIKE '%$search%' OR cliente_email LIKE '%$search%' ORDER BY fecha_pregunta DESC");
 
 // Procesar el formulario para enviar respuesta
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,48 +31,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Actualizar la base de datos con la respuesta
         $update = $conexion->prepare("UPDATE atencion_postventa SET respuesta = ?, fecha_respuesta = NOW() WHERE id = ?");
         $update->bind_param('si', $respuesta, $id);
-        $update->execute();
+        if ($update->execute()) {
+            // Enviar correo con PHPMailer
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'tisnology1@gmail.com'; // Tu correo
+                $mail->Password = 'kkayajvlxqjtelsn'; // Tu contraseña
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
 
-        // Enviar correo con PHPMailer
-        $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'tisnology1@gmail.com'; // Tu correo
-            $mail->Password = 'kkayajvlxqjtelsn'; // Tu contraseña
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
+                $mail->setFrom('tisnology1@gmail.com', 'Tisnology Soporte');
+                $mail->addAddress($email, $nombre);
 
-            $mail->setFrom('tisnology1@gmail.com', 'Tisnology Soporte');
-            $mail->addAddress($email, $nombre);
+                $mail->isHTML(true);
+                $mail->Subject = 'Respuesta a tu consulta - Tisnology';
+                $mail->Body = "
+                    <html>
+                    <body style='font-family: Arial, sans-serif; line-height: 1.6;'>
+                        <h2 style='text-align: center; color: #4CAF50;'>Respuesta a tu Consulta</h2>
+                        <p>Hola <strong>$nombre</strong>,</p>
+                        <p>Gracias por contactarte con nosotros. Aquí está la respuesta a tu pregunta:</p>
+                        <blockquote style='background: #f9f9f9; border-left: 5px solid #ccc; margin: 10px 0; padding: 10px;'>
+                            <strong>Tu pregunta:</strong> $pregunta<br>
+                            <strong>Nuestra respuesta:</strong> $respuesta
+                        </blockquote>
+                        <p>Si tienes más dudas, no dudes en contactarnos nuevamente.</p>
+                        <hr>
+                        <p style='text-align: center; font-size: 12px; color: #888;'>Tisnology - Soporte</p>
+                    </body>
+                    </html>
+                ";
 
-            $mail->isHTML(true);
-            $mail->Subject = 'Respuesta a tu consulta - Tisnology';
-            $mail->Body = "
-                <html>
-                <body style='font-family: Arial, sans-serif; line-height: 1.6;'>
-                    <h2 style='text-align: center; color: #4CAF50;'>Respuesta a tu Consulta</h2>
-                    <p>Hola <strong>$nombre</strong>,</p>
-                    <p>Gracias por contactarte con nosotros. Aquí está la respuesta a tu pregunta:</p>
-                    <blockquote style='background: #f9f9f9; border-left: 5px solid #ccc; margin: 10px 0; padding: 10px;'>
-                        <strong>Tu pregunta:</strong> $pregunta<br>
-                        <strong>Nuestra respuesta:</strong> $respuesta
-                    </blockquote>
-                    <p>Si tienes más dudas, no dudes en contactarnos nuevamente.</p>
-                    <hr>
-                    <p style='text-align: center; font-size: 12px; color: #888;'>Tisnology - Soporte</p>
-                </body>
-                </html>
-            ";
-
-            $mail->send();
-            echo "<div class='alert alert-success'>Respuesta enviada correctamente al cliente.</div>";
-        } catch (Exception $e) {
-            echo "<div class='alert alert-danger'>Error al enviar el correo: {$mail->ErrorInfo}</div>";
+                $mail->send();
+                $successMessage = "Respuesta enviada correctamente al cliente.";
+            } catch (Exception $e) {
+                $errorMessage = "Error al enviar el correo: {$mail->ErrorInfo}";
+            }
+        } else {
+            $errorMessage = "Error al actualizar la respuesta en la base de datos.";
         }
     } else {
-        echo "<div class='alert alert-danger'>No se encontró la pregunta en la base de datos.</div>";
+        $errorMessage = "No se encontró la pregunta en la base de datos.";
     }
 }
 ?>
@@ -93,6 +97,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container">
     <h1 class="text-center mb-4">Panel de Atención Postventa</h1>
 
+    <!-- Mensajes -->
+    <?php if (isset($successMessage)): ?>
+        <div class="alert alert-success"><?= $successMessage ?></div>
+    <?php elseif (isset($errorMessage)): ?>
+        <div class="alert alert-danger"><?= $errorMessage ?></div>
+    <?php endif; ?>
+
+    <!-- Formulario de búsqueda -->
+    <form class="mb-4" method="GET">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por nombre o email" value="<?= htmlspecialchars($search) ?>">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+
     <!-- Tabla de preguntas pendientes -->
     <h3>Preguntas Pendientes</h3>
     <table class="table table-bordered table-hover">
@@ -108,10 +127,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <tbody>
             <?php while ($row = $pendientes->fetch_assoc()): ?>
                 <tr>
-                    <td><?= $row['cliente_nombre'] ?></td>
-                    <td><?= $row['cliente_email'] ?></td>
-                    <td><?= $row['pregunta'] ?></td>
-                    <td><?= $row['fecha_pregunta'] ?></td>
+                    <td><?= htmlspecialchars($row['cliente_nombre']) ?></td>
+                    <td><?= htmlspecialchars($row['cliente_email']) ?></td>
+                    <td><?= htmlspecialchars($row['pregunta']) ?></td>
+                    <td><?= htmlspecialchars($row['fecha_pregunta']) ?></td>
                     <td>
                         <form method="POST">
                             <input type="hidden" name="id" value="<?= $row['id'] ?>">
@@ -133,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <th>Email</th>
                 <th>Pregunta</th>
                 <th>Respuesta</th>
+                <th>Estado</th>
                 <th>Fecha Pregunta</th>
                 <th>Fecha Respuesta</th>
             </tr>
@@ -140,12 +160,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <tbody>
             <?php while ($row = $todas->fetch_assoc()): ?>
                 <tr>
-                    <td><?= $row['cliente_nombre'] ?></td>
-                    <td><?= $row['cliente_email'] ?></td>
-                    <td><?= $row['pregunta'] ?></td>
-                    <td><?= $row['respuesta'] ?? 'Pendiente' ?></td>
-                    <td><?= $row['fecha_pregunta'] ?></td>
-                    <td><?= $row['fecha_respuesta'] ?? 'Pendiente' ?></td>
+                    <td><?= htmlspecialchars($row['cliente_nombre']) ?></td>
+                    <td><?= htmlspecialchars($row['cliente_email']) ?></td>
+                    <td><?= htmlspecialchars($row['pregunta']) ?></td>
+                    <td><?= htmlspecialchars($row['respuesta'] ?? 'Pendiente') ?></td>
+                    <td><?= $row['respuesta'] ? 'Respondida' : 'Pendiente' ?></td>
+                    <td><?= htmlspecialchars($row['fecha_pregunta']) ?></td>
+                    <td><?= htmlspecialchars($row['fecha_respuesta'] ?? 'Pendiente') ?></td>
                 </tr>
             <?php endwhile; ?>
         </tbody>
