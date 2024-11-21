@@ -204,12 +204,12 @@ $resultPantalla = mysqli_query($conexion, $queryPantalla);
             </div>
 
             <div class="col-md-6">
-                <label for="precio" class="form-label">Precio:</label>
+                <label for="precio" class="form-label">Precio de venta:</label>
                 <input type="number" name="precio" id="precio" value="<?php echo htmlspecialchars($producto['precio']); ?>" class="form-control" required>
             </div>
 
             <div class="col-md-6">
-                <label for="costo" class="form-label">Costo:</label>
+                <label for="costo" class="form-label">Costo de compra:</label>
                 <input type="number" name="costo" id="costo" value="<?php echo htmlspecialchars($producto['costo']); ?>" class="form-control" required>
             </div>
 

@@ -115,7 +115,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
         $mail->addAddress($correoE);
 
         $mail->Subject = 'Boleta de Compra - Tisnology';
-        $mail->Body = 'Estimado usuario, adjuntamos su boleta de compra . ¡Gracias por su preferencia!';
+        $mail->Body = "Estimado $username,\n\nGracias por su compra.\n\nAdjuntamos su boleta de compra en formato PDF.¡Gracias por su preferencia!";
         $mail->addStringAttachment($pdf_content, "Boleta_Compra_$id_boleta.pdf");
 
         $mail->send();
