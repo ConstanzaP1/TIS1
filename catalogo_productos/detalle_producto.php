@@ -386,6 +386,44 @@
             echo "
                     </ul>";
 
+                    if (isset($_SESSION['user_id'])) {
+                        $user_id = $_SESSION['user_id'];
+                    
+                        // Obtener el nombre del producto actual
+                        $nombre_producto = $producto['nombre_producto'];
+                    
+                        // Escapar caracteres especiales para el formato JSON
+                        $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
+                    
+                        // Verificar si el usuario compró este producto
+                        $query_compra = "
+                            SELECT COUNT(*) AS comprado
+                            FROM boletas
+                            WHERE id_usuario = '$user_id' 
+                            AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'
+                        ";
+                        $result_compra = mysqli_query($conexion, $query_compra);
+                    
+                        // Manejar errores en la consulta SQL
+                        if (!$result_compra) {
+                            die("Error en la consulta SQL: " . mysqli_error($conexion));
+                        }
+                    
+                        $compra = mysqli_fetch_assoc($result_compra);
+                    
+                        // Mostrar el botón si el producto fue comprado
+                        if ($compra['comprado'] > 0) {
+                            echo "
+                                <a href='../postventa/postventa.php?id_producto=" . htmlspecialchars($id_producto) . "' class='btn btn-primary mt-3'>
+                                    ¿Tienes problemas con este producto? Ir a Postventa
+                                </a>
+                            ";
+                        } else {
+                            echo "<p class='text-warning'>Debes comprar este producto antes de enviar consultas de postventa.</p>";
+                        }
+                    }
+                    
+
             if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
                 
                 echo "
