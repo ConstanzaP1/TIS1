@@ -151,7 +151,7 @@ $result_users = mysqli_query($conexion, $sql_users);
 }
 
 #sidebar {
-    width: 33%; /* Sidebar ocupa el 33% */
+    width: 13%; /* Sidebar ocupa el 33% */
     background: #f8f9fa;
     border-right: 1px solid #ddd;
     padding: 10px;
@@ -237,11 +237,6 @@ $result_users = mysqli_query($conexion, $sql_users);
         width: 100%; /* Para que ocupe todo el ancho del sidebar */
     }
 
-    .logo {
-        justify-content: flex-start; 
-
-        width: 40%; /* Ajusta el ancho de la imagen según sea necesario */
-    }
 </style>
 </head>
 
@@ -250,7 +245,9 @@ $result_users = mysqli_query($conexion, $sql_users);
     <aside id="sidebar">
     <div class="logo-container">
     <a href="../index.php" class="text-left">
-        <img class="logo img-fluid" src="../logo.jpg" alt="Logo">
+        <div class="div text-center">
+            <img class="logo img-fluid w-75" src="../logo.jpg" alt="Logo">
+        </div>
     </a>
 </div>
 
