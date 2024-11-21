@@ -112,7 +112,7 @@
     <?php
     require('../conexion.php');
 
-    if (isset($_GET['id_producto'])) {
+    if (isset($_GET['id_producto'])){ 
         $id_producto = $_GET['id_producto'];
 
         $query_producto = "
@@ -474,13 +474,14 @@
             echo "<a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
                 </div>
             </div>"; ?>
+            <?php
 
-            <?php if ($id_producto) {
+            if ($id_producto) {
                 $query_resenas = "SELECT rv.valoracion, rv.comentario, rv.fecha, u.username
-                                FROM resena_valoracion AS rv
-                                JOIN users AS u ON rv.user_id = u.id
-                                WHERE rv.id_producto = '$id_producto'
-                                ORDER BY rv.fecha DESC";
+                      FROM resena_valoracion AS rv
+                      JOIN users AS u ON rv.user_id = u.id
+                      WHERE rv.id_producto = '$id_producto'
+                      ORDER BY rv.fecha DESC";
                 $result_resenas = mysqli_query($conexion, $query_resenas);
 
                 if (mysqli_num_rows($result_resenas) > 0) {
@@ -491,76 +492,104 @@
                     while ($resena = mysqli_fetch_assoc($result_resenas)) {
                         $valoracion = intval($resena['valoracion']);
                         echo "<div class='card mb-3'>";
-                        echo "<div class='card-bodyy'>";
-        
+                        echo "<div class='card-body'>";
                         echo "<h5 class='card-title'>";
                         for ($i = 1; $i <= 5; $i++) {
                             echo $i <= $valoracion ? "&#9733;" : "&#9734;";
                         }
                         echo " - " . htmlspecialchars($resena['username']) . "</h5>";
-        
                         echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
                         echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
                         echo "</div>";
-                     echo "</div>";
+                        echo "</div>";
                     }
                     echo "</div>";
                 } else {
-                    echo "<div class='alert alert-dark'>Aún no hay reseñas para este producto.</div>";
+                 echo "<div class='alert alert-dark'>Aún no hay reseñas para este producto.</div>";
+                }
+
+                if (isset($_SESSION['user_id'])) {
+                    $user_id = $_SESSION['user_id'];
+                
+                    // Obtener el nombre del producto actual
+                    $query_nombre_producto = "SELECT nombre_producto FROM producto WHERE id_producto = '$id_producto'";
+                    $result_nombre_producto = mysqli_query($conexion, $query_nombre_producto);
+                    $nombre_producto = mysqli_fetch_assoc($result_nombre_producto)['nombre_producto'];
+                
+                    // Validar que se obtuvo el nombre del producto
+                    if ($nombre_producto) {
+                        // Escapar caracteres especiales para el formato JSON
+                        $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
+                
+                        // Consulta para verificar si el producto fue comprado por nombre en el formato JSON
+                        $query_compra = "SELECT COUNT(*) AS comprado
+                                         FROM boletas
+                                         WHERE id_usuario = '$user_id' 
+                                         AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'";
+                        $result_compra = mysqli_query($conexion, $query_compra);
+                        $compra = mysqli_fetch_assoc($result_compra);
+                        if ($compra['comprado'] > 0) {
+                        ?>   
+                        <!-- Botón para abrir el modal de agregar reseña -->
+                        <button type="button" class="btn btn-primary mt-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalAgregarResena">
+                            Agregar Reseña
+                        </button>   
+
+                        <!-- Modal para agregar reseña -->
+                        <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Agregar Reseña</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="formAgregarResena">
+                                            <div class="form-group">
+                                                <label for="valoracion">Valoración:</label>
+                                                <div class="star-rating">
+                                                    <input type="radio" name="valoracion" value="5" id="star-5">
+                                                    <label for="star-5" title="5 estrellas">&#9733;</label>
+                                                    <input type="radio" name="valoracion" value="4" id="star-4">
+                                                    <label for="star-4" title="4 estrellas">&#9733;</label>
+                                                    <input type="radio" name="valoracion" value="3" id="star-3">
+                                                    <label for="star-3" title="3 estrellas">&#9733;</label>
+                                                    <input type="radio" name="valoracion" value="2" id="star-2">
+                                                    <label for="star-2" title="2 estrellas">&#9733;</label>
+                                                    <input type="radio" name="valoracion" value="1" id="star-1">
+                                                    <label for="star-1" title="1 estrella">&#9733;</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="comentario">Comentario:</label>
+                                                <textarea name="comentario" id="comentario" class="form-control" rows="3" required></textarea>
+                                            </div>
+                                            <button type="button" onclick="agregarResena(<?php echo $id_producto; ?>)" class="btn btn-primary mt-2">Enviar Reseña</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <?php 
+                        } else {
+                            echo "<div class='alert alert-warning mt-3'>Debes comprar este producto antes de poder agregar una reseña.</div>";
+                        }
+                    } else {
+                        echo "<div class='alert alert-danger'>Error: No se encontró el nombre del producto.</div>";
+                    }                
+                    
                 }
             } else {
-                echo "<div class='alert alert-danger'>Error: ID de producto no encontrado.</div>";
+                echo "<p>Producto no encontrado.</p>";
             }
-            if (isset($_SESSION['user_id'])) { ?>   
-                <!-- Botón para abrir el modal de agregar reseña -->
-                <button type="button" class="btn btn-primary mt-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalAgregarResena">
-                    Agregar Reseña
-                </button>
-
-                <!-- Modal para agregar reseña -->
-                <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Agregar Reseña</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="formAgregarResena">
-                                    <div class="form-group">
-                                        <label for="valoracion">Valoración:</label>
-                                        <div class="star-rating">
-                                            <input type="radio" name="valoracion" value="5" id="star-5">
-                                            <label for="star-5" title="5 estrellas">&#9733;</label>
-                                            <input type="radio" name="valoracion" value="4" id="star-4">
-                                            <label for="star-4" title="4 estrellas">&#9733;</label>
-                                            <input type="radio" name="valoracion" value="3" id="star-3">
-                                            <label for="star-3" title="3 estrellas">&#9733;</label>
-                                            <input type="radio" name="valoracion" value="2" id="star-2">
-                                            <label for="star-2" title="2 estrellas">&#9733;</label>
-                                            <input type="radio" name="valoracion" value="1" id="star-1">
-                                            <label for="star-1" title="1 estrella">&#9733;</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="comentario">Comentario:</label>
-                                        <textarea name="comentario" id="comentario" class="form-control" rows="3" required></textarea>
-                                    </div>
-                                    <button type="button" onclick="agregarResena(<?php echo $id_producto; ?>)" class="btn btn-primary mt-2">Enviar Reseña</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>                 
-            <?php } 
         } else {
             echo "<p>Producto no encontrado.</p>";
         }
     } else {
-        echo "<p>ID de producto no proporcionado.</p>";
+        echo "<p>Producto no encontrado.</p>";
     }
     mysqli_close($conexion);
-    ?>
+?>
 </div>
 <script>
 function agregarResena(idProducto) {

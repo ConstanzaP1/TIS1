@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                         </div>
                         <button type="submit" name="login" class="btn btn-primary w-100">Iniciar Sesión</button>
                     </form>
-                    <p class="mt-3">¿No tienes una cuenta? <a href="#" onclick="toggleForms()" class="text-decoration-none text-white">Regístrate aquí</a></p>
+                    <p class="mt-3">¿No tienes una cuenta? <a href="#" onclick="toggleForms()" class="text-white">Regístrate aquí</a></p>
                 </div>
             </div>
         </div>
@@ -190,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                         </div>
                         <button type="submit" name="register" class="btn btn-primary w-100">Registrarse</button>
                     </form>
-                    <p class="mt-3">¿Ya tienes una cuenta? <a href="#" onclick="toggleForms()" class="text-decoration-none text-white">Inicia sesión aquí</a></p>
+                    <p class="mt-3">¿Ya tienes una cuenta? <a href="#" onclick="toggleForms()" class="text-white">Inicia sesión aquí</a></p>
                 </div>
             </div>
         </div>

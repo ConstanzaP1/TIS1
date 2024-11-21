@@ -98,7 +98,7 @@ if (isset($_POST['pagar'])) {
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito de Compras</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -106,7 +106,15 @@ if (isset($_POST['pagar'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
+        #map {
+            height: 500px;
+            margin-top: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
         .product-img {
             width: 80px;
             height: 80px;
@@ -252,33 +260,187 @@ if (isset($_POST['pagar'])) {
                         </td>
                         <td id="precio_<?php echo $id_producto; ?>"><?php echo "$" . number_format($precio_total, 0, ',', '.'); ?></td>
                         <td>
-                            <form method="POST" action="carrito.php">
+                        <form method="POST" action="carrito.php">
                                 <input type="hidden" name="id_producto" value="<?php echo $id_producto; ?>">
                                 <button type="submit" name="eliminar_producto" class="btn btn-danger">Eliminar</button>
-                            </form>
+                        </form>
                         </td>
                     </tr>
                 <?php } endforeach; ?>
             </tbody>
         </table>
         <h4>Total: $<span id="total"><?php echo number_format($_SESSION['total'] ?? 0, 0, ',', '.'); ?></span></h4>
-        <form method="POST" action="carrito.php">
-            <input type="hidden" name="total" value="<?php echo $_SESSION['total'] ?? 0; ?>">
-            <button type="submit" name="pagar" class="btn btn-primary" id="pagarButton" <?php echo $exceeds_stock ? 'disabled' : ''; ?>>Proceder al Pago</button>
-            <?php if ($exceeds_stock): ?>
-                <p class="text-danger mt-2">Algunos productos en el carrito exceden el stock disponible.</p>
-            <?php endif; ?>
-        </form>
         <div class="mt-1">
             <form id="formCotizacion" action="../boleta_cotizacion/cotizacion.php" method="POST">
                 <input type="hidden" name="correo" value="<?php echo $correoE; ?>">
                 <button type="button" class="btn btn-primary" onclick="confirmarEnvio()">Enviar cotización carro</button>
             </form>
         </div>
+        <hr>
+        <h2>Selecciona tu punto de retiro más cercano</h2>
+        <!-- Formulario para ingresar dirección -->
+        <form id="direccionForm" class="form-direccion">
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Ingresa tu dirección:</label>
+                <input type="text" id="direccion" class="form-control" placeholder="Ejemplo: Calle Falsa 123, Concepción, Chile" required>
+            </div>
+            <button type="button" id="buscarDireccion" class="btn btn-primary">Buscar</button>
+        </form>
+        <!-- Mapa-->
+        <div id="map"></div>
+        <p id="puntoCercano" class="mt-3"></p>
+        <hr>
+        <form method="POST" action="carrito.php" id="formPagoCarrito" style="display: none;">
+            <input type="hidden" name="total" value="<?php echo $_SESSION['total'] ?? 0; ?>">
+            <input type="hidden" name="punto_retiro" id="punto_retiro_input">
+            <button type="submit" name="pagar" class="btn btn-primary" id="pagarButton">Proceder al Pago</button>
+        </form>
+
+        <form method="POST" action="../boleta_cotizacion/boleta.php" id="formPagoCarrito" style="display: none;">
+            <input type="hidden" name="punto_retiro" id="punto_retiro_input">
+            <button type="submit" name="pagar" class="btn btn-primary" id="pagarButton">Proceder al Pago</button>
+        </form>
     <?php endif; ?>
-    <hr>
-    <h2>Seleccione su punto de retiro mas cercano</h2>
 </div>
+
+<script>
+    const map = L.map('map').setView([-36.82699, -73.04977], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    const puntosRetiro = [
+        { nombre: "Sucursal Centro - Chilexpress", lat: -36.82656, lng: -73.04867 },
+        { nombre: "Sucursal Collao - Correos de Chile", lat: -36.82514, lng: -73.06874 },
+        { nombre: "Sucursal Laguna Redonda - Starken", lat: -36.80997, lng: -73.04842 },
+        { nombre: "Sucursal Universidad de Concepción - DHL", lat: -36.82012, lng: -73.03653 }
+    ];
+
+    let marcadorDireccion = null; // Marcador para la dirección ingresada
+    let marcadorSeleccionado = null; // Marcador para el punto seleccionado
+    let puntoSeleccionado = null; // Variable para guardar el nombre del punto seleccionado
+
+    // Ícono personalizado para la dirección ingresada
+    const direccionIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png', // URL confiable para un ícono verde
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png', // Sombra del marcador
+    iconSize: [25, 41], // Tamaño del ícono
+    iconAnchor: [12, 41], // Punto de anclaje
+    popupAnchor: [1, -34], // Punto de anclaje para el popup
+    shadowSize: [41, 41] // Tamaño de la sombra
+    });
+
+    // Mostrar los puntos de retiro en el mapa
+    puntosRetiro.forEach(punto => {
+        const marcador = L.marker([punto.lat, punto.lng])
+            .addTo(map)
+            .bindPopup(
+                `<b>${punto.nombre}</b><br>
+                <button onclick="seleccionarPunto('${punto.nombre}', ${punto.lat}, ${punto.lng}, false)">
+                    Seleccionar este punto
+                </button>`
+            );
+        punto.marcador = marcador;
+    });
+
+    // Evento para buscar la dirección ingresada
+    document.getElementById('buscarDireccion').addEventListener('click', () => {
+        const direccion = document.getElementById('direccion').value;
+
+        if (direccion.trim() === "") {
+            alert("Por favor, ingresa una dirección válida.");
+            return;
+        }
+
+        // Buscar la dirección usando OpenStreetMap (Nominatim)
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    alert("No se encontró la dirección. Intenta nuevamente.");
+                    return;
+                }
+
+                const { lat, lon } = data[0]; // Coordenadas de la dirección ingresada
+
+                // Mostrar la dirección en el mapa con el ícono personalizado
+                if (marcadorDireccion) map.removeLayer(marcadorDireccion);
+                marcadorDireccion = L.marker([lat, lon], { icon: direccionIcon })
+                    .addTo(map)
+                    .bindPopup("Tu dirección")
+                    .openPopup();
+
+                // Encontrar el punto de retiro más cercano
+                let distanciaMinima = Infinity;
+                let puntoCercano = null;
+
+                puntosRetiro.forEach(punto => {
+                    const distancia = calcularDistancia(lat, lon, punto.lat, punto.lng);
+                    if (distancia < distanciaMinima) {
+                        distanciaMinima = distancia;
+                        puntoCercano = punto;
+                    }
+                });
+
+                // Seleccionar automáticamente el punto más cercano
+                if (puntoCercano) {
+                    seleccionarPunto(puntoCercano.nombre, puntoCercano.lat, puntoCercano.lng, true);
+                }
+
+                // Mostrar mensaje del punto más cercano
+                const mensaje = `El punto de retiro más cercano es: <b>${puntoCercano.nombre}</b>.`;
+                document.getElementById('puntoCercano').innerHTML = mensaje;
+            })
+            .catch(error => console.error("Error al buscar la dirección:", error));
+    });
+
+    // Función para seleccionar un punto de retiro
+    function seleccionarPunto(nombre, lat, lng, esRecomendado = false) {
+        // Eliminar el marcador anterior si existe
+        if (marcadorSeleccionado) map.removeLayer(marcadorSeleccionado);
+
+        // Crear un nuevo marcador para el punto seleccionado
+        marcadorSeleccionado = L.marker([lat, lng], {
+            icon: L.icon({
+                iconUrl: esRecomendado
+                    ? 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png'
+                    : 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-red.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        }).addTo(map).bindPopup(`<b>${nombre}</b><br><i>${esRecomendado ? "Punto recomendado (seleccionado)" : "Punto seleccionado"}</i>`).openPopup();
+
+        // Actualizar el punto seleccionado
+        puntoSeleccionado = nombre;
+
+        // Mostrar el mensaje del punto seleccionado
+        document.getElementById('puntoCercano').innerHTML = `Has seleccionado: <b>${nombre}</b> como tu punto de retiro.${esRecomendado ? " Este es el punto recomendado." : ""}`;
+
+        // Actualizar el valor del campo oculto
+        document.getElementById('punto_retiro_input').value = nombre;
+
+        // Mostrar el botón "Proceder al Pago"
+        document.getElementById("formPagoCarrito").style.display = "block";
+    }
+
+    // Función para calcular la distancia entre dos coordenadas
+    function calcularDistancia(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Radio de la Tierra en km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+</script>
+
+
 <script>
 function confirmarEnvio() {
     Swal.fire({
