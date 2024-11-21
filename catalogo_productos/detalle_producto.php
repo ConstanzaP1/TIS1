@@ -419,7 +419,7 @@
                                 </a>
                             ";
                         } else {
-                            echo "<p class='text-warning'>Debes comprar este producto antes de enviar consultas de postventa.</p>";
+                        
                         }
                     }
                     
