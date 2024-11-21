@@ -278,6 +278,30 @@ $stmt->close();
                                  class="rounded-circle profile-option" 
                                  style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid transparent;">
                         </label>
+                        <label>
+                            <input type="radio" name="profile_picture" value="https://www.meme-arsenal.com/memes/e9ee28679a89a409d6cdb85e6498837a.jpg" hidden>
+                            <img src="https://www.meme-arsenal.com/memes/e9ee28679a89a409d6cdb85e6498837a.jpg" 
+                                 class="rounded-circle profile-option" 
+                                 style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid transparent;">
+                        </label>
+                        <label>
+                            <input type="radio" name="profile_picture" value="https://i.pinimg.com/736x/4f/91/0e/4f910e02fef7145d49ee7b934021026a.jpg" hidden>
+                            <img src="https://i.pinimg.com/736x/4f/91/0e/4f910e02fef7145d49ee7b934021026a.jpg" 
+                                 class="rounded-circle profile-option" 
+                                 style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid transparent;">
+                        </label>
+                        <label>
+                            <input type="radio" name="profile_picture" value="https://i.pinimg.com/736x/95/b2/86/95b28609b5044e1a2706bee4e659a02a.jpg" hidden>
+                            <img src="https://i.pinimg.com/736x/95/b2/86/95b28609b5044e1a2706bee4e659a02a.jpg" 
+                                 class="rounded-circle profile-option" 
+                                 style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid transparent;">
+                        </label>
+                        <label>
+                            <input type="radio" name="profile_picture" value="https://i.pinimg.com/736x/8e/84/ae/8e84aef392fa0dffd19cf85ad67a9231.jpg" hidden>
+                            <img src="https://i.pinimg.com/736x/8e/84/ae/8e84aef392fa0dffd19cf85ad67a9231.jpg" 
+                                 class="rounded-circle profile-option" 
+                                 style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid transparent;">
+                        </label>
                     </div>
                     <div class="mt-3 text-end">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
