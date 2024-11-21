@@ -7,17 +7,35 @@ $showModal = false; // Variable para controlar si se muestra el modal
 
 if (isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
-    $stmt = $conexion->prepare("SELECT id, username, email, role FROM users WHERE id = ?");
-    $stmt->bind_param("i", $userId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        $userData = $result->fetch_assoc();
-    }
-    $stmt->close();
+    $stmt = $conexion->prepare("SELECT id, username, email, role, img FROM users WHERE id = ?");
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $userData = $result->fetch_assoc();
+}
+$stmt->close();
+
+
 
     $modalMessage = null;
-
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['profile_picture'])) {
+        $newProfilePicture = trim($_POST['profile_picture']); // URL de la nueva imagen
+    
+        // Actualizar la URL de la imagen en la tabla `users`
+        $updateStmt = $conexion->prepare("UPDATE users SET img = ? WHERE id = ?");
+        $updateStmt->bind_param("si", $newProfilePicture, $userId); // Sustituir parámetros
+        if ($updateStmt->execute()) {
+            $userData['img'] = $newProfilePicture; // Actualizar en los datos obtenidos
+           
+        } else {
+            $errorMessage = "Error al actualizar la imagen de perfil.";
+        }
+        $updateStmt->close();
+    }
+    
+    
     // Cambiar el nombre de usuario
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_username'])) {
         $newUsername = trim($_POST['new_username']);
@@ -98,6 +116,11 @@ if (isset($_SESSION['user_id'])) {
         margin: 20px auto;
         
     }
+    label img:hover {
+    border-color: #007bff;
+    transition: border-color 0.3s;
+}
+
     
     .card-header{
         background-color: rgba(0, 128, 255, 0.5);   
@@ -126,6 +149,22 @@ if (isset($_SESSION['user_id'])) {
     color: #007bff;
     
 }
+.alineado {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre el texto y el icono */
+}
+
+.alineado p {
+    margin: 0;
+}
+
+.alineado span.material-symbols-outlined {
+    font-size: 24px;
+    cursor: pointer;
+    color: #007bff;
+}
+
 </style>
 <body>
 <nav class="navbar navbar-expand-lg">
@@ -183,10 +222,73 @@ if (isset($_SESSION['user_id'])) {
     </div>
 </nav>
 <div class="user-info-card d-flex align-items-center">
-    <!-- Foto de perfil -->
-    <div class="profile-picture me-2 border  rounded-circle" style="width: 90px; height: 90px; overflow: hidden;">
-    <img src="https://static.vecteezy.com/system/resources/previews/007/167/661/non_2x/user-blue-icon-isolated-on-white-background-free-vector.jpg" alt="Foto de perfil" class="rounded-circle" style="width: 100%; height: 100%; object-fit: cover;">
+    <div class="profile-picture-wrapper position-relative d-inline-block" style="width: 90px; height: 90px;">
+        <!-- Foto de perfil -->
+        <div class="profile-picture border rounded-circle" style="width: 100%; height: 100%; overflow: hidden;">
+            <img id="currentProfilePicture" 
+                src="<?php echo htmlspecialchars($userData['img'] ?? 'https://static.vecteezy.com/system/resources/previews/007/167/661/non_2x/user-blue-icon-isolated-on-white-background-free-vector.jpg'); ?>" 
+                alt="Foto de perfil" 
+                class="rounded-circle" 
+                style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+
+        <!-- Ícono para cambiar imagen -->
+        <span class="material-symbols-outlined cursor-pointer text-primary position-absolute" 
+            id="editImageButton" 
+            role="button" 
+            style="bottom: 0; right: 0; font-size: 24px; background: white; border-radius: 50%; padding: 5px;">
+            change_circle
+        </span>
     </div>
+
+    <!-- Modal para cambiar la foto de perfil -->
+    <div class="modal fade" id="changeProfilePictureModal" tabindex="-1" aria-labelledby="changeProfilePictureLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changeProfilePictureLabel">Selecciona tu nueva foto de perfil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    <div class="d-flex flex-wrap gap-3">
+                        <!-- Opciones de imágenes -->
+                        <label>
+                            <input type="radio" name="profile_picture" value="https://fotografias.lasexta.com/clipping/cmsimages02/2019/11/14/66C024AF-E20B-49A5-8BC3-A21DD22B96E6/default.jpg" hidden>
+                            <img src="https://fotografias.lasexta.com/clipping/cmsimages02/2019/11/14/66C024AF-E20B-49A5-8BC3-A21DD22B96E6/default.jpg" 
+                                 class="rounded-circle profile-option" 
+                                 style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid transparent;">
+                        </label>
+                        <label>
+                            <input type="radio" name="profile_picture" value="https://i.pinimg.com/736x/9e/f7/dc/9ef7dc7241f89d396a223cb9357456b0.jpg" hidden>
+                            <img src="https://i.pinimg.com/736x/9e/f7/dc/9ef7dc7241f89d396a223cb9357456b0.jpg" 
+                                 class="rounded-circle profile-option" 
+                                 style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid transparent;">
+                        </label>
+                        
+                        <label>
+                            <input type="radio" name="profile_picture" value="https://static.vecteezy.com/system/resources/thumbnails/005/544/718/small_2x/profile-icon-design-free-vector.jpg" hidden>
+                            <img src="https://static.vecteezy.com/system/resources/thumbnails/005/544/718/small_2x/profile-icon-design-free-vector.jpg" 
+                                 class="rounded-circle profile-option" 
+                                 style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid transparent;">
+                        </label>
+                        <label>
+                            <input type="radio" name="profile_picture" value="https://w7.pngwing.com/pngs/26/692/png-transparent-person-woman-female-user-profile-avatar-website-internet-icon.png" hidden>
+                            <img src="https://w7.pngwing.com/pngs/26/692/png-transparent-person-woman-female-user-profile-avatar-website-internet-icon.png" 
+                                 class="rounded-circle profile-option" 
+                                 style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid transparent;">
+                        </label>
+                    </div>
+                    <div class="mt-3 text-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
     <!-- Información del usuario -->
@@ -202,30 +304,30 @@ if (isset($_SESSION['user_id'])) {
 
 <!-- Cambiar el nombre de usuario -->
 <div class="mb-3">
-    <div class="d-flex align-items-center">
+    <div class="alineado">
         <p class="mb-0"><strong>Nombre de Usuario:</strong></p>
-        <span id="usernameDisplay" class="ms-2"><?php echo htmlspecialchars($userData['username']); ?></span>
-        <!-- Ícono para editar el nombre -->
-        <span class="material-symbols-outlined cursor-pointer ms-2 text-primary" id="editUsernameButton" role="button" style="font-size: 24px;">change_circle</span>
+        <span id="usernameDisplay"><?php echo htmlspecialchars($userData['username']); ?></span>
+        <span class="material-symbols-outlined" id="editUsernameButton" role="button">change_circle</span>
     </div>
     <form method="POST" id="usernameForm" class="mt-2" style="display: none;">
         <input type="text" name="new_username" id="usernameInput" class="form-control d-inline w-auto me-2" value="<?php echo htmlspecialchars($userData['username']); ?>" required>
         <button type="submit" class="btn btn-primary btn-sm" id="saveUsernameButton">Guardar</button>
     </form>
 </div>
+
 <!-- Cambiar el correo electrónico -->
 <div class="mb-3">
-    <div class="d-flex align-items-center">
+    <div class="alineado">
         <p class="mb-0"><strong>Email:</strong></p>
-        <span id="emailDisplay" class="ms-2"><?php echo htmlspecialchars($userData['email']); ?></span>
-        <!-- Ícono para editar el correo -->
-        <span class="material-symbols-outlined cursor-pointer ms-2 text-primary" id="editEmailButton" role="button" style="font-size: 24px;">change_circle</span>
+        <span id="emailDisplay"><?php echo htmlspecialchars($userData['email']); ?></span>
+        <span class="material-symbols-outlined" id="editEmailButton" role="button">change_circle</span>
     </div>
     <form method="POST" id="emailForm" class="mt-2" style="display: none;">
         <input type="email" name="new_email" id="emailInput" class="form-control d-inline w-auto me-2" value="<?php echo htmlspecialchars($userData['email']); ?>" required>
         <button type="submit" class="btn btn-primary btn-sm" id="saveEmailButton">Guardar</button>
     </form>
 </div>
+
 
 
             <!-- Email del usuario -->
@@ -301,8 +403,31 @@ if (isset($_SESSION['user_id'])) {
             $stmt->close();
             ?>  
         </div>
+        <div class="text-start mt-3">
+        <a href="../index.php" class="btn btn-secondary">Volver al Catálogo</a>
+    </div>
+            
 </div>
 
+
+<script>
+// Abre el modal al hacer clic en el ícono de cambiar imagen
+document.getElementById('editImageButton').addEventListener('click', function () {
+    const modal = new bootstrap.Modal(document.getElementById('changeProfilePictureModal'));
+    modal.show();
+});
+
+// Resalta la imagen seleccionada en el modal
+document.querySelectorAll('.profile-option').forEach(img => {
+    img.addEventListener('click', function () {
+        document.querySelectorAll('.profile-option').forEach(i => i.style.borderColor = 'transparent');
+        this.style.borderColor = '#007bff';
+    });
+});
+
+
+
+</script>
 
 <script>
 // Función para manejar la edición del correo electrónico
