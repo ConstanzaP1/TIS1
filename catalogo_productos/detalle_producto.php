@@ -44,6 +44,164 @@
         color: #f5c518;
     }
 
+    /* Estilo general del modal */
+    .modal-content {
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Título del modal */
+    .modal-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Botón de cerrar */
+    .btn-close {
+        filter: brightness(0.5);
+        transition: filter 0.3s ease;
+    }
+    .btn-close:hover {
+        filter: brightness(1);
+    }
+
+    /* Fondo del encabezado */
+    .modal-header {
+        background-color: #f5f5f5;
+        border-bottom: none;
+        border-radius: 10px 10px 0 0;
+    }
+
+    /* Fondo del cuerpo */
+    .modal-body {
+        background-color: #ffffff;
+        padding: 20px;
+    }
+
+    /* Estilo para las estrellas */
+    .star-rating label {
+        font-size: 1.8rem;
+        color: #ffd700;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        transform: scale(1.2);
+        color: #ffca28;
+    }
+    .star-rating input {
+        display: none;
+    }
+    .star-rating label:active {
+        transform: scale(1.1);
+    }
+
+    /* Estilo para el botón de envío */
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+    .btn-primary:active {
+        background-color: #004080;
+        transform: scale(1);
+    }
+
+    /* Estilo para el botón secondary */
+    .btn-secondary {
+        background-color: #6c757d; /* Color de fondo inicial */
+        border-color: #6c757d; /* Color del borde inicial */
+        color: #fff; /* Color del texto */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones para hover y active */
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268; /* Color de fondo al pasar el mouse */
+        transform: scale(1.05); /* Escala al pasar el mouse */
+        border-color: #5a6268; /* Color del borde al pasar el mouse */
+    }
+    .btn-secondary:active {
+        background-color: #494e52; /* Color de fondo al presionar */
+        transform: scale(1); /* Restablecer escala al presionar */
+        border-color: #494e52; /* Color del borde al presionar */
+    }
+
+    /* Campos de formulario */
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+        color: #555;
+    }
+
+    textarea.form-control {
+        border-radius: 5px;
+        resize: none;
+        border: 1px solid #ccc;
+        transition: border-color 0.3s ease;
+    }
+    textarea.form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+    }
+
+    /* Transición general */
+    .modal-content {
+        animation: fadeInModal 0.3s ease;
+    }
+
+    @keyframes fadeInModal {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    <style>
+    @media (max-width: 768px) {
+    .producto-detalle {
+        flex-direction: column; /* Cambiar la disposición a columna */
+    }
+
+    .producto-detalle .image-container {
+        margin-bottom: 20px; /* Separar la imagen del contenido */
+    }
+
+    .producto-info {
+        text-align: left; /* Mantener texto alineado a la izquierda */
+    }
+
+    .producto-info button {
+        width: 100%; /* Asegurar que los botones ocupen todo el ancho */
+    }
+
+    /* Estilo para las reseñas */
+    .card {
+        width: 100%; /* Hacer que las tarjetas ocupen el ancho completo */
+    }
+}
+
+@media (max-width: 576px) {
+    .producto-info h1 {
+        font-size: 1.5rem; /* Reducir el tamaño del título en teléfonos pequeños */
+    }
+
+    .producto-info ul {
+        font-size: 0.9rem; /* Reducir el tamaño del texto de las características */
+    }
+}
+</style>
+
+
 </style>
 <body>
         
@@ -131,15 +289,18 @@
         if ($result_producto->num_rows > 0) {
             $producto = mysqli_fetch_assoc($result_producto);
 
-            echo "
-            <div class='producto-detalle shadow d-flex align-items-center bg-white'>
-                <div class='col-6 text-center me-1'>
-                    <div class='image-container' style='width: 100%; max-width: 100%; height: 100%; position: relative; overflow: hidden; margin: auto;'>
-                        <img class='img-fluid' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}' style='object-fit: contain; width: 100%; height: 100%;'>
+            ?>
+            <div class="container">
+                <div class="producto-detalle row bg-white shadow d-flex">
+                <!-- Imagen del producto -->
+                <div class="col-12 col-md-6 text-center my-auto">
+                    <div class="image-container" style="width: 100%; position: relative; overflow: hidden;">
+                        <img class="img-fluid" src="<?php echo $producto['imagen_url']; ?>" alt="<?php echo $producto['nombre_producto']; ?>" style="object-fit: contain; width: 100%;">
                     </div>
                 </div>
 
-                <div class='producto-info col-6 p-5'>
+                <div class='producto-info col-12 col-md-6 p-5'>
+                <?php echo"
                     <h1>{$producto['nombre_producto']}</h1>
                     <p><strong>Marca:</strong> {$producto['marca']}</p>
                     <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
@@ -482,41 +643,58 @@
 
             if ($id_producto) {
                 $query_resenas = "SELECT rv.valoracion, rv.comentario, rv.fecha, u.username
-                      FROM resena_valoracion AS rv
-                      JOIN users AS u ON rv.user_id = u.id
-                      WHERE rv.id_producto = '$id_producto'
-                      ORDER BY rv.fecha DESC";
+                                FROM resena_valoracion AS rv
+                                JOIN users AS u ON rv.user_id = u.id
+                                WHERE rv.id_producto = '$id_producto'
+                                ORDER BY rv.fecha DESC";
                 $result_resenas = mysqli_query($conexion, $query_resenas);
-                echo "<div class='container'>";
-                ?> <br> <?php
-                echo "<div class='row bg-white px-5 py-3 shadow'>";
 
-                // Contenedor con sistema de columnas
-                echo "<div class='d-flex justify-content-between align-items-center w-100'>";
-                echo "<h3>Reseñas</h3>";
-                echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
-                        Agregar Reseña
-                        </button>";
-                echo "</div>";
+                // Calcular la media de las valoraciones
+                $query_media_valoracion = "SELECT AVG(valoracion) AS media_valoracion FROM resena_valoracion WHERE id_producto = '$id_producto'";
+                $result_media_valoracion = mysqli_query($conexion, $query_media_valoracion);
+                $media_valoracion = 0;
+                if ($result_media_valoracion && mysqli_num_rows($result_media_valoracion) > 0) {
+                    $media_valoracion = round(mysqli_fetch_assoc($result_media_valoracion)['media_valoracion'], 1); // Redondear a 1 decimal
+                }               
 
-                echo "<hr>";
+                    ?> <br> <?php
+                    echo "<div class='row bg-white px-5 py-3 shadow border'>";
 
-                if (mysqli_num_rows($result_resenas) > 0) {
-                    while ($resena = mysqli_fetch_assoc($result_resenas)) {
-                        $valoracion = intval($resena['valoracion']);
-                        echo "<div class='card mb-3'>";
-                        echo "<div class='card-bodyy'>";
-                        echo "<h5 class='card-title'>";
-                        for ($i = 1; $i <= 5; $i++) {
-                            echo $i <= $valoracion ? "&#9733;" : "&#9734;";
-                        }
-                        echo " - " . htmlspecialchars($resena['username']) . "</h5>";
-                        echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
-                        echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
-                        echo "</div>";              
-                        echo "</div>";
+                    // Contenedor con sistema de columnas
+                    ?>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                    <?php
+                    echo "<h3 class='me-2'>Reseñas</h3>";
+                    echo "<span class='me-3' style='font-size: 1.5rem; color: gold;'>";
+                    for ($i = 1; $i <= 5; $i++) {
+                        echo $i <= $media_valoracion ? "&#9733;" : "&#9734;";
                     }
+                    echo "</span>";
+                    echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
                     echo "</div>";
+                    echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                            Agregar Reseña
+                          </button>";
+                    echo "</div>";
+
+                    echo "<hr>";
+
+                    if (mysqli_num_rows($result_resenas) > 0) {
+                        while ($resena = mysqli_fetch_assoc($result_resenas)) {
+                            $valoracion = intval($resena['valoracion']);
+                            echo "<div class='card mb-3'>";
+                            echo "<div class='cardbody'>";
+                            echo "<h5 class='card-title'>";
+                            for ($i = 1; $i <= 5; $i++) {
+                                echo $i <= $valoracion ? "&#9733;" : "&#9734;";
+                            }
+                            echo " - " . htmlspecialchars($resena['username']) . "</h5>";
+                            echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
+                            echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
+                            echo "</div>";
+                            echo "</div>";
+                        }
                 } else {
                     echo "<div class='alert alert-secondary'>Aún no hay reseñas para este producto.</div>";
                 }
@@ -577,7 +755,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> 
+
                         <?php 
                         } else {
                             echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";

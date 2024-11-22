@@ -41,6 +41,29 @@ if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categori
     .card-body{
         background-color: #e0e0e0;
     }
+
+    /* Estilo para las tarjetas de productos */
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Animación al pasar el cursor */
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Animación para la imagen dentro de la tarjeta */
+    .card:hover .product-image {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+
+    /* Asegurarse de mantener la proporción de las imágenes */
+    .product-image {
+        transition: transform 0.3s ease;
+    }
+
 </style>
 <body>
 <nav class="navbar navbar-expand-lg">
@@ -86,11 +109,10 @@ if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categori
                     </li>
                     <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='carrito/carrito.php'">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-    </svg>
-</button>
-
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                        </svg>
+                    </button>
                     </li>
                     <li class="nav-item">
                             <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill" onclick="window.location.href='../TIS1/comparador/comparador.php'">
@@ -112,7 +134,7 @@ if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categori
 <div class="container my-4">
     <div class="row">
         <!-- Columna de filtros a la izquierda -->
-        <div class="col-md-3">
+        <div class="col-md-3 d-none d-md-block">
             <form method="post" action="index.php" id="filterForm" class="border p-3 card-body rounded">
                 <h5>Filtros</h5>
                 
@@ -168,42 +190,40 @@ if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categori
             </form>
         </div>
 
-        <!-- Columna de productos a la derecha -->
-        <div class="col-md-9">
-            <div class="row d-flex justify-content-center">
+        <div class="col-12 col-md-9">
+            <div class="row gx-2 gy-3"> <!-- Ajustamos los espacios entre las columnas y filas -->
                 <?php
                 if (!empty($productos)) {
-                    echo "<div class='d-flex flex-wrap justify-content-center'>";
                     foreach ($productos as $producto) {
                         $id_producto = $producto['id_producto'];
                         $nombre_producto = $producto['nombre_producto'];
                         $marca_producto = $producto['marca'];
                         $precio = number_format($producto['precio'], 0, ',', '.');
                         $imagen_url = $producto['imagen_url'];
-
+                    
                         echo "
-                            <a href='catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
-                                <div class='card mx-1 mb-3 p-0 shadow' style='width: 18rem; height: 26rem;'>
-                                    <div class='image-container' style='width: 100%; height: 70%; position: relative; overflow: hidden;'>
-                                        <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
+                            <div class='col-6 col-md-4'>
+                                <a href='catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
+                                    <div class='card p-0 shadow' style='width: 100%; height: 100%;'>
+                                        <div class='image-container' style='width: 100%; height: 70%; position: relative; overflow: hidden;'>
+                                            <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
+                                        </div>
+                                        <div class='card-body text-begin'>
+                                            <h6 class='text-secondary m-0'>$marca_producto</h6>
+                                            <h5 class='text-black my-1'>$nombre_producto</h5>
+                                            <h6 class='text-secondary'>$$precio</h6>
+                                        </div>
                                     </div>
-                                    <div class='card-body text-begin'>
-                                        <h6 class='text-secondary m-0'>$marca_producto</h6>
-                                        <h5 class='text-black my-1'>$nombre_producto</h5>
-                                        <h6 class='text-secondary'>$$precio</h6>
-                                    </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         ";
                     }
-                    echo "</div>";
                 } else {
                     echo "<p>No se encontraron productos que coincidan con los filtros o destacados.</p>";
                 }
                 ?>
             </div>
         </div>
-
     </div>
 </div>
 
