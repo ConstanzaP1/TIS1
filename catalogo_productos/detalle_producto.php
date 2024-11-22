@@ -46,6 +46,87 @@
     .star-rating label:hover ~ label {
         color: #f5c518;
     }
+    .btn-carrito {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 20px;
+        padding: 10px 20px;
+        border: 2px solid #28a745;
+        border-radius: 25px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        background-color: #28a745;
+        color: #fff;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-carrito i {
+        font-size: 20px;
+    }
+
+    .btn-carrito:hover {
+        background-color: #fff;
+        color: #28a745;
+        border: 2px solid #28a745;
+    }
+
+    .btn-carrito:hover i {
+        color: #28a745;
+    }
+
+     /* Botón de wishlist */
+     .btn-wishlist {
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        height: 50px;
+        width: 50px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        font-size: 20px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        transition: transform 0.3s, background-color 0.3s, color 0.3s;
+    }
+
+    .btn-wishlist i {
+        color: white;
+        transition: color 0.3s;
+    }
+
+    .btn-wishlist:hover {
+        background-color: white; /* Fondo cambia a blanco */
+        transform: scale(1.1); /* Efecto de ampliación */
+    }
+
+    .btn-wishlist:hover i {
+        color: red; /* Ícono cambia a rojo */
+    }
+
+    /* Botón de comparador */
+    .btn-comparador {
+        background-color: transparent;
+        border: none;
+        position: absolute;
+        top: 2px;
+        right: 70px;
+        z-index: 10;
+        transition: transform 0.3s;
+    }
+
+    .btn-comparador img {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        object-fit: cover;
+    }
+
+    .btn-comparador:hover {
+        transform: scale(1.1); /* Ampliación al pasar el puntero */
+    }
 
 </style>
 <body>
@@ -107,8 +188,9 @@
         </div>
     </div>
 </nav>
+<div><a href='../index.php' class='btn btn-secondary ms-2 mt-1 rounded-pill px-5'>Volver al Catálogo</a></div>
+<div class="container py-2">
 
-<div class="container py-5">
     <?php
     require('../conexion.php');
 
@@ -135,7 +217,7 @@
             $producto = mysqli_fetch_assoc($result_producto);
 
             echo "
-            <div class='producto-detalle shadow d-flex align-items-center bg-white'>
+             <div class='producto-detalle shadow d-flex align-items-center bg-white' style='position: relative;'>
                 <div class='col-6 text-center me-1'>
                     <div class='image-container' style='width: 100%; max-width: 100%; height: 100%; position: relative; overflow: hidden; margin: auto;'>
                         <img class='img-fluid' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}' style='object-fit: contain; width: 100%; height: 100%;'>
@@ -143,6 +225,7 @@
                 </div>
 
                 <div class='producto-info col-6 p-5'>
+                    
                     <h1>{$producto['nombre_producto']}</h1>
                     <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
                     <p><strong>Marca:</strong> {$producto['marca']}</p>
@@ -386,60 +469,76 @@
             echo "
                     </ul>";
 
-            if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
                 
-                echo "
-                <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                    <label>Cantidad:</label>
-                    <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
-                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
-                    <button type='submit' name='agregar_carrito' class='btn btn-outline-success mb-1  '>
-                        <i class='fa-solid fa-cart-shopping'></i>
-                    </button>
-                </form>
-            ";
-            
-
-                echo "
-                        <button onclick='addToWishlist({$id_producto})' class='btn btn-outline-danger'>
-                            <i class='fas fa-heart'></i>
-                        </button>";
-                echo "
-                        <form method='POST' action='../comparador/agregar_al_comparador.php'>
-                            <input type='hidden' name='id_producto' value='{$id_producto}'>
-                            <button type='submit' name='agregar_comparador' class='btn btn-primary rounded-pill px-5 mt-3'>Agregar al Comparador</button>
-                        </form>
-                        ";
-                if (isset($_GET['id_producto'])) {
-                    $id_producto = $_GET['id_producto'];
-                    echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
-                }
-            } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
-                echo "
-                        <button onclick='addToWishlist({$id_producto})' class='btn btn-outline-danger'>
-                            <i class='fas fa-heart'></i>
-                        </button>";
-                echo "
+                        echo "
                         <form method='POST' action='../carrito/agregar_al_carrito.php'>
                             <input type='hidden' name='id_producto' value='{$id_producto}'>
                             <label>Cantidad:</label>
                             <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
                             <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
-                            <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
+                            <button type='submit' name='agregar_carrito' class='btn btn-outline-success mb-1  '>
+                                <i class='fa-solid fa-cart-shopping'></i>
+                            </button>
                         </form>
-                        ";
-                echo "
-                        <form method='POST' action='../comparador/agregar_al_comparador.php'>
-                            <input type='hidden' name='id_producto' value='{$id_producto}'>
-                            <button type='submit' name='agregar_comparador' class='btn btn-primary rounded-pill px-5 mt-3'>Agregar al Comparador</button>
-                        </form>
-                        ";
+                    ";
+                    
+        
+                        echo "
+                                <button onclick='addToWishlist({$id_producto})' class='btn btn-outline-danger'>
+                                    <i class='fas fa-heart'></i>
+                                </button>";
+                        echo "
+                                <form method='POST' action='../comparador/agregar_al_comparador.php'>
+                                    <input type='hidden' name='id_producto' value='{$id_producto}'>
+                                    <button type='submit' name='agregar_comparador' class='btn btn-primary rounded-pill px-5 mt-3'>Agregar al Comparador</button>
+                                </form>
+                                ";
+                        if (isset($_GET['id_producto'])) {
+                            $id_producto = $_GET['id_producto'];
+                            echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
+                        }
+            } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
+               
+                echo " 
+                <form method='POST' action='../carrito/agregar_al_carrito.php'>
+    <input type='hidden' name='id_producto' value='{$id_producto}'>
+    <div class='mb-3'>
+        <label for='cantidad'><strong>Cantidad:</strong></label>
+        <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 d-inline-block'>
+        <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+    </div>
+    <hr>
+    <div class='d-flex align-items-center gap-2'>
+        <!-- Botón de agregar al carrito -->
+        <button type='submit' name='agregar_carrito' class='btn btn-carrito'>
+            <i class='fa-solid fa-cart-shopping'></i>
+            <span>Agregar al Carrito</span>
+        </button>
+
+        <!-- Botón de wishlist al lado -->
+        <button type='button' onclick='addToWishlist({$id_producto})' class='btn btn-wishlist'>
+            <i class='fas fa-heart'></i>
+        </button>
+    </div>
+</form>";
+
+echo "
+<form method='POST' action='../comparador/agregar_al_comparador.php'>
+    <input type='hidden' name='id_producto' value='{$id_producto}'>
+    <button type='submit' name='agregar_comparador' class='btn btn-comparador'>
+        <img src='versus-logos-conflict-fighting-illustration-with-cartoon-effect-free-vector.jpg' alt='Comparar'>
+    </button>
+</form>";
+
+
+
+
             }
 
-            echo "<a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
-                </div>
-            </div>"; ?>
+            echo "</div>"; ?>
+            </div>
+
             <?php
 
             if ($id_producto) {
@@ -471,7 +570,7 @@
                     }
                     echo "</div>";
                 } else {
-                 echo "<div class='alert alert-dark'>Aún no hay reseñas para este producto.</div>";
+                 echo "<div class='alert alert-dark mt-4'>Aún no hay reseñas para este producto.</div>";
                 }
 
                 if (isset($_SESSION['user_id'])) {
