@@ -26,9 +26,6 @@
     .card-body{
         background-color: #e0e0e0;
     }
-    body{
-        background-color: rgba(0, 128, 255, 0.1);
-    }
     .star-rating {
     direction: rtl;
     font-size: 2em;
@@ -144,8 +141,9 @@
 
                 <div class='producto-info col-6 p-5'>
                     <h1>{$producto['nombre_producto']}</h1>
-                    <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
                     <p><strong>Marca:</strong> {$producto['marca']}</p>
+                    <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
+                    <hr>
                     <p><strong>Características:</strong></p>
                     <ul>";
                         
@@ -384,11 +382,13 @@
                 echo "<li>No hay características disponibles.</li>";
             }            
             echo "
+                    
                     </ul>";
 
             if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
                 
                 echo "
+                        <hr>
                         <form method='POST' action='../carrito/agregar_al_carrito.php'>
                             <input type='hidden' name='id_producto' value='{$id_producto}'>
                             <label>Cantidad:</label>
@@ -433,7 +433,8 @@
                         ";
             }
 
-            echo "<a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
+            echo "
+                <a href='../index.php' class='btn btn-secondary mt-3 rounded-pill px-5'>Volver al Catálogo</a>
                 </div>
             </div>"; ?>
             <?php
@@ -445,16 +446,25 @@
                       WHERE rv.id_producto = '$id_producto'
                       ORDER BY rv.fecha DESC";
                 $result_resenas = mysqli_query($conexion, $query_resenas);
+                echo "<div class='container'>";
+                ?> <br> <?php
+                echo "<div class='row bg-white px-5 py-3 shadow'>";
+
+                // Contenedor con sistema de columnas
+                echo "<div class='d-flex justify-content-between align-items-center w-100'>";
+                echo "<h3>Reseñas</h3>";
+                echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                        Agregar Reseña
+                        </button>";
+                echo "</div>";
+
+                echo "<hr>";
 
                 if (mysqli_num_rows($result_resenas) > 0) {
-                    echo "<div class='container'>";
-                    ?> <br> <?php
-                    echo "<div class='row bg-white px-5 py-3 shadow'>";
-                    echo "<h3>Reseñas</h3>";
                     while ($resena = mysqli_fetch_assoc($result_resenas)) {
                         $valoracion = intval($resena['valoracion']);
                         echo "<div class='card mb-3'>";
-                        echo "<div class='card-body'>";
+                        echo "<div class='card-bodyy'>";
                         echo "<h5 class='card-title'>";
                         for ($i = 1; $i <= 5; $i++) {
                             echo $i <= $valoracion ? "&#9733;" : "&#9734;";
@@ -462,12 +472,12 @@
                         echo " - " . htmlspecialchars($resena['username']) . "</h5>";
                         echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
                         echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
-                        echo "</div>";
+                        echo "</div>";              
                         echo "</div>";
                     }
                     echo "</div>";
                 } else {
-                 echo "<div class='alert alert-dark'>Aún no hay reseñas para este producto.</div>";
+                    echo "<div class='alert alert-secondary'>Aún no hay reseñas para este producto.</div>";
                 }
 
                 if (isset($_SESSION['user_id'])) {
@@ -492,11 +502,6 @@
                         $compra = mysqli_fetch_assoc($result_compra);
                         if ($compra['comprado'] > 0) {
                         ?>   
-                        <!-- Botón para abrir el modal de agregar reseña -->
-                        <button type="button" class="btn btn-primary mt-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalAgregarResena">
-                            Agregar Reseña
-                        </button>   
-
                         <!-- Modal para agregar reseña -->
                         <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -534,7 +539,7 @@
                         </div> 
                         <?php 
                         } else {
-                            echo "<div class='alert alert-warning mt-3'>Debes comprar este producto antes de poder agregar una reseña.</div>";
+                            echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";
                         }
                     } else {
                         echo "<div class='alert alert-danger'>Error: No se encontró el nombre del producto.</div>";

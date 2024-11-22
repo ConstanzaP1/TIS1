@@ -136,7 +136,7 @@ if (isset($_POST['pagar'])) {
         .btnback-to-store{
             display: flex;
             justify-content: center;
-        align-items: center;
+            align-items: center;
         }
         .table-comparison {
             margin-top: 20px;
@@ -219,8 +219,11 @@ if (isset($_POST['pagar'])) {
 <div class="container py-5">
     <h2 class="mb-4">Carrito de Compras</h2>
     <?php if (empty($_SESSION['carrito'])): ?>
-        <div class="alert alert-warning" role="alert">
-            El carrito está vacío.
+        <div class="text-center py-5">
+            <img src="../icono_carrito.png" alt="Carrito vacío" style="width: 100px; height: auto;">
+            <h3 class="mt-4">Aún no tienes productos agregados</h3>
+            <p class="text-muted">¡Puedes ver nuestras categorías destacadas y hacer tu primera compra con nosotros!</p>
+            <a href="../index.php" class="btn btn-secondary">Regresar al catalogo</a>
         </div>
     <?php else: ?>
         <table class="table table-striped table-bordered">

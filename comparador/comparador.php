@@ -334,9 +334,6 @@ $mejor_producto_id = !empty($_SESSION['puntajes']) ? array_keys($_SESSION['punta
         border-color: rgba(0, 128, 255, 0.5);   
         }
         
-    body{
-        background-color: rgba(0, 128, 255, 0.1);
-    }
     </style>
 </head>
 <nav class="navbar navbar-expand-lg">
