@@ -98,9 +98,11 @@ if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categori
                                     <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>
                             <?php endif; ?>
-                            
                             <li>
-                                <a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">Perfil de usuario</a>
+                                <a class="dropdown-item" href="lista_deseos/lista_deseos.php">Lista deseos</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="comparador/comparador.php">Comparador</a>
                             </li>
                             <li>
                                 <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
@@ -238,7 +240,7 @@ if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categori
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.form-control[type="search"]');
-    const productContainer = document.querySelector('.row.d-flex.justify-content-center');
+    const productContainer = document.querySelector('.row.gx-2.gy-3');
 
    // Función para cargar productos según la búsqueda
    function cargarProductos(query = '') {

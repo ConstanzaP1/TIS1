@@ -673,13 +673,23 @@
                     echo "</span>";
                     echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
                     echo "</div>";
-                    echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'){
+                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
                             Agregar Reseña
                           </button>";
+                    }
+                    elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
+                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                            Agregar Reseña
+                          </button>";
+                    }
+                    elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'superadmin'){
+                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                            Agregar Reseña
+                          </button>";
+                    }
                     echo "</div>";
-
                     echo "<hr>";
-
                     if (mysqli_num_rows($result_resenas) > 0) {
                         while ($resena = mysqli_fetch_assoc($result_resenas)) {
                             $valoracion = intval($resena['valoracion']);
