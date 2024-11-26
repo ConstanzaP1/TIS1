@@ -3,7 +3,7 @@
     <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px;">
         <!-- Columna izquierda -->
         <div style="flex: 1; min-width: 250px;">
-            <img src="../logo.jpg" alt="Logo" style="width: 150px; margin-bottom: 20px;">
+            <img src="logopng.png" alt="Logo" style="width: 150px; margin-bottom: 20px;">
             <div style="margin-bottom: 20px;">
                 <a href="#" style="display: inline-block; background-color: rgba(0, 128, 255, 0.1); color: rgba(0, 128, 255, 0.8); padding: 10px 20px; border-radius: 5px; font-size: 14px; text-decoration: none; font-weight: bold;">
                     <i class="fas fa-map-marker-alt"></i> Encuentra tu tienda
