@@ -199,10 +199,27 @@
         font-size: 0.9rem; /* Reducir el tamaño del texto de las características */
     }
 }
+
+.breadcrumb {
+    background-color: #f9f9f9;
+    font-size: 0.9rem;
+}
+
+.breadcrumb .breadcrumb-item a {
+    transition: color 0.2s ease-in-out;
+}
+
+.breadcrumb .breadcrumb-item a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.breadcrumb .breadcrumb-item.active {
+    font-weight: bold;
+    color: #333;
+}
 </style>
 
-
-</style>
 <body>
         
 <nav class="navbar navbar-expand-lg">
@@ -255,7 +272,7 @@
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
+                        <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
                     </li>
                 <?php endif; ?>
             </ul>
@@ -264,6 +281,7 @@
 </nav>
 
 <div class="container py-5">
+    
     <?php
     require('../conexion.php');
 
@@ -291,6 +309,25 @@
 
             ?>
             <div class="container">
+                <!-- Migajas de pan -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                        <li class="breadcrumb-item">
+                            <a href="../index.php" class="text-primary text-decoration-none">
+                                <i class="fas fa-home me-1"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="../categoria.php?tipo_producto=<?php echo htmlspecialchars($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
+                                <?php echo ucfirst($producto['tipo_producto']); ?>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active text-dark" aria-current="page">
+                            <?php echo htmlspecialchars($producto['nombre_producto']); ?>
+                        </li>
+                    </ol>
+                </nav>
+                <!-- Fin Migajas de pan -->
                 <div class="producto-detalle row bg-white shadow d-flex">
                 <!-- Imagen del producto -->
                 <div class="col-12 col-md-6 text-center my-auto">
@@ -673,13 +710,23 @@
                     echo "</span>";
                     echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
                     echo "</div>";
-                    echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'){
+                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
                             Agregar Reseña
                           </button>";
+                    }
+                    elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
+                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                            Agregar Reseña
+                          </button>";
+                    }
+                    elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'superadmin'){
+                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                            Agregar Reseña
+                          </button>";
+                    }
                     echo "</div>";
-
                     echo "<hr>";
-
                     if (mysqli_num_rows($result_resenas) > 0) {
                         while ($resena = mysqli_fetch_assoc($result_resenas)) {
                             $valoracion = intval($resena['valoracion']);
@@ -920,6 +967,18 @@ function addToWishlist(idProducto) {
         });
     });
 }
+document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", function(e) {
+            const cantidadInput = this.querySelector("input[name='cantidad']");
+            const stockDisponible = parseInt(cantidadInput.max); // Stock máximo permitido
+            const cantidadSeleccionada = parseInt(cantidadInput.value); // Cantidad seleccionada
+
+            if (cantidadSeleccionada > stockDisponible) {
+                e.preventDefault(); // Detener el envío del formulario
+                alert("La cantidad seleccionada supera el stock disponible. Por favor, reduce la cantidad.");
+            }
+        });
+    });
 </script>
 
     <!-- Bootstrap JS -->
