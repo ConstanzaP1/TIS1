@@ -199,10 +199,27 @@
         font-size: 0.9rem; /* Reducir el tamaño del texto de las características */
     }
 }
+
+.breadcrumb {
+    background-color: #f9f9f9;
+    font-size: 0.9rem;
+}
+
+.breadcrumb .breadcrumb-item a {
+    transition: color 0.2s ease-in-out;
+}
+
+.breadcrumb .breadcrumb-item a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.breadcrumb .breadcrumb-item.active {
+    font-weight: bold;
+    color: #333;
+}
 </style>
 
-
-</style>
 <body>
         
 <nav class="navbar navbar-expand-lg">
@@ -264,6 +281,7 @@
 </nav>
 
 <div class="container py-5">
+    
     <?php
     require('../conexion.php');
 
@@ -291,6 +309,25 @@
 
             ?>
             <div class="container">
+                <!-- Migajas de pan -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                        <li class="breadcrumb-item">
+                            <a href="../index.php" class="text-primary text-decoration-none">
+                                <i class="fas fa-home me-1"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="../categoria.php?tipo_producto=<?php echo htmlspecialchars($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
+                                <?php echo ucfirst($producto['tipo_producto']); ?>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active text-dark" aria-current="page">
+                            <?php echo htmlspecialchars($producto['nombre_producto']); ?>
+                        </li>
+                    </ol>
+                </nav>
+                <!-- Fin Migajas de pan -->
                 <div class="producto-detalle row bg-white shadow d-flex">
                 <!-- Imagen del producto -->
                 <div class="col-12 col-md-6 text-center my-auto">
