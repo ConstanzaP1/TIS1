@@ -625,6 +625,6 @@ function updateCart(id_producto, nuevaCantidad) {
     .catch(error => console.error('Error:', error));
 }
 </script>
-
+<?php include '../footer.php'?>
 </body>
 </html>
