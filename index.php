@@ -18,16 +18,25 @@ if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categori
     $productos = filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria, true);
 }
 // Consulta para obtener la URL de la imagen del usuario actual
-$user_id = $_SESSION['user_id']; // Asegúrate de tener el ID del usuario en sesión
-$query = "SELECT img FROM users WHERE id = ?";
-$stmt = $conexion->prepare($query);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
+// Comprobamos si el usuario ha iniciado sesión
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 
-// Verifica si se encontró la imagen
-$img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay una en la BD
+    // Consulta para obtener la URL de la imagen del usuario actual
+    $query = "SELECT img FROM users WHERE id = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    // Verifica si se encontró la imagen
+    $img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay una en la BD
+} else {
+    // Usuario no está logeado, asignamos una imagen por defecto
+    $img_url = 'default-profile.png';
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -99,18 +108,17 @@ $img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay
                                     <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>
                             <?php endif; ?>
-                            <li>
-                                <a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">Perfil de usuario</a>
-                            </li>
+
                             <li>
                                 <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
                             </li>
                         </ul>
                     </li>
-                    <!-- Foto de perfil circular -->
-                    <li class="nav-item ms-2">
-                        <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                    </li>
+                    <a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">
+                        <li class="nav-item ms-2">
+                            <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                        </li>
+                    </a>
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
