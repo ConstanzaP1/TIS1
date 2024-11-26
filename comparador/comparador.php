@@ -378,13 +378,7 @@ $mejor_producto_id = !empty($_SESSION['puntajes']) ? array_keys($_SESSION['punta
                                     <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
                                     <button type="submit" name="eliminar_comparador" class="btn btn-danger btn-sm">Eliminar</button>
                                 </form>
-                            </div>
-                            <?php if ($producto['id_producto'] == $mejor_producto_id): ?>
-                                <div class="card-footer text-success text-center">
-                                    Mejor relación calidad/precio
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                            
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -397,7 +391,7 @@ $mejor_producto_id = !empty($_SESSION['puntajes']) ? array_keys($_SESSION['punta
                         </div>
                         <h4 class="mb-3 text-secondary">No hay productos en el comparador</h4>
                         <p class="text-muted mb-4">Añade productos para comparar características y precios.</p>
-                        <a href="../index.php" class="btn btn-primary btn-lg">Añadir al Comparador</a>
+                        <a href="../index.php" class="btn btn-primary btn-lg">Regresar al catálogo</a>
                     </div>
                 </div>
             <?php endif; ?>
