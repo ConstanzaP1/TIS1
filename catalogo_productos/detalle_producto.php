@@ -100,7 +100,7 @@
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
+                        <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
                     </li>
                 <?php endif; ?>
             </ul>
@@ -738,6 +738,18 @@ function addToWishlist(idProducto) {
         });
     });
 }
+document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", function(e) {
+            const cantidadInput = this.querySelector("input[name='cantidad']");
+            const stockDisponible = parseInt(cantidadInput.max); // Stock máximo permitido
+            const cantidadSeleccionada = parseInt(cantidadInput.value); // Cantidad seleccionada
+
+            if (cantidadSeleccionada > stockDisponible) {
+                e.preventDefault(); // Detener el envío del formulario
+                alert("La cantidad seleccionada supera el stock disponible. Por favor, reduce la cantidad.");
+            }
+        });
+    });
 </script>
 
     <!-- Bootstrap JS -->

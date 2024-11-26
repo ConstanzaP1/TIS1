@@ -131,6 +131,20 @@ function verBoleta(id, fecha, total, codigo, detalles) {
     var modal = new bootstrap.Modal(document.getElementById('boletaModal'));
     modal.show();
 }
+// Filtrar las boletas
+document.getElementById("searchInput").addEventListener("input", function () {
+    const searchValue = this.value.toLowerCase(); // Convertir a minúsculas para búsqueda insensible a mayúsculas
+    const rows = document.querySelectorAll("#boletasTable tr");
+
+    rows.forEach(row => {
+        const idBoleta = row.cells[0]?.textContent.toLowerCase(); // Obtener el texto del ID Boleta
+        if (idBoleta && idBoleta.includes(searchValue)) {
+            row.style.display = ""; // Mostrar la fila si coincide
+        } else {
+            row.style.display = "none"; // Ocultar la fila si no coincide
+        }
+    });
+});
 
 </script>
 
