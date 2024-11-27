@@ -114,6 +114,8 @@ $stmt->close();
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 
 </head>
 <style>
@@ -130,7 +132,26 @@ $stmt->close();
     border-color: #007bff;
     transition: border-color 0.3s;
 }
+.btn-cart:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #721c24; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
 
+/* Estilo para el botón de comparar */
+.btn-comparar:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #155724; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
+.btn-deseos:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #721c24; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
     
     .card-header{
         background-color: rgba(0, 128, 255, 0.5);   
@@ -180,10 +201,11 @@ $stmt->close();
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <!-- Logo -->
-        <div class="navbar-brand col-2">
-            <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+        <div class="navbar-brand col-2  ">
+            <a href="../index.php">
+                <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+            </a>
         </div>
-
         <!-- Botón para colapsar el menú en pantallas pequeñas -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -191,11 +213,10 @@ $stmt->close();
 
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            
-
             <!-- Menú desplegable -->
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
+            <ul class="navbar-nav ms-auto">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
@@ -203,19 +224,24 @@ $stmt->close();
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill" onclick="window.location.href='../comparador/comparador.php'">
+                    <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../comparador/comparador.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
                         </svg>
                     </button>
                 </li>
-                <?php if (isset($_SESSION['user_id'])): ?>
+                <li>
+                    <button type="button" class="btn btn-deseos p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../lista_deseos/lista_deseos.php'">
+                    <i class='fas fa-heart'></i>
+                    </button>
+                   
+                </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
+                        <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
                                 <li>
                                     <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>
@@ -226,7 +252,7 @@ $stmt->close();
                             </li>
                         </ul>
                     </li>
-                    <a class="dropdown-item" href="perfil_usuario.php">
+                    <a class="dropdown-item" href="../perfil_usuario/perfil_usuario.php">
                         <li class="nav-item ms-2">
                             <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
                         </li>
@@ -411,7 +437,8 @@ $stmt->close();
             ?>
                     <div class="card mb-4">
                         <div class="card-header text-white">
-
+                            <strong>Nro. Boleta:</strong> <?php echo $row['id_boleta']; ?>
+                            /
                             <strong>Fecha:</strong> <?php echo date('d/m/Y H:i', strtotime($row['fecha'])); ?> 
 
                         </div>

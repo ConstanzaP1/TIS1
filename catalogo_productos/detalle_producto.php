@@ -144,7 +144,12 @@ if (isset($_SESSION['user_id'])) {
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3); /* Mejora la sombra */
     background-color: rgba(0, 128, 255, 0.5); /* Reaplica el color para evitar cambios */
 }
-
+.btn-deseos:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #721c24; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
 
     .producto-detalle {
         position: relative; /* Hace que el contenedor sea el contexto para elementos con position: absolute */
@@ -376,6 +381,12 @@ if (isset($_SESSION['user_id'])) {
                             <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
                         </svg>
                     </button>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-deseos p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../lista_deseos/lista_deseos.php'">
+                    <i class='fas fa-heart'></i>
+                    </button>
+                   
                 </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item dropdown">
