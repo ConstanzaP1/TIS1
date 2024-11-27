@@ -36,6 +36,16 @@ if (isset($_SESSION['user_id'])) {
 
     </head>
 <style>
+    @media (max-width: 576px) {
+    .btn-comparador, .btn-wishlist {
+        opacity: 0.7; /* Cambia la opacidad */
+        transition: opacity 0.3s ease; /* Transición suave */
+    }
+
+    .btn-comparador:hover, .btn-wishlist:hover {
+        opacity: 1; /* Vuelve a opacidad completa al hacer hover */
+    }
+}
     .navbar{
         background-color: rgba(0, 128, 255, 0.5);   
     }
