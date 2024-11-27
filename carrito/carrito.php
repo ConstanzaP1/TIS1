@@ -309,15 +309,15 @@ if (isset($_POST['pagar'])) {
                         <?php echo htmlspecialchars($producto['nombre_producto']); ?>
                     </td>
                     <td>
-                        <!-- Campo de cantidad editable con estilo en línea para ajustar el ancho -->
                         <input type="number" name="cantidad" id="cantidad_<?php echo $id_producto; ?>" 
-                            value="<?php echo $cantidad; ?>" 
+                            value="<?php echo min($cantidad, $producto['cantidad']); ?>" 
                             class="form-control text-center" 
                             min="1" max="<?php echo $producto['cantidad']; ?>" 
                             style="width: 100px;" 
-                            onchange="actualizarCantidad('<?php echo $id_producto; ?>', this.value)">
+                            oninput="validarCantidadCarrito(this, <?php echo $producto['cantidad']; ?>)">
                         <small class="text-muted">Disponibles: <?php echo $producto['cantidad']; ?></small>
                     </td>
+
 
                     <td id="precio_<?php echo $id_producto; ?>">
                         <!-- Precio total del producto -->
@@ -358,16 +358,9 @@ if (isset($_POST['pagar'])) {
         <div id="map"></div>
         <p id="puntoCercano" class="mt-3"></p>
         <hr>
-        <form method="POST" action="carrito.php" id="formPagoCarrito" style="display: none;">
-            <input type="hidden" name="total" value="<?php echo $_SESSION['total'] ?? 0; ?>">
-            <input type="hidden" name="punto_retiro" id="punto_retiro_input">
-            <button type="submit" name="pagar" class="btn btn-primary" id="pagarButton">Proceder al Pago</button>
-        </form>
+        <form method="POST" action="carrito.php" id="formPagoCarrito">
+        <input type="hidden" name="total" value="<?php echo $_SESSION['total'] ?? 0; ?>">
 
-        <form method="POST" action="../boleta_cotizacion/boleta.php" id="formPagoCarrito" style="display: none;">
-            <input type="hidden" name="punto_retiro" id="punto_retiro_input">
-            <button type="submit" name="pagar" class="btn btn-primary" id="pagarButton">Proceder al Pago</button>
-        </form>
     <?php endif; ?>
 </div>
 
@@ -540,15 +533,11 @@ function actualizarCantidad(idProducto, nuevaCantidad) {
             const respuesta = JSON.parse(xhr.responseText);
 
             if (respuesta.error) {
-                // Mostrar mensaje de error justo debajo del campo de cantidad
-                mostrarMensajeError(respuesta.error, idProducto);
+                alert(respuesta.error); // Mostrar el error recibido del servidor
             } else {
                 // Actualizar precio y total en el cliente
                 document.getElementById(`precio_${idProducto}`).innerText = respuesta.precioActualizado;
                 document.getElementById("total").innerText = respuesta.totalActualizado;
-
-                // Eliminar cualquier mensaje de error
-                ocultarMensajeError(idProducto);
             }
         }
     };
@@ -569,17 +558,16 @@ function ocultarMensajeError(idProducto) {
     errorElement.style.display = 'none'; // Ocultar el mensaje de error
 }
 
-// Asume que hay un formulario con el ID adecuado para la actualización del carrito
 document.querySelectorAll("form").forEach(form => {
     form.addEventListener("submit", function(e) {
         const cantidadInput = this.querySelector("input[name='cantidad']");
         const stockDisponible = parseInt(cantidadInput.max); // Stock máximo permitido
         const cantidadSeleccionada = parseInt(cantidadInput.value); // Cantidad seleccionada
 
-        // Validar si la cantidad seleccionada excede el stock
         if (cantidadSeleccionada > stockDisponible) {
             e.preventDefault(); // Detener el envío del formulario
-            mostrarMensajeError('La cantidad seleccionada supera el stock disponible. Por favor, reduce la cantidad.', form.querySelector("input[name='id_producto']").value);
+            // Mostrar mensaje emergente
+            alert("No se puede agregar más stock del disponible. Por favor, ajusta la cantidad.");
         }
     });
 });
@@ -620,6 +608,33 @@ function updateCart(id_producto, nuevaCantidad) {
         location.reload();
     })
     .catch(error => console.error('Error:', error));
+}
+function validarCantidadCarrito(input, maxStock) {
+    const cantidadSeleccionada = parseInt(input.value);
+
+    if (cantidadSeleccionada > maxStock) {
+        input.setCustomValidity("La cantidad seleccionada supera el stock disponible. Por favor, reduce la cantidad.");
+        input.reportValidity(); // Mostrar el mensaje emergente
+    } else {
+        input.setCustomValidity(""); // Eliminar mensaje si la cantidad es válida
+        actualizarCantidad(input.id.split("_")[1], cantidadSeleccionada); // Llama a actualizarCantidad
+    }
+}
+function validarCantidad(input, maxStock) {
+    const cantidadSeleccionada = parseInt(input.value);
+
+    if (cantidadSeleccionada > maxStock) {
+        // Mostrar el mensaje, pero permitir cambios en la cantidad
+        input.setCustomValidity("No se puede agregar más stock del disponible.");
+        input.reportValidity(); // Mostrar el mensaje inmediatamente
+    } else {
+        // Eliminar cualquier mensaje previo y permitir el cambio
+        input.setCustomValidity("");
+    }
+}
+function seleccionarPunto(nombre) {
+    document.getElementById('punto_retiro_input').value = nombre;
+    document.getElementById('formPagoCarrito').style.display = 'block'; // Mostrar el botón
 }
 </script>
 
