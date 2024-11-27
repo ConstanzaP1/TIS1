@@ -54,6 +54,53 @@ if (isset($_POST['eliminar_producto'])) {
     header('Location: carrito.php'); // Recargar para evitar reposteo
     exit;
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'actualizar_cantidad') {
+    $id_producto = mysqli_real_escape_string($conexion, $_POST['id_producto']);
+    $cantidad = (int)$_POST['cantidad'];
+
+    // Consultar el stock disponible y el precio del producto
+    $query = "SELECT cantidad, precio FROM producto WHERE id_producto = '$id_producto'";
+    $result = mysqli_query($conexion, $query);
+    $producto = mysqli_fetch_assoc($result);
+
+    if ($producto) {
+        // Validar si la cantidad seleccionada no supera el stock disponible
+        if ($cantidad > $producto['cantidad']) {
+            // Si la cantidad excede el stock, devolver un error claro
+            echo json_encode([
+                'error' => 'La cantidad seleccionada supera el stock disponible. Por favor, reduce la cantidad.'
+            ]);
+            exit; // Detener la ejecución si hay un error
+        }
+
+        // Actualizar la cantidad en el carrito si la cantidad es válida
+        $_SESSION['carrito'][$id_producto] = $cantidad;
+        $precio_actualizado = $producto['precio'] * $cantidad;
+
+        // Calcular el total actualizado
+        $total_actualizado = 0;
+        foreach ($_SESSION['carrito'] as $id => $cant) {
+            $query_total = "SELECT precio FROM producto WHERE id_producto = '$id'";
+            $result_total = mysqli_query($conexion, $query_total);
+            $producto_total = mysqli_fetch_assoc($result_total);
+            $total_actualizado += $producto_total['precio'] * $cant;
+        }
+
+        $_SESSION['total'] = $total_actualizado;
+
+        // Responder con el precio actualizado y el total
+        echo json_encode([
+            'precioActualizado' => "$" . number_format($precio_actualizado, 0, ',', '.'),
+            'totalActualizado' => "$" . number_format($total_actualizado, 0, ',', '.')
+        ]);
+    } else {
+        // En caso de que el producto no exista
+        echo json_encode([
+            'error' => 'Producto no encontrado.'
+        ]);
+    }
+    exit;
+}
 
 // Función para recalcular el total del carrito
 function recalcularTotal() {
@@ -136,7 +183,7 @@ if (isset($_POST['pagar'])) {
         .btnback-to-store{
             display: flex;
             justify-content: center;
-        align-items: center;
+            align-items: center;
         }
         .table-comparison {
             margin-top: 20px;
@@ -219,57 +266,81 @@ if (isset($_POST['pagar'])) {
 <div class="container py-5">
     <h2 class="mb-4">Carrito de Compras</h2>
     <?php if (empty($_SESSION['carrito'])): ?>
-        <div class="alert alert-warning" role="alert">
-            El carrito está vacío.
+        <div class="text-center py-5">
+            <img src="../icono_carrito.png" alt="Carrito vacío" style="width: 100px; height: auto;">
+            <h3 class="mt-4">Aún no tienes productos agregados</h3>
+            <p class="text-muted">¡Puedes ver nuestras categorías destacadas y hacer tu primera compra con nosotros!</p>
+            <a href="../index.php" class="btn btn-secondary">Regresar al catalogo</a>
         </div>
     <?php else: ?>
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Imagen</th>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio</th>
-                    <th>Acciones</th>
-                </tr>
+                <th class="col-2 col-sm-1">Imagen</th>
+                <th class="col-3 col-sm-2">Producto</th>
+                <th class="col-3 col-sm-3">Cantidad</th>
+                <th class="col-2 col-sm-2">Precio</th>
+                <th class="col-2 col-sm-2">Acciones</th>
+            </tr>
             </thead>
             <tbody>
-                <?php
-                $exceeds_stock = false; // Flag para verificar si alguna cantidad excede el stock
-                foreach ($_SESSION['carrito'] as $id_producto => $cantidad):
-                    $id_producto = mysqli_real_escape_string($conexion, $id_producto);
-                    $query = "SELECT nombre_producto, imagen_url, precio, cantidad FROM producto WHERE id_producto = '$id_producto'";
-                    $result = mysqli_query($conexion, $query);
-                    $producto = mysqli_fetch_assoc($result);
-                    if ($producto) {
-                        $precio_total = $producto['precio'] * $cantidad;
-                        if ($cantidad > $producto['cantidad']) {
-                            $exceeds_stock = true; // Marcar si la cantidad excede el stock
-                        }
-                ?>
-                    <tr>
-                        <td><img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" style="width: 50px; height: auto;"></td>
-                        <td><?php echo htmlspecialchars($producto['nombre_producto']); ?></td>
-                        <td>
-                            <div class="input-group" style="max-width: 150px;">
-                                <button type="button" class="btn btn-outline-secondary" onclick="decrement('<?php echo $id_producto; ?>', <?php echo $producto['cantidad']; ?>)">-</button>
-                                <input type="text" name="cantidad" id="cantidad_<?php echo $id_producto; ?>" value="<?php echo $cantidad; ?>" class="form-control text-center quantity-input" readonly>
-                                <button type="button" class="btn btn-outline-secondary" onclick="increment('<?php echo $id_producto; ?>', <?php echo $producto['cantidad']; ?>)">+</button>
-                            </div>
-                            <small class="text-muted">Disponibles: <?php echo $producto['cantidad']; ?></small>
-                        </td>
-                        <td id="precio_<?php echo $id_producto; ?>"><?php echo "$" . number_format($precio_total, 0, ',', '.'); ?></td>
-                        <td>
+            <?php
+            $exceeds_stock = false; // Flag para verificar si alguna cantidad excede el stock
+            foreach ($_SESSION['carrito'] as $id_producto => $cantidad):
+                $id_producto = mysqli_real_escape_string($conexion, $id_producto);
+                $query = "SELECT nombre_producto, imagen_url, precio, cantidad FROM producto WHERE id_producto = '$id_producto'";
+                $result = mysqli_query($conexion, $query);
+                $producto = mysqli_fetch_assoc($result);
+
+                if ($producto): 
+                    $precio_total = $producto['precio'] * $cantidad;
+
+                    // Verificar si la cantidad supera el stock disponible
+                    if ($cantidad > $producto['cantidad']) {
+                        $exceeds_stock = true; // Marcar si la cantidad excede el stock
+                    }
+            ?>
+                <tr>
+                    <td>
+                        <!-- Imagen del producto -->
+                        <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" 
+                            alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" 
+                            style="width: 50px; height: auto;">
+                    </td>
+                    <td>
+                        <!-- Nombre del producto -->
+                        <?php echo htmlspecialchars($producto['nombre_producto']); ?>
+                    </td>
+                    <td>
+                        <!-- Campo de cantidad editable con estilo en línea para ajustar el ancho -->
+                        <input type="number" name="cantidad" id="cantidad_<?php echo $id_producto; ?>" 
+                            value="<?php echo $cantidad; ?>" 
+                            class="form-control text-center" 
+                            min="1" max="<?php echo $producto['cantidad']; ?>" 
+                            style="width: 100px;" 
+                            onchange="actualizarCantidad('<?php echo $id_producto; ?>', this.value)">
+                        <small class="text-muted">Disponibles: <?php echo $producto['cantidad']; ?></small>
+                    </td>
+
+                    <td id="precio_<?php echo $id_producto; ?>">
+                        <!-- Precio total del producto -->
+                        <?php echo "$" . number_format($precio_total, 0, ',', '.'); ?>
+                    </td>
+                    <td>
+                        <!-- Botón para eliminar producto -->
                         <form method="POST" action="carrito.php">
-                                <input type="hidden" name="id_producto" value="<?php echo $id_producto; ?>">
-                                <button type="submit" name="eliminar_producto" class="btn btn-danger">Eliminar</button>
+                            <input type="hidden" name="id_producto" value="<?php echo $id_producto; ?>">
+                            <button type="submit" name="eliminar_producto" class="btn btn-danger">Eliminar</button>
                         </form>
-                        </td>
-                    </tr>
-                <?php } endforeach; ?>
-            </tbody>
+                    </td>
+                </tr>
+            <?php 
+                endif;
+            endforeach; 
+            ?>
+        </tbody>
         </table>
-        <h4>Total: $<span id="total"><?php echo number_format($_SESSION['total'] ?? 0, 0, ',', '.'); ?></span></h4>
+        <h4>Total: <span id="total"><?php echo number_format($_SESSION['total'] ?? 0, 0, ',', '.'); ?></span></h4>
         <div class="mt-1">
             <form id="formCotizacion" action="../boleta_cotizacion/cotizacion.php" method="POST">
                 <input type="hidden" name="correo" value="<?php echo $correoE; ?>">
@@ -460,6 +531,62 @@ function confirmarEnvio() {
 }
 </script>
 <script>
+// Función para actualizar la cantidad en el carrito
+function actualizarCantidad(idProducto, nuevaCantidad) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "carrito.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    // Enviar datos al servidor
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            const respuesta = JSON.parse(xhr.responseText);
+
+            if (respuesta.error) {
+                // Mostrar mensaje de error justo debajo del campo de cantidad
+                mostrarMensajeError(respuesta.error, idProducto);
+            } else {
+                // Actualizar precio y total en el cliente
+                document.getElementById(`precio_${idProducto}`).innerText = respuesta.precioActualizado;
+                document.getElementById("total").innerText = respuesta.totalActualizado;
+
+                // Eliminar cualquier mensaje de error
+                ocultarMensajeError(idProducto);
+            }
+        }
+    };
+
+    xhr.send(`accion=actualizar_cantidad&id_producto=${idProducto}&cantidad=${nuevaCantidad}`);
+}
+
+// Función para mostrar mensaje de error debajo del campo de cantidad
+function mostrarMensajeError(mensaje, idProducto) {
+    const errorElement = document.getElementById(`error_${idProducto}`);
+    errorElement.innerHTML = mensaje;
+    errorElement.style.display = 'block'; // Mostrar el mensaje de error
+}
+
+// Función para ocultar el mensaje de error cuando el carrito es actualizado correctamente
+function ocultarMensajeError(idProducto) {
+    const errorElement = document.getElementById(`error_${idProducto}`);
+    errorElement.style.display = 'none'; // Ocultar el mensaje de error
+}
+
+// Asume que hay un formulario con el ID adecuado para la actualización del carrito
+document.querySelectorAll("form").forEach(form => {
+    form.addEventListener("submit", function(e) {
+        const cantidadInput = this.querySelector("input[name='cantidad']");
+        const stockDisponible = parseInt(cantidadInput.max); // Stock máximo permitido
+        const cantidadSeleccionada = parseInt(cantidadInput.value); // Cantidad seleccionada
+
+        // Validar si la cantidad seleccionada excede el stock
+        if (cantidadSeleccionada > stockDisponible) {
+            e.preventDefault(); // Detener el envío del formulario
+            mostrarMensajeError('La cantidad seleccionada supera el stock disponible. Por favor, reduce la cantidad.', form.querySelector("input[name='id_producto']").value);
+        }
+    });
+});
+
 // Funciones para incrementar y decrementar la cantidad de productos, actualizar el carrito y total.
 function increment(id_producto, maxCantidad) {
     const input = document.getElementById(`cantidad_${id_producto}`);

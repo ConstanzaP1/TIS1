@@ -46,10 +46,6 @@ if (isset($_SESSION['user_id'])) {
     .card-body{
         background-color: #e0e0e0;
     }
-    
-    body{
-        background-color: rgba(0, 128, 255, 0.1);
-    }
     .star-rating {
     direction: rtl;
     font-size: 2em;
@@ -67,105 +63,183 @@ if (isset($_SESSION['user_id'])) {
     .star-rating label:hover ~ label {
         color: #f5c518;
     }
-    .btn-carrito {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 20px;
-        padding: 10px 20px;
-        border: 2px solid #28a745;
-        border-radius: 25px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        background-color: #28a745;
-        color: #fff;
-        transition: background-color 0.3s, color 0.3s;
-    }
 
-    .btn-carrito i {
-        font-size: 20px;
-    }
-
-    .btn-carrito:hover {
-        background-color: #fff;
-        color: #28a745;
-        border: 2px solid #28a745;
-    }
-
-    .btn-carrito:hover i {
-        color: #28a745;
-    }
-
-     /* Botón de wishlist */
-     .btn-wishlist {
-        background-color: red;
-        color: white;
+    /* Estilo general del modal */
+    .modal-content {
+        border-radius: 10px;
         border: none;
-        border-radius: 50%;
-        height: 50px;
-        width: 50px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        font-size: 20px;
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 10;
-        transition: transform 0.3s, background-color 0.3s, color 0.3s;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
     }
 
-    .btn-wishlist i {
-        color: white;
-        transition: color 0.3s;
+    /* Título del modal */
+    .modal-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
     }
 
-    .btn-wishlist:hover {
-        background-color: white; /* Fondo cambia a blanco */
-        transform: scale(1.1); /* Efecto de ampliación */
+    /* Botón de cerrar */
+    .btn-close {
+        filter: brightness(0.5);
+        transition: filter 0.3s ease;
+    }
+    .btn-close:hover {
+        filter: brightness(1);
     }
 
-    .btn-wishlist:hover i {
-        color: red; /* Ícono cambia a rojo */
+    /* Fondo del encabezado */
+    .modal-header {
+        background-color: #f5f5f5;
+        border-bottom: none;
+        border-radius: 10px 10px 0 0;
     }
 
-    /* Botón de comparador */
-    .btn-comparador {
-        background-color: transparent;
-        border: none;
-        position: absolute;
-        top: 2px;
-        right: 70px;
-        z-index: 10;
-        transition: transform 0.3s;
+    /* Fondo del cuerpo */
+    .modal-body {
+        background-color: #ffffff;
+        padding: 20px;
     }
 
-    .btn-comparador img {
-        height: 50px;
-        width: 50px;
-        border-radius: 50%;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        object-fit: cover;
+    /* Estilo para las estrellas */
+    .star-rating label {
+        font-size: 1.8rem;
+        color: #ffd700;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        transform: scale(1.2);
+        color: #ffca28;
+    }
+    .star-rating input {
+        display: none;
+    }
+    .star-rating label:active {
+        transform: scale(1.1);
     }
 
-    .btn-comparador:hover {
-        transform: scale(1.1); /* Ampliación al pasar el puntero */
+    /* Estilo para el botón de envío */
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease, transform 0.2s ease;
     }
-    /* Estilo para el botón del carrito */
-.btn-cart:hover {
-    background-color: #f8d7da; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+    .btn-primary:active {
+        background-color: #004080;
+        transform: scale(1);
+    }
+
+    /* Estilo para el botón secondary */
+    .btn-secondary {
+        background-color: #6c757d; /* Color de fondo inicial */
+        border-color: #6c757d; /* Color del borde inicial */
+        color: #fff; /* Color del texto */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones para hover y active */
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268; /* Color de fondo al pasar el mouse */
+        transform: scale(1.05); /* Escala al pasar el mouse */
+        border-color: #5a6268; /* Color del borde al pasar el mouse */
+    }
+    .btn-secondary:active {
+        background-color: #494e52; /* Color de fondo al presionar */
+        transform: scale(1); /* Restablecer escala al presionar */
+        border-color: #494e52; /* Color del borde al presionar */
+    }
+
+    /* Campos de formulario */
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+        color: #555;
+    }
+
+    textarea.form-control {
+        border-radius: 5px;
+        resize: none;
+        border: 1px solid #ccc;
+        transition: border-color 0.3s ease;
+    }
+    textarea.form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+    }
+
+    /* Transición general */
+    .modal-content {
+        animation: fadeInModal 0.3s ease;
+    }
+
+    @keyframes fadeInModal {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    <style>
+    @media (max-width: 768px) {
+    .producto-detalle {
+        flex-direction: column; /* Cambiar la disposición a columna */
+    }
+
+    .producto-detalle .image-container {
+        margin-bottom: 20px; /* Separar la imagen del contenido */
+    }
+
+    .producto-info {
+        text-align: left; /* Mantener texto alineado a la izquierda */
+    }
+
+    .producto-info button {
+        width: 100%; /* Asegurar que los botones ocupen todo el ancho */
+    }
+
+    /* Estilo para las reseñas */
+    .card {
+        width: 100%; /* Hacer que las tarjetas ocupen el ancho completo */
+    }
 }
 
-/* Estilo para el botón de comparar */
-.btn-comparar:hover {
-    background-color: #d4edda; /* Cambia el fondo al pasar el mouse */
-    color: #155724; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
+@media (max-width: 576px) {
+    .producto-info h1 {
+        font-size: 1.5rem; /* Reducir el tamaño del título en teléfonos pequeños */
+    }
+
+    .producto-info ul {
+        font-size: 0.9rem; /* Reducir el tamaño del texto de las características */
+    }
 }
 
+.breadcrumb {
+    background-color: #f9f9f9;
+    font-size: 0.9rem;
+}
 
+.breadcrumb .breadcrumb-item a {
+    transition: color 0.2s ease-in-out;
+}
+
+.breadcrumb .breadcrumb-item a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.breadcrumb .breadcrumb-item.active {
+    font-weight: bold;
+    color: #333;
+}
 </style>
+
 <body>
         
 <nav class="navbar navbar-expand-lg">
@@ -234,6 +308,7 @@ if (isset($_SESSION['user_id'])) {
 
 <div class="container py-2">
 
+    
     <?php
     require('../conexion.php');
 
@@ -259,19 +334,41 @@ if (isset($_SESSION['user_id'])) {
         if ($result_producto->num_rows > 0) {
             $producto = mysqli_fetch_assoc($result_producto);
 
-            echo "
-             <div class='producto-detalle shadow d-flex align-items-center bg-white' style='position: relative;'>
-                <div class='col-6 text-center me-1'>
-                    <div class='image-container' style='width: 100%; max-width: 100%; height: 100%; position: relative; overflow: hidden; margin: auto;'>
-                        <img class='img-fluid' src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}' style='object-fit: contain; width: 100%; height: 100%;'>
+            ?>
+            <div class="container">
+                <!-- Migajas de pan -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                        <li class="breadcrumb-item">
+                            <a href="../index.php" class="text-primary text-decoration-none">
+                                <i class="fas fa-home me-1"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="../categoria.php?tipo_producto=<?php echo htmlspecialchars($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
+                                <?php echo ucfirst($producto['tipo_producto']); ?>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active text-dark" aria-current="page">
+                            <?php echo htmlspecialchars($producto['nombre_producto']); ?>
+                        </li>
+                    </ol>
+                </nav>
+                <!-- Fin Migajas de pan -->
+                <div class="producto-detalle row bg-white shadow d-flex">
+                <!-- Imagen del producto -->
+                <div class="col-12 col-md-6 text-center my-auto">
+                    <div class="image-container" style="width: 100%; position: relative; overflow: hidden;">
+                        <img class="img-fluid" src="<?php echo $producto['imagen_url']; ?>" alt="<?php echo $producto['nombre_producto']; ?>" style="object-fit: contain; width: 100%;">
                     </div>
                 </div>
 
-                <div class='producto-info col-6 p-5'>
-                    
+                <div class='producto-info col-12 col-md-6 p-5'>
+                <?php echo"
                     <h1>{$producto['nombre_producto']}</h1>
-                    <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
                     <p><strong>Marca:</strong> {$producto['marca']}</p>
+                    <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
+                    <hr>
                     <p><strong>Características:</strong></p>
                     <ul>";
                         
@@ -510,9 +607,48 @@ if (isset($_SESSION['user_id'])) {
                 echo "<li>No hay características disponibles.</li>";
             }            
             echo "
+                    
                     </ul>";
 
-                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                    if (isset($_SESSION['user_id'])) {
+                        $user_id = $_SESSION['user_id'];
+                    
+                        // Obtener el nombre del producto actual
+                        $nombre_producto = $producto['nombre_producto'];
+                    
+                        // Escapar caracteres especiales para el formato JSON
+                        $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
+                    
+                        // Verificar si el usuario compró este producto
+                        $query_compra = "
+                            SELECT COUNT(*) AS comprado
+                            FROM boletas
+                            WHERE id_usuario = '$user_id' 
+                            AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'
+                        ";
+                        $result_compra = mysqli_query($conexion, $query_compra);
+                    
+                        // Manejar errores en la consulta SQL
+                        if (!$result_compra) {
+                            die("Error en la consulta SQL: " . mysqli_error($conexion));
+                        }
+                    
+                        $compra = mysqli_fetch_assoc($result_compra);
+                    
+                        // Mostrar el botón si el producto fue comprado
+                        if ($compra['comprado'] > 0) {
+                            echo "
+                                <a href='../postventa/postventa.php?id_producto=" . htmlspecialchars($id_producto) . "' class='btn btn-primary mt-3'>
+                                    ¿Tienes problemas con este producto? Ir a Postventa
+                                </a>
+                            ";
+                        } else {
+                        
+                        }
+                    }
+                    
+
+            if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
                 
                         echo " 
                 <form method='POST' action='../carrito/agregar_al_carrito.php'>
@@ -593,34 +729,70 @@ if (isset($_SESSION['user_id'])) {
 
             if ($id_producto) {
                 $query_resenas = "SELECT rv.valoracion, rv.comentario, rv.fecha, u.username
-                      FROM resena_valoracion AS rv
-                      JOIN users AS u ON rv.user_id = u.id
-                      WHERE rv.id_producto = '$id_producto'
-                      ORDER BY rv.fecha DESC";
+                                FROM resena_valoracion AS rv
+                                JOIN users AS u ON rv.user_id = u.id
+                                WHERE rv.id_producto = '$id_producto'
+                                ORDER BY rv.fecha DESC";
                 $result_resenas = mysqli_query($conexion, $query_resenas);
 
-                if (mysqli_num_rows($result_resenas) > 0) {
-                    echo "<div class='container'>";
+                // Calcular la media de las valoraciones
+                $query_media_valoracion = "SELECT AVG(valoracion) AS media_valoracion FROM resena_valoracion WHERE id_producto = '$id_producto'";
+                $result_media_valoracion = mysqli_query($conexion, $query_media_valoracion);
+                $media_valoracion = 0;
+                if ($result_media_valoracion && mysqli_num_rows($result_media_valoracion) > 0) {
+                    $media_valoracion = round(mysqli_fetch_assoc($result_media_valoracion)['media_valoracion'], 1); // Redondear a 1 decimal
+                }               
+
                     ?> <br> <?php
-                    echo "<div class='row bg-white px-5 py-3 shadow'>";
-                    echo "<h3>Reseñas</h3>";
-                    while ($resena = mysqli_fetch_assoc($result_resenas)) {
-                        $valoracion = intval($resena['valoracion']);
-                        echo "<div class='card mb-3'>";
-                        echo "<div class='card-body'>";
-                        echo "<h5 class='card-title'>";
-                        for ($i = 1; $i <= 5; $i++) {
-                            echo $i <= $valoracion ? "&#9733;" : "&#9734;";
-                        }
-                        echo " - " . htmlspecialchars($resena['username']) . "</h5>";
-                        echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
-                        echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
-                        echo "</div>";
-                        echo "</div>";
+                    echo "<div class='row bg-white px-5 py-3 shadow border'>";
+
+                    // Contenedor con sistema de columnas
+                    ?>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                    <?php
+                    echo "<h3 class='me-2'>Reseñas</h3>";
+                    echo "<span class='me-3' style='font-size: 1.5rem; color: gold;'>";
+                    for ($i = 1; $i <= 5; $i++) {
+                        echo $i <= $media_valoracion ? "&#9733;" : "&#9734;";
+                    }
+                    echo "</span>";
+                    echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
+                    echo "</div>";
+                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'){
+                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                            Agregar Reseña
+                          </button>";
+                    }
+                    elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
+                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                            Agregar Reseña
+                          </button>";
+                    }
+                    elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'superadmin'){
+                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                            Agregar Reseña
+                          </button>";
                     }
                     echo "</div>";
+                    echo "<hr>";
+                    if (mysqli_num_rows($result_resenas) > 0) {
+                        while ($resena = mysqli_fetch_assoc($result_resenas)) {
+                            $valoracion = intval($resena['valoracion']);
+                            echo "<div class='card mb-3'>";
+                            echo "<div class='cardbody'>";
+                            echo "<h5 class='card-title'>";
+                            for ($i = 1; $i <= 5; $i++) {
+                                echo $i <= $valoracion ? "&#9733;" : "&#9734;";
+                            }
+                            echo " - " . htmlspecialchars($resena['username']) . "</h5>";
+                            echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
+                            echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
+                            echo "</div>";
+                            echo "</div>";
+                        }
                 } else {
-                 echo "<div class='alert alert-dark mt-4'>Aún no hay reseñas para este producto.</div>";
+                    echo "<div class='alert alert-secondary'>Aún no hay reseñas para este producto.</div>";
                 }
 
                 if (isset($_SESSION['user_id'])) {
@@ -645,11 +817,6 @@ if (isset($_SESSION['user_id'])) {
                         $compra = mysqli_fetch_assoc($result_compra);
                         if ($compra['comprado'] > 0) {
                         ?>   
-                        <!-- Botón para abrir el modal de agregar reseña -->
-                        <button type="button" class="btn btn-primary mt-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalAgregarResena">
-                            Agregar Reseña
-                        </button>   
-
                         <!-- Modal para agregar reseña -->
                         <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -684,10 +851,10 @@ if (isset($_SESSION['user_id'])) {
                                     </div>
                                 </div>
                             </div>
-                        </div> 
+
                         <?php 
                         } else {
-                            echo "<div class='alert alert-warning mt-3'>Debes comprar este producto antes de poder agregar una reseña.</div>";
+                            echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";
                         }
                     } else {
                         echo "<div class='alert alert-danger'>Error: No se encontró el nombre del producto.</div>";
@@ -849,6 +1016,18 @@ function addToWishlist(idProducto) {
         });
     });
 }
+document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", function(e) {
+            const cantidadInput = this.querySelector("input[name='cantidad']");
+            const stockDisponible = parseInt(cantidadInput.max); // Stock máximo permitido
+            const cantidadSeleccionada = parseInt(cantidadInput.value); // Cantidad seleccionada
+
+            if (cantidadSeleccionada > stockDisponible) {
+                e.preventDefault(); // Detener el envío del formulario
+                alert("La cantidad seleccionada supera el stock disponible. Por favor, reduce la cantidad.");
+            }
+        });
+    });
 </script>
 
     <!-- Bootstrap JS -->

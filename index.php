@@ -124,7 +124,12 @@ if (isset($_SESSION['user_id'])) {
                                     <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>
                             <?php endif; ?>
-
+                            <li>
+                                <a class="dropdown-item" href="lista_deseos/lista_deseos.php">Lista deseos</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="comparador/comparador.php">Comparador</a>
+                            </li>
                             <li>
                                 <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
                             </li>
@@ -149,7 +154,7 @@ if (isset($_SESSION['user_id'])) {
 <div class="container my-4">
     <div class="row">
         <!-- Columna de filtros a la izquierda -->
-        <div class="col-md-3">
+        <div class="col-md-3 d-none d-md-block">
             <form method="post" action="index.php" id="filterForm" class="border p-3 card-body rounded">
                 <h5>Filtros</h5>
                 
@@ -205,42 +210,40 @@ if (isset($_SESSION['user_id'])) {
             </form>
         </div>
 
-        <!-- Columna de productos a la derecha -->
-        <div class="col-md-9">
-            <div class="row d-flex justify-content-center">
+        <div class="col-12 col-md-9">
+            <div class="row gx-2 gy-3"> <!-- Ajustamos los espacios entre las columnas y filas -->
                 <?php
                 if (!empty($productos)) {
-                    echo "<div class='d-flex flex-wrap justify-content-center'>";
                     foreach ($productos as $producto) {
                         $id_producto = $producto['id_producto'];
                         $nombre_producto = $producto['nombre_producto'];
                         $marca_producto = $producto['marca'];
                         $precio = number_format($producto['precio'], 0, ',', '.');
                         $imagen_url = $producto['imagen_url'];
-
+                    
                         echo "
-                            <a href='catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
-                                <div class='card mx-1 mb-3 p-0 shadow' style='width: 18rem; height: 26rem;'>
-                                    <div class='image-container' style='width: 100%; height: 70%; position: relative; overflow: hidden;'>
-                                        <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
+                            <div class='col-6 col-md-4'>
+                                <a href='catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
+                                    <div class='card p-0 shadow' style='width: 100%; height: 100%;'>
+                                        <div class='image-container' style='width: 100%; height: 70%; position: relative; overflow: hidden;'>
+                                            <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
+                                        </div>
+                                        <div class='card-body text-begin'>
+                                            <h6 class='text-secondary m-0'>$marca_producto</h6>
+                                            <h5 class='text-black my-1'>$nombre_producto</h5>
+                                            <h6 class='text-secondary'>$$precio</h6>
+                                        </div>
                                     </div>
-                                    <div class='card-body text-begin'>
-                                        <h6 class='text-secondary m-0'>$marca_producto</h6>
-                                        <h5 class='text-black my-1'>$nombre_producto</h5>
-                                        <h6 class='text-secondary'>$$precio</h6>
-                                    </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         ";
                     }
-                    echo "</div>";
                 } else {
                     echo "<p>No se encontraron productos que coincidan con los filtros o destacados.</p>";
                 }
                 ?>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -255,7 +258,7 @@ if (isset($_SESSION['user_id'])) {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.form-control[type="search"]');
-    const productContainer = document.querySelector('.row.d-flex.justify-content-center');
+    const productContainer = document.querySelector('.row.gx-2.gy-3');
 
    // Función para cargar productos según la búsqueda
    function cargarProductos(query = '') {
