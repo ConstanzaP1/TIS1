@@ -231,7 +231,7 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </div>
 </nav>
-<div><a href='../index.php' class='btn btn-secondary ms-2 mt-1 rounded-pill px-5'>Volver al Catálogo</a></div>
+
 <div class="container py-2">
 
     <?php
