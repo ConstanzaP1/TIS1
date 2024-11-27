@@ -1,7 +1,24 @@
 <?php
 session_start();
 require('../conexion.php');
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login/login.php");
+    exit();
+}
 
+// Obtener datos del usuario
+$user_id = $_SESSION['user_id'];
+$queryUser = "SELECT username, img FROM users WHERE id = ?";
+$stmtUser = $conexion->prepare($queryUser);
+$stmtUser->bind_param("i", $user_id);
+$stmtUser->execute();
+$resultUser = $stmtUser->get_result();
+$userData = $resultUser->fetch_assoc();
+$stmtUser->close();
+
+// Establecer imagen de perfil por defecto si no se encuentra en la base de datos
+$img_url = $userData['img'] ?? 'https://static.vecteezy.com/system/resources/previews/007/167/661/non_2x/user-blue-icon-isolated-on-white-background-free-vector.jpg';
 // Eliminar un producto del comparador
 if (isset($_POST['eliminar_comparador'])) {
     $id_producto = $_POST['id_producto'];
@@ -275,6 +292,8 @@ cargar_productos_y_caracteristicas();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparador de Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         .navbar {
             background-color: rgba(0, 128, 255, 0.5);

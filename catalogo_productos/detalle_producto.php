@@ -1,5 +1,25 @@
 <?php
     session_start();
+    require('../conexion.php');
+    // Consulta para obtener la URL de la imagen del usuario actual
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+
+    // Consulta para obtener la URL de la imagen del usuario actual
+    $query = "SELECT img FROM users WHERE id = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    // Verifica si se encontró la imagen
+    $img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay una en la BD
+} else {
+    // Usuario no está logeado, asignamos una imagen por defecto
+    $img_url = 'default-profile.png';
+}
+
     ?>
 
     <!DOCTYPE html>
@@ -25,6 +45,114 @@
     }
     .card-body{
         background-color: #e0e0e0;
+    }
+    .btn-carrito {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 20px;
+    padding: 10px 20px;
+    border: 2px solid #28a745; /* Color del borde */
+    border-radius: 25px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+    background-color: #28a745; /* Fondo verde */
+    color: #fff; /* Texto blanco */
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Transición para el efecto */
+}
+
+.btn-carrito:hover {
+    transform: scale(1.1); /* Aumenta el tamaño */
+    background-color: #28a745; /* Mantén el mismo color de fondo */
+    color: #fff; /* Mantén el color del texto */
+}
+.btn-eliminar-producto {
+    background-color: #dc3545; /* Color rojo para el botón */
+    color: #fff; /* Texto blanco */
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Transiciones suaves */
+    border-radius: 50px; /* Asegura que el botón sea redondeado */
+    padding: 0.5rem 2rem; /* Espaciado interno */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombras suaves */
+}
+
+.btn-eliminar-producto:hover {
+    transform: scale(1.1); /* Efecto de agrandamiento */
+    background-color: #c82333; /* Color ligeramente más oscuro */
+    color: #fff; /* Asegura que el texto siga siendo blanco */
+}
+
+/* Estilo para el botón del carrito */
+.btn-cart:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #721c24; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
+.btn-wishlist {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Transición suave para el efecto de crecer */
+}
+
+.btn-wishlist:hover {
+    transform: scale(1.1); /* Aumenta el tamaño al pasar el mouse */
+    background-color: red; /* Mantén el color de fondo */
+    color: white; /* Mantén el color del texto */
+}
+
+
+/* Estilo para el botón de comparar */
+.btn-comparar:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #155724; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
+
+.btn-comparador {
+    background-color: rgba(0, 128, 255, 0.5);   
+    border: none;
+    position: absolute;
+    top: 10px;
+    right: 70px;
+    z-index: 10;
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza el efecto de crecer y sombra */
+}
+
+.btn-comparador:hover {
+    transform: scale(1.1); /* Aumenta el tamaño */
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3); /* Mejora la sombra */
+    background-color: rgba(0, 128, 255, 0.5); /* Reaplica el color para evitar cambios */
+}
+.btn-deseos:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #721c24; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
+
+    .producto-detalle {
+        position: relative; /* Hace que el contenedor sea el contexto para elementos con position: absolute */
     }
     .star-rating {
     direction: rtl;
@@ -225,12 +353,10 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <!-- Logo -->
-        <div class="navbar-brand col-2  ">
-            <a href="../index.php">
-                <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
-            </a>
+        <div class="navbar-brand col-2">
+            <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
         </div>
-        
+
         <!-- Botón para colapsar el menú en pantallas pequeñas -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -238,38 +364,52 @@
 
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
+            
 
             <!-- Menú desplegable -->
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                        </svg>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../comparador/comparador.php'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-deseos p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../lista_deseos/lista_deseos.php'">
+                    <i class='fas fa-heart'></i>
+                    </button>
+                   
+                </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                            <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
                                 <li>
-                                    <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
+                                    <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>
                             <?php endif; ?>
-                            <li>
-                                <a class="dropdown-item" href="../lista_deseos/lista_deseos.php">Lista deseos</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="../comparador/comparador.php">Comparador</a>
-                            </li>
+
                             <li>
                                 <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                    <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                        </svg>
-                    </button>
-                    </li>
+                    <a class="dropdown-item" href="../perfil_usuario/perfil_usuario.php">
+                        <li class="nav-item ms-2">
+                            <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                        </li>
+                    </a>
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
@@ -280,7 +420,8 @@
     </div>
 </nav>
 
-<div class="container py-5">
+<div class="container py-2">
+
     
     <?php
     require('../conexion.php');
@@ -308,7 +449,8 @@
             $producto = mysqli_fetch_assoc($result_producto);
 
             ?>
-            <div class="container">
+            <div class="container ">
+                
                 <!-- Migajas de pan -->
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
@@ -623,18 +765,28 @@
 
             if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
                 
-                echo "
+                echo " 
                 <form method='POST' action='../carrito/agregar_al_carrito.php'>
                     <input type='hidden' name='id_producto' value='{$id_producto}'>
-                    <label>Cantidad:</label>
-                    <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
-                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
-                    <button type='submit' name='agregar_carrito' class='btn btn-outline-success mb-1  '>
-                        <i class='fa-solid fa-cart-shopping'></i>
-                    </button>
-                </form>
-            ";
-            
+                    <div class='mb-3'>
+                        <label for='cantidad'><strong>Cantidad:</strong></label>
+                        <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 d-inline-block'>
+                        <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                    </div>
+                    <hr>
+                    <div class='d-flex align-items-center gap-2'>
+                        <!-- Botón de agregar al carrito -->
+                        <button type='submit' name='agregar_carrito' class='btn btn-carrito'>
+                            <i class='fa-solid fa-cart-shopping'></i>
+                            <span>Agregar al Carrito</span>
+                        </button>
+
+                        <!-- Botón de wishlist al lado -->
+                        <button type='button' onclick='addToWishlist({$id_producto})' class='btn btn-wishlist'>
+                            <i class='fas fa-heart'></i>
+                        </button>
+                    </div>
+                </form>";
 
                 echo "
                         <button onclick='addToWishlist({$id_producto})' class='btn btn-outline-danger'>
@@ -653,19 +805,30 @@
                     echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
                 }
             } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
-                echo "
-                        <button onclick='addToWishlist({$id_producto})' class='btn btn-outline-danger'>
+               
+                echo " 
+                <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                    <input type='hidden' name='id_producto' value='{$id_producto}'>
+                    <div class='mb-3'>
+                        <label for='cantidad'><strong>Cantidad:</strong></label>
+                        <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 d-inline-block'>
+                        <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                    </div>
+                    <hr>
+                    <div class='d-flex align-items-center gap-2'>
+                        <!-- Botón de agregar al carrito -->
+                        <button type='submit' name='agregar_carrito' class='btn btn-carrito'>
+                            <i class='fa-solid fa-cart-shopping'></i>
+                            <span>Agregar al Carrito</span>
+                        </button>
+
+                        <!-- Botón de wishlist al lado -->
+                        <button type='button' onclick='addToWishlist({$id_producto})' class='btn btn-wishlist'>
                             <i class='fas fa-heart'></i>
-                        </button>";
-                echo "
-                        <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                            <input type='hidden' name='id_producto' value='{$id_producto}'>
-                            <label>Cantidad:</label>
-                            <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 mb-3'>
-                            <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
-                            <button type='submit' name='agregar_carrito' class='btn btn-primary rounded-pill px-5'>Agregar al Carrito</button>
-                        </form>
-                        ";
+                        </button>
+                    </div>
+                </form>";
+
                 echo "
                         <button onclick='agregarAlComparador($id_producto)' class='btn btn-primary rounded-pill px-5 mt-3'>
                             Agregar al Comparador
