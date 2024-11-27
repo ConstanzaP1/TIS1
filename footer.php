@@ -1,36 +1,30 @@
-<footer class="sticky-footer" style="background-color: rgba(0, 128, 255, 0.5); padding: 20px; color: white; text-align: center; font-size: 14px;">
-  <div class="container">
-    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center;">
-      <!-- Sección de enlaces -->
-      <div style="flex: 1; min-width: 200px; margin-bottom: 10px;">
-        <h4>Enlaces útiles</h4>
-        <ul style="list-style: none; padding: 0; line-height: 1.8;">
-          <li><a href="#" style="color: white; text-decoration: none;">Inicio</a></li>
-          <li><a href="#" style="color: white; text-decoration: none;">Acerca de</a></li>
-          <li><a href="#" style="color: white; text-decoration: none;">Servicios</a></li>
-          <li><a href="#" style="color: white; text-decoration: none;">Contacto</a></li>
-        </ul>
-      </div>
-
-      <!-- Sección de redes sociales -->
-      <div style="flex: 1; min-width: 200px; margin-bottom: 10px;">
-        <h4>Síguenos</h4>
-        <div>
-          <a href="#" style="margin: 0 10px; color: white; text-decoration: none;">Facebook</a>
-          <a href="#" style="margin: 0 10px; color: white; text-decoration: none;">Twitter</a>
-          <a href="#" style="margin: 0 10px; color: white; text-decoration: none;">Instagram</a>
+<footer style="background-color: #f9f9f9; padding: 2%; font-family: Arial, sans-serif; width: 100%;">
+    <div style="width: 90%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <!-- Logo -->
+        <div style="margin-bottom: 2%;">
+            <img src="logopng.png" alt="Logo Tisnology" style="width: 100%; max-width: 150px; height: auto;">
         </div>
-      </div>
 
-      <!-- Sección de contacto -->
-      <div style="flex: 1; min-width: 200px; margin-bottom: 10px;">
-        <h4>Contacto</h4>
-        <p style="margin: 5px 0;">Email: contacto@tuempresa.com</p>
-        <p style="margin: 5px 0;">Teléfono: +123 456 7890</p>
-      </div>
+        <!-- Links -->
+        <div style="margin-bottom: 2%; font-size: 1em;">
+            <a href="#" style="margin: 0 2%; text-decoration: none; color: #333;">Términos y Condiciones</a> |
+            <a href="#" style="margin: 0 2%; text-decoration: none; color: #333;">Quiénes Somos</a> |
+            <a href="#" style="margin: 0 2%; text-decoration: none; color: #333;">Privacidad y Seguridad</a>
+        </div>
+
+        <!-- Social Media -->
+        <div style="margin-bottom: 2%;">
+            <p style="font-size: 1em; margin-bottom: 1%;">Síguenos</p>
+            <a href="https://instagram.com" target="_blank" style="text-decoration: none;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 5%; max-width: 40px; height: auto;">
+            </a>
+        </div>
+
+        <!-- Copyright -->
+        <div>
+            <p style="color: #777; font-size: 0.9em;">
+                © 2024 Tisnology. Todos los derechos reservados.
+            </p>
+        </div>
     </div>
-
-    <hr style="border: 0; height: 1px; background-color: white; margin: 20px 0;">
-    <p style="margin: 0;">© 2024 Tisnology. Todos los derechos reservados.</p>
-  </div>
 </footer>
