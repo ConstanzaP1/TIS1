@@ -61,6 +61,15 @@ if (isset($_SESSION['user_id'])) {
     .card-body{
         background-color: #e0e0e0;
     }
+    .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Aumenta el tamaño de la tarjeta */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Agrega una sombra */
+}
+
     /* Estilo para el botón del carrito */
 .btn-cart:hover {
     background-color: white; /* Cambia el fondo al pasar el mouse */

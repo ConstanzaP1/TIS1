@@ -362,10 +362,11 @@ footer {
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <!-- Logo -->
-        <div class="navbar-brand col-2">
-            <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+        <div class="navbar-brand col-2  ">
+            <a href="../index.php">
+                <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+            </a>
         </div>
-
         <!-- Botón para colapsar el menú en pantallas pequeñas -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -373,10 +374,9 @@ footer {
 
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            
-
             <!-- Menú desplegable -->
             <ul class="navbar-nav ms-auto align-items-center">
+            <?php if (isset($_SESSION['user_id'])): ?>
                 <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
@@ -395,8 +395,8 @@ footer {
                     <button type="button" class="btn btn-deseos p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../lista_deseos/lista_deseos.php'">
                     <i class='fas fa-heart'></i>
                     </button>
-                   
                 </li>
+            <?php endif; ?>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -430,8 +430,6 @@ footer {
 </nav>
 
 <div class="container py-2">
-
-    
     <?php
     require('../conexion.php');
 
@@ -762,9 +760,7 @@ footer {
                         // Mostrar el botón si el producto fue comprado
                         if ($compra['comprado'] > 0) {
                             echo "
-                                <a href='../postventa/postventa.php?id_producto=" . htmlspecialchars($id_producto) . "' class='btn btn-primary mt-3'>
-                                    ¿Tienes problemas con este producto? Ir a Postventa
-                                </a>
+                                
                             ";
                         } else {
                         
@@ -777,12 +773,13 @@ footer {
                 echo " 
                 <form method='POST' action='../carrito/agregar_al_carrito.php'>
                     <input type='hidden' name='id_producto' value='{$id_producto}'>
+                    <hr>
                     <div class='mb-3'>
                         <label for='cantidad'><strong>Cantidad:</strong></label>
                         <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 d-inline-block'>
                         <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
                     </div>
-                    <hr>
+                    
                     <div class='d-flex align-items-center gap-2'>
                         <!-- Botón de agregar al carrito -->
                         <button type='submit' name='agregar_carrito' class='btn btn-carrito'>
@@ -879,118 +876,112 @@ footer {
                     // Contenedor con sistema de columnas
                     ?>
                     <div class="row mt-4">
-                        <div class="col-12">
-                    <?php
-                    echo "<h3 class='me-2'>Reseñas</h3>";
-                    echo "<span class='me-3' style='font-size: 1.5rem; color: gold;'>";
-                    for ($i = 1; $i <= 5; $i++) {
-                        echo $i <= $media_valoracion ? "&#9733;" : "&#9734;";
-                    }
-                    echo "</span>";
-                    echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
-                    echo "</div>";
-                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'){
-                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
-                            Agregar Reseña
-                          </button>";
-                    }
-                    elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
-                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
-                            Agregar Reseña
-                          </button>";
-                    }
-                    elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'superadmin'){
-                        echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
-                            Agregar Reseña
-                          </button>";
-                    }
-                    echo "</div>";
-                    echo "<hr>";
-                    if (mysqli_num_rows($result_resenas) > 0) {
-                        while ($resena = mysqli_fetch_assoc($result_resenas)) {
-                            $valoracion = intval($resena['valoracion']);
-                            echo "<div class='card mb-3'>";
-                            echo "<div class='cardbody'>";
-                            echo "<h5 class='card-title'>";
-                            for ($i = 1; $i <= 5; $i++) {
-                                echo $i <= $valoracion ? "&#9733;" : "&#9734;";
-                            }
-                            echo " - " . htmlspecialchars($resena['username']) . "</h5>";
-                            echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
-                            echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
-                            echo "</div>";
-                            echo "</div>";
-                        }
-                } else {
-                    echo "<div class='alert alert-secondary'>Aún no hay reseñas para este producto.</div>";
-                }
-
-                if (isset($_SESSION['user_id'])) {
-                    $user_id = $_SESSION['user_id'];
-                
-                    // Obtener el nombre del producto actual
-                    $query_nombre_producto = "SELECT nombre_producto FROM producto WHERE id_producto = '$id_producto'";
-                    $result_nombre_producto = mysqli_query($conexion, $query_nombre_producto);
-                    $nombre_producto = mysqli_fetch_assoc($result_nombre_producto)['nombre_producto'];
-                
-                    // Validar que se obtuvo el nombre del producto
-                    if ($nombre_producto) {
-                        // Escapar caracteres especiales para el formato JSON
-                        $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
-                
-                        // Consulta para verificar si el producto fue comprado por nombre en el formato JSON
-                        $query_compra = "SELECT COUNT(*) AS comprado
-                                         FROM boletas
-                                         WHERE id_usuario = '$user_id' 
-                                         AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'";
-                        $result_compra = mysqli_query($conexion, $query_compra);
-                        $compra = mysqli_fetch_assoc($result_compra);
-                        if ($compra['comprado'] > 0) {
-                        ?>   
-                        <!-- Modal para agregar reseña -->
-                        <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Agregar Reseña</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="formAgregarResena">
-                                            <div class="form-group">
-                                                <label for="valoracion">Valoración:</label>
-                                                <div class="star-rating">
-                                                    <input type="radio" name="valoracion" value="5" id="star-5">
-                                                    <label for="star-5" title="5 estrellas">&#9733;</label>
-                                                    <input type="radio" name="valoracion" value="4" id="star-4">
-                                                    <label for="star-4" title="4 estrellas">&#9733;</label>
-                                                    <input type="radio" name="valoracion" value="3" id="star-3">
-                                                    <label for="star-3" title="3 estrellas">&#9733;</label>
-                                                    <input type="radio" name="valoracion" value="2" id="star-2">
-                                                    <label for="star-2" title="2 estrellas">&#9733;</label>
-                                                    <input type="radio" name="valoracion" value="1" id="star-1">
-                                                    <label for="star-1" title="1 estrella">&#9733;</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="comentario">Comentario:</label>
-                                                <textarea name="comentario" id="comentario" class="form-control" rows="3" required></textarea>
-                                            </div>
-                                            <button type="button" onclick="agregarResena(<?php echo $id_producto; ?>)" class="btn btn-primary mt-2">Enviar Reseña</button>
-                                        </form>
-                                    </div>
-                                </div>
+                        <div class="col-12 d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <?php
+                                echo "<h3 class='me-2'>Reseñas</h3>";
+                                echo "<span class='me-3' style='font-size: 1.5rem; color: gold;'>";
+                                for ($i = 1; $i <= 5; $i++) {
+                                    echo $i <= $media_valoracion ? "&#9733;" : "&#9734;";
+                                }
+                                echo "</span>";
+                                echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
+                                ?>
                             </div>
-
-                        <?php 
+                            <?php
+                            if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['user', 'admin', 'superadmin'])) {
+                                echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                                        Agregar Reseña
+                                      </button>";
+                            }
+                            ?>
+                        </div>
+                        <hr>
+                        <?php
+                        if (mysqli_num_rows($result_resenas) > 0) {
+                            while ($resena = mysqli_fetch_assoc($result_resenas)) {
+                                $valoracion = intval($resena['valoracion']);
+                                echo "<div class='card mb-3'>";
+                                echo "<div class=''>";
+                                echo "<h5 class='card-title'>";
+                                for ($i = 1; $i <= 5; $i++) {
+                                    echo $i <= $valoracion ? "&#9733;" : "&#9734;";
+                                }
+                                echo " - " . htmlspecialchars($resena['username']) . "</h5>";
+                                echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
+                                echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
+                                echo "</div>";
+                                echo "</div>";
+                            }
                         } else {
-                            echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";
+                            echo "<div class='alert alert-secondary'>Aún no hay reseñas para este producto.</div>";
                         }
-                    } else {
-                        echo "<div class='alert alert-danger'>Error: No se encontró el nombre del producto.</div>";
-                    }                
-                    
-                }
+
+                        if (isset($_SESSION['user_id'])) {
+                            $user_id = $_SESSION['user_id'];
+                        
+                            // Obtener el nombre del producto actual
+                            $query_nombre_producto = "SELECT nombre_producto FROM producto WHERE id_producto = '$id_producto'";
+                            $result_nombre_producto = mysqli_query($conexion, $query_nombre_producto);
+                            $nombre_producto = mysqli_fetch_assoc($result_nombre_producto)['nombre_producto'];
+                        
+                            // Validar que se obtuvo el nombre del producto
+                            if ($nombre_producto) {
+                                // Escapar caracteres especiales para el formato JSON
+                                $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
+                            
+                                // Consulta para verificar si el producto fue comprado por nombre en el formato JSON
+                                $query_compra = "SELECT COUNT(*) AS comprado
+                                                 FROM boletas
+                                                 WHERE id_usuario = '$user_id' 
+                                                 AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'";
+                                $result_compra = mysqli_query($conexion, $query_compra);
+                                $compra = mysqli_fetch_assoc($result_compra);
+                                if ($compra['comprado'] > 0) {
+                                ?>   
+                                <!-- Modal para agregar reseña -->
+                                <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Agregar Reseña</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="formAgregarResena">
+                                                    <div class="form-group">
+                                                        <label for="valoracion">Valoración:</label>
+                                                        <div class="star-rating">
+                                                            <input type="radio" name="valoracion" value="5" id="star-5">
+                                                            <label for="star-5" title="5 estrellas">&#9733;</label>
+                                                            <input type="radio" name="valoracion" value="4" id="star-4">
+                                                            <label for="star-4" title="4 estrellas">&#9733;</label>
+                                                            <input type="radio" name="valoracion" value="3" id="star-3">
+                                                            <label for="star-3" title="3 estrellas">&#9733;</label>
+                                                            <input type="radio" name="valoracion" value="2" id="star-2">
+                                                            <label for="star-2" title="2 estrellas">&#9733;</label>
+                                                            <input type="radio" name="valoracion" value="1" id="star-1">
+                                                            <label for="star-1" title="1 estrella">&#9733;</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="comentario">Comentario:</label>
+                                                        <textarea name="comentario" id="comentario" class="form-control" rows="3" required></textarea>
+                                                    </div>
+                                                    <button type="button" onclick="agregarResena(<?php echo $id_producto; ?>)" class="btn btn-primary mt-2">Enviar Reseña</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                <?php 
+                                } else {
+                                    echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";
+                                }
+                            } else {
+                                echo "<div class='alert alert-danger'>Error: No se encontró el nombre del producto.</div>";
+                            }                   
+                        }
             } else {
                 echo "<p>Producto no encontrado.</p>";
             }
@@ -1056,6 +1047,7 @@ function agregarResena(idProducto) {
     });
 }
 </script>
+
 <script>
 function eliminarProducto(id_producto) {
     Swal.fire({
@@ -1109,6 +1101,7 @@ function eliminarProducto(id_producto) {
     });
 }
 </script>
+
 <script>
 function addToWishlist(idProducto) {
     fetch('../lista_deseos/agregar_a_lista.php', {
@@ -1160,12 +1153,9 @@ document.querySelectorAll("form").forEach(form => {
         });
     });
 </script>
-<!-- Bootstrap JS -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<footer class="container-fluid border">
-<?php include "../footer.php"; ?>
-</footer>
 </html>
 
 

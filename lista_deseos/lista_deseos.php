@@ -235,8 +235,8 @@ body {
             <p>No hay productos en la lista de deseos.</p>
         </div>
     <?php endif; ?>
-    
 </div>
+<?php include "../footer.php"?>
 <script>
     function removeFromWishlist(producto_id) {
     fetch('../lista_deseos/eliminar_producto.php', {

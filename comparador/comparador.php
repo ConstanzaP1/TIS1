@@ -457,6 +457,7 @@ $mejor_producto_id = !empty($_SESSION['puntajes']) ? array_keys($_SESSION['punta
             <?php endif; ?>
         </div>
     </div>
+    <?php include "../footer.php"?>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </html>
