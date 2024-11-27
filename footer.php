@@ -1,30 +1,32 @@
-<footer style="background-color: #f9f9f9; padding: 2%; font-family: Arial, sans-serif; width: 100%;">
-    <div style="width: 90%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center;">
+<?php require_once 'config.php'; ?>
+
+<footer class="bg-light py-4">
+    <div class="container-fluid text-center">
         <!-- Logo -->
-        <div style="margin-bottom: 2%;">
-            <img src="logopng.png" alt="Logo Tisnology" style="width: 100%; max-width: 150px; height: auto;">
+        <div class="mb-4">
+            <img src="<?php echo BASE_URL; ?>logopng.png" alt="Logo Tisnology" class="img-fluid" style="max-width: 150px;">
         </div>
 
         <!-- Links -->
-        <div style="margin-bottom: 2%; font-size: 1em;">
-            <a href="#" style="margin: 0 2%; text-decoration: none; color: #333;">Términos y Condiciones</a> |
-            <a href="#" style="margin: 0 2%; text-decoration: none; color: #333;">Quiénes Somos</a> |
-            <a href="#" style="margin: 0 2%; text-decoration: none; color: #333;">Privacidad y Seguridad</a>
+        <div class="mb-4">
+            <a href="#" class="text-decoration-none text-dark mx-2">Términos y Condiciones</a> |
+            <a href="#" class="text-decoration-none text-dark mx-2">Quiénes Somos</a> |
+            <a href="#" class="text-decoration-none text-dark mx-2">Política de Privacidad</a> |
+            <a href="#" class="text-decoration-none text-dark mx-2">Política de Reembolso</a>
         </div>
 
-        <!-- Social Media -->
-        <div style="margin-bottom: 2%;">
-            <p style="font-size: 1em; margin-bottom: 1%;">Síguenos</p>
-            <a href="https://instagram.com" target="_blank" style="text-decoration: none;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 5%; max-width: 40px; height: auto;">
-            </a>
+        <!-- Línea de separación -->
+        <hr class="my-4">
+
+        <!-- Contact Information -->
+        <div class="mb-4">
+            <p class="mb-1 text-dark">Contáctanos</p>
+            <p class="mb-0 text-dark">tisnology1@gmail.com</p>
         </div>
 
         <!-- Copyright -->
         <div>
-            <p style="color: #777; font-size: 0.9em;">
-                © 2024 Tisnology. Todos los derechos reservados.
-            </p>
+            <p class="text-muted mb-0">© 2024 Tisnology. Todos los derechos reservados.</p>
         </div>
     </div>
 </footer>

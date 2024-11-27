@@ -373,6 +373,7 @@ if (isset($_POST['pagar'])) {
         </form>
     <?php endif; ?>
 </div>
+<?php include "../footer.php"; ?>
 
 <script>
     const map = L.map('map').setView([-36.82699, -73.04977], 13);

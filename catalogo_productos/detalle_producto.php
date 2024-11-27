@@ -16,6 +16,15 @@
 
     </head>
 <style>
+    body {
+    margin: 0;
+    padding: 0;
+}
+footer {
+    width: 100%;
+    margin: 0; /* Quitar márgenes externos */
+    padding: 0; /* Ajustar cualquier padding extra */
+}
     .navbar{
         background-color: rgba(0, 128, 255, 0.5);   
     }
@@ -280,7 +289,7 @@
     </div>
 </nav>
 
-<div class="container py-5">
+<div class="container py-2">
     
     <?php
     require('../conexion.php');
@@ -824,6 +833,7 @@
     mysqli_close($conexion);
 ?>
 </div>
+
 <script>
 function agregarResena(idProducto) {
     const valoracion = document.querySelector('input[name="valoracion"]:checked');
@@ -980,8 +990,12 @@ document.querySelectorAll("form").forEach(form => {
         });
     });
 </script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+<footer class="container-fluid border">
+<?php include "../footer.php"; ?>
+</footer>
+</html>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
-    </html>
+
