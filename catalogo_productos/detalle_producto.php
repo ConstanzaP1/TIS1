@@ -851,18 +851,16 @@
                                 ORDER BY rv.fecha DESC";
                 $result_resenas = mysqli_query($conexion, $query_resenas);
 
-                // Calcular la media de las valoraciones
                 $query_media_valoracion = "SELECT AVG(valoracion) AS media_valoracion FROM resena_valoracion WHERE id_producto = '$id_producto'";
                 $result_media_valoracion = mysqli_query($conexion, $query_media_valoracion);
                 $media_valoracion = 0;
                 if ($result_media_valoracion && mysqli_num_rows($result_media_valoracion) > 0) {
-                    $media_valoracion = round(mysqli_fetch_assoc($result_media_valoracion)['media_valoracion'], 1); // Redondear a 1 decimal
+                    $media_valoracion = round(mysqli_fetch_assoc($result_media_valoracion)['media_valoracion'], 1); 
                 }               
 
                     ?> <br> <?php
                     echo "<div class='row bg-white px-5 py-3 shadow border'>";
 
-                    // Contenedor con sistema de columnas
                     ?>
                     <div class="row mt-4">
                         <div class="col-12 d-flex align-items-center justify-content-between flex-wrap">
@@ -877,15 +875,6 @@
                                 echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
                                 ?>
                             </div>
-                            <?php
-                            if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['user', 'admin', 'superadmin'])) {
-                                echo "<div class='mt-2 mt-md-0'>
-                                        <button type='button' class='btn btn-primary rounded-pill w-100 w-md-auto my-2' data-bs-toggle='modal' data-bs-target='#modalAgregarResena'>
-                                            Agregar Reseña
-                                        </button>
-                                      </div>";
-                            }
-                            ?>
                         </div>
                     </div>
                         <hr>
@@ -931,6 +920,11 @@
                                 $compra = mysqli_fetch_assoc($result_compra);
                                 if ($compra['comprado'] > 0) {
                                 ?>   
+                                <div class='mt-2 mt-md-0'>
+                                    <button type='button' class='btn btn-primary rounded-pill w-md-auto my-2' data-bs-toggle='modal' data-bs-target='#modalAgregarResena'>
+                                        Agregar Reseña
+                                    </button>
+                                </div>
                                 <!-- Modal para agregar reseña -->
                                 <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -965,7 +959,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                
+                                </div>
                                 <?php 
                                 } else {
                                     echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";
