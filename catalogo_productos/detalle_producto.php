@@ -2,164 +2,161 @@
     session_start();
     require('../conexion.php');
     // Consulta para obtener la URL de la imagen del usuario actual
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
 
-    // Consulta para obtener la URL de la imagen del usuario actual
-    $query = "SELECT img FROM users WHERE id = ?";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+        // Consulta para obtener la URL de la imagen del usuario actual
+        $query = "SELECT img FROM users WHERE id = ?";
+        $stmt = $conexion->prepare($query);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
 
-    // Verifica si se encontró la imagen
-    $img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay una en la BD
-} else {
-    // Usuario no está logeado, asignamos una imagen por defecto
-    $img_url = 'default-profile.png';
-}
-
+        // Verifica si se encontró la imagen
+        $img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay una en la BD
+    } else {
+        // Usuario no está logeado, asignamos una imagen por defecto
+        $img_url = 'default-profile.png';
+    }
     ?>
-
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Detalle del Producto</title>
-        <!-- Bootstrap CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    </head>
-<style>
-    body {
-    margin: 0;
-    padding: 0;
-}
-footer {
-    width: 100%;
-    margin: 0; /* Quitar márgenes externos */
-    padding: 0; /* Ajustar cualquier padding extra */
-}
-    .navbar{
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+        }
+        footer {
+            width: 100%;
+            margin: 0; /* Quitar márgenes externos */
+            padding: 0; /* Ajustar cualquier padding extra */
+        }
+        .navbar{
+            background-color: rgba(0, 128, 255, 0.5);   
+        }
+        .celeste-background{
+            background-color: rgba(0, 128, 255, 0.5); 
+            border-color: rgba(0, 128, 255, 0.5);   
+        }
+        .card-body{
+            background-color: #e0e0e0;
+        }
+        .btn-carrito {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-size: 20px;
+        padding: 10px 20px;
+        border: 2px solid #28a745; /* Color del borde */
+        border-radius: 25px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+        background-color: #28a745; /* Fondo verde */
+        color: #fff; /* Texto blanco */
+        cursor: pointer;
+        transition: transform 0.3s ease; /* Transición para el efecto */
+    }
+    
+    .btn-carrito:hover {
+        transform: scale(1.1); /* Aumenta el tamaño */
+        background-color: #28a745; /* Mantén el mismo color de fondo */
+        color: #fff; /* Mantén el color del texto */
+    }
+    .btn-eliminar-producto {
+        background-color: #dc3545; /* Color rojo para el botón */
+        color: #fff; /* Texto blanco */
+        border: none;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s ease; /* Transiciones suaves */
+        border-radius: 50px; /* Asegura que el botón sea redondeado */
+        padding: 0.5rem 2rem; /* Espaciado interno */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombras suaves */
+    }
+    
+    .btn-eliminar-producto:hover {
+        transform: scale(1.1); /* Efecto de agrandamiento */
+        background-color: #c82333; /* Color ligeramente más oscuro */
+        color: #fff; /* Asegura que el texto siga siendo blanco */
+    }
+    
+    /* Estilo para el botón del carrito */
+    .btn-cart:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: #721c24; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
+    .btn-wishlist {
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        height: 50px;
+        width: 50px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        font-size: 20px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        cursor: pointer;
+        transition: transform 0.3s ease; /* Transición suave para el efecto de crecer */
+    }
+    
+    .btn-wishlist:hover {
+        transform: scale(1.1); /* Aumenta el tamaño al pasar el mouse */
+        background-color: red; /* Mantén el color de fondo */
+        color: white; /* Mantén el color del texto */
+    }
+    
+    
+    /* Estilo para el botón de comparar */
+    .btn-comparar:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: #155724; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
+    
+    .btn-comparador {
         background-color: rgba(0, 128, 255, 0.5);   
+        border: none;
+        position: absolute;
+        top: 10px;
+        right: 70px;
+        z-index: 10;
+        cursor: pointer;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        object-fit: cover;
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza el efecto de crecer y sombra */
     }
-    .celeste-background{
-        background-color: rgba(0, 128, 255, 0.5); 
-        border-color: rgba(0, 128, 255, 0.5);   
+    
+    .btn-comparador:hover {
+        transform: scale(1.1); /* Aumenta el tamaño */
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3); /* Mejora la sombra */
+        background-color: rgba(0, 128, 255, 0.5); /* Reaplica el color para evitar cambios */
     }
-    .card-body{
-        background-color: #e0e0e0;
+    .btn-deseos:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: #721c24; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
     }
-    .btn-carrito {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-size: 20px;
-    padding: 10px 20px;
-    border: 2px solid #28a745; /* Color del borde */
-    border-radius: 25px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
-    background-color: #28a745; /* Fondo verde */
-    color: #fff; /* Texto blanco */
-    cursor: pointer;
-    transition: transform 0.3s ease; /* Transición para el efecto */
-}
-
-.btn-carrito:hover {
-    transform: scale(1.1); /* Aumenta el tamaño */
-    background-color: #28a745; /* Mantén el mismo color de fondo */
-    color: #fff; /* Mantén el color del texto */
-}
-.btn-eliminar-producto {
-    background-color: #dc3545; /* Color rojo para el botón */
-    color: #fff; /* Texto blanco */
-    border: none;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease; /* Transiciones suaves */
-    border-radius: 50px; /* Asegura que el botón sea redondeado */
-    padding: 0.5rem 2rem; /* Espaciado interno */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombras suaves */
-}
-
-.btn-eliminar-producto:hover {
-    transform: scale(1.1); /* Efecto de agrandamiento */
-    background-color: #c82333; /* Color ligeramente más oscuro */
-    color: #fff; /* Asegura que el texto siga siendo blanco */
-}
-
-/* Estilo para el botón del carrito */
-.btn-cart:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
-.btn-wishlist {
-    background-color: red;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    height: 50px;
-    width: 50px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    font-size: 20px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
-    cursor: pointer;
-    transition: transform 0.3s ease; /* Transición suave para el efecto de crecer */
-}
-
-.btn-wishlist:hover {
-    transform: scale(1.1); /* Aumenta el tamaño al pasar el mouse */
-    background-color: red; /* Mantén el color de fondo */
-    color: white; /* Mantén el color del texto */
-}
-
-
-/* Estilo para el botón de comparar */
-.btn-comparar:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #155724; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
-
-.btn-comparador {
-    background-color: rgba(0, 128, 255, 0.5);   
-    border: none;
-    position: absolute;
-    top: 10px;
-    right: 70px;
-    z-index: 10;
-    cursor: pointer;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    object-fit: cover;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza el efecto de crecer y sombra */
-}
-
-.btn-comparador:hover {
-    transform: scale(1.1); /* Aumenta el tamaño */
-    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3); /* Mejora la sombra */
-    background-color: rgba(0, 128, 255, 0.5); /* Reaplica el color para evitar cambios */
-}
-.btn-deseos:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
-
+    
     .producto-detalle {
         position: relative; /* Hace que el contenedor sea el contexto para elementos con position: absolute */
     }
@@ -292,147 +289,144 @@ footer {
     .modal-content {
         animation: fadeInModal 0.3s ease;
     }
-
+    
     @keyframes fadeInModal {
-        from {
-            transform: translateY(-20px);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
     }
-    <style>
+
     @media (max-width: 768px) {
-    .producto-detalle {
-        flex-direction: column; /* Cambiar la disposición a columna */
+        .producto-detalle {
+            flex-direction: column; /* Cambiar la disposición a columna */
+        }
+    
+        .producto-detalle .image-container {
+            margin-bottom: 20px; /* Separar la imagen del contenido */
+        }
+    
+        .producto-info {
+            text-align: left; /* Mantener texto alineado a la izquierda */
+        }
+    
+        .producto-info button {
+            width: 100%; /* Asegurar que los botones ocupen todo el ancho */
+        }
+    
+        /* Estilo para las reseñas */
+        .card {
+            width: 100%; /* Hacer que las tarjetas ocupen el ancho completo */
+        }
     }
-
-    .producto-detalle .image-container {
-        margin-bottom: 20px; /* Separar la imagen del contenido */
+    
+    @media (max-width: 576px) {
+        .producto-info h1 {
+            font-size: 1.5rem; /* Reducir el tamaño del título en teléfonos pequeños */
+        }
+    
+        .producto-info ul {
+            font-size: 0.9rem; /* Reducir el tamaño del texto de las características */
+        }
     }
-
-    .producto-info {
-        text-align: left; /* Mantener texto alineado a la izquierda */
+    
+    .breadcrumb {
+        background-color: #f9f9f9;
+        font-size: 0.9rem;
     }
-
-    .producto-info button {
-        width: 100%; /* Asegurar que los botones ocupen todo el ancho */
+    
+    .breadcrumb .breadcrumb-item a {
+        transition: color 0.2s ease-in-out;
     }
-
-    /* Estilo para las reseñas */
-    .card {
-        width: 100%; /* Hacer que las tarjetas ocupen el ancho completo */
+    
+    .breadcrumb .breadcrumb-item a:hover {
+        color: #0056b3;
+        text-decoration: underline;
     }
-}
-
-@media (max-width: 576px) {
-    .producto-info h1 {
-        font-size: 1.5rem; /* Reducir el tamaño del título en teléfonos pequeños */
+    
+    .breadcrumb .breadcrumb-item.active {
+        font-weight: bold;
+        color: #333;
     }
-
-    .producto-info ul {
-        font-size: 0.9rem; /* Reducir el tamaño del texto de las características */
-    }
-}
-
-.breadcrumb {
-    background-color: #f9f9f9;
-    font-size: 0.9rem;
-}
-
-.breadcrumb .breadcrumb-item a {
-    transition: color 0.2s ease-in-out;
-}
-
-.breadcrumb .breadcrumb-item a:hover {
-    color: #0056b3;
-    text-decoration: underline;
-}
-
-.breadcrumb .breadcrumb-item.active {
-    font-weight: bold;
-    color: #333;
-}
 </style>
 
-<body>
-        
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <!-- Logo -->
-        <div class="navbar-brand col-2  ">
-            <a href="../index.php">
-                <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
-            </a>
-        </div>
-        <!-- Botón para colapsar el menú en pantallas pequeñas -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<body>        
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <div class="navbar-brand col-2  ">
+                <a href="../index.php">
+                    <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+                </a>
+            </div>
+            <!-- Botón para colapsar el menú en pantallas pequeñas -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <!-- Contenido de la navbar -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Menú desplegable -->
-            <ul class="navbar-nav ms-auto align-items-center">
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <li class="nav-item">
-                    <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                        </svg>
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../comparador/comparador.php'">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
-                        </svg>
-                    </button>
-                </li>
-                <li>
-                    <button type="button" class="btn btn-deseos p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../lista_deseos/lista_deseos.php'">
-                    <i class='fas fa-heart'></i>
-                    </button>
-                </li>
-            <?php endif; ?>
+            <!-- Contenido de la navbar -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Menú desplegable -->
+                <ul class="navbar-nav ms-auto align-items-center">
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
-                                <li>
-                                    <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
-                                </li>
-                            <?php endif; ?>
-
-                            <li>
-                                <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <a class="dropdown-item" href="../perfil_usuario/perfil_usuario.php">
-                        <li class="nav-item ms-2">
-                            <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                        </li>
-                    </a>
-                <?php else: ?>
                     <li class="nav-item">
-                        <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
+                        <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                            </svg>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../comparador/comparador.php'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+                            </svg>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-deseos p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../lista_deseos/lista_deseos.php'">
+                        <i class='fas fa-heart'></i>
+                        </button>
                     </li>
                 <?php endif; ?>
-            </ul>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
+                                    <li>
+                                        <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
+                                    </li>
+                                <?php endif; ?>
+
+                                <li>
+                                    <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <a class="dropdown-item" href="../perfil_usuario/perfil_usuario.php">
+                            <li class="nav-item ms-2">
+                                <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                            </li>
+                        </a>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<div class="container py-2">
+    <div class="container py-2">
     <?php
-    require('../conexion.php');
-
     if (isset($_GET['id_producto'])){ 
         $id_producto = $_GET['id_producto'];
 
@@ -954,169 +948,169 @@ footer {
         echo "<p>Producto no encontrado.</p>";
     }
     mysqli_close($conexion);
-?>
-</div>
-
-<script>
-function agregarResena(idProducto) {
-    const valoracion = document.querySelector('input[name="valoracion"]:checked');
-    const comentario = document.getElementById('comentario').value;
-
-    if (!valoracion) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Valoración requerida',
-            text: 'Por favor selecciona una valoración.'
-        });
-        return;
-    }
-
-    const formData = new URLSearchParams();
-    formData.append('valoracion', valoracion.value);
-    formData.append('comentario', comentario);
-
-    fetch(`../reseñas_valoraciones/procesar_resena.php?id_producto=${idProducto}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formData.toString()
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
+    ?>
+    </div>
+    
+    <script>
+    function agregarResena(idProducto) {
+        const valoracion = document.querySelector('input[name="valoracion"]:checked');
+        const comentario = document.getElementById('comentario').value;
+    
+        if (!valoracion) {
             Swal.fire({
-                icon: 'success',
-                title: 'Reseña agregada',
-                text: 'Gracias por tu reseña. Ha sido agregada exitosamente.'
-            }).then(() => {
-                // Recargar la página para mostrar la reseña agregada
-                location.reload();
+                icon: 'warning',
+                title: 'Valoración requerida',
+                text: 'Por favor selecciona una valoración.'
             });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Hubo un problema al agregar tu reseña. Intenta de nuevo.'
-            });
+            return;
         }
-    })
-    .catch(error => {
-        console.error("Error en la solicitud:", error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error en la solicitud. Intenta de nuevo más tarde.'
-        });
-    });
-}
-</script>
-
-<script>
-function eliminarProducto(id_producto) {
-    Swal.fire({
-        title: '¿Estás seguro?',
-        text: 'Esta acción eliminará el producto de forma permanente.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Realizar la solicitud AJAX para eliminar el producto
-            fetch('eliminar_producto.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'id_producto=' + id_producto
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Producto eliminado',
-                        text: data.message,
-                        confirmButtonText: 'Aceptar'
-                    }).then(() => {
-                        window.location.href = '../index.php';
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: data.message,
-                        confirmButtonText: 'Aceptar'
-                    });
-                }
-            })
-            .catch(error => {
+    
+        const formData = new URLSearchParams();
+        formData.append('valoracion', valoracion.value);
+        formData.append('comentario', comentario);
+    
+        fetch(`../reseñas_valoraciones/procesar_resena.php?id_producto=${idProducto}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData.toString()
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Reseña agregada',
+                    text: 'Gracias por tu reseña. Ha sido agregada exitosamente.'
+                }).then(() => {
+                    // Recargar la página para mostrar la reseña agregada
+                    location.reload();
+                });
+            } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Hubo un error en la solicitud.',
-                    confirmButtonText: 'Aceptar'
+                    text: 'Hubo un problema al agregar tu reseña. Intenta de nuevo.'
                 });
-            });
-        }
-    });
-}
-</script>
-
-<script>
-function addToWishlist(idProducto) {
-    fetch('../lista_deseos/agregar_a_lista.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'id_producto=' + idProducto
-    })
-    .then(response => response.json())  // Asegura que el servidor devuelva JSON
-    .then(data => {
-        if (data.status === 'success') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Producto agregado',
-                text: 'El producto se ha agregado a tu lista de deseos.'
-            });
-        } else if (data.status === 'exists') {
-            Swal.fire({
-                icon: 'info',
-                title: 'Producto ya en lista',
-                text: 'Este producto ya está en tu lista de deseos.'
-            });
-        } else {
+            }
+        })
+        .catch(error => {
+            console.error("Error en la solicitud:", error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error al agregar el producto a la lista de deseos.'
+                text: 'Error en la solicitud. Intenta de nuevo más tarde.'
             });
-        }
-    })
-    .catch(error => {
-        console.error("Error en la solicitud:", error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error en la solicitud. Intenta de nuevo más tarde.'
         });
-    });
-}
-document.querySelectorAll("form").forEach(form => {
-        form.addEventListener("submit", function(e) {
-            const cantidadInput = this.querySelector("input[name='cantidad']");
-            const stockDisponible = parseInt(cantidadInput.max); // Stock máximo permitido
-            const cantidadSeleccionada = parseInt(cantidadInput.value); // Cantidad seleccionada
-
-            if (cantidadSeleccionada > stockDisponible) {
-                e.preventDefault(); // Detener el envío del formulario
-                alert("La cantidad seleccionada supera el stock disponible. Por favor, reduce la cantidad.");
+    }
+    </script>
+    
+    <script>
+    function eliminarProducto(id_producto) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción eliminará el producto de forma permanente.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Realizar la solicitud AJAX para eliminar el producto
+                fetch('eliminar_producto.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'id_producto=' + id_producto
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Producto eliminado',
+                            text: data.message,
+                            confirmButtonText: 'Aceptar'
+                        }).then(() => {
+                            window.location.href = '../index.php';
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message,
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Hubo un error en la solicitud.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                });
             }
         });
-    });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    }
+    </script>
+    
+    <script>
+    function addToWishlist(idProducto) {
+        fetch('../lista_deseos/agregar_a_lista.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'id_producto=' + idProducto
+        })
+        .then(response => response.json())  // Asegura que el servidor devuelva JSON
+        .then(data => {
+            if (data.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Producto agregado',
+                    text: 'El producto se ha agregado a tu lista de deseos.'
+                });
+            } else if (data.status === 'exists') {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Producto ya en lista',
+                    text: 'Este producto ya está en tu lista de deseos.'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al agregar el producto a la lista de deseos.'
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error en la solicitud:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error en la solicitud. Intenta de nuevo más tarde.'
+            });
+        });
+    }
+    document.querySelectorAll("form").forEach(form => {
+            form.addEventListener("submit", function(e) {
+                const cantidadInput = this.querySelector("input[name='cantidad']");
+                const stockDisponible = parseInt(cantidadInput.max); // Stock máximo permitido
+                const cantidadSeleccionada = parseInt(cantidadInput.value); // Cantidad seleccionada
+            
+                if (cantidadSeleccionada > stockDisponible) {
+                    e.preventDefault(); // Detener el envío del formulario
+                    alert("La cantidad seleccionada supera el stock disponible. Por favor, reduce la cantidad.");
+                }
+            });
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
