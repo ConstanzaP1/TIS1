@@ -46,6 +46,109 @@ if (isset($_SESSION['user_id'])) {
     .card-body{
         background-color: #e0e0e0;
     }
+    .btn-carrito {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 20px;
+    padding: 10px 20px;
+    border: 2px solid #28a745; /* Color del borde */
+    border-radius: 25px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+    background-color: #28a745; /* Fondo verde */
+    color: #fff; /* Texto blanco */
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Transición para el efecto */
+}
+
+.btn-carrito:hover {
+    transform: scale(1.1); /* Aumenta el tamaño */
+    background-color: #28a745; /* Mantén el mismo color de fondo */
+    color: #fff; /* Mantén el color del texto */
+}
+.btn-eliminar-producto {
+    background-color: #dc3545; /* Color rojo para el botón */
+    color: #fff; /* Texto blanco */
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Transiciones suaves */
+    border-radius: 50px; /* Asegura que el botón sea redondeado */
+    padding: 0.5rem 2rem; /* Espaciado interno */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombras suaves */
+}
+
+.btn-eliminar-producto:hover {
+    transform: scale(1.1); /* Efecto de agrandamiento */
+    background-color: #c82333; /* Color ligeramente más oscuro */
+    color: #fff; /* Asegura que el texto siga siendo blanco */
+}
+
+/* Estilo para el botón del carrito */
+.btn-cart:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #721c24; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
+.btn-wishlist {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Transición suave para el efecto de crecer */
+}
+
+.btn-wishlist:hover {
+    transform: scale(1.1); /* Aumenta el tamaño al pasar el mouse */
+    background-color: red; /* Mantén el color de fondo */
+    color: white; /* Mantén el color del texto */
+}
+
+
+/* Estilo para el botón de comparar */
+.btn-comparar:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #155724; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
+
+.btn-comparador {
+    background-color: rgba(0, 128, 255, 0.5);   
+    border: none;
+    position: absolute;
+    top: 10px;
+    right: 70px;
+    z-index: 10;
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza el efecto de crecer y sombra */
+}
+
+.btn-comparador:hover {
+    transform: scale(1.1); /* Aumenta el tamaño */
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3); /* Mejora la sombra */
+    background-color: rgba(0, 128, 255, 0.5); /* Reaplica el color para evitar cambios */
+}
+
+
+    .producto-detalle {
+        position: relative; /* Hace que el contenedor sea el contexto para elementos con position: absolute */
+    }
     .star-rating {
     direction: rtl;
     font-size: 2em;
@@ -335,7 +438,8 @@ if (isset($_SESSION['user_id'])) {
             $producto = mysqli_fetch_assoc($result_producto);
 
             ?>
-            <div class="container">
+            <div class="container ">
+                
                 <!-- Migajas de pan -->
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
@@ -650,7 +754,7 @@ if (isset($_SESSION['user_id'])) {
 
             if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
                 
-                        echo " 
+                echo " 
                 <form method='POST' action='../carrito/agregar_al_carrito.php'>
                     <input type='hidden' name='id_producto' value='{$id_producto}'>
                     <div class='mb-3'>
@@ -674,15 +778,18 @@ if (isset($_SESSION['user_id'])) {
                 </form>";
 
                 echo "
+                
                 <form method='POST' action='../comparador/agregar_al_comparador.php'>
                     <input type='hidden' name='id_producto' value='{$id_producto}'>
                     <button type='submit' name='agregar_comparador' class='btn btn-comparador'>
-                        <img src='versus-logos-conflict-fighting-illustration-with-cartoon-effect-free-vector.jpg' alt='Comparar'>
+                         <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-arrow-left-right' viewBox='0 0 16 16'>
+                            <path fill-rule='evenodd' d='M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5'/>
+                        </svg>
                     </button>
                 </form>";
                         if (isset($_GET['id_producto'])) {
                             $id_producto = $_GET['id_producto'];
-                            echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
+                            echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-eliminar-producto mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
                         }
             } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
                
@@ -710,10 +817,13 @@ if (isset($_SESSION['user_id'])) {
                 </form>";
 
                 echo "
+                
                 <form method='POST' action='../comparador/agregar_al_comparador.php'>
                     <input type='hidden' name='id_producto' value='{$id_producto}'>
                     <button type='submit' name='agregar_comparador' class='btn btn-comparador'>
-                        <img src='versus-logos-conflict-fighting-illustration-with-cartoon-effect-free-vector.jpg' alt='Comparar'>
+                         <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-arrow-left-right' viewBox='0 0 16 16'>
+                            <path fill-rule='evenodd' d='M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5'/>
+                        </svg>
                     </button>
                 </form>";
 
