@@ -640,12 +640,14 @@
                         <button onclick='addToWishlist({$id_producto})' class='btn btn-outline-danger'>
                             <i class='fas fa-heart'></i>
                         </button>";
+
                 echo "
-                        <form method='POST' action='../comparador/agregar_al_comparador.php'>
-                            <input type='hidden' name='id_producto' value='{$id_producto}'>
-                            <button type='submit' name='agregar_comparador' class='btn btn-primary rounded-pill px-5 mt-3'>Agregar al Comparador</button>
-                        </form>
+                            <button onclick='agregarAlComparador($id_producto)' class='btn btn-primary rounded-pill px-5 mt-3'>
+                                Agregar al Comparador
+                            </button>
                         ";
+                        
+                        
                 if (isset($_GET['id_producto'])) {
                     $id_producto = $_GET['id_producto'];
                     echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-danger mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
@@ -665,11 +667,11 @@
                         </form>
                         ";
                 echo "
-                        <form method='POST' action='../comparador/agregar_al_comparador.php'>
-                            <input type='hidden' name='id_producto' value='{$id_producto}'>
-                            <button type='submit' name='agregar_comparador' class='btn btn-primary rounded-pill px-5 mt-3'>Agregar al Comparador</button>
-                        </form>
-                        ";
+                        <button onclick='agregarAlComparador($id_producto)' class='btn btn-primary rounded-pill px-5 mt-3'>
+                            Agregar al Comparador
+                        </button>
+                    ";
+                    
             }
 
             echo "
@@ -980,7 +982,52 @@ document.querySelectorAll("form").forEach(form => {
         });
     });
 </script>
+<script>
+function agregarAlComparador(idProducto) {
+    // Crear datos a enviar al servidor
+    const formData = new URLSearchParams();
+    formData.append('id_producto', idProducto);
 
+    fetch('../comparador/agregar_al_comparador.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString()
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Manejar la respuesta según el estado devuelto por el servidor
+        if (data.status === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Producto agregado',
+                text: 'El producto se ha agregado al comparador.'
+            });
+        } else if (data.status === 'exists') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Producto ya en el comparador',
+                text: 'Este producto ya está en el comparador.'
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo agregar el producto al comparador. Intenta nuevamente.'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un error al procesar la solicitud. Intenta nuevamente más tarde.'
+        });
+    });
+}
+
+
+</script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     </body>

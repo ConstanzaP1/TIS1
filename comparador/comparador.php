@@ -10,23 +10,22 @@ if (isset($_POST['eliminar_comparador'])) {
             return $item != $id_producto;
         });
     }
-    // Si el comparador queda vacío, establecerlo como un array vacío
+    // Si el comparador queda vacío, restablecerlo como un array vacío
     if (empty($_SESSION['comparador'])) {
         $_SESSION['comparador'] = [];
     }
-    calcular_puntajes();
+    cargar_productos_y_caracteristicas();
     header("Location: comparador.php");
     exit();
 }
 
-// Función para calcular puntajes de productos
-function calcular_puntajes() {
+// Función para cargar productos y sus características
+function cargar_productos_y_caracteristicas() {
     global $conexion;
 
     if (empty($_SESSION['comparador'])) {
         $_SESSION['productos'] = [];
         $_SESSION['caracteristicas_producto'] = [];
-        $_SESSION['puntajes'] = [];
         return;
     }
 
@@ -36,12 +35,12 @@ function calcular_puntajes() {
 
     $productos = [];
     $caracteristicas_producto = [];
-    $puntajes = [];
 
     while ($row = mysqli_fetch_assoc($result)) {
         $productos[] = $row;
 
-        // Obtener características según el tipo de producto
+        // Generar la consulta de características según el tipo de producto
+        $query_caracteristicas = "";
         switch ($row['tipo_producto']) {
             case 'teclado':
                 $query_caracteristicas = "
@@ -242,10 +241,12 @@ function calcular_puntajes() {
                     LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
                     WHERE pa.id_producto = '{$row['id_producto']}'";
                 break;
-
-
+            // Otros casos en caso de añadir
             default:
-                $query_caracteristicas = "SELECT caracteristica FROM producto_caracteristica WHERE id_producto = '{$row['id_producto']}'";
+                $query_caracteristicas = "
+                    SELECT CONCAT(pa.caracteristica, ': ', pa.valor_caracteristica) AS caracteristica 
+                    FROM producto_caracteristica pa 
+                    WHERE pa.id_producto = '{$row['id_producto']}'";
                 break;
         }
 
@@ -253,151 +254,104 @@ function calcular_puntajes() {
         $caracteristicas = [];
         if ($result_caracteristicas && mysqli_num_rows($result_caracteristicas) > 0) {
             while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
-                if (!empty($caracteristica['caracteristica'])) {
-                    $caracteristicas[] = $caracteristica['caracteristica'];
-                }
+                $caracteristicas[] = $caracteristica['caracteristica'];
             }
         }
         $caracteristicas_producto[$row['id_producto']] = $caracteristicas;
-
-        // Calcular puntaje
-        $puntaje = 0;
-        foreach ($caracteristicas as $caracteristica) {
-            if (strpos($caracteristica, 'Switch') !== false) {
-                $puntaje += 3;
-            } elseif (strpos($caracteristica, 'Iluminación') !== false) {
-                $puntaje += 1;
-            } else {
-                $puntaje += 2;
-            }
-        }
-        $puntaje += ($row['precio'] < 50000) ? 5 : 0;
-        $puntajes[$row['id_producto']] = $puntaje;
     }
 
     $_SESSION['productos'] = $productos;
     $_SESSION['caracteristicas_producto'] = $caracteristicas_producto;
-    $_SESSION['puntajes'] = $puntajes;
 }
 
-// Calcular puntajes iniciales
-calcular_puntajes();
-
-// Determinar el mejor producto
-$mejor_producto_id = !empty($_SESSION['puntajes']) ? array_keys($_SESSION['puntajes'], max($_SESSION['puntajes']))[0] : null;
+// Cargar productos y características iniciales
+cargar_productos_y_caracteristicas();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparador de Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .navbar{
-        background-color: rgba(0, 128, 255, 0.5);   
+        .navbar {
+            background-color: rgba(0, 128, 255, 0.5);
         }
-        .celeste-background{
-        background-color: rgba(0, 128, 255, 0.5); 
-        border-color: rgba(0, 128, 255, 0.5);   
+        .product-img {
+            height: 200px;
+            object-fit: cover;
         }
-            
+        .empty-comparator {
+            margin-top: 50px;
+        }
+        
     </style>
 </head>
+<body>
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <!-- Logo -->
-        <div class="navbar-brand col-2  ">
-            <a href="../index.php">
-                <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
-            </a>
-        </div>
-        <!-- Botón para colapsar el menú en pantallas pequeñas -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <a href="../index.php" class="navbar-brand">
+            <img class="logo img-fluid rounded-pill" src="../logopng.png" alt="Logo" style="height: 50px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Menú desplegable -->
             <ul class="navbar-nav ms-auto">
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                        <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
-                                <li>
-                                    <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
-                                </li>
-                            <?php endif; ?>
-                            <li>
-                                <a class="dropdown-item" href="../lista_deseos/lista_deseos.php">Lista deseos</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
-                            </li>
-                        </ul>
-                    </li>
                     <li class="nav-item">
-                    <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                        </svg>
-                    </button>
+                        <a href="../carrito/carrito.php" class="btn btn-outline-primary">Carrito</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a href="../login/logout.php" class="btn btn-danger">Cerrar Sesión</a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
+                        <a href="../login/login.php" class="btn btn-primary">Iniciar Sesión</a>
                     </li>
                 <?php endif; ?>
             </ul>
         </div>
     </div>
 </nav>
-<body>
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Comparador de Productos</h2>
-        <div class="row justify-content-center">
-            <?php if (!empty($_SESSION['productos'])): ?>
-                <?php foreach ($_SESSION['productos'] as $index => $producto): ?>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" class="card-img-top product-img" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h5>
-                                <p class="card-text">Precio: $<?php echo number_format($producto['precio'], 0, ',', '.'); ?></p>
-                                <ul>
-                                    <?php foreach ($_SESSION['caracteristicas_producto'][$producto['id_producto']] as $caracteristica): ?>
-                                        <li><?php echo htmlspecialchars($caracteristica); ?></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                                <form method="POST" action="comparador.php" class="d-inline">
-                                    <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
-                                    <button type="submit" name="eliminar_comparador" class="btn btn-danger btn-sm">Eliminar</button>
-                                </form>
-                            
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="empty-comparator mt-5">
-                    <div class="card shadow-lg p-5 border-0 text-center">
-                        <div class="mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-box-seam text-primary" viewBox="0 0 16 16">
-                                <path d="M9.674 4.146a.5.5 0 0 1-.348-.217L8 2.5 6.674 3.929a.5.5 0 0 1-.348.217l-2.5.385.831.831a.5.5 0 0 1 .138.34l.035 2.487a.5.5 0 0 1-.205.417l-.832.831 2.5.385a.5.5 0 0 1 .342.33L8 13.5l1.026-1.025a.5.5 0 0 1 .342-.33l2.5-.385-.832-.831a.5.5 0 0 1-.205-.417l.035-2.487a.5.5 0 0 1 .138-.34l.831-.831-2.5-.385zM2.857 1.399a1.5 1.5 0 0 1 1.071-.399h8.143c.414 0 .801.17 1.071.399L16 3.063v9.874l-2.857 1.664A1.5 1.5 0 0 1 12.071 15H3.929a1.5 1.5 0 0 1-1.071-.399L0 12.937V3.063l2.857-1.664zm1.144.937A.5.5 0 0 0 3.5 2H12.5a.5.5 0 0 0 .499-.664L10.929.5H5.071L4.357 1.399zm7.5.101a.5.5 0 0 1 .499-.664L13.5 2H2.5L4.357.835a.5.5 0 0 1 .499.664L2.5 2h11z"/>
-                            </svg>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Comparador de Productos</h2>
+    <div class="row justify-content-center">
+        <?php if (!empty($_SESSION['productos'])): ?>
+            <?php foreach ($_SESSION['productos'] as $producto): ?>
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card">
+                        <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" class="card-img-top product-img" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h5>
+                            <p class="card-text">Precio: $<?php echo number_format($producto['precio'], 0, ',', '.'); ?></p>
+                            <ul>
+                                <?php foreach ($_SESSION['caracteristicas_producto'][$producto['id_producto']] as $caracteristica): ?>
+                                    <li><?php echo htmlspecialchars($caracteristica); ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <form method="POST" action="comparador.php" class="d-inline">
+                                <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
+                                <button type="submit" name="eliminar_comparador" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
                         </div>
-                        <h4 class="mb-3 text-secondary">No hay productos en el comparador</h4>
-                        <p class="text-muted mb-4">Añade productos para comparar características y precios.</p>
-                        <a href="../index.php" class="btn btn-primary btn-lg">Regresar al catálogo</a>
                     </div>
                 </div>
-            <?php endif; ?>
-        </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="empty-comparator text-center">
+                <div class="card p-5 shadow">
+                    <h4 class="mb-3">No hay productos en el comparador</h4>
+                    <a href="../index.php" class="btn btn-primary">Regresar al catálogo</a>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
-    <?php include '../footer.php'?>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </html>
