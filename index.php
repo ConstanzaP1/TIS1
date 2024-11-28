@@ -132,7 +132,7 @@ if (isset($_SESSION['user_id'])) {
         <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Barra de búsqueda -->
@@ -202,6 +202,7 @@ if (isset($_SESSION['user_id'])) {
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        
         <div class="offcanvas-body">
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -220,7 +221,82 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </div>
 </nav>
+<div id="responsiveCarousel" class="carousel slide" data-bs-ride="carousel">
+    <!-- Indicadores del carrusel -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#responsiveCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#responsiveCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#responsiveCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
 
+    <!-- Contenido del carrusel -->
+    <div class="carousel-inner">
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+            <img src="https://i.postimg.cc/q7Cfvmc9/1.png" class="d-block w-100" alt="Banner 1">
+            <div class="carousel-caption d-none d-md-block">
+                <a href="#" class="btn btn-primary">Ver más</a>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+            <img src="https://i.postimg.cc/52ydZ9X9/2.png" class="d-block w-100" alt="Banner 2">
+            <div class="carousel-caption d-none d-md-block">
+                <a href="#" class="btn btn-primary">Explorar</a>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-item">
+            <img src="https://i.postimg.cc/SxPFq096/3.png" class="d-block w-100" alt="Banner 3">
+            <div class="carousel-caption d-none d-md-block">
+                <a href="#" class="btn btn-primary">Descubre más</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controles de navegación -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#responsiveCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#responsiveCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- CSS adicional para ajustar el comportamiento de las imágenes -->
+<style>
+    .carousel-inner {
+        position: relative;
+        width: 100%;
+        overflow: hidden; /* Esto asegura que las imágenes no se desborden del contenedor */
+    }
+
+    .carousel-inner img {
+        width: 100%; /* Las imágenes ocupan todo el ancho disponible */
+        height: 100%; /* Las imágenes ocuparán toda la altura disponible */
+        object-fit: cover; /* Asegura que las imágenes cubran el contenedor sin deformarse */
+    }
+
+    /* Para pantallas pequeñas, ajustamos la altura para que el banner no se vea muy alto */
+    @media (max-width: 768px) {
+        .carousel-inner img {
+            object-fit: cover; /* Mantiene el mismo ajuste en pantallas medianas */
+        }
+    }
+
+    @media (max-width: 576px) {
+        .carousel-inner img {
+            object-fit: cover; /* Asegura que la imagen cubra sin deformarse en pantallas pequeñas */
+        }
+    }
+</style>
+
+<!-- Agregar Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <div class="container my-4">
     <div class="row">
