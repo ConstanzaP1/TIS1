@@ -921,21 +921,7 @@ if (isset($_GET['id_producto'])){
                 echo "</span>";
                 echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
                 echo "</div>";
-                if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'){
-                    echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
-                        Agregar Reseña
-                      </button>";
-                }
-                elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
-                    echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
-                        Agregar Reseña
-                      </button>";
-                }
-                elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'superadmin'){
-                    echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
-                        Agregar Reseña
-                      </button>";
-                }
+                
                 echo "</div>";
                 echo "<hr>";
                 if (mysqli_num_rows($result_resenas) > 0) {
@@ -978,6 +964,21 @@ if (isset($_GET['id_producto'])){
                     $result_compra = mysqli_query($conexion, $query_compra);
                     $compra = mysqli_fetch_assoc($result_compra);
                     if ($compra['comprado'] > 0) {
+                        if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'){
+                            echo "<button type='button' class='btn btn-primary rounded-pill mb-2 col-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                                Agregar Reseña
+                              </button>";
+                        }
+                        elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
+                            echo "<button type='button' class='btn btn-primary rounded-pill mb-2 col-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                                Agregar Reseña
+                              </button>";
+                        }
+                        elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'superadmin'){
+                            echo "<button type='button' class='btn btn-primary rounded-pill mb-2 col-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                                Agregar Reseña
+                              </button>";
+                        }
                     ?>   
                     <!-- Modal para agregar reseña -->
                     <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
