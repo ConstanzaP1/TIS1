@@ -36,6 +36,26 @@ function filtrarProductosPorCategoria($categoria)
     $result = mysqli_query($conexion, $query);
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+// Consulta para obtener la URL de la imagen del usuario actual
+// Comprobamos si el usuario ha iniciado sesión
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+
+    // Consulta para obtener la URL de la imagen del usuario actual
+    $query = "SELECT img FROM users WHERE id = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    // Verifica si se encontró la imagen
+    $img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay una en la BD
+} else {
+    // Usuario no está logeado, asignamos una imagen por defecto
+    $img_url = 'default-profile.png';
+}
+
 ?>
 
 
@@ -48,6 +68,7 @@ function filtrarProductosPorCategoria($categoria)
     <title>Catálogo de Productos</title>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 </head>
 <style>
@@ -63,153 +84,160 @@ function filtrarProductosPorCategoria($categoria)
     .card-body {
         background-color: #e0e0e0;
     }
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: scale(1.05); /* Aumenta el tamaño de la tarjeta */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Agrega una sombra */
+    }
+
+        /* Estilo para el botón del carrito */
+    .btn-cart:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: #721c24; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
+
+    /* Estilo para el botón de comparar */
+    .btn-comparar:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: #155724; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
+    .btn-deseos:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: #721c24; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
+
 </style>
 
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <!-- Logo -->
-            <div class="navbar-brand col-2">
-                <a href="index.php">
-                    <img class="logo img-fluid w-75 rounded-pill" src="logopng.png" alt="Logo">
-                </a>
-            </div>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <!-- Logo (centrado en pantallas pequeñas) -->
+        <div class="navbar-brand d-lg-flex d-none col-2">
+            <img class="logo img-fluid w-75 rounded-pill" src="logopng.png" alt="Logo">
+        </div>
+        <div class="d-lg-none w-100 text-center">
+            <img class="logo img-fluid" src="logopng.png" alt="Logo" style="width: 120px;">
+        </div>
 
-            <!-- Botón para colapsar el menú en pantallas pequeñas -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <!-- Botón para abrir el menú lateral en pantallas pequeñas -->
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <!-- Contenido de la navbar -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- Menú de Categorías -->
-                <div class="dropdown mx-3">
-                    <button class="btn bg-white rounded-pill p-3 dropdown-toggle" type="button" id="dropdownCategorias" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorías
+        <!-- Contenido de la navbar -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Barra de búsqueda -->
+            <form class="d-flex ms-auto col-6 shadow" role="search">
+                <input class="form-control" type="search" placeholder="Buscar en Tisnology" aria-label="Buscar">
+            </form>
+
+            <!-- Menú desplegable -->
+            <ul class="navbar-nav ms-auto align-items-center">
+                
+                <?php if (isset($_SESSION['user_id'])): ?>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='carrito/carrito.php'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                        </svg>
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="index.php?categoria=Gamer">Gamer</a></li>
-                        <li><a class="dropdown-item" href="categoria.php?id_categoria=2">Categoría 2</a></li>
-                        <li><a class="dropdown-item" href="categoria.php?id_categoria=3">Categoría 3</a></li>
-                        <li><a class="dropdown-item" href="categoria.php?id_categoria=4">Categoría 4</a></li>
-                    </ul>
-                </div>
-                <!-- Barra de búsqueda -->
-                <form class="d-flex ms-auto col-8 shadow" role="search">
-                    <input class="form-control" type="search" placeholder="Buscar en Tisnology" aria-label="Buscar">
-                </form>
-
-                <!-- Menú desplegable -->
-                <ul class="navbar-nav ms-auto">
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
-                                    <li><a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a></li>
-                                <?php endif; ?>
-                                <li><a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">Perfil de usuario</a></li>
-                                <li><a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='carrito/carrito.php'">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
-                                </svg>
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill" onclick="window.location.href='../TIS1/comparador/comparador.php'">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 1 1 .708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5" />
-                                </svg>
-                            </button>
-                        </li>
-                    <?php else: ?>
-                        <li class="nav-item">
-                            <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-
-    <div id="carouselExampleIndicators" class="carousel slide mb-4" data-bs-ride="carousel" data-bs-interval="4000">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <a href="categoria1.html">
-                    <img src="https://i.postimg.cc/q7Cfvmc9/1.png" class="d-block w-100" alt="Banner 1" style="height: 66vh; object-fit: cover;">
-                </a>
-                <div class="carousel-caption">
-                    <a href="categoria1.html" class="btn btn-sm text-white px-3 py-2 rounded-pill"
-                        style="background: rgba(255, 255, 255, 0.3); border: 1px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(5px);">
-                        Ir a
-                    </a>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <a href="categoria2.html">
-                    <img src="https://i.postimg.cc/52ydZ9X9/2.png" class="d-block w-100" alt="Banner 2" style="height: 66vh; object-fit: cover;">
-                </a>
-                <div class="carousel-caption">
-                    <a href="categoria2.html" class="btn btn-sm text-white px-3 py-2 rounded-pill"
-                        style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.5); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);">
-                        Ir a
-                    </a>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <a href="categoria3.html">
-                    <img src="https://i.postimg.cc/SxPFq096/3.png" class="d-block w-100" alt="Banner 3" style="height: 66vh; object-fit: cover;">
-                </a>
-                <div class="carousel-caption">
-                    <a href="categoria3.html" class="btn btn-sm text-white px-3 py-2 rounded-pill"
-                        style="background: rgba(255, 255, 255, 0.3); border: 1px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(5px);">
-                        Ir a
-                    </a>
-                </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-        
-    </div>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../TIS1/comparador/comparador.php'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+                        </svg>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-deseos p-3 ms-2 rounded-pill me-2" onclick="window.location.href='lista_deseos/lista_deseos.php'">
+                    <i class='fas fa-heart'></i>
+                    </button>
+                   
+                </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                        </a>
+                        
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
+                                <li>
+                                    <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
+                                </li>
+                            <?php endif; ?>
                             
+                            
+                            <li>
+                                <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">
+                        <li class="nav-item ms-2">
+                            <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                        </li>
+                    </a>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </div>
 
-    <div class="container my-4">
-        <div class="row">
-             <!-- Título dinámico -->
-            <h2 class="text-center mb-4"><?php echo $tituloPagina; ?></h2>
-            <!-- Columna de filtros a la izquierda -->
-            <div class="col-md-3">
-                <form method="post" action="index.php" id="filterForm" class="border p-3 card-body rounded">
-                    <h5>Filtros</h5>
+    <!-- Offcanvas para menú lateral -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="carrito/carrito.php">Carrito</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="comparador/comparador.php">Comparador</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="lista_deseos/lista_deseos.php">Lista de Deseos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="login/logout.php">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-                    <!-- Campos de filtro de precios -->
-                    <div class="mb-3">
-                        <label for="precio_min" class="form-label">Precio Mínimo</label>
-                        <input type="number" class="form-control" id="precio_min" name="precio_min" placeholder="ej:0" value="<?php echo htmlspecialchars($precio_min); ?>">
-                    </div>
-                    <div class="mb-3">
-                        <label for="precio_max" class="form-label">Precio Máximo</label>
-                        <input type="number" class="form-control" id="precio_max" name="precio_max" placeholder="ej:1000" value="<?php echo htmlspecialchars($precio_max); ?>">
-                    </div>
+
+<div class="container my-4">
+    <div class="row">
+        <!-- Columna de filtros a la izquierda -->
+        <div class="col-md-3 d-none d-md-block">
+            <form method="post" action="index.php" id="filterForm" class="border p-3 card-body rounded">
+                <h5>Filtros</h5>
+                
+                <!-- Campos de filtro de precios -->
+                <div class="mb-3">
+                    <label for="precio_min" class="form-label">Precio Mínimo</label>
+                    <input type="number" class="form-control" id="precio_min" name="precio_min" placeholder="ej:0" value="<?php echo htmlspecialchars($precio_min); ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="precio_max" class="form-label">Precio Máximo</label>
+                    <input type="number" class="form-control" id="precio_max" name="precio_max" placeholder="ej:1000" value="<?php echo htmlspecialchars($precio_max); ?>">
+                </div>
 
                     <!-- Filtro de marca -->
                     <div class="mb-3">
@@ -253,78 +281,74 @@ function filtrarProductosPorCategoria($categoria)
                 </form>
             </div>
 
-            <!-- Columna de productos a la derecha -->
-            <div class="col-md-9">
-                <div class="row d-flex justify-content-center">
-                    <?php
-                    if (!empty($productos)) {
-                        echo "<div class='d-flex flex-wrap justify-content-center'>";
-                        foreach ($productos as $producto) {
-                            $id_producto = $producto['id_producto'];
-                            $nombre_producto = $producto['nombre_producto'];
-                            $marca_producto = $producto['marca'];
-                            $precio = number_format($producto['precio'], 0, ',', '.');
-                            $imagen_url = $producto['imagen_url'];
-
-                            echo "
-                            <a href='catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
-                                <div class='card mx-1 mb-3 p-0 shadow' style='width: 18rem; height: 26rem;'>
-                                    <div class='image-container' style='width: 100%; height: 70%; position: relative; overflow: hidden;'>
-                                        <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
+        <div class="col-12 col-md-9">
+            <div class="row gx-2 gy-3"> <!-- Ajustamos los espacios entre las columnas y filas -->
+                <?php
+                if (!empty($productos)) {
+                    foreach ($productos as $producto) {
+                        $id_producto = $producto['id_producto'];
+                        $nombre_producto = $producto['nombre_producto'];
+                        $marca_producto = $producto['marca'];
+                        $precio = number_format($producto['precio'], 0, ',', '.');
+                        $imagen_url = $producto['imagen_url'];
+                    
+                        echo "
+                            <div class='col-6 col-md-4'>
+                                <a href='catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
+                                    <div class='card p-0 shadow' style='width: 100%; height: 100%;'>
+                                        <div class='image-container' style='width: 100%; height: 70%; position: relative; overflow: hidden;'>
+                                            <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
+                                        </div>
+                                        <div class='card-body text-begin'>
+                                            <h6 class='text-secondary m-0'>$marca_producto</h6>
+                                            <h5 class='text-black my-1'>$nombre_producto</h5>
+                                            <h6 class='text-secondary'>$$precio</h6>
+                                        </div>
                                     </div>
-                                    <div class='card-body text-begin'>
-                                        <h6 class='text-secondary m-0'>$marca_producto</h6>
-                                        <h5 class='text-black my-1'>$nombre_producto</h5>
-                                        <h6 class='text-secondary'>$$precio</h6>
-                                    </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         ";
-                        }
-                        echo "</div>";
-                    } else {
-                        echo "<p>No se encontraron productos que coincidan con los filtros o destacados.</p>";
                     }
-                    ?>
-                </div>
+                } else {
+                    echo "<p>No se encontraron productos que coincidan con los filtros o destacados.</p>";
+                }
+                ?>
             </div>
-
         </div>
     </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function resetFilters() {
-            document.getElementById("filterForm").reset();
-            window.location.href = 'index.php';
-        }
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.querySelector('.form-control[type="search"]');
-            const productContainer = document.querySelector('.row.d-flex.justify-content-center');
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function resetFilters() {
+        document.getElementById("filterForm").reset();
+        window.location.href = 'index.php';
+    }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('.form-control[type="search"]');
+    const productContainer = document.querySelector('.row.gx-2.gy-3');
 
-            // Función para cargar productos según la búsqueda
-            function cargarProductos(query = '') {
-                $.ajax({
-                    url: 'funcion_busqueda/buscar_productos.php',
-                    method: 'GET',
-                    data: {
-                        query: query
-                    },
-                    success: function(response) {
-                        productContainer.innerHTML = response;
-                    }
-                });
+   // Función para cargar productos según la búsqueda
+   function cargarProductos(query = '') {
+        $.ajax({
+            url: 'funcion_busqueda/buscar_productos.php',
+            method: 'GET',
+            data: { query: query },
+            success: function(response) {
+                productContainer.innerHTML = response;
             }
-            searchInput.addEventListener('input', function() {
-                const query = searchInput.value;
-                cargarProductos(query);
-            });
         });
-    </script>
-
+    }
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value;
+        cargarProductos(query);
+    });
+});
+</script>
+<?php include "footer.php"?>
 </body>
 
 </html>
