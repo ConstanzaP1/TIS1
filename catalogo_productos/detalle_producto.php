@@ -20,116 +20,32 @@
         $img_url = 'default-profile.png';
     }
     ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle del Producto</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-    <style>
-        body {
-        margin: 0;
-        padding: 0;
-        }
-        footer {
-            width: 100%;
-            margin: 0; /* Quitar márgenes externos */
-            padding: 0; /* Ajustar cualquier padding extra */
-        }
-        .navbar{
-            background-color: rgba(0, 128, 255, 0.5);   
-        }
-        .celeste-background{
-            background-color: rgba(0, 128, 255, 0.5); 
-            border-color: rgba(0, 128, 255, 0.5);   
-        }
-        .card-body{
-            background-color: #e0e0e0;
-        }
-        .btn-carrito {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        font-size: 20px;
-        padding: 10px 20px;
-        border: 2px solid #28a745; /* Color del borde */
-        border-radius: 25px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
-        background-color: #28a745; /* Fondo verde */
-        color: #fff; /* Texto blanco */
-        cursor: pointer;
-        transition: transform 0.3s ease; /* Transición para el efecto */
+
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Detalle del Producto</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    </head>
+<style>
+    @media (max-width: 576px) {
+    .btn-comparador, .btn-wishlist {
+        opacity: 0.7; /* Cambia la opacidad */
+        transition: opacity 0.3s ease; /* Transición suave */
     }
-    
-    .btn-carrito:hover {
-        transform: scale(1.1); /* Aumenta el tamaño */
-        background-color: #28a745; /* Mantén el mismo color de fondo */
-        color: #fff; /* Mantén el color del texto */
+
+    .btn-comparador:hover, .btn-wishlist:hover {
+        opacity: 1; /* Vuelve a opacidad completa al hacer hover */
     }
-    .btn-eliminar-producto {
-        background-color: #dc3545; /* Color rojo para el botón */
-        color: #fff; /* Texto blanco */
-        border: none;
-        cursor: pointer;
-        transition: transform 0.3s ease, background-color 0.3s ease; /* Transiciones suaves */
-        border-radius: 50px; /* Asegura que el botón sea redondeado */
-        padding: 0.5rem 2rem; /* Espaciado interno */
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombras suaves */
-    }
-    
-    .btn-eliminar-producto:hover {
-        transform: scale(1.1); /* Efecto de agrandamiento */
-        background-color: #c82333; /* Color ligeramente más oscuro */
-        color: #fff; /* Asegura que el texto siga siendo blanco */
-    }
-    
-    /* Estilo para el botón del carrito */
-    .btn-cart:hover {
-        background-color: white; /* Cambia el fondo al pasar el mouse */
-        color: #721c24; /* Cambia el color del texto/icono */
-        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-        transition: all 0.3s ease; /* Suaviza la animación */
-    }
-    .btn-wishlist {
-        background-color: red;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        height: 50px;
-        width: 50px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        font-size: 20px;
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 10;
-        cursor: pointer;
-        transition: transform 0.3s ease; /* Transición suave para el efecto de crecer */
-    }
-    
-    .btn-wishlist:hover {
-        transform: scale(1.1); /* Aumenta el tamaño al pasar el mouse */
-        background-color: red; /* Mantén el color de fondo */
-        color: white; /* Mantén el color del texto */
-    }
-    
-    
-    /* Estilo para el botón de comparar */
-    .btn-comparar:hover {
-        background-color: white; /* Cambia el fondo al pasar el mouse */
-        color: #155724; /* Cambia el color del texto/icono */
-        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-        transition: all 0.3s ease; /* Suaviza la animación */
-    }
-    
-    .btn-comparador {
+}
+    .navbar{
         background-color: rgba(0, 128, 255, 0.5);   
         border: none;
         position: absolute;
@@ -381,7 +297,7 @@
             <ul class="navbar-nav ms-auto align-items-center">
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
-                <li class="nav-item">
+                    <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>

@@ -112,7 +112,7 @@ if (isset($_SESSION['user_id'])) {
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Barra de búsqueda -->
-            <form class="d-flex ms-auto col-8 shadow" role="search">
+            <form class="d-flex ms-auto col-6 shadow" role="search">
                 <input class="form-control" type="search" placeholder="Buscar en Tisnology" aria-label="Buscar">
             </form>
 
