@@ -303,7 +303,7 @@
             opacity: 1;
         }
     }
-    <style>
+    
     @media (max-width: 768px) {
     .producto-detalle {
         flex-direction: column; /* Cambiar la disposición a columna */
@@ -392,7 +392,7 @@
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../TIS1/comparador/comparador.php'">
+                    <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../comparador/comparador.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
                         </svg>
@@ -1194,7 +1194,51 @@ mysqli_close($conexion);
             });
         });
     </script>
-    
+    <script>
+function agregarAlComparador(idProducto) {
+    // Crear datos a enviar al servidor
+    const formData = new URLSearchParams();
+    formData.append('id_producto', idProducto);
+
+    fetch('../comparador/agregar_al_comparador.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString()
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Manejar la respuesta según el estado devuelto por el servidor
+        if (data.status === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Producto agregado',
+                text: 'El producto se ha agregado al comparador.'
+            });
+        } else if (data.status === 'exists') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Producto ya en el comparador',
+                text: 'Este producto ya está en el comparador.'
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo agregar el producto al comparador. Intenta nuevamente.'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un error al procesar la solicitud. Intenta nuevamente más tarde.'
+        });
+    });
+}
+</script>
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
