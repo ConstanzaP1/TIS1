@@ -188,8 +188,9 @@ function filtrarProductosPorCategoria($categoria)
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
+        
     </div>
-
+                            
 
     <div class="container my-4">
         <div class="row">
