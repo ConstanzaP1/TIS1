@@ -61,47 +61,58 @@ if (isset($_SESSION['user_id'])) {
     .card-body{
         background-color: #e0e0e0;
     }
-    /* Estilo para el botón del carrito */
-.btn-cart:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-/* Estilo para el botón de comparar */
-.btn-comparar:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #155724; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
-.btn-deseos:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
+    .card:hover {
+        transform: scale(1.05); /* Aumenta el tamaño de la tarjeta */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Agrega una sombra */
+    }
 
+        /* Estilo para el botón del carrito */
+    .btn-cart:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: #721c24; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
+
+    /* Estilo para el botón de comparar */
+    .btn-comparar:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: #155724; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
+    .btn-deseos:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: #721c24; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
 
 </style>
 <body>
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <!-- Logo -->
-        <div class="navbar-brand col-2">
+        <!-- Logo (centrado en pantallas pequeñas) -->
+        <div class="navbar-brand d-lg-flex d-none col-2">
             <img class="logo img-fluid w-75 rounded-pill" src="logopng.png" alt="Logo">
         </div>
+        <div class="d-lg-none w-100 text-center">
+            <img class="logo img-fluid" src="logopng.png" alt="Logo" style="width: 120px;">
+        </div>
 
-        <!-- Botón para colapsar el menú en pantallas pequeñas -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- Botón para abrir el menú lateral en pantallas pequeñas -->
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Barra de búsqueda -->
-            <form class="d-flex ms-auto col-8 shadow" role="search">
+            <form class="d-flex ms-auto col-6 shadow" role="search">
                 <input class="form-control" type="search" placeholder="Buscar en Tisnology" aria-label="Buscar">
             </form>
 
@@ -157,6 +168,30 @@ if (isset($_SESSION['user_id'])) {
                         <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
                     </li>
                 <?php endif; ?>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Offcanvas para menú lateral -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="carrito/carrito.php">Carrito</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="comparador/comparador.php">Comparador</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="lista_deseos/lista_deseos.php">Lista de Deseos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="login/logout.php">Cerrar Sesión</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -289,6 +324,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-<?php include 'footer.php'?>
+<?php include "footer.php"?>
 </body>
 </html>
