@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     </head>
-<style>
+    <style>
     @media (max-width: 576px) {
     .btn-comparador, .btn-wishlist {
         opacity: 0.7; /* Cambia la opacidad */
@@ -47,32 +47,119 @@
 }
     .navbar{
         background-color: rgba(0, 128, 255, 0.5);   
-        border: none;
-        position: absolute;
-        top: 10px;
-        right: 70px;
-        z-index: 10;
-        cursor: pointer;
-        height: 50px;
-        width: 50px;
-        border-radius: 50%;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        object-fit: cover;
-        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza el efecto de crecer y sombra */
     }
-    
-    .btn-comparador:hover {
-        transform: scale(1.1); /* Aumenta el tamaño */
-        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3); /* Mejora la sombra */
-        background-color: rgba(0, 128, 255, 0.5); /* Reaplica el color para evitar cambios */
+    .celeste-background{
+        background-color: rgba(0, 128, 255, 0.5); 
+        border-color: rgba(0, 128, 255, 0.5);   
     }
-    .btn-deseos:hover {
-        background-color: white; /* Cambia el fondo al pasar el mouse */
-        color: #721c24; /* Cambia el color del texto/icono */
-        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-        transition: all 0.3s ease; /* Suaviza la animación */
+    .card-body{
+        background-color: #e0e0e0;
     }
-    
+    .btn-carrito {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 20px;
+    padding: 10px 20px;
+    border: 2px solid #28a745; /* Color del borde */
+    border-radius: 25px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+    background-color: #28a745; /* Fondo verde */
+    color: #fff; /* Texto blanco */
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Transición para el efecto */
+}
+
+.btn-carrito:hover {
+    transform: scale(1.1); /* Aumenta el tamaño */
+    background-color: #28a745; /* Mantén el mismo color de fondo */
+    color: #fff; /* Mantén el color del texto */
+}
+.btn-eliminar-producto {
+    background-color: #dc3545; /* Color rojo para el botón */
+    color: #fff; /* Texto blanco */
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Transiciones suaves */
+    border-radius: 50px; /* Asegura que el botón sea redondeado */
+    padding: 0.5rem 2rem; /* Espaciado interno */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombras suaves */
+}
+
+.btn-eliminar-producto:hover {
+    transform: scale(1.1); /* Efecto de agrandamiento */
+    background-color: #c82333; /* Color ligeramente más oscuro */
+    color: #fff; /* Asegura que el texto siga siendo blanco */
+}
+
+/* Estilo para el botón del carrito */
+.btn-cart:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #721c24; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
+.btn-wishlist {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Transición suave para el efecto de crecer */
+}
+
+.btn-wishlist:hover {
+    transform: scale(1.1); /* Aumenta el tamaño al pasar el mouse */
+    background-color: red; /* Mantén el color de fondo */
+    color: white; /* Mantén el color del texto */
+}
+
+
+/* Estilo para el botón de comparar */
+.btn-comparar:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #155724; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
+
+.btn-comparador {
+    background-color: rgba(0, 128, 255, 0.5);   
+    border: none;
+    position: absolute;
+    top: 10px;
+    right: 70px;
+    z-index: 10;
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza el efecto de crecer y sombra */
+}
+
+.btn-comparador:hover {
+    transform: scale(1.1); /* Aumenta el tamaño */
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3); /* Mejora la sombra */
+    background-color: rgba(0, 128, 255, 0.5); /* Reaplica el color para evitar cambios */
+}
+.btn-deseos:hover {
+    background-color: white; /* Cambia el fondo al pasar el mouse */
+    color: #721c24; /* Cambia el color del texto/icono */
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+    transition: all 0.3s ease; /* Suaviza la animación */
+}
+
     .producto-detalle {
         position: relative; /* Hace que el contenedor sea el contexto para elementos con position: absolute */
     }
@@ -205,69 +292,69 @@
     .modal-content {
         animation: fadeInModal 0.3s ease;
     }
-    
+
     @keyframes fadeInModal {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    <style>
+    @media (max-width: 768px) {
+    .producto-detalle {
+        flex-direction: column; /* Cambiar la disposición a columna */
     }
 
-    @media (max-width: 768px) {
-        .producto-detalle {
-            flex-direction: column; /* Cambiar la disposición a columna */
-        }
-    
-        .producto-detalle .image-container {
-            margin-bottom: 20px; /* Separar la imagen del contenido */
-        }
-    
-        .producto-info {
-            text-align: left; /* Mantener texto alineado a la izquierda */
-        }
-    
-        .producto-info button {
-            width: 100%; /* Asegurar que los botones ocupen todo el ancho */
-        }
-    
-        /* Estilo para las reseñas */
-        .card {
-            width: 100%; /* Hacer que las tarjetas ocupen el ancho completo */
-        }
+    .producto-detalle .image-container {
+        margin-bottom: 20px; /* Separar la imagen del contenido */
     }
-    
-    @media (max-width: 576px) {
-        .producto-info h1 {
-            font-size: 1.5rem; /* Reducir el tamaño del título en teléfonos pequeños */
-        }
-    
-        .producto-info ul {
-            font-size: 0.9rem; /* Reducir el tamaño del texto de las características */
-        }
+
+    .producto-info {
+        text-align: left; /* Mantener texto alineado a la izquierda */
     }
-    
-    .breadcrumb {
-        background-color: #f9f9f9;
-        font-size: 0.9rem;
+
+    .producto-info button {
+        width: 100%; /* Asegurar que los botones ocupen todo el ancho */
     }
-    
-    .breadcrumb .breadcrumb-item a {
-        transition: color 0.2s ease-in-out;
+
+    /* Estilo para las reseñas */
+    .card {
+        width: 100%; /* Hacer que las tarjetas ocupen el ancho completo */
     }
-    
-    .breadcrumb .breadcrumb-item a:hover {
-        color: #0056b3;
-        text-decoration: underline;
+}
+
+@media (max-width: 576px) {
+    .producto-info h1 {
+        font-size: 1.5rem; /* Reducir el tamaño del título en teléfonos pequeños */
     }
-    
-    .breadcrumb .breadcrumb-item.active {
-        font-weight: bold;
-        color: #333;
+
+    .producto-info ul {
+        font-size: 0.9rem; /* Reducir el tamaño del texto de las características */
     }
+}
+
+.breadcrumb {
+    background-color: #f9f9f9;
+    font-size: 0.9rem;
+}
+
+.breadcrumb .breadcrumb-item a {
+    transition: color 0.2s ease-in-out;
+}
+
+.breadcrumb .breadcrumb-item a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.breadcrumb .breadcrumb-item.active {
+    font-weight: bold;
+    color: #333;
+}
 </style>
 
 <body>        
@@ -374,518 +461,567 @@
     </div>
 </nav>
 
-    <div class="container py-2">
-    <?php
-    if (isset($_GET['id_producto'])){ 
-        $id_producto = $_GET['id_producto'];
+<div class="container py-2">
 
-        $query_producto = "
-            SELECT 
-                p.nombre_producto, 
-                p.precio, 
-                p.imagen_url, 
-                m.nombre_marca AS marca,
-                p.tipo_producto,
-                p.cantidad AS stock_disponible
-            FROM 
-                producto p
-            LEFT JOIN marca m ON p.marca = m.id_marca
-            WHERE p.id_producto = '$id_producto'
-        ";
-        
-        $result_producto = mysqli_query($conexion, query: $query_producto);
+    
+<?php
+require('../conexion.php');
 
-        if ($result_producto->num_rows > 0) {
-            $producto = mysqli_fetch_assoc($result_producto);
+if (isset($_GET['id_producto'])){ 
+    $id_producto = $_GET['id_producto'];
 
-            ?>
-            <div class="container ">
-                
-                <!-- Migajas de pan -->
-                <nav aria-label="breadcrumb" class="mb-4">
-                    <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
-                        <li class="breadcrumb-item">
-                            <a href="../index.php" class="text-primary text-decoration-none">
-                                <i class="fas fa-home me-1"></i>Inicio
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="../categoria.php?tipo_producto=<?php echo htmlspecialchars($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
-                                <?php echo ucfirst($producto['tipo_producto']); ?>
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item active text-dark" aria-current="page">
-                            <?php echo htmlspecialchars($producto['nombre_producto']); ?>
-                        </li>
-                    </ol>
-                </nav>
-                <!-- Fin Migajas de pan -->
-                <div class="producto-detalle row bg-white shadow d-flex">
-                <!-- Imagen del producto -->
-                <div class="col-12 col-md-6 text-center my-auto">
-                    <div class="image-container" style="width: 100%; position: relative; overflow: hidden;">
-                        <img class="img-fluid" src="<?php echo $producto['imagen_url']; ?>" alt="<?php echo $producto['nombre_producto']; ?>" style="object-fit: contain; width: 100%;">
-                    </div>
+    $query_producto = "
+        SELECT 
+            p.nombre_producto, 
+            p.precio, 
+            p.imagen_url, 
+            m.nombre_marca AS marca,
+            p.tipo_producto,
+            p.cantidad AS stock_disponible
+        FROM 
+            producto p
+        LEFT JOIN marca m ON p.marca = m.id_marca
+        WHERE p.id_producto = '$id_producto'
+    ";
+    
+    $result_producto = mysqli_query($conexion, query: $query_producto);
+
+    if ($result_producto->num_rows > 0) {
+        $producto = mysqli_fetch_assoc($result_producto);
+
+        ?>
+        <div class="container ">
+            
+            <!-- Migajas de pan -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                    <li class="breadcrumb-item">
+                        <a href="../index.php" class="text-primary text-decoration-none">
+                            <i class="fas fa-home me-1"></i>Inicio
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="../categoria.php?tipo_producto=<?php echo htmlspecialchars($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
+                            <?php echo ucfirst($producto['tipo_producto']); ?>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active text-dark" aria-current="page">
+                        <?php echo htmlspecialchars($producto['nombre_producto']); ?>
+                    </li>
+                </ol>
+            </nav>
+            <!-- Fin Migajas de pan -->
+            <div class="producto-detalle row bg-white shadow d-flex">
+            <!-- Imagen del producto -->
+            <div class="col-12 col-md-6 text-center my-auto">
+                <div class="image-container" style="width: 100%; position: relative; overflow: hidden;">
+                    <img class="img-fluid" src="<?php echo $producto['imagen_url']; ?>" alt="<?php echo $producto['nombre_producto']; ?>" style="object-fit: contain; width: 100%;">
                 </div>
+            </div>
 
-                <div class='producto-info col-12 col-md-6 p-5'>
-                <?php echo"
-                    <h1>{$producto['nombre_producto']}</h1>
-                    <p><strong>Marca:</strong> {$producto['marca']}</p>
-                    <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
-                    <hr>
-                    <p><strong>Características:</strong></p>
-                    <ul>";
-                        
-                // Mostrar características según el tipo de producto
-                switch ($producto['tipo_producto']) {
-                    case 'teclado':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'tipo_teclado' THEN CONCAT('Tipo de Teclado: ', tt.tipo_teclado) 
-                                    WHEN pa.caracteristica = 'tipo_switch' THEN CONCAT('Tipo de Switch: ', ts.tipo_switch) 
-                                    WHEN pa.caracteristica = 'conectividad' THEN CONCAT('Conectividad: ', c.conectividad)
-                                    WHEN pa.caracteristica = 'iluminacion' THEN CONCAT('Iluminación: ', i.iluminacion)
-                                    WHEN pa.caracteristica = 'categoria_teclado' THEN CONCAT('Categoria teclado: ', ct.categoria_teclado)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN tipo_teclado tt ON pa.valor_caracteristica = tt.id_periferico AND pa.caracteristica = 'tipo_teclado'
-                            LEFT JOIN tipo_switch ts ON pa.valor_caracteristica = ts.id_periferico AND pa.caracteristica = 'tipo_switch'
-                            LEFT JOIN conectividad c ON pa.valor_caracteristica = c.id_periferico AND pa.caracteristica = 'conectividad'
-                            LEFT JOIN iluminacion i ON pa.valor_caracteristica = i.id_periferico AND pa.caracteristica = 'iluminacion'
-                            LEFT JOIN categoria_teclado ct ON pa.valor_caracteristica = ct.id_periferico AND pa.caracteristica = 'categoria_teclado'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                        break;
-
-                    case 'monitor':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'resolucion_monitor' THEN CONCAT('Resolución: ', r.resolucion_monitor) 
-                                    WHEN pa.caracteristica = 'tasa_refresco' THEN CONCAT('Tasa de Refresco: ', tr.tasa_refresco) 
-                                    WHEN pa.caracteristica = 'tipo_panel' THEN CONCAT('Tipo de Panel: ', tp.tipo_panel)
-                                    WHEN pa.caracteristica = 'tamanio_monitor' THEN CONCAT('Tamaño monitor: ', tm.tamanio_monitor)
-                                    WHEN pa.caracteristica = 'tiempo_respuesta' THEN CONCAT('Tiempo de respuesta: ', tra.tiempo_respuesta)
-                                    WHEN pa.caracteristica = 'soporte_monitor' THEN CONCAT('Soporte monitor: ', sm.soporte_monitor)
-                                    WHEN pa.caracteristica = 'tipo_curvatura' THEN CONCAT('Tipo de curvatura: ', tc.tipo_curvatura)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN resolucion_monitor r ON pa.valor_caracteristica = r.id_periferico AND pa.caracteristica = 'resolucion_monitor'
-                            LEFT JOIN tasa_refresco tr ON pa.valor_caracteristica = tr.id_periferico AND pa.caracteristica = 'tasa_refresco'
-                            LEFT JOIN tipo_panel tp ON pa.valor_caracteristica = tp.id_periferico AND pa.caracteristica = 'tipo_panel'
-                            LEFT JOIN tamanio_monitor tm ON pa.valor_caracteristica = tm.id_periferico AND pa.caracteristica = 'tamanio_monitor'
-                            LEFT JOIN tiempo_respuesta tra ON pa.valor_caracteristica = tra.id_periferico AND pa.caracteristica = 'tiempo_respuesta'
-                            LEFT JOIN soporte_monitor sm ON pa.valor_caracteristica = sm.id_periferico AND pa.caracteristica = 'soporte_monitor'
-                            LEFT JOIN tipo_curvatura tc ON pa.valor_caracteristica = tc.id_periferico AND pa.caracteristica = 'tipo_curvatura'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                        break;
-
-                    case 'audifono':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'tipo_audifono' THEN CONCAT('Tipo de Audífono: ', ta.tipo_audifono)
-                                    WHEN pa.caracteristica = 'tipo_microfono' THEN CONCAT('Tipo de Microfono: ', tm.tipo_microfono)
-                                    WHEN pa.caracteristica = 'anc' THEN CONCAT('Cancelacion de ruido: ', a.anc)
-                                    WHEN pa.caracteristica = 'iluminacion' THEN CONCAT('Iluminacion: ', i.iluminacion)
-                                    WHEN pa.caracteristica = 'conectividad' THEN CONCAT('Conectividad: ', c.conectividad)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN tipo_audifono ta ON pa.valor_caracteristica = ta.id_periferico AND pa.caracteristica = 'tipo_audifono'
-                            LEFT JOIN tipo_microfono tm ON pa.valor_caracteristica = tm.id_periferico AND pa.caracteristica = 'tipo_microfono'
-                            LEFT JOIN anc a ON pa.valor_caracteristica = a.id_periferico AND pa.caracteristica = 'anc'
-                            LEFT JOIN iluminacion i ON pa.valor_caracteristica = i.id_periferico AND pa.caracteristica = 'iluminacion'
-                            LEFT JOIN conectividad c ON pa.valor_caracteristica = c.id_periferico AND pa.caracteristica = 'conectividad'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                        break;
-
-                    case 'mouse':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'dpi_mouse' THEN CONCAT('DPI: ', dm.dpi_mouse)
-                                    WHEN pa.caracteristica = 'peso_mouse' THEN CONCAT('Peso: ', pm.peso_mouse)
-                                    WHEN pa.caracteristica = 'sensor_mouse' THEN CONCAT('Sensor: ', sm.sensor_mouse)
-                                    WHEN pa.caracteristica = 'iluminacion' THEN CONCAT('Iluminacion: ', i.iluminacion)
-                                    WHEN pa.caracteristica = 'conectividad' THEN CONCAT('Conectividad: ', c.conectividad)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN dpi_mouse dm ON pa.valor_caracteristica = dm.id_periferico AND pa.caracteristica = 'dpi_mouse'
-                            LEFT JOIN peso_mouse pm ON pa.valor_caracteristica = pm.id_periferico AND pa.caracteristica = 'peso_mouse'
-                            LEFT JOIN sensor_mouse sm ON pa.valor_caracteristica = sm.id_periferico AND pa.caracteristica = 'sensor_mouse'
-                            LEFT JOIN iluminacion i ON pa.valor_caracteristica = i.id_periferico AND pa.caracteristica = 'iluminacion'
-                            LEFT JOIN conectividad c ON pa.valor_caracteristica = c.id_periferico AND pa.caracteristica = 'conectividad'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                            break;
-
-                    case 'cpu':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'frecuencia_cpu' THEN CONCAT('Frecuencia: ', fc.frecuencia_cpu)
-                                    WHEN pa.caracteristica = 'nucleo_hilo_cpu' THEN CONCAT('Nucle / Hilo: ', nhc.nucleo_hilo_cpu)
-                                    WHEN pa.caracteristica = 'socket_cpu' THEN CONCAT('Socket: ', sc.socket_cpu)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN frecuencia_cpu fc ON pa.valor_caracteristica = fc.id_hardware AND pa.caracteristica = 'frecuencia_cpu'
-                            LEFT JOIN nucleo_hilo_cpu nhc ON pa.valor_caracteristica = nhc.id_hardware AND pa.caracteristica = 'nucleo_hilo_cpu'
-                            LEFT JOIN socket_cpu sc ON pa.valor_caracteristica = sc.id_hardware AND pa.caracteristica = 'socket_cpu'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                            break;
-
-                    case 'gpu':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'frecuencia_gpu' THEN CONCAT('Frecuencia: ', fg.frecuencia_gpu)
-                                    WHEN pa.caracteristica = 'memoria_gpu' THEN CONCAT('Memoria: ', mg.memoria_gpu)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN frecuencia_gpu fg ON pa.valor_caracteristica = fg.id_hardware AND pa.caracteristica = 'frecuencia_gpu'
-                            LEFT JOIN memoria_gpu mg ON pa.valor_caracteristica = mg.id_hardware AND pa.caracteristica = 'memoria_gpu'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                            break;
-
-                    case 'placa':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'formato_placa' THEN CONCAT('Formato: ', fp.formato_placa)
-                                    WHEN pa.caracteristica = 'slot_memoria_placa' THEN CONCAT('Slots de memoria: ', smp.slot_memoria_placa)
-                                    WHEN pa.caracteristica = 'socket_placa' THEN CONCAT('Socket: ', sp.socket_placa)
-                                    WHEN pa.caracteristica = 'chipset_placa' THEN CONCAT('Chipset: ', cp.chipset_placa)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN formato_placa fp ON pa.valor_caracteristica = fp.id_hardware AND pa.caracteristica = 'formato_placa'
-                            LEFT JOIN slot_memoria_placa smp ON pa.valor_caracteristica = smp.id_hardware AND pa.caracteristica = 'slot_memoria_placa'
-                            LEFT JOIN socket_placa sp ON pa.valor_caracteristica = sp.id_hardware AND pa.caracteristica = 'socket_placa'
-                            LEFT JOIN chipset_placa cp ON pa.valor_caracteristica = cp.id_hardware AND pa.caracteristica = 'chipset_placa'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                            break;
-
-                    case 'ram':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'tipo_ram' THEN CONCAT('Tipo: ', tr.tipo_ram)
-                                    WHEN pa.caracteristica = 'velocidad_ram' THEN CONCAT('Velocidad: ', vr.velocidad_ram)
-                                    WHEN pa.caracteristica = 'capacidad_ram' THEN CONCAT('Capacidad: ', cr.capacidad_ram)
-                                    WHEN pa.caracteristica = 'formato_ram' THEN CONCAT('Formato: ', fr.formato_ram)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN tipo_ram tr ON pa.valor_caracteristica = tr.id_hardware AND pa.caracteristica = 'tipo_ram'
-                            LEFT JOIN velocidad_ram vr ON pa.valor_caracteristica = vr.id_hardware AND pa.caracteristica = 'velocidad_ram'
-                            LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
-                            LEFT JOIN formato_ram fr ON pa.valor_caracteristica = fr.id_hardware AND pa.caracteristica = 'formato_ram'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                            break;
-                    case 'fuente':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'certificacion_fuente' THEN CONCAT('Certificacion: ', cf.certificacion_fuente)
-                                    WHEN pa.caracteristica = 'potencia_fuente' THEN CONCAT('Potencia: ', pf.potencia_fuente)
-                                    WHEN pa.caracteristica = 'tamanio_fuente' THEN CONCAT('Tamaño: ', tf.tamanio_fuente)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN certificacion_fuente cf ON pa.valor_caracteristica = cf.id_hardware AND pa.caracteristica = 'certificacion_fuente'
-                            LEFT JOIN potencia_fuente pf ON pa.valor_caracteristica = pf.id_hardware AND pa.caracteristica = 'potencia_fuente'
-                            LEFT JOIN tamanio_fuente tf ON pa.valor_caracteristica = tf.id_hardware AND pa.caracteristica = 'tamanio_fuente'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                            break;
-                    case 'gabinete':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'tamanio_max_gabinete' THEN CONCAT('Tamaño maximo de placa: ', tmg.tamanio_max_gabinete)
-                                    WHEN pa.caracteristica = 'iluminacion' THEN CONCAT('Iluminacion: ', i.iluminacion)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN tamanio_max_gabinete tmg ON pa.valor_caracteristica = tmg.id_hardware AND pa.caracteristica = 'tamanio_max_gabinete'
-                            LEFT JOIN iluminacion i ON pa.valor_caracteristica = i.id_periferico AND pa.caracteristica = 'iluminacion'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                            break;
-                    case 'notebook':
-                        $query_caracteristicas = "
-                            SELECT 
-                                CASE 
-                                    WHEN pa.caracteristica = 'bateria_notebook' THEN CONCAT('Bateria: ', bn.bateria_notebook)
-                                    WHEN pa.caracteristica = 'cpu_notebook' THEN CONCAT('Procesador: ', cn.cpu_notebook)
-                                    WHEN pa.caracteristica = 'gpu_notebook' THEN CONCAT('Tarjeta de video maximo de placa: ', gn.gpu_notebook)
-                                    WHEN pa.caracteristica = 'pantalla_notebook' THEN CONCAT('Pantalla: ', pn.pantalla_notebook)
-                                    WHEN pa.caracteristica = 'capacidad_ram' THEN CONCAT('RAM: ', cr.capacidad_ram)
-                                    ELSE NULL
-                                END AS caracteristica
-                            FROM 
-                                producto_caracteristica pa
-                            LEFT JOIN bateria_notebook bn ON pa.valor_caracteristica = bn.id_notebook AND pa.caracteristica = 'bateria_notebook'
-                            LEFT JOIN cpu_notebook cn ON pa.valor_caracteristica = cn.id_notebook AND pa.caracteristica = 'cpu_notebook'
-                            LEFT JOIN gpu_notebook gn ON pa.valor_caracteristica = gn.id_notebook AND pa.caracteristica = 'gpu_notebook'
-                            LEFT JOIN pantalla_notebook pn ON pa.valor_caracteristica = pn.id_notebook AND pa.caracteristica = 'pantalla_notebook'
-                            LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
-                            WHERE pa.id_producto = '$id_producto'
-                        ";
-                            break;
-
-                }
-
-                $result_caracteristicas = mysqli_query($conexion, $query_caracteristicas);
-
-            if ($result_caracteristicas->num_rows > 0) {
-                while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
-                    if ($caracteristica['caracteristica'] !== null) {
-                        echo "<li>" . $caracteristica['caracteristica'] . "</li>";
-                    }
-                }
-            } else {
-                echo "<li>No hay características disponibles.</li>";
-            }            
-            echo "                 
-                    </ul>
-                    <hr>";
-            if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
-                
-                echo " 
-                <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                    <div class='mb-3'>
-                        <label for='cantidad'><strong>Cantidad:</strong></label>
-                        <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 d-inline-block'>
-                        <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
-                    </div>
+            <div class='producto-info col-12 col-md-6 p-5'>
+            <?php echo"
+                <h1>{$producto['nombre_producto']}</h1>
+                <p><strong>Marca:</strong> {$producto['marca']}</p>
+                <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
+                <hr>
+                <p><strong>Características:</strong></p>
+                <ul>";
                     
-                    <div class='d-flex align-items-center gap-2'>
-                        <!-- Botón de agregar al carrito -->
-                        <button type='submit' name='agregar_carrito' class='btn btn-carrito'>
-                            <i class='fa-solid fa-cart-shopping'></i>
-                            <span>Agregar al Carrito</span>
-                        </button>
+            // Mostrar características según el tipo de producto
+            switch ($producto['tipo_producto']) {
+                case 'teclado':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'tipo_teclado' THEN CONCAT('Tipo de Teclado: ', tt.tipo_teclado) 
+                                WHEN pa.caracteristica = 'tipo_switch' THEN CONCAT('Tipo de Switch: ', ts.tipo_switch) 
+                                WHEN pa.caracteristica = 'conectividad' THEN CONCAT('Conectividad: ', c.conectividad)
+                                WHEN pa.caracteristica = 'iluminacion' THEN CONCAT('Iluminación: ', i.iluminacion)
+                                WHEN pa.caracteristica = 'categoria_teclado' THEN CONCAT('Categoria teclado: ', ct.categoria_teclado)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN tipo_teclado tt ON pa.valor_caracteristica = tt.id_periferico AND pa.caracteristica = 'tipo_teclado'
+                        LEFT JOIN tipo_switch ts ON pa.valor_caracteristica = ts.id_periferico AND pa.caracteristica = 'tipo_switch'
+                        LEFT JOIN conectividad c ON pa.valor_caracteristica = c.id_periferico AND pa.caracteristica = 'conectividad'
+                        LEFT JOIN iluminacion i ON pa.valor_caracteristica = i.id_periferico AND pa.caracteristica = 'iluminacion'
+                        LEFT JOIN categoria_teclado ct ON pa.valor_caracteristica = ct.id_periferico AND pa.caracteristica = 'categoria_teclado'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                    break;
 
-                        <!-- Botón de wishlist al lado -->
-                        <button type='button' onclick='addToWishlist({$id_producto})' class='btn btn-wishlist'>
-                            <i class='fas fa-heart'></i>
-                        </button>
-                    </div>
-                </form>";
+                case 'monitor':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'resolucion_monitor' THEN CONCAT('Resolución: ', r.resolucion_monitor) 
+                                WHEN pa.caracteristica = 'tasa_refresco' THEN CONCAT('Tasa de Refresco: ', tr.tasa_refresco) 
+                                WHEN pa.caracteristica = 'tipo_panel' THEN CONCAT('Tipo de Panel: ', tp.tipo_panel)
+                                WHEN pa.caracteristica = 'tamanio_monitor' THEN CONCAT('Tamaño monitor: ', tm.tamanio_monitor)
+                                WHEN pa.caracteristica = 'tiempo_respuesta' THEN CONCAT('Tiempo de respuesta: ', tra.tiempo_respuesta)
+                                WHEN pa.caracteristica = 'soporte_monitor' THEN CONCAT('Soporte monitor: ', sm.soporte_monitor)
+                                WHEN pa.caracteristica = 'tipo_curvatura' THEN CONCAT('Tipo de curvatura: ', tc.tipo_curvatura)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN resolucion_monitor r ON pa.valor_caracteristica = r.id_periferico AND pa.caracteristica = 'resolucion_monitor'
+                        LEFT JOIN tasa_refresco tr ON pa.valor_caracteristica = tr.id_periferico AND pa.caracteristica = 'tasa_refresco'
+                        LEFT JOIN tipo_panel tp ON pa.valor_caracteristica = tp.id_periferico AND pa.caracteristica = 'tipo_panel'
+                        LEFT JOIN tamanio_monitor tm ON pa.valor_caracteristica = tm.id_periferico AND pa.caracteristica = 'tamanio_monitor'
+                        LEFT JOIN tiempo_respuesta tra ON pa.valor_caracteristica = tra.id_periferico AND pa.caracteristica = 'tiempo_respuesta'
+                        LEFT JOIN soporte_monitor sm ON pa.valor_caracteristica = sm.id_periferico AND pa.caracteristica = 'soporte_monitor'
+                        LEFT JOIN tipo_curvatura tc ON pa.valor_caracteristica = tc.id_periferico AND pa.caracteristica = 'tipo_curvatura'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                    break;
 
-                echo "
-                
-                <form method='POST' action='../comparador/agregar_al_comparador.php'>
-                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                    <button type='submit' name='agregar_comparador' class='btn btn-comparador'>
-                         <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-arrow-left-right' viewBox='0 0 16 16'>
-                            <path fill-rule='evenodd' d='M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5'/>
-                        </svg>
-                    </button>
-                </form>";
-                        if (isset($_GET['id_producto'])) {
-                            $id_producto = $_GET['id_producto'];
-                            echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-eliminar-producto mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
-                        }
-            } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
-               
-                echo " 
-                <form method='POST' action='../carrito/agregar_al_carrito.php'>
-                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                    <div class='mb-3'>
-                        <label for='cantidad'><strong>Cantidad:</strong></label>
-                        <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 d-inline-block'>
-                        <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
-                    </div>
-                    <hr>
-                    <div class='d-flex align-items-center gap-2'>
-                        <!-- Botón de agregar al carrito -->
-                        <button type='submit' name='agregar_carrito' class='btn btn-carrito'>
-                            <i class='fa-solid fa-cart-shopping'></i>
-                            <span>Agregar al Carrito</span>
-                        </button>
+                case 'audifono':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'tipo_audifono' THEN CONCAT('Tipo de Audífono: ', ta.tipo_audifono)
+                                WHEN pa.caracteristica = 'tipo_microfono' THEN CONCAT('Tipo de Microfono: ', tm.tipo_microfono)
+                                WHEN pa.caracteristica = 'anc' THEN CONCAT('Cancelacion de ruido: ', a.anc)
+                                WHEN pa.caracteristica = 'iluminacion' THEN CONCAT('Iluminacion: ', i.iluminacion)
+                                WHEN pa.caracteristica = 'conectividad' THEN CONCAT('Conectividad: ', c.conectividad)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN tipo_audifono ta ON pa.valor_caracteristica = ta.id_periferico AND pa.caracteristica = 'tipo_audifono'
+                        LEFT JOIN tipo_microfono tm ON pa.valor_caracteristica = tm.id_periferico AND pa.caracteristica = 'tipo_microfono'
+                        LEFT JOIN anc a ON pa.valor_caracteristica = a.id_periferico AND pa.caracteristica = 'anc'
+                        LEFT JOIN iluminacion i ON pa.valor_caracteristica = i.id_periferico AND pa.caracteristica = 'iluminacion'
+                        LEFT JOIN conectividad c ON pa.valor_caracteristica = c.id_periferico AND pa.caracteristica = 'conectividad'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                    break;
 
-                        <!-- Botón de wishlist al lado -->
-                        <button type='button' onclick='addToWishlist({$id_producto})' class='btn btn-wishlist'>
-                            <i class='fas fa-heart'></i>
-                        </button>
-                    </div>
-                </form>";
+                case 'mouse':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'dpi_mouse' THEN CONCAT('DPI: ', dm.dpi_mouse)
+                                WHEN pa.caracteristica = 'peso_mouse' THEN CONCAT('Peso: ', pm.peso_mouse)
+                                WHEN pa.caracteristica = 'sensor_mouse' THEN CONCAT('Sensor: ', sm.sensor_mouse)
+                                WHEN pa.caracteristica = 'iluminacion' THEN CONCAT('Iluminacion: ', i.iluminacion)
+                                WHEN pa.caracteristica = 'conectividad' THEN CONCAT('Conectividad: ', c.conectividad)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN dpi_mouse dm ON pa.valor_caracteristica = dm.id_periferico AND pa.caracteristica = 'dpi_mouse'
+                        LEFT JOIN peso_mouse pm ON pa.valor_caracteristica = pm.id_periferico AND pa.caracteristica = 'peso_mouse'
+                        LEFT JOIN sensor_mouse sm ON pa.valor_caracteristica = sm.id_periferico AND pa.caracteristica = 'sensor_mouse'
+                        LEFT JOIN iluminacion i ON pa.valor_caracteristica = i.id_periferico AND pa.caracteristica = 'iluminacion'
+                        LEFT JOIN conectividad c ON pa.valor_caracteristica = c.id_periferico AND pa.caracteristica = 'conectividad'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
 
-                echo "
-                
-                <form method='POST' action='../comparador/agregar_al_comparador.php'>
-                    <input type='hidden' name='id_producto' value='{$id_producto}'>
-                    <button type='submit' name='agregar_comparador' class='btn btn-comparador'>
-                         <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-arrow-left-right' viewBox='0 0 16 16'>
-                            <path fill-rule='evenodd' d='M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5'/>
-                        </svg>
-                    </button>
-                </form>";
+                case 'cpu':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'frecuencia_cpu' THEN CONCAT('Frecuencia: ', fc.frecuencia_cpu)
+                                WHEN pa.caracteristica = 'nucleo_hilo_cpu' THEN CONCAT('Nucle / Hilo: ', nhc.nucleo_hilo_cpu)
+                                WHEN pa.caracteristica = 'socket_cpu' THEN CONCAT('Socket: ', sc.socket_cpu)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN frecuencia_cpu fc ON pa.valor_caracteristica = fc.id_hardware AND pa.caracteristica = 'frecuencia_cpu'
+                        LEFT JOIN nucleo_hilo_cpu nhc ON pa.valor_caracteristica = nhc.id_hardware AND pa.caracteristica = 'nucleo_hilo_cpu'
+                        LEFT JOIN socket_cpu sc ON pa.valor_caracteristica = sc.id_hardware AND pa.caracteristica = 'socket_cpu'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
 
+                case 'gpu':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'frecuencia_gpu' THEN CONCAT('Frecuencia: ', fg.frecuencia_gpu)
+                                WHEN pa.caracteristica = 'memoria_gpu' THEN CONCAT('Memoria: ', mg.memoria_gpu)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN frecuencia_gpu fg ON pa.valor_caracteristica = fg.id_hardware AND pa.caracteristica = 'frecuencia_gpu'
+                        LEFT JOIN memoria_gpu mg ON pa.valor_caracteristica = mg.id_hardware AND pa.caracteristica = 'memoria_gpu'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
 
+                case 'placa':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'formato_placa' THEN CONCAT('Formato: ', fp.formato_placa)
+                                WHEN pa.caracteristica = 'slot_memoria_placa' THEN CONCAT('Slots de memoria: ', smp.slot_memoria_placa)
+                                WHEN pa.caracteristica = 'socket_placa' THEN CONCAT('Socket: ', sp.socket_placa)
+                                WHEN pa.caracteristica = 'chipset_placa' THEN CONCAT('Chipset: ', cp.chipset_placa)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN formato_placa fp ON pa.valor_caracteristica = fp.id_hardware AND pa.caracteristica = 'formato_placa'
+                        LEFT JOIN slot_memoria_placa smp ON pa.valor_caracteristica = smp.id_hardware AND pa.caracteristica = 'slot_memoria_placa'
+                        LEFT JOIN socket_placa sp ON pa.valor_caracteristica = sp.id_hardware AND pa.caracteristica = 'socket_placa'
+                        LEFT JOIN chipset_placa cp ON pa.valor_caracteristica = cp.id_hardware AND pa.caracteristica = 'chipset_placa'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
 
+                case 'ram':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'tipo_ram' THEN CONCAT('Tipo: ', tr.tipo_ram)
+                                WHEN pa.caracteristica = 'velocidad_ram' THEN CONCAT('Velocidad: ', vr.velocidad_ram)
+                                WHEN pa.caracteristica = 'capacidad_ram' THEN CONCAT('Capacidad: ', cr.capacidad_ram)
+                                WHEN pa.caracteristica = 'formato_ram' THEN CONCAT('Formato: ', fr.formato_ram)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN tipo_ram tr ON pa.valor_caracteristica = tr.id_hardware AND pa.caracteristica = 'tipo_ram'
+                        LEFT JOIN velocidad_ram vr ON pa.valor_caracteristica = vr.id_hardware AND pa.caracteristica = 'velocidad_ram'
+                        LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
+                        LEFT JOIN formato_ram fr ON pa.valor_caracteristica = fr.id_hardware AND pa.caracteristica = 'formato_ram'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+                case 'fuente':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'certificacion_fuente' THEN CONCAT('Certificacion: ', cf.certificacion_fuente)
+                                WHEN pa.caracteristica = 'potencia_fuente' THEN CONCAT('Potencia: ', pf.potencia_fuente)
+                                WHEN pa.caracteristica = 'tamanio_fuente' THEN CONCAT('Tamaño: ', tf.tamanio_fuente)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN certificacion_fuente cf ON pa.valor_caracteristica = cf.id_hardware AND pa.caracteristica = 'certificacion_fuente'
+                        LEFT JOIN potencia_fuente pf ON pa.valor_caracteristica = pf.id_hardware AND pa.caracteristica = 'potencia_fuente'
+                        LEFT JOIN tamanio_fuente tf ON pa.valor_caracteristica = tf.id_hardware AND pa.caracteristica = 'tamanio_fuente'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+                case 'gabinete':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'tamanio_max_gabinete' THEN CONCAT('Tamaño maximo de placa: ', tmg.tamanio_max_gabinete)
+                                WHEN pa.caracteristica = 'iluminacion' THEN CONCAT('Iluminacion: ', i.iluminacion)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN tamanio_max_gabinete tmg ON pa.valor_caracteristica = tmg.id_hardware AND pa.caracteristica = 'tamanio_max_gabinete'
+                        LEFT JOIN iluminacion i ON pa.valor_caracteristica = i.id_periferico AND pa.caracteristica = 'iluminacion'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+                case 'notebook':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'bateria_notebook' THEN CONCAT('Bateria: ', bn.bateria_notebook)
+                                WHEN pa.caracteristica = 'cpu_notebook' THEN CONCAT('Procesador: ', cn.cpu_notebook)
+                                WHEN pa.caracteristica = 'gpu_notebook' THEN CONCAT('Tarjeta de video maximo de placa: ', gn.gpu_notebook)
+                                WHEN pa.caracteristica = 'pantalla_notebook' THEN CONCAT('Pantalla: ', pn.pantalla_notebook)
+                                WHEN pa.caracteristica = 'capacidad_ram' THEN CONCAT('RAM: ', cr.capacidad_ram)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN bateria_notebook bn ON pa.valor_caracteristica = bn.id_notebook AND pa.caracteristica = 'bateria_notebook'
+                        LEFT JOIN cpu_notebook cn ON pa.valor_caracteristica = cn.id_notebook AND pa.caracteristica = 'cpu_notebook'
+                        LEFT JOIN gpu_notebook gn ON pa.valor_caracteristica = gn.id_notebook AND pa.caracteristica = 'gpu_notebook'
+                        LEFT JOIN pantalla_notebook pn ON pa.valor_caracteristica = pn.id_notebook AND pa.caracteristica = 'pantalla_notebook'
+                        LEFT JOIN capacidad_ram cr ON pa.valor_caracteristica = cr.id_hardware AND pa.caracteristica = 'capacidad_ram'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
 
             }
 
-            echo "</div>"; ?>
-            </div>
+            $result_caracteristicas = mysqli_query($conexion, $query_caracteristicas);
 
-            <?php
+        if ($result_caracteristicas->num_rows > 0) {
+            while ($caracteristica = mysqli_fetch_assoc($result_caracteristicas)) {
+                if ($caracteristica['caracteristica'] !== null) {
+                    echo "<li>" . $caracteristica['caracteristica'] . "</li>";
+                }
+            }
+        } else {
+            echo "<li>No hay características disponibles.</li>";
+        }            
+        echo "
+                
+                </ul>";
 
-            if ($id_producto) {
-                $query_resenas = "SELECT rv.valoracion, rv.comentario, rv.fecha, u.username
-                                FROM resena_valoracion AS rv
-                                JOIN users AS u ON rv.user_id = u.id
-                                WHERE rv.id_producto = '$id_producto'
-                                ORDER BY rv.fecha DESC";
-                $result_resenas = mysqli_query($conexion, $query_resenas);
+                if (isset($_SESSION['user_id'])) {
+                    $user_id = $_SESSION['user_id'];
+                
+                    // Obtener el nombre del producto actual
+                    $nombre_producto = $producto['nombre_producto'];
+                
+                    // Escapar caracteres especiales para el formato JSON
+                    $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
+                
+                    // Verificar si el usuario compró este producto
+                    $query_compra = "
+                        SELECT COUNT(*) AS comprado
+                        FROM boletas
+                        WHERE id_usuario = '$user_id' 
+                        AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'
+                    ";
+                    $result_compra = mysqli_query($conexion, $query_compra);
+                
+                    // Manejar errores en la consulta SQL
+                    if (!$result_compra) {
+                        die("Error en la consulta SQL: " . mysqli_error($conexion));
+                    }
+                
+                    $compra = mysqli_fetch_assoc($result_compra);
+                
+                    // Mostrar el botón si el producto fue comprado
+                    if ($compra['comprado'] > 0) {
+                        echo "
+                            <a href='../postventa/postventa.php?id_producto=" . htmlspecialchars($id_producto) . "' class='btn btn-primary mt-3'>
+                                ¿Tienes problemas con este producto? Ir a Postventa
+                            </a>
+                        ";
+                    } else {
+                    
+                    }
+                }
+                
 
-                $query_media_valoracion = "SELECT AVG(valoracion) AS media_valoracion FROM resena_valoracion WHERE id_producto = '$id_producto'";
-                $result_media_valoracion = mysqli_query($conexion, $query_media_valoracion);
-                $media_valoracion = 0;
-                if ($result_media_valoracion && mysqli_num_rows($result_media_valoracion) > 0) {
-                    $media_valoracion = round(mysqli_fetch_assoc($result_media_valoracion)['media_valoracion'], 1); 
-                }               
+        if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+            
+            echo " 
+            <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                <input type='hidden' name='id_producto' value='{$id_producto}'>
+                <div class='mb-3'>
+                    <label for='cantidad'><strong>Cantidad:</strong></label>
+                    <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 d-inline-block'>
+                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                </div>
+                <hr>
+                <div class='d-flex align-items-center gap-2'>
+                    <!-- Botón de agregar al carrito -->
+                    <button type='submit' name='agregar_carrito' class='btn btn-carrito'>
+                        <i class='fa-solid fa-cart-shopping'></i>
+                        <span>Agregar al Carrito</span>
+                    </button>
 
-                    ?> <br> <?php
-                    echo "<div class='row bg-white px-5 py-3 shadow border'>";
+                    <!-- Botón de wishlist al lado -->
+                    <button type='button' onclick='addToWishlist({$id_producto})' class='btn btn-wishlist'>
+                        <i class='fas fa-heart'></i>
+                    </button>
+                </div>
+            </form>";
 
-                    ?>
-                    <div class="row mt-4">
-                        <div class="col-12 d-flex align-items-center justify-content-between flex-wrap">
-                            <div class="d-flex align-items-center flex-wrap">
-                                <?php
-                                echo "<h3 class='me-2'>Reseñas</h3>";
-                                echo "<span class='me-3' style='font-size: 1.5rem; color: gold;'>";
-                                for ($i = 1; $i <= 5; $i++) {
-                                    echo $i <= $media_valoracion ? "&#9733;" : "&#9734;";
-                                }
-                                echo "</span>";
-                                echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                        <hr>
-                        <?php
-                        if (mysqli_num_rows($result_resenas) > 0) {
-                            while ($resena = mysqli_fetch_assoc($result_resenas)) {
-                                $valoracion = intval($resena['valoracion']);
-                                echo "<div class='card mb-3'>";
-                                echo "<div class=''>";
-                                echo "<h5 class='card-title'>";
-                                for ($i = 1; $i <= 5; $i++) {
-                                    echo $i <= $valoracion ? "&#9733;" : "&#9734;";
-                                }
-                                echo " - " . htmlspecialchars($resena['username']) . "</h5>";
-                                echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
-                                echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
-                                echo "</div>";
-                                echo "</div>";
-                            }
-                        } else {
-                            echo "<div class='alert alert-secondary'>Aún no hay reseñas para este producto.</div>";
+            echo "
+            
+            <form method='POST' action='../comparador/agregar_al_comparador.php'>
+                <input type='hidden' name='id_producto' value='{$id_producto}'>
+                <button type='submit' name='agregar_comparador' class='btn btn-comparador'>
+                     <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-arrow-left-right' viewBox='0 0 16 16'>
+                        <path fill-rule='evenodd' d='M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5'/>
+                    </svg>
+                </button>
+            </form>";
+                    if (isset($_GET['id_producto'])) {
+                        $id_producto = $_GET['id_producto'];
+                        echo "<button onclick='eliminarProducto($id_producto)' class='btn btn-eliminar-producto mt-3 mx-1 px-5 rounded-pill '>Eliminar producto</button>";
+                    }
+        } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
+           
+            echo " 
+            <form method='POST' action='../carrito/agregar_al_carrito.php'>
+                <input type='hidden' name='id_producto' value='{$id_producto}'>
+                <div class='mb-3'>
+                    <label for='cantidad'><strong>Cantidad:</strong></label>
+                    <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 d-inline-block'>
+                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                </div>
+                <hr>
+                <div class='d-flex align-items-center gap-2'>
+                    <!-- Botón de agregar al carrito -->
+                    <button type='submit' name='agregar_carrito' class='btn btn-carrito'>
+                        <i class='fa-solid fa-cart-shopping'></i>
+                        <span>Agregar al Carrito</span>
+                    </button>
+
+                    <!-- Botón de wishlist al lado -->
+                    <button type='button' onclick='addToWishlist({$id_producto})' class='btn btn-wishlist'>
+                        <i class='fas fa-heart'></i>
+                    </button>
+                </div>
+            </form>";
+
+            echo "
+            
+            <form method='POST' action='../comparador/agregar_al_comparador.php'>
+                <input type='hidden' name='id_producto' value='{$id_producto}'>
+                <button type='submit' name='agregar_comparador' class='btn btn-comparador'>
+                     <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-arrow-left-right' viewBox='0 0 16 16'>
+                        <path fill-rule='evenodd' d='M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5'/>
+                    </svg>
+                </button>
+            </form>";
+
+
+
+
+        }
+
+        echo "</div>"; ?>
+        </div>
+
+        <?php
+
+        if ($id_producto) {
+            $query_resenas = "SELECT rv.valoracion, rv.comentario, rv.fecha, u.username
+                            FROM resena_valoracion AS rv
+                            JOIN users AS u ON rv.user_id = u.id
+                            WHERE rv.id_producto = '$id_producto'
+                            ORDER BY rv.fecha DESC";
+            $result_resenas = mysqli_query($conexion, $query_resenas);
+
+            // Calcular la media de las valoraciones
+            $query_media_valoracion = "SELECT AVG(valoracion) AS media_valoracion FROM resena_valoracion WHERE id_producto = '$id_producto'";
+            $result_media_valoracion = mysqli_query($conexion, $query_media_valoracion);
+            $media_valoracion = 0;
+            if ($result_media_valoracion && mysqli_num_rows($result_media_valoracion) > 0) {
+                $media_valoracion = round(mysqli_fetch_assoc($result_media_valoracion)['media_valoracion'], 1); // Redondear a 1 decimal
+            }               
+
+                ?> <br> <?php
+                echo "<div class='row bg-white px-5 py-3 shadow border'>";
+
+                // Contenedor con sistema de columnas
+                ?>
+                <div class="row mt-4">
+                    <div class="col-12">
+                <?php
+                echo "<h3 class='me-2'>Reseñas</h3>";
+                echo "<span class='me-3' style='font-size: 1.5rem; color: gold;'>";
+                for ($i = 1; $i <= 5; $i++) {
+                    echo $i <= $media_valoracion ? "&#9733;" : "&#9734;";
+                }
+                echo "</span>";
+                echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
+                echo "</div>";
+                if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'){
+                    echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                        Agregar Reseña
+                      </button>";
+                }
+                elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
+                    echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                        Agregar Reseña
+                      </button>";
+                }
+                elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'superadmin'){
+                    echo "<button type='button' class='btn btn-primary rounded-pill mb-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
+                        Agregar Reseña
+                      </button>";
+                }
+                echo "</div>";
+                echo "<hr>";
+                if (mysqli_num_rows($result_resenas) > 0) {
+                    while ($resena = mysqli_fetch_assoc($result_resenas)) {
+                        $valoracion = intval($resena['valoracion']);
+                        echo "<div class='card mb-3'>";
+                        echo "<div class='cardbody'>";
+                        echo "<h5 class='card-title'>";
+                        for ($i = 1; $i <= 5; $i++) {
+                            echo $i <= $valoracion ? "&#9733;" : "&#9734;";
                         }
+                        echo " - " . htmlspecialchars($resena['username']) . "</h5>";
+                        echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
+                        echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
+                        echo "</div>";
+                        echo "</div>";
+                    }
+            } else {
+                echo "<div class='alert alert-secondary'>Aún no hay reseñas para este producto.</div>";
+            }
 
-                        if (isset($_SESSION['user_id'])) {
-                            $user_id = $_SESSION['user_id'];
-                        
-                            // Obtener el nombre del producto actual
-                            $query_nombre_producto = "SELECT nombre_producto FROM producto WHERE id_producto = '$id_producto'";
-                            $result_nombre_producto = mysqli_query($conexion, $query_nombre_producto);
-                            $nombre_producto = mysqli_fetch_assoc($result_nombre_producto)['nombre_producto'];
-                        
-                            // Validar que se obtuvo el nombre del producto
-                            if ($nombre_producto) {
-                                // Escapar caracteres especiales para el formato JSON
-                                $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
-                            
-                                // Consulta para verificar si el producto fue comprado por nombre en el formato JSON
-                                $query_compra = "SELECT COUNT(*) AS comprado
-                                                 FROM boletas
-                                                 WHERE id_usuario = '$user_id' 
-                                                 AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'";
-                                $result_compra = mysqli_query($conexion, $query_compra);
-                                $compra = mysqli_fetch_assoc($result_compra);
-                                if ($compra['comprado'] > 0) {
-                                ?>   
-                                <div class='mt-2 mt-md-0'>
-                                    <button type='button' class='btn btn-primary rounded-pill w-md-auto my-2' data-bs-toggle='modal' data-bs-target='#modalAgregarResena'>
-                                        Agregar Reseña
-                                    </button>
+            if (isset($_SESSION['user_id'])) {
+                $user_id = $_SESSION['user_id'];
+            
+                // Obtener el nombre del producto actual
+                $query_nombre_producto = "SELECT nombre_producto FROM producto WHERE id_producto = '$id_producto'";
+                $result_nombre_producto = mysqli_query($conexion, $query_nombre_producto);
+                $nombre_producto = mysqli_fetch_assoc($result_nombre_producto)['nombre_producto'];
+            
+                // Validar que se obtuvo el nombre del producto
+                if ($nombre_producto) {
+                    // Escapar caracteres especiales para el formato JSON
+                    $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
+            
+                    // Consulta para verificar si el producto fue comprado por nombre en el formato JSON
+                    $query_compra = "SELECT COUNT(*) AS comprado
+                                     FROM boletas
+                                     WHERE id_usuario = '$user_id' 
+                                     AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'";
+                    $result_compra = mysqli_query($conexion, $query_compra);
+                    $compra = mysqli_fetch_assoc($result_compra);
+                    if ($compra['comprado'] > 0) {
+                    ?>   
+                    <!-- Modal para agregar reseña -->
+                    <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Agregar Reseña</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <!-- Modal para agregar reseña -->
-                                <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Agregar Reseña</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form id="formAgregarResena">
-                                                    <div class="form-group">
-                                                        <label for="valoracion">Valoración:</label>
-                                                        <div class="star-rating">
-                                                            <input type="radio" name="valoracion" value="5" id="star-5">
-                                                            <label for="star-5" title="5 estrellas">&#9733;</label>
-                                                            <input type="radio" name="valoracion" value="4" id="star-4">
-                                                            <label for="star-4" title="4 estrellas">&#9733;</label>
-                                                            <input type="radio" name="valoracion" value="3" id="star-3">
-                                                            <label for="star-3" title="3 estrellas">&#9733;</label>
-                                                            <input type="radio" name="valoracion" value="2" id="star-2">
-                                                            <label for="star-2" title="2 estrellas">&#9733;</label>
-                                                            <input type="radio" name="valoracion" value="1" id="star-1">
-                                                            <label for="star-1" title="1 estrella">&#9733;</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="comentario">Comentario:</label>
-                                                        <textarea name="comentario" id="comentario" class="form-control" rows="3" required></textarea>
-                                                    </div>
-                                                    <button type="button" onclick="agregarResena(<?php echo $id_producto; ?>)" class="btn btn-primary mt-2">Enviar Reseña</button>
-                                                </form>
+                                <div class="modal-body">
+                                    <form id="formAgregarResena">
+                                        <div class="form-group">
+                                            <label for="valoracion">Valoración:</label>
+                                            <div class="star-rating">
+                                                <input type="radio" name="valoracion" value="5" id="star-5">
+                                                <label for="star-5" title="5 estrellas">&#9733;</label>
+                                                <input type="radio" name="valoracion" value="4" id="star-4">
+                                                <label for="star-4" title="4 estrellas">&#9733;</label>
+                                                <input type="radio" name="valoracion" value="3" id="star-3">
+                                                <label for="star-3" title="3 estrellas">&#9733;</label>
+                                                <input type="radio" name="valoracion" value="2" id="star-2">
+                                                <label for="star-2" title="2 estrellas">&#9733;</label>
+                                                <input type="radio" name="valoracion" value="1" id="star-1">
+                                                <label for="star-1" title="1 estrella">&#9733;</label>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="comentario">Comentario:</label>
+                                            <textarea name="comentario" id="comentario" class="form-control" rows="3" required></textarea>
+                                        </div>
+                                        <button type="button" onclick="agregarResena(<?php echo $id_producto; ?>)" class="btn btn-primary mt-2">Enviar Reseña</button>
+                                    </form>
                                 </div>
-                                <?php 
-                                } else {
-                                    echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";
-                                }
-                            } else {
-                                echo "<div class='alert alert-danger'>Error: No se encontró el nombre del producto.</div>";
-                            }                   
-                        }
-            } else {
-                echo "<p>Producto no encontrado.</p>";
+                            </div>
+                        </div>
+
+                    <?php 
+                    } else {
+                        echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";
+                    }
+                } else {
+                    echo "<div class='alert alert-danger'>Error: No se encontró el nombre del producto.</div>";
+                }                
+                
             }
         } else {
             echo "<p>Producto no encontrado.</p>";
@@ -893,9 +1029,12 @@
     } else {
         echo "<p>Producto no encontrado.</p>";
     }
-    mysqli_close($conexion);
-    ?>
-    </div>
+} else {
+    echo "<p>Producto no encontrado.</p>";
+}
+mysqli_close($conexion);
+?>
+</div>
     
     <script>
     function agregarResena(idProducto) {
