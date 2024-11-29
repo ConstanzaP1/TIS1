@@ -212,25 +212,43 @@ if (isset($_POST['pagar'])) {
             background-color: #e0e0e0;
         }
         .btn-cart:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
+            background-color: white; /* Cambia el fondo al pasar el mouse */
+            color: #721c24; /* Cambia el color del texto/icono */
+            transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+            transition: all 0.3s ease; /* Suaviza la animación */
+        }
 
-/* Estilo para el botón de comparar */
-.btn-comparar:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #155724; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
-.btn-deseos:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
+        /* Estilo para el botón de comparar */
+        .btn-comparar:hover {
+            background-color: white; /* Cambia el fondo al pasar el mouse */
+            color: #155724; /* Cambia el color del texto/icono */
+            transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+            transition: all 0.3s ease; /* Suaviza la animación */
+        }
+        .btn-deseos:hover {
+            background-color: white; /* Cambia el fondo al pasar el mouse */
+            color: #721c24; /* Cambia el color del texto/icono */
+            transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+            transition: all 0.3s ease; /* Suaviza la animación */
+        }
+        .breadcrumb {
+            background-color: #f9f9f9;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb .breadcrumb-item a {
+            transition: color 0.2s ease-in-out;
+        }
+        
+        .breadcrumb .breadcrumb-item a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb .breadcrumb-item.active {
+            font-weight: bold;
+            color: #333;
+        }
         body{
             background-color: #e0e0e0;
         }
@@ -354,7 +372,6 @@ if (isset($_POST['pagar'])) {
 </nav>
 </head>
 <body>
-<div class="container py-5">
     <!-- Migajas de pan -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
@@ -369,6 +386,8 @@ if (isset($_POST['pagar'])) {
         </ol>
     </nav>
 <!-- Fin Migajas de pan -->
+<div class="container py-5">
+    
     <h2 class="mb-4">Tu carro (<?php echo count($_SESSION['carrito'] ?? []); ?> productos)</h2>
 
     <?php if (empty($_SESSION['carrito'])): ?>
