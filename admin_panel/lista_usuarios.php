@@ -24,7 +24,7 @@
 
             <!-- Formulario de búsqueda -->
             <form method="GET" action="" class="mb-2 d-flex justify-content-center align-items-center">
-                <input type="text" name="search" class="form-control w-50" placeholder="Buscar por ID, Nombre de Usuario o Correo Electrónico" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+                <input type="text" name="search" class="form-control w-50" placeholder="Nombre de Usuario o Correo Electrónico" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
                 
                 <div class="d-flex ms-2" style="width: 150px;">
                     <button type="submit" class="btn btn-primary w-100">Buscar</button>
@@ -110,7 +110,6 @@ if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
             <table class="table table-bordered">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Nombre de Usuario</th>
             <th>Correo Electrónico</th>
             <th>Rol</th>
@@ -120,7 +119,7 @@ if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
     <tbody>
         <?php while ($row = $result_users->fetch_assoc()): ?>
         <tr>
-            <td><?php echo $row['id']; ?></td>
+
             <td><?php echo $row['username']; ?></td>
             <td><?php echo $row['email']; ?></td>
             <td><?php echo $roles[$row['role']]; ?></td>

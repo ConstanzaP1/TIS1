@@ -1,21 +1,40 @@
-<?php 
+<?php
 session_start();
 require('conexion.php');
-require('funcion_filtros/filtrar_productos.php');
 
-// Valores predeterminados para los filtros de marca, precio y categoría
-$marca = isset($_POST['marca']) ? $_POST['marca'] : "";
-$precio_min = isset($_POST['precio_min']) ? $_POST['precio_min'] : "";
-$precio_max = isset($_POST['precio_max']) ? $_POST['precio_max'] : "";
-$categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
-// Verificar si hay filtros aplicados
-// Verificar si hay filtros aplicados
-if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categoria)) {
-    // Obtener solo productos destacados
-    $productos = filtrarProductosPorMarcaYRangoYCategoria("", "", "", "", true);
+// Inicializar variables de filtro
+$categoria = isset($_GET['categoria']) ? $_GET['categoria'] : "";
+$tituloPagina = !empty($categoria) ? "Categoría  " . htmlspecialchars($categoria) : "Productos destacados";
+
+// Lógica de productos
+if (!empty($categoria)) {
+    // Mostrar solo productos de la categoría seleccionada
+    $productos = filtrarProductosPorCategoria(categoria: $categoria);
 } else {
-    // Filtrar productos destacados según los criterios
-    $productos = filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria, true);
+    // Mostrar productos destacados
+    $productos = obtenerProductosDestacados();
+}
+
+/**
+ * Función para obtener productos destacados.
+ */
+function obtenerProductosDestacados()
+{
+    global $conexion;
+    $query = "SELECT * FROM producto WHERE destacado = 1";
+    $result = mysqli_query($conexion, $query);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+/**
+ * Función para filtrar productos por categoría.
+ */
+function filtrarProductosPorCategoria($categoria)
+{
+    global $conexion;
+    $query = "SELECT * FROM producto WHERE nombre_categoria = '" . mysqli_real_escape_string($conexion, $categoria) . "'";
+    $result = mysqli_query($conexion, $query);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 // Consulta para obtener la URL de la imagen del usuario actual
 // Comprobamos si el usuario ha iniciado sesión
@@ -39,8 +58,10 @@ if (isset($_SESSION['user_id'])) {
 
 ?>
 
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,14 +72,16 @@ if (isset($_SESSION['user_id'])) {
 
 </head>
 <style>
-    .navbar{
-        background-color: rgba(0, 128, 255, 0.5);   
+    .navbar {
+        background-color: rgba(0, 128, 255, 0.5);
     }
-    .celeste-background{
-        background-color: rgba(0, 128, 255, 0.5); 
-        border-color: rgba(0, 128, 255, 0.5);   
+
+    .celeste-background {
+        background-color: rgba(0, 128, 255, 0.5);
+        border-color: rgba(0, 128, 255, 0.5);
     }
-    .card-body{
+
+    .card-body {
         background-color: #e0e0e0;
     }
     .card {
@@ -93,6 +116,7 @@ if (isset($_SESSION['user_id'])) {
     }
 
 </style>
+
 <body>
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
@@ -108,7 +132,7 @@ if (isset($_SESSION['user_id'])) {
         <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Barra de búsqueda -->
@@ -178,6 +202,7 @@ if (isset($_SESSION['user_id'])) {
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        
         <div class="offcanvas-body">
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -196,7 +221,82 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </div>
 </nav>
+<div id="responsiveCarousel" class="carousel slide" data-bs-ride="carousel">
+    <!-- Indicadores del carrusel -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#responsiveCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#responsiveCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#responsiveCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
 
+    <!-- Contenido del carrusel -->
+    <div class="carousel-inner">
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+            <img src="https://i.postimg.cc/q7Cfvmc9/1.png" class="d-block w-100" alt="Banner 1">
+            <div class="carousel-caption d-none d-md-block">
+                <a href="#" class="btn btn-primary">Ver más</a>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+            <img src="https://i.postimg.cc/52ydZ9X9/2.png" class="d-block w-100" alt="Banner 2">
+            <div class="carousel-caption d-none d-md-block">
+                <a href="#" class="btn btn-primary">Explorar</a>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-item">
+            <img src="https://i.postimg.cc/SxPFq096/3.png" class="d-block w-100" alt="Banner 3">
+            <div class="carousel-caption d-none d-md-block">
+                <a href="#" class="btn btn-primary">Descubre más</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controles de navegación -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#responsiveCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#responsiveCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- CSS adicional para ajustar el comportamiento de las imágenes -->
+<style>
+    .carousel-inner {
+        position: relative;
+        width: 100%;
+        overflow: hidden; /* Esto asegura que las imágenes no se desborden del contenedor */
+    }
+
+    .carousel-inner img {
+        width: 100%; /* Las imágenes ocupan todo el ancho disponible */
+        height: 100%; /* Las imágenes ocuparán toda la altura disponible */
+        object-fit: cover; /* Asegura que las imágenes cubran el contenedor sin deformarse */
+    }
+
+    /* Para pantallas pequeñas, ajustamos la altura para que el banner no se vea muy alto */
+    @media (max-width: 768px) {
+        .carousel-inner img {
+            object-fit: cover; /* Mantiene el mismo ajuste en pantallas medianas */
+        }
+    }
+
+    @media (max-width: 576px) {
+        .carousel-inner img {
+            object-fit: cover; /* Asegura que la imagen cubra sin deformarse en pantallas pequeñas */
+        }
+    }
+</style>
+
+<!-- Agregar Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <div class="container my-4">
     <div class="row">
@@ -215,47 +315,47 @@ if (isset($_SESSION['user_id'])) {
                     <input type="number" class="form-control" id="precio_max" name="precio_max" placeholder="ej:1000" value="<?php echo htmlspecialchars($precio_max); ?>">
                 </div>
 
-                <!-- Filtro de marca -->
-                <div class="mb-3">
-                    <label for="marca" class="form-label">Marca</label>
-                    <select name="marca" id="marca" class="form-select">
-                        <option value="">Selecciona una marca</option>
-                        <?php
-                        $marcaQuery = "SELECT nombre_marca FROM marca";
-                        $marcaResult = mysqli_query($conexion, $marcaQuery);
-                        while ($marcaRow = mysqli_fetch_assoc($marcaResult)) {
-                            $selected = ($marcaRow['nombre_marca'] == $marca) ? "selected" : "";
-                            echo "<option value='{$marcaRow['nombre_marca']}' $selected>{$marcaRow['nombre_marca']}</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
+                    <!-- Filtro de marca -->
+                    <div class="mb-3">
+                        <label for="marca" class="form-label">Marca</label>
+                        <select name="marca" id="marca" class="form-select">
+                            <option value="">Selecciona una marca</option>
+                            <?php
+                            $marcaQuery = "SELECT nombre_marca FROM marca";
+                            $marcaResult = mysqli_query($conexion, $marcaQuery);
+                            while ($marcaRow = mysqli_fetch_assoc($marcaResult)) {
+                                $selected = ($marcaRow['nombre_marca'] == $marca) ? "selected" : "";
+                                echo "<option value='{$marcaRow['nombre_marca']}' $selected>{$marcaRow['nombre_marca']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
 
-                <!-- Filtro de categoría -->
-                <div class="mb-3">
-                    <label for="categoria" class="form-label">Categoría</label>
-                    <select name="categoria" id="categoria" class="form-select">
-                        <option value="">Selecciona una categoría</option>
-                        <option value="audifono">Audífono</option>
-                        <option value="cpu">Procesador</option>
-                        <option value="fuente">Fuente de Poder</option>
-                        <option value="gabinete">Gabinete</option>
-                        <option value="gpu">Tarjeta de Video</option>
-                        <option value="monitor">Monitor</option>
-                        <option value="mouse">Mouse</option>
-                        <option value="notebook">Notebook</option>
-                        <option value="placa">Placa Madre</option>
-                        <option value="ram">Memoria RAM</option>
-                        <option value="teclado">Teclado</option>
-                    </select>
-                </div>
+                    <!-- Filtro de categoría -->
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <select name="categoria" id="categoria" class="form-select">
+                            <option value="">Selecciona una categoría</option>
+                            <option value="audifono">Audífono</option>
+                            <option value="cpu">Procesador</option>
+                            <option value="fuente">Fuente de Poder</option>
+                            <option value="gabinete">Gabinete</option>
+                            <option value="gpu">Tarjeta de Video</option>
+                            <option value="monitor">Monitor</option>
+                            <option value="mouse">Mouse</option>
+                            <option value="notebook">Notebook</option>
+                            <option value="placa">Placa Madre</option>
+                            <option value="ram">Memoria RAM</option>
+                            <option value="teclado">Teclado</option>
+                        </select>
+                    </div>
 
-                <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-                    <button type="button" class="btn btn-secondary" onclick="resetFilters()">Limpiar Filtros</button>
-                </div>
-            </form>
-        </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetFilters()">Limpiar Filtros</button>
+                    </div>
+                </form>
+            </div>
 
         <div class="col-12 col-md-9">
             <div class="row gx-2 gy-3"> <!-- Ajustamos los espacios entre las columnas y filas -->
@@ -326,4 +426,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <?php include "footer.php"?>
 </body>
+
 </html>
