@@ -79,7 +79,7 @@ $result = $stmt->get_result();
             font-weight: bold;
         }
         .navbar{
-        background-color: rgba(0, 128, 255, 0.5);   
+            background-color: rgba(0, 128, 255, 0.5);   
         }
         .celeste-background{
             background-color: rgba(0, 128, 255, 0.5); 
@@ -89,41 +89,41 @@ $result = $stmt->get_result();
             background-color: #e0e0e0;
         }
         .btn-cart:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
+            background-color: white; /* Cambia el fondo al pasar el mouse */
+            color: #721c24; /* Cambia el color del texto/icono */
+            transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+            transition: all 0.3s ease; /* Suaviza la animación */
+        }
 
-/* Estilo para el botón de comparar */
-.btn-comparar:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #155724; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
-.btn-deseos:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-
-}
-.wishlist-card {
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        margin: 20px 0;
-    }
-body {
+        /* Estilo para el botón de comparar */
+        .btn-comparar:hover {
+            background-color: white; /* Cambia el fondo al pasar el mouse */
+            color: #155724; /* Cambia el color del texto/icono */
+            transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+            transition: all 0.3s ease; /* Suaviza la animación */
+        }
+        .btn-deseos:hover {
+            background-color: white; /* Cambia el fondo al pasar el mouse */
+            color: #721c24; /* Cambia el color del texto/icono */
+            transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+            transition: all 0.3s ease; /* Suaviza la animación */
+        
+        }
+        .wishlist-card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        body {
             background-color: #f8f9fa; /* Fondo claro */
         }
         .container {
             max-width: 1200px;
         }
         
-.wishlist-card img {
+        .wishlist-card img {
             width: 120px;
             height: 120px;
             object-fit: cover;
@@ -136,6 +136,24 @@ body {
         }
         .wishlist-card .price {
             font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .breadcrumb {
+            background-color: #f9f9f9;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb .breadcrumb-item a {
+            transition: color 0.2s ease-in-out;
+        }
+        
+        .breadcrumb .breadcrumb-item a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb .breadcrumb-item.active {
             font-weight: bold;
             color: #333;
         }
@@ -245,8 +263,22 @@ body {
         </div>
     </div>
 </nav>
-
+<!-- Migajas de pan -->
+<nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="../index.php" class="text-primary text-decoration-none">
+                    <i class="fas fa-home me-1"></i>Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">
+                Lista de deseos
+            </li>
+        </ol>
+    </nav>
+    <!-- Fin Migajas de pan -->
 <div class="container mt-5">
+    
     <!-- Lista de Deseos -->
     <h1 class="text-center">Lista de Deseos</h1>
     <?php if ($result->num_rows > 0): ?>
