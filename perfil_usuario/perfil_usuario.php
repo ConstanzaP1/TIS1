@@ -196,6 +196,7 @@ $stmt->close();
     color: #007bff;
 }
 
+
 </style>
 <body>
 <nav class="navbar navbar-expand-lg">
@@ -417,72 +418,74 @@ $stmt->close();
         </span>    
     </div>
 
-        <div class="collapse" id="historial">
-            <?php
-            // Obtener las boletas del usuario
-            $query = "SELECT h.id_historial, h.id_usuario, h.id_boleta, h.fecha_compra, h.total as total_historial, b.fecha, b.total as total_boleta, b.codigo_autorizacion, b.detalles
-                    FROM historial_compras h
-                    INNER JOIN boletas b ON h.id_boleta = b.id_boleta
-                    WHERE h.id_usuario = ?
-                    ORDER BY b.fecha DESC";
-            $stmt = $conexion->prepare($query);
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+    <div class="collapse" id="historial">
+        <?php
+        // Obtener las boletas del usuario
+        $query = "SELECT h.id_boleta, h.fecha_compra, b.fecha, b.total, b.detalles
+                  FROM historial_compras h
+                  INNER JOIN boletas b ON h.id_boleta = b.id_boleta
+                  WHERE h.id_usuario = ?
+                  ORDER BY b.fecha DESC";
+        $stmt = $conexion->prepare($query);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows > 0):
-                while ($row = $result->fetch_assoc()):
-                    // Decodificar los detalles de la boleta
-                    $detalles = json_decode($row['detalles'], true);
-            ?>
-                    <div class="card mb-4">
-                        <div class="card-header text-white">
-                            <strong>Nro. Boleta:</strong> <?php echo $row['id_boleta']; ?>
-                            /
-                            <strong>Fecha:</strong> <?php echo date('d/m/Y H:i', strtotime($row['fecha'])); ?> 
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <thead class="table-light">
+        if ($result->num_rows > 0):
+            while ($row = $result->fetch_assoc()):
+                $detalles = json_decode($row['detalles'], true);
+        ?>
+            <div class="card mb-2">
+                <div class="card-header">
+                    <a class="d-flex justify-content-between align-items-center text-decoration-none text-white" 
+                       data-bs-toggle="collapse" href="#boleta-<?php echo $row['id_boleta']; ?>" role="button" aria-expanded="false" aria-controls="boleta-<?php echo $row['id_boleta']; ?>">
+                        <span><strong>Nro. Boleta:</strong> <?php echo $row['id_boleta']; ?></span>
+                        <span><strong>Fecha:</strong> <?php echo date('d/m/Y', strtotime($row['fecha'])); ?></span>
+                    </a>
+                </div>
+                <div id="boleta-<?php echo $row['id_boleta']; ?>" class="collapse">
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($detalles as $item): ?>
                                     <tr>
-                                        <th>Producto</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Total</th>
+                                        <td><?php echo htmlspecialchars($item['producto']); ?></td>
+                                        <td><?php echo $item['cantidad']; ?></td>
+                                        <td>$<?php echo number_format($item['precio_unitario'], 0, ',', '.'); ?></td>
+                                        <td>$<?php echo number_format($item['total'], 0, ',', '.'); ?></td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($detalles as $item): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($item['producto']); ?></td>
-                                            <td><?php echo $item['cantidad']; ?></td>
-                                            <td>$<?php echo number_format($item['precio_unitario'], 0, ',', '.'); ?></td>
-                                            <td>$<?php echo number_format($item['total'], 0, ',', '.'); ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                            <!-- Botón para enviar ID de boleta -->
-                            <form method="POST" action="../postventa/postventa.php" class="mt-3">
-                                <input type="hidden" name="id_boleta" value="<?php echo $row['id_boleta']; ?>">
-                                <button type="submit" class="btn btn-primary">Consultar Postventa</button>
-                            </form>
-                        </div>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                       <!-- Botón para enviar ID de boleta -->
+                       <form method="POST" action="../postventa/postventa.php" class="mt-3">
+                            <input type="hidden" name="id_boleta" value="<?php echo $row['id_boleta']; ?>">
+                            <button type="submit" class="btn btn-primary">Consultar Postventa</button>  
+                        </form>                        
                     </div>
-
-            <?php
-                endwhile;
-            else:
-                echo "<p>No hay compras registradas.</p>";
-            endif;
-            $stmt->close();
-            ?>  
-        </div>
-        <div class="text-start mt-3">
+                </div>
+            </div>
+        <?php
+            endwhile;
+        else:
+            echo "<p>No hay compras registradas.</p>";
+        endif;
+        $stmt->close();
+        ?>
+    </div>
+    <div class="text-start mt-3">
         <a href="../index.php" class="btn btn-secondary">Volver al Catálogo</a>
     </div>
-            
 </div>
+
 
 
 <script>
