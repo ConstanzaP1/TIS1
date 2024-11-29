@@ -440,7 +440,6 @@ $stmt->close();
                             <strong>Nro. Boleta:</strong> <?php echo $row['id_boleta']; ?>
                             /
                             <strong>Fecha:</strong> <?php echo date('d/m/Y H:i', strtotime($row['fecha'])); ?> 
-
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered">
@@ -463,8 +462,14 @@ $stmt->close();
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <!-- Botón para enviar ID de boleta -->
+                            <form method="POST" action="../postventa/postventa.php" class="mt-3">
+                                <input type="hidden" name="id_boleta" value="<?php echo $row['id_boleta']; ?>">
+                                <button type="submit" class="btn btn-primary">Consultar Postventa</button>
+                            </form>
                         </div>
                     </div>
+
             <?php
                 endwhile;
             else:
