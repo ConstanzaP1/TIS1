@@ -461,7 +461,7 @@
     </div>
 </nav>
 
-<div class="container py-2">
+<div class="container-fluid p-0">
 
     
 <?php
@@ -490,27 +490,27 @@ if (isset($_GET['id_producto'])){
         $producto = mysqli_fetch_assoc($result_producto);
 
         ?>
-        <div class="container ">
+        <!-- Migajas de pan -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                <li class="breadcrumb-item">
+                    <a href="../index.php" class="text-primary text-decoration-none">
+                        <i class="fas fa-home me-1"></i>Inicio
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="../categoria.php?tipo_producto=<?php echo htmlspecialchars($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
+                        <?php echo ucfirst($producto['tipo_producto']); ?>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active text-dark" aria-current="page">
+                    <?php echo htmlspecialchars($producto['nombre_producto']); ?>
+                </li>
+            </ol>
+        </nav>
+        <!-- Fin Migajas de pan -->
+        <div class="container p-4">
             
-            <!-- Migajas de pan -->
-            <nav aria-label="breadcrumb" class="mb-4">
-                <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
-                    <li class="breadcrumb-item">
-                        <a href="../index.php" class="text-primary text-decoration-none">
-                            <i class="fas fa-home me-1"></i>Inicio
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="../categoria.php?tipo_producto=<?php echo htmlspecialchars($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
-                            <?php echo ucfirst($producto['tipo_producto']); ?>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item active text-dark" aria-current="page">
-                        <?php echo htmlspecialchars($producto['nombre_producto']); ?>
-                    </li>
-                </ol>
-            </nav>
-            <!-- Fin Migajas de pan -->
             <div class="producto-detalle row bg-white shadow d-flex">
             <!-- Imagen del producto -->
             <div class="col-12 col-md-6 text-center my-auto">
@@ -522,7 +522,7 @@ if (isset($_GET['id_producto'])){
             <div class='producto-info col-12 col-md-6 p-5'>
             <?php echo"
                 <h1>{$producto['nombre_producto']}</h1>
-                <p><strong>Marca:</strong> {$producto['marca']}</p>
+                <h5>{$producto['marca']}</h5>
                 <p>Precio: $" . number_format($producto['precio'], 0, ',', '.') . "</p>
                 <hr>
                 <p><strong>Características:</strong></p>
@@ -763,46 +763,27 @@ if (isset($_GET['id_producto'])){
             echo "<li>No hay características disponibles.</li>";
         }            
         echo "
-                
-                </ul>";
-
-                if (isset($_SESSION['user_id'])) {
-                    $user_id = $_SESSION['user_id'];
-                
-                    // Obtener el nombre del producto actual
-                    $nombre_producto = $producto['nombre_producto'];
-                
-                    // Escapar caracteres especiales para el formato JSON
-                    $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
-                
-                    // Verificar si el usuario compró este producto
-                    $query_compra = "
-                        SELECT COUNT(*) AS comprado
-                        FROM boletas
-                        WHERE id_usuario = '$user_id' 
-                        AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'
-                    ";
-                    $result_compra = mysqli_query($conexion, $query_compra);
-                
-                    // Manejar errores en la consulta SQL
-                    if (!$result_compra) {
-                        die("Error en la consulta SQL: " . mysqli_error($conexion));
-                    }
-                
-                    $compra = mysqli_fetch_assoc($result_compra);
-                
-                    // Mostrar el botón si el producto fue comprado
-                    if ($compra['comprado'] > 0) {
-                        echo "
-                            <a href='../postventa/postventa.php?id_producto=" . htmlspecialchars($id_producto) . "' class='btn btn-primary mt-3'>
-                                ¿Tienes problemas con este producto? Ir a Postventa
-                            </a>
-                        ";
-                    } else {
-                    
-                    }
+                </ul>";            
+                // Mostrar mensaje según el estado
+                if (isset($_GET['status']) && isset($_GET['message'])) {
+                    $status = $_GET['status'];
+                    $message = urldecode($_GET['message']);
+                    echo "
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: '{$status}',
+                                title: '{$message}',
+                                toast: true,
+                                position: 'top-end',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            });
+                        });
+                    </script>";
                 }
-                
+                    
 
         if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
             
@@ -812,7 +793,12 @@ if (isset($_GET['id_producto'])){
                 <div class='mb-3'>
                     <label for='cantidad'><strong>Cantidad:</strong></label>
                     <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 d-inline-block'>
-                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                    <p>
+                        <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-cart' viewBox='0 0 16 16'>
+                            <path d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2'/>
+                        </svg>
+                        <strong>Stock online:</strong> {$producto['stock_disponible']}
+                    </p>
                 </div>
                 <hr>
                 <div class='d-flex align-items-center gap-2'>
@@ -851,7 +837,12 @@ if (isset($_GET['id_producto'])){
                 <div class='mb-3'>
                     <label for='cantidad'><strong>Cantidad:</strong></label>
                     <input type='number' name='cantidad' value='1' min='1' max='{$producto['stock_disponible']}' class='form-control w-25 d-inline-block'>
-                    <p><strong>Stock disponible:</strong> {$producto['stock_disponible']}</p>
+                    <p>
+                        <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-cart' viewBox='0 0 16 16'>
+                            <path d='M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2'/>
+                        </svg>
+                        <strong>Stock online:</strong> {$producto['stock_disponible']}
+                    </p>
                 </div>
                 <hr>
                 <div class='d-flex align-items-center gap-2'>
@@ -878,10 +869,6 @@ if (isset($_GET['id_producto'])){
                     </svg>
                 </button>
             </form>";
-
-
-
-
         }
 
         echo "</div>"; ?>
@@ -1146,42 +1133,57 @@ mysqli_close($conexion);
     
     <script>
     function addToWishlist(idProducto) {
-        fetch('../lista_deseos/agregar_a_lista.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'id_producto=' + idProducto
-        })
-        .then(response => response.json())  // Asegura que el servidor devuelva JSON
-        .then(data => {
-            if (data.status === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Producto agregado',
-                    text: 'El producto se ha agregado a tu lista de deseos.'
-                });
-            } else if (data.status === 'exists') {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Producto ya en lista',
-                    text: 'Este producto ya está en tu lista de deseos.'
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error al agregar el producto a la lista de deseos.'
-                });
-            }
-        })
-        .catch(error => {
-            console.error("Error en la solicitud:", error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error en la solicitud. Intenta de nuevo más tarde.'
-            });
+    fetch('../lista_deseos/agregar_a_lista.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'id_producto=' + idProducto
+    })
+    .then(response => response.json()) // Asegura que el servidor devuelva JSON
+    .then(data => {
+        // Determinar el estado y mensaje según la respuesta
+        let status;
+        let message;
+
+        if (data.status === 'success') {
+            status = 'success';
+            message = 'El producto se ha agregado a tu lista de deseos.';
+        } else if (data.status === 'exists') {
+            status = 'info';
+            message = 'Este producto ya está en tu lista de deseos.';
+        } else {
+            status = 'error';
+            message = 'Error al agregar el producto a la lista de deseos.';
+        }
+
+        // Mostrar notificación con SweetAlert2
+        Swal.fire({
+            icon: status,
+            title: status === 'success' ? 'Éxito' : (status === 'info' ? 'Información' : 'Error'),
+            text: message,
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
         });
-    }
+    })
+    .catch(error => {
+        console.error("Error en la solicitud:", error);
+
+        // Mostrar notificación de error genérico
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error en la solicitud. Intenta de nuevo más tarde.',
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    });
+}
+
     document.querySelectorAll("form").forEach(form => {
             form.addEventListener("submit", function(e) {
                 const cantidadInput = this.querySelector("input[name='cantidad']");

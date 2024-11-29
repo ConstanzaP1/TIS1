@@ -266,6 +266,20 @@ $stmt->close();
         </div>
     </div>
 </nav>
+<!-- Migajas de pan -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+        <li class="breadcrumb-item">
+            <a href="../index.php" class="text-primary text-decoration-none">
+                <i class="fas fa-home me-1"></i>Inicio
+            </a>
+        </li>
+        <li class="breadcrumb-item active text-dark" aria-current="page">
+            Perfil
+        </li>
+    </ol>
+</nav>
+<!-- Fin Migajas de pan -->
 <div class="user-info-card d-flex align-items-center">
     <div class="profile-picture-wrapper position-relative d-inline-block" style="width: 90px; height: 90px;">
         <!-- Foto de perfil -->

@@ -61,6 +61,9 @@ if (isset($_SESSION['user_id'])) {
     .card-body{
         background-color: #e0e0e0;
     }
+    .celeste{
+        color: #0080FF80;
+    }
     .card {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
@@ -258,7 +261,7 @@ if (isset($_SESSION['user_id'])) {
         </div>
 
         <div class="col-12 col-md-9">
-            <div class="row gx-2 gy-3"> <!-- Ajustamos los espacios entre las columnas y filas -->
+            <div class="row gx-3 gy-3"> <!-- espacios entre las columnas y filas -->
                 <?php
                 if (!empty($productos)) {
                     foreach ($productos as $producto) {
@@ -272,13 +275,13 @@ if (isset($_SESSION['user_id'])) {
                             <div class='col-6 col-md-4'>
                                 <a href='catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
                                     <div class='card p-0 shadow' style='width: 100%; height: 100%;'>
-                                        <div class='image-container' style='width: 100%; height: 70%; position: relative; overflow: hidden;'>
+                                        <div class='image-container' style='width: 100%; height: 100%; position: relative; overflow: hidden;'>
                                             <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
                                         </div>
-                                        <div class='card-body text-begin'>
-                                            <h6 class='text-secondary m-0'>$marca_producto</h6>
-                                            <h5 class='text-black my-1'>$nombre_producto</h5>
-                                            <h6 class='text-secondary'>$$precio</h6>
+                                        <div class='card-body text-begin' style='width: 100%; height: 45%;'>
+                                            <h6 class='text-black fw-bold'>$marca_producto</h6>                               
+                                            <h5 class='text-secondary-emphasis'>$nombre_producto</h5>
+                                            <h5 class='text-secondary-emphasis'>$$precio</h5>
                                         </div>
                                     </div>
                                 </a>
