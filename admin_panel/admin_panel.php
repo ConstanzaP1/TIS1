@@ -433,6 +433,37 @@ $result_users = mysqli_query($conexion, $sql_users);
 </script>
 <hr>
 
+<div class="sidebar-container p-3">
+<div class="d-flex flex-column gap-2">
+    <!-- Botón para redirigir a lista_usuarios.php -->
+    <a href="lista_usuarios.php" class="btn lista-usuarios-btn">Lista de Usuarios</a>
+    
+    <!-- Botón en el sidebar para abrir el modal de registro de usuario -->
+    <button type="button" class="btn lista-usuarios-btn" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
+        Registrar Usuario
+    </button>
+
+    <!-- Nuevo botón para recuperar boletas -->
+    <a href="../boleta_cotizacion/recuperar_boletas.php" class="btn lista-usuarios-btn">
+        Recuperar Boletas
+    </a>
+
+    <!-- Botón para el catálogo de productos -->
+    <a href="../index.php" class="btn lista-usuarios-btn">
+        Catálogo productos
+    </a>
+    <!-- Botón para el catálogo de productos -->
+    <a href="../postventa/admin_postventa.php" class="btn lista-usuarios-btn">
+        Postventa
+    </a>
+
+        <!-- Botón para cerrar sesión -->
+        <a href="?logout" class="btn btn-danger flex-grow-1 d-flex align-items-center justify-content-center">
+            Cerrar Sesión
+        </a>
+    </div>
+</div>
+
 
 <!-- Modal para el formulario de registro de usuario -->
 <div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">

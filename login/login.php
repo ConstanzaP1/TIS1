@@ -48,11 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 }
 
 // Manejar la acción de registro
+// Manejar la acción de registro
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     $username = mysqli_real_escape_string($conexion, $_POST['reg_username']);
     $email = mysqli_real_escape_string($conexion, $_POST['reg_email']);
     $password = mysqli_real_escape_string($conexion, $_POST['reg_password']);
+    $default_img = 'https://static.vecteezy.com/system/resources/previews/007/167/661/non_2x/user-blue-icon-isolated-on-white-background-free-vector.jpg';
 
+    // Verificar si el correo ya existe
     $sql_check = "SELECT * FROM users WHERE email = ?";
     $stmt_check = mysqli_prepare($conexion, $sql_check);
     mysqli_stmt_bind_param($stmt_check, 's', $email);
@@ -65,12 +68,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
         header('Location: login.php');
         exit();
     } else {
-        $sql_insert = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, 'user')";
+        // Insertar el usuario con la imagen predeterminada
+        $sql_insert = "INSERT INTO users (username, email, password, role, img) VALUES (?, ?, ?, 'user', ?)";
         $stmt_insert = mysqli_prepare($conexion, $sql_insert);
 
         if ($stmt_insert) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            mysqli_stmt_bind_param($stmt_insert, 'sss', $username, $email, $hashed_password);
+            mysqli_stmt_bind_param($stmt_insert, 'ssss', $username, $email, $hashed_password, $default_img);
 
             if (mysqli_stmt_execute($stmt_insert)) {
                 $_SESSION['message'] = 'Usuario registrado exitosamente.';
@@ -91,6 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>

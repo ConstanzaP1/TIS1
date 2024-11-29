@@ -175,12 +175,6 @@ if (isset($_POST['pagar'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        #map {
-            height: 500px;
-            margin-top: 20px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-        }
         .product-img {
             width: 80px;
             height: 80px;
@@ -218,25 +212,43 @@ if (isset($_POST['pagar'])) {
             background-color: #e0e0e0;
         }
         .btn-cart:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
+            background-color: white; /* Cambia el fondo al pasar el mouse */
+            color: #721c24; /* Cambia el color del texto/icono */
+            transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+            transition: all 0.3s ease; /* Suaviza la animación */
+        }
 
-/* Estilo para el botón de comparar */
-.btn-comparar:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #155724; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
-.btn-deseos:hover {
-    background-color: white; /* Cambia el fondo al pasar el mouse */
-    color: #721c24; /* Cambia el color del texto/icono */
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-    transition: all 0.3s ease; /* Suaviza la animación */
-}
+        /* Estilo para el botón de comparar */
+        .btn-comparar:hover {
+            background-color: white; /* Cambia el fondo al pasar el mouse */
+            color: #155724; /* Cambia el color del texto/icono */
+            transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+            transition: all 0.3s ease; /* Suaviza la animación */
+        }
+        .btn-deseos:hover {
+            background-color: white; /* Cambia el fondo al pasar el mouse */
+            color: #721c24; /* Cambia el color del texto/icono */
+            transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+            transition: all 0.3s ease; /* Suaviza la animación */
+        }
+        .breadcrumb {
+            background-color: #f9f9f9;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb .breadcrumb-item a {
+            transition: color 0.2s ease-in-out;
+        }
+        
+        .breadcrumb .breadcrumb-item a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb .breadcrumb-item.active {
+            font-weight: bold;
+            color: #333;
+        }
         body{
             background-color: #e0e0e0;
         }
@@ -360,107 +372,118 @@ if (isset($_POST['pagar'])) {
 </nav>
 </head>
 <body>
+    <!-- Migajas de pan -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="../index.php" class="text-primary text-decoration-none">
+                    <i class="fas fa-home me-1"></i>Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">
+                Carrito de Compras
+            </li>
+        </ol>
+    </nav>
+<!-- Fin Migajas de pan -->
 <div class="container py-5">
-    <h2 class="mb-4">Carrito de Compras</h2>
+    
+    <h2 class="mb-4">Tu carro (<?php echo count($_SESSION['carrito'] ?? []); ?> productos)</h2>
+
     <?php if (empty($_SESSION['carrito'])): ?>
         <div class="text-center py-5">
             <img src="../icono_carrito.png" alt="Carrito vacío" style="width: 100px; height: auto;">
             <h3 class="mt-4">Aún no tienes productos agregados</h3>
             <p class="text-muted">¡Puedes ver nuestras categorías destacadas y hacer tu primera compra con nosotros!</p>
-            <a href="../index.php" class="btn btn-secondary">Regresar al catalogo</a>
+            <a href="../index.php" class="btn btn-secondary">Regresar al catálogo</a>
         </div>
     <?php else: ?>
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                <th class="col-2 col-sm-1">Imagen</th>
-                <th class="col-3 col-sm-2">Producto</th>
-                <th class="col-3 col-sm-3">Cantidad</th>
-                <th class="col-2 col-sm-2">Precio</th>
-                <th class="col-2 col-sm-2">Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-            $exceeds_stock = false; // Flag para verificar si alguna cantidad excede el stock
-            foreach ($_SESSION['carrito'] as $id_producto => $cantidad):
-                $id_producto = mysqli_real_escape_string($conexion, $id_producto);
-                $query = "SELECT nombre_producto, imagen_url, precio, cantidad FROM producto WHERE id_producto = '$id_producto'";
-                $result = mysqli_query($conexion, $query);
-                $producto = mysqli_fetch_assoc($result);
+        <div class="row">
+            <div class="col-lg-8">
+                <table class="table table-borderless align-middle">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($_SESSION['carrito'] as $id_producto => $cantidad):
+                            $query = "SELECT nombre_producto, imagen_url, precio, cantidad FROM producto WHERE id_producto = '$id_producto'";
+                            $result = mysqli_query($conexion, $query);
+                            $producto = mysqli_fetch_assoc($result);
 
-                if ($producto): 
-                    $precio_total = $producto['precio'] * $cantidad;
-
-                    // Verificar si la cantidad supera el stock disponible
-                    if ($cantidad > $producto['cantidad']) {
-                        $exceeds_stock = true; // Marcar si la cantidad excede el stock
-                    }
-            ?>
-                <tr>
-                    <td>
-                        <!-- Imagen del producto -->
-                        <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" 
-                            alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" 
-                            style="width: 50px; height: auto;">
-                    </td>
-                    <td>
-                        <!-- Nombre del producto -->
-                        <?php echo htmlspecialchars($producto['nombre_producto']); ?>
-                    </td>
-                    <td>
-                        <input type="number" name="cantidad" id="cantidad_<?php echo $id_producto; ?>" 
-                            value="<?php echo min($cantidad, $producto['cantidad']); ?>" 
-                            class="form-control text-center" 
-                            min="1" max="<?php echo $producto['cantidad']; ?>" 
-                            style="width: 100px;" 
-                            oninput="validarCantidadCarrito(this, <?php echo $producto['cantidad']; ?>)">
-                        <small class="text-muted">Disponibles: <?php echo $producto['cantidad']; ?></small>
-                    </td>
-
-
-                    <td id="precio_<?php echo $id_producto; ?>">
-                        <!-- Precio total del producto -->
-                        <?php echo "$" . number_format($precio_total, 0, ',', '.'); ?>
-                    </td>
-                    <td>
-                        <!-- Botón para eliminar producto -->
-                        <form method="POST" action="carrito.php">
-                            <input type="hidden" name="id_producto" value="<?php echo $id_producto; ?>">
-                            <button type="submit" name="eliminar_producto" class="btn btn-danger">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php 
-                endif;
-            endforeach; 
-            ?>
-        </tbody>
-        </table>
-        <h4>Total: <span id="total"><?php echo number_format($_SESSION['total'] ?? 0, 0, ',', '.'); ?></span></h4>
-        <div class="mt-1">
-            <form id="formCotizacion" action="../boleta_cotizacion/cotizacion.php" method="POST">
-                <input type="hidden" name="correo" value="<?php echo $correoE; ?>">
-                <button type="button" class="btn btn-primary" onclick="confirmarEnvio()">Enviar cotización carro</button>
-            </form>
-        </div>
-        <hr>
-        <h2>Selecciona tu punto de retiro más cercano</h2>
-        <!-- Formulario para ingresar dirección -->
-        <form id="direccionForm" class="form-direccion">
-            <div class="mb-3">
-                <label for="direccion" class="form-label">Ingresa tu dirección:</label>
-                <input type="text" id="direccion" class="form-control" placeholder="Ejemplo: Calle Falsa 123, Concepción, Chile" required>
+                            if ($producto):
+                                $precio_total = $producto['precio'] * $cantidad;
+                        ?>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" 
+                                         alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" 
+                                         class="img-fluid me-3" 
+                                         style="width: 80px; height: auto;">
+                                    <div>
+                                        <h6 class="mb-1"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <!-- Botón para decrementar -->
+                                    <button class="btn btn-light btn-sm me-2" onclick="decrement('<?php echo $id_producto; ?>')">-</button>
+                                                        
+                                    <!-- Campo de entrada para cantidad -->
+                                    <input type="number" name="cantidad" id="cantidad_<?php echo $id_producto; ?>" 
+                                           value="<?php echo $cantidad; ?>" 
+                                           class="form-control text-center" 
+                                           min="1" max="<?php echo $producto['cantidad']; ?>" 
+                                           style="width: 60px;" 
+                                           onchange="actualizarCantidad('<?php echo $id_producto; ?>', this.value)">
+                                                        
+                                    <!-- Botón para incrementar -->
+                                    <button class="btn btn-light btn-sm ms-2" onclick="increment('<?php echo $id_producto; ?>', <?php echo $producto['cantidad']; ?>)">+</button>
+                                </div>
+                                <small class="text-muted">Disponibles: <?php echo $producto['cantidad']; ?></small>
+                                <!-- Contenedor para el mensaje de error -->
+                                <div id="error_<?php echo $id_producto; ?>" class="text-danger small mt-1" style="display: none;"></div>
+                                </td>
+                                <td id="precio_<?php echo $id_producto; ?>">
+                                    <strong>$<?php echo number_format($precio_total, 0, ',', '.'); ?></strong>
+                                </td>
+                            <td>
+                                <form method="POST" action="carrito.php">
+                                    <input type="hidden" name="id_producto" value="<?php echo $id_producto; ?>">
+                                    <button type="submit" name="eliminar_producto" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php
+                            endif;
+                        endforeach;
+                        ?>
+                    </tbody>
+                </table>
             </div>
-            <button type="button" id="buscarDireccion" class="btn btn-primary">Buscar</button>
-        </form>
-        <!-- Mapa-->
-        <div id="map"></div>
-        <p id="puntoCercano" class="mt-3"></p>
-        <hr>
-        <form method="POST" action="carrito.php" id="formPagoCarrito">
-        <input type="hidden" name="total" value="<?php echo $_SESSION['total'] ?? 0; ?>">
 
+            <div class="col-lg-4">
+                <div class="border rounded p-3 bg-light">
+                    <h5>Resumen de tu compra</h5>
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span>Total:</span>
+                        <strong>$<?php echo number_format($_SESSION['total'] ?? 0, 0, ',', '.'); ?></strong>
+                    </div>
+                    <a href="../index.php" class="btn btn-success w-100 my-2">Agregar más productos</a>
+                    <form method="POST" action="carrito.php" id="formPagoCarrito">
+                        <input type="hidden" name="total" value="<?php echo $_SESSION['total'] ?? 0; ?>">         
+                        <button type="submit" name="pagar" class="btn btn-primary w-100">Continuar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     <?php endif; ?>
 </div>
 <?php include "../footer.php"; ?>
@@ -738,6 +761,6 @@ function seleccionarPunto(nombre) {
     document.getElementById('formPagoCarrito').style.display = 'block'; // Mostrar el botón
 }
 </script>
-
+<?php include '../footer.php'?>
 </body>
 </html>
