@@ -30,7 +30,6 @@ $result = $conexion->query($query);
                 <tr>
                     <th>Cliente</th>
                     <th>Correo</th>
-                    <th>ID Boleta</th>
                     <th>Pregunta</th>
                     <th>Respuesta</th>
                     <th>Fecha Pregunta</th>
@@ -43,7 +42,6 @@ $result = $conexion->query($query);
                     <tr>
                         <td><?php echo htmlspecialchars($row['cliente_nombre']); ?></td>
                         <td><?php echo htmlspecialchars($row['cliente_email']); ?></td>
-                        <td><?php echo htmlspecialchars($row['id']); ?></td> <!-- Mostrar ID de Boleta -->
                         <td><?php echo htmlspecialchars($row['pregunta']); ?></td>
                         <td><?php echo $row['respuesta'] ? htmlspecialchars($row['respuesta']) : 'Sin respuesta'; ?></td>
                         <td><?php echo date('d/m/Y H:i', strtotime($row['fecha_pregunta'])); ?></td>
@@ -61,7 +59,6 @@ $result = $conexion->query($query);
         </table>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

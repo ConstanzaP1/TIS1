@@ -9,8 +9,8 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 
-// Obtener datos del cliente
-$query = "SELECT username, email FROM users WHERE id = ?";
+// Obtener datos del cliente, incluyendo la imagen de perfil
+$query = "SELECT username, email, img FROM users WHERE id = ?";
 $stmt = $conexion->prepare($query);
 $stmt->bind_param("i", $userId);
 $stmt->execute();
@@ -26,7 +26,9 @@ if (empty($user['username']) || empty($user['email'])) {
 // Asignar variables para uso posterior
 $nombre = $user['username'];
 $email = $user['email'];
+$img_url = !empty($user['img']) ? $user['img'] : '../imagenes/default-profile.png'; // Imagen por defecto si no hay una en la BD
 
+// Procesar formulario de consulta
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pregunta = isset($_POST['pregunta']) ? trim($_POST['pregunta']) : '';
 
@@ -69,23 +71,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .navbar {
             background-color: rgba(0, 128, 255, 0.5);
         }
-        .alineado span.material-symbols-outlined {
-    font-size: 24px;
-    cursor: pointer;
-    color: #007bff;
-}
-
+        .rounded-circle {
+            object-fit: cover;
+            width: 50px;
+            height: 50px;
+        }
     </style>
 </head>
 <body>
+       
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <!-- Logo (centrado en pantallas pequeñas) -->
         <div class="navbar-brand d-lg-flex d-none col-2">
-            <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+            <a href="../index.php">
+                <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+            </a>
         </div>
+    
         <div class="d-lg-none w-100 text-center">
-            <img class="logo img-fluid" src="logopng.png" alt="Logo" style="width: 120px;">
+            <a href="../index.php">
+                <img class="logo img-fluid" src="../logopng.png" alt="Logo" style="width: 120px;">
+            </a>    
         </div>
 
         <!-- Botón para abrir el menú lateral en pantallas pequeñas -->
@@ -95,11 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Barra de búsqueda -->
-            <form class="d-flex ms-auto col-6 shadow" role="search">
-                <input class="form-control" type="search" placeholder="Buscar en Tisnology" aria-label="Buscar">
-            </form>
-
             <!-- Menú desplegable -->
             <ul class="navbar-nav ms-auto align-items-center">
                 
@@ -184,24 +186,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container mt-5">
     <h2>Atención Postventa</h2>
 
-    <?php if (isset($successMessage)): ?>
+    <?php if (!empty($successMessage)): ?>
         <div class="alert alert-success"><?php echo $successMessage; ?></div>
-    <?php endif; ?>
-    <?php if (isset($errorMessage)): ?>
+    <?php elseif (!empty($errorMessage)): ?>
         <div class="alert alert-danger"><?php echo $errorMessage; ?></div>
     <?php endif; ?>
 
     <form method="POST">
         <div class="mb-3">
             <label for="pregunta" class="form-label">Escribe tu consulta:</label>
-            <textarea name="pregunta" id="pregunta" class="form-control" rows="5" required></textarea>
+            <textarea name="pregunta" id="pregunta" class="form-control" rows="5"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
     <a href="../perfil_usuario/perfil_usuario.php" class="btn btn-secondary mt-3">Volver</a>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<?php include "../footer.php"?>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
