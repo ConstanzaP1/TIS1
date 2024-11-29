@@ -21,8 +21,26 @@ if (!empty($categoria)) {
 function obtenerProductosDestacados()
 {
     global $conexion;
-    $query = "SELECT * FROM producto WHERE destacado = 1";
+    $query = "SELECT 
+                p.id_producto, 
+                p.nombre_producto, 
+                p.precio, 
+                p.cantidad, 
+                p.tipo_producto, 
+                p.imagen_url, 
+                p.destacado, 
+                p.costo, 
+                p.nombre_categoria, 
+                m.nombre_marca AS marca
+              FROM producto p
+              INNER JOIN marca m ON p.marca = m.id_marca
+              WHERE p.destacado = 1";
     $result = mysqli_query($conexion, $query);
+
+    if (!$result) {
+        die("Error en la consulta: " . mysqli_error($conexion));
+    }
+
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
@@ -32,10 +50,29 @@ function obtenerProductosDestacados()
 function filtrarProductosPorCategoria($categoria)
 {
     global $conexion;
-    $query = "SELECT * FROM producto WHERE nombre_categoria = '" . mysqli_real_escape_string($conexion, $categoria) . "'";
+    $query = "SELECT 
+                p.id_producto, 
+                p.nombre_producto, 
+                p.precio, 
+                p.cantidad, 
+                p.tipo_producto, 
+                p.imagen_url, 
+                p.destacado, 
+                p.costo, 
+                p.nombre_categoria, 
+                m.nombre_marca AS marca
+              FROM producto p
+              INNER JOIN marca m ON p.marca = m.id_marca
+              WHERE p.nombre_categoria = '" . mysqli_real_escape_string($conexion, $categoria) . "'";
     $result = mysqli_query($conexion, $query);
+
+    if (!$result) {
+        die("Error en la consulta: " . mysqli_error($conexion));
+    }
+
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
 // Consulta para obtener la URL de la imagen del usuario actual
 // Comprobamos si el usuario ha iniciado sesión
 if (isset($_SESSION['user_id'])) {
