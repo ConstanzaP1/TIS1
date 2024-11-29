@@ -494,6 +494,10 @@ $result_users = mysqli_query($conexion, $sql_users);
     <a href="../index.php" class="btn lista-usuarios-btn">
         Catálogo productos
     </a>
+    <!-- Botón para el catálogo de productos -->
+    <a href="../postventa/admin_postventa.php" class="btn lista-usuarios-btn">
+        Postventa
+    </a>
 
         <!-- Botón para cerrar sesión -->
         <a href="?logout" class="btn btn-danger flex-grow-1 d-flex align-items-center justify-content-center">
