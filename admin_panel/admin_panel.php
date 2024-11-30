@@ -163,7 +163,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                 <!-- Logo -->
                 <div class="text-center mb-4">
                     <a href="../index.php">
-                        <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+                        <img class="logo img-fluid w-75 rounded-pill" src="../logoblanco.png" alt="Logo">
                     </a>
                 </div>
                 <h4 class="text-center">Panel de Administración</h4>

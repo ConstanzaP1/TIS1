@@ -367,6 +367,24 @@ cargar_productos_y_caracteristicas();
                 height: 150px;
             }
         }
+        .breadcrumb {
+            background-color: #f9f9f9;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb .breadcrumb-item a {
+            transition: color 0.2s ease-in-out;
+        }
+        
+        .breadcrumb .breadcrumb-item a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb .breadcrumb-item.active {
+            font-weight: bold;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -472,7 +490,20 @@ cargar_productos_y_caracteristicas();
         </div>
     </div>
 </nav>
-
+<!-- Migajas de pan -->
+<nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="../index.php" class="text-primary text-decoration-none">
+                    <i class="fas fa-home me-1"></i>Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">
+                Comparador
+            </li>
+        </ol>
+    </nav>
+<!-- Fin Migajas de pan -->
 <div class="container mt-5">
     <h2 class="text-center mb-4">Comparador de Productos</h2>
     <div class="row justify-content-center g-4">
