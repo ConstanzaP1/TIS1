@@ -499,8 +499,13 @@ if (isset($_GET['id_producto'])){
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="../categoria.php?tipo_producto=<?php echo htmlspecialchars($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
-                        <?php echo ucfirst($producto['tipo_producto']); ?>
+                    <a href="../catalogo_productos/catalogo.php" class="text-primary text-decoration-none">
+                        Catalogo
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
+                        <?php echo ucfirst(htmlspecialchars($producto['tipo_producto'])); ?>
                     </a>
                 </li>
                 <li class="breadcrumb-item active text-dark" aria-current="page">

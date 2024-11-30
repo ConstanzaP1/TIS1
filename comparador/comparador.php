@@ -498,6 +498,11 @@ cargar_productos_y_caracteristicas();
                     <i class="fas fa-home me-1"></i>Inicio
                 </a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="../catalogo_productos/catalogo.php" class="text-primary text-decoration-none">
+                    Catalogo
+                </a>
+            </li>
             <li class="breadcrumb-item active text-dark" aria-current="page">
                 Comparador
             </li>

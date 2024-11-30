@@ -380,6 +380,11 @@ if (isset($_POST['pagar'])) {
                     <i class="fas fa-home me-1"></i>Inicio
                 </a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="../catalogo_productos/catalogo.php" class="text-primary text-decoration-none">
+                    Catalogo
+                </a>
+            </li>
             <li class="breadcrumb-item active text-dark" aria-current="page">
                 Carrito de Compras
             </li>

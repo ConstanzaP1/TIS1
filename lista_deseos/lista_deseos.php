@@ -271,12 +271,17 @@ $result = $stmt->get_result();
                     <i class="fas fa-home me-1"></i>Inicio
                 </a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="../catalogo_productos/catalogo.php" class="text-primary text-decoration-none">
+                    Catalogo
+                </a>
+            </li>
             <li class="breadcrumb-item active text-dark" aria-current="page">
                 Lista de deseos
             </li>
         </ol>
     </nav>
-    <!-- Fin Migajas de pan -->
+<!-- Fin Migajas de pan -->
 <div class="container mt-5">
     
     <!-- Lista de Deseos -->
