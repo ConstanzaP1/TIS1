@@ -239,7 +239,7 @@ $stmt->close();
                 </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                         <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
@@ -480,10 +480,10 @@ $stmt->close();
                             </tbody>
                         </table>
                        <!-- Botón para enviar ID de boleta -->
-                       <form method="POST" action="../postventa/postventa.php" class="mt-3">
-                            <input type="hidden" name="id_boleta" value="<?php echo $row['id_boleta']; ?>">
-                            <button type="submit" class="btn btn-primary">Consultar Postventa</button>  
-                        </form>                        
+                       <a href="../postventa/postventa.php?id_boleta=<?php echo $row['id_boleta']; ?>" class="btn btn-primary mt-3">
+                            Consultar Postventa
+                        </a>
+                       
                     </div>
                 </div>
             </div>

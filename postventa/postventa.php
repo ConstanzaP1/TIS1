@@ -2,6 +2,7 @@
 session_start();
 require('../conexion.php');
 
+// Verificar si hay un usuario autenticado
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../login/login.php');
     exit;
@@ -9,53 +10,71 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 
-// Obtener datos del cliente, incluyendo la imagen de perfil
-$query = "SELECT username, email, img FROM users WHERE id = ?";
-$stmt = $conexion->prepare($query);
+// Obtener datos del usuario
+$stmt = $conexion->prepare("SELECT id, username, email, role, img FROM users WHERE id = ?");
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
-$user = $result->fetch_assoc();
 
-// Verificar que el cliente y el correo existen
-if (empty($user['username']) || empty($user['email'])) {
-    header('Location: ../perfil_usuario/perfil_usuario.php');
+if ($result->num_rows > 0) {
+    $userData = $result->fetch_assoc();
+    $username = $userData['username'];
+    $email = $userData['email'];
+    $role = $userData['role'];
+    $img_url = !empty($userData['img']) ? $userData['img'] : '../imagenes/default-profile.png';
+} else {
+    header('Location: ../login/login.php');
     exit;
 }
+$stmt->close();
 
-// Asignar variables para uso posterior
-$nombre = $user['username'];
-$email = $user['email'];
-$img_url = !empty($user['img']) ? $user['img'] : '../imagenes/default-profile.png'; // Imagen por defecto si no hay una en la BD
+// Verificar si se envió la consulta para una boleta específica
+$boletaId = $_GET['id_boleta'] ?? null;
+$consultaExistente = false;
 
-// Procesar formulario de consulta
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pregunta = isset($_POST['pregunta']) ? trim($_POST['pregunta']) : '';
+if ($boletaId) {
+    $stmt = $conexion->prepare("SELECT id FROM atencion_postventa WHERE cliente_email = ? AND id_boleta = ?");
+    $stmt->bind_param("si", $email, $boletaId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $consultaExistente = true;
+    }
+    $stmt->close();
+}
+
+// Procesar el formulario de consulta
+$successMessage = '';
+$errorMessage = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$consultaExistente) {
+    $pregunta = trim($_POST['pregunta'] ?? '');
 
     if (!empty($pregunta)) {
-        // Verificar si ya existe una consulta con la misma pregunta del mismo usuario
-        $checkQuery = "SELECT id FROM atencion_postventa WHERE cliente_nombre = ? AND cliente_email = ? AND pregunta = ?";
-        $checkStmt = $conexion->prepare($checkQuery);
-        $checkStmt->bind_param("sss", $nombre, $email, $pregunta);
-        $checkStmt->execute();
-        $checkResult = $checkStmt->get_result();
+        $stmt = $conexion->prepare("INSERT INTO atencion_postventa (cliente_nombre, cliente_email, id_boleta, pregunta, fecha_pregunta) VALUES (?, ?, ?, ?, NOW())");
+        $stmt->bind_param("ssis", $username, $email, $boletaId, $pregunta);
 
-        if ($checkResult->num_rows > 0) {
-            $errorMessage = "Ya enviaste esta consulta. Por favor, espera una respuesta.";
+        if ($stmt->execute()) {
+            $successMessage = "Tu consulta ha sido enviada. Nos pondremos en contacto pronto.";
+            $consultaExistente = true; // Bloquear formulario tras envío
         } else {
-            // Insertar la consulta en la base de datos
-            $stmt = $conexion->prepare("INSERT INTO atencion_postventa (cliente_nombre, cliente_email, pregunta, fecha_pregunta) VALUES (?, ?, ?, NOW())");
-            $stmt->bind_param("sss", $nombre, $email, $pregunta);
-            if ($stmt->execute()) {
-                $successMessage = "Tu consulta ha sido enviada. Nos pondremos en contacto pronto.";
-            } else {
-                $errorMessage = "Ocurrió un error al enviar tu consulta. Inténtalo nuevamente.";
-            }
-            $stmt->close();
+            $errorMessage = "Ocurrió un error al enviar tu consulta. Inténtalo nuevamente.";
         }
-        $checkStmt->close();
+        $stmt->close();
     }
+}
 
+// Obtener los detalles de la boleta
+$boletaDetalles = [];
+if ($boletaId) {
+    $stmt = $conexion->prepare("SELECT detalles FROM boletas WHERE id_boleta = ?");
+    $stmt->bind_param("i", $boletaId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $boletaDetalles = json_decode($result->fetch_assoc()['detalles'], true);
+    }
+    $stmt->close();
 }
 ?>
 
@@ -64,49 +83,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Postventa</title>
+    <title>Atención Postventa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        .navbar {
-            background-color: rgba(0, 128, 255, 0.5);
-        }
-        .rounded-circle {
-            object-fit: cover;
-            width: 50px;
-            height: 50px;
-        }
+        .navbar { background-color: rgba(0, 128, 255, 0.5); }
+        .rounded-circle { object-fit: cover; width: 50px; height: 50px; }
     </style>
 </head>
 <body>
-       
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <!-- Logo (centrado en pantallas pequeñas) -->
-        <div class="navbar-brand d-lg-flex d-none col-2">
+        <!-- Logo -->
+        <div class="navbar-brand col-2  ">
             <a href="../index.php">
                 <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
             </a>
         </div>
-    
-        <div class="d-lg-none w-100 text-center">
-            <a href="../index.php">
-                <img class="logo img-fluid" src="../logopng.png" alt="Logo" style="width: 120px;">
-            </a>    
-        </div>
-
-        <!-- Botón para abrir el menú lateral en pantallas pequeñas -->
-        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <!-- Botón para colapsar el menú en pantallas pequeñas -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Menú desplegable -->
-            <ul class="navbar-nav ms-auto align-items-center">
-                
+            <ul class="navbar-nav ms-auto">
                 <?php if (isset($_SESSION['user_id'])): ?>
-                <li class="nav-item">
+                    <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
                             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
@@ -128,17 +133,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>
                         </a>
-                        
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
+                        <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
                                 <li>
                                     <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
                                 </li>
                             <?php endif; ?>
-                            
-                            
+
                             <li>
                                 <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
                             </li>
@@ -151,56 +154,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </a>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
+                        <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
                     </li>
                 <?php endif; ?>
             </ul>
         </div>
     </div>
-
-    <!-- Offcanvas para menú lateral -->
-    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="../carrito/carrito.php">Carrito</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../comparador/comparador.php">Comparador</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../lista_deseos/lista_deseos.php">Lista de Deseos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-danger" href="../login/logout.php">Cerrar Sesión</a>
-                </li>
-            </ul>
-        </div>
-    </div>
 </nav>
-
 <div class="container mt-5">
     <h2>Atención Postventa</h2>
 
-    <?php if (!empty($successMessage)): ?>
-        <div class="alert alert-success"><?php echo $successMessage; ?></div>
-    <?php elseif (!empty($errorMessage)): ?>
-        <div class="alert alert-danger"><?php echo $errorMessage; ?></div>
+    <?php if ($boletaDetalles): ?>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($boletaDetalles as $detalle): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($detalle['producto']); ?></td>
+                        <td><?php echo htmlspecialchars($detalle['cantidad']); ?></td>
+                        <td><?php echo "$" . number_format($detalle['precio_unitario'], 0, ',', '.'); ?></td>
+                        <td><?php echo "$" . number_format($detalle['total'], 0, ',', '.'); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p class="text-danger">No se encontraron detalles para esta boleta.</p>
     <?php endif; ?>
 
-    <form method="POST">
-        <div class="mb-3">
-            <label for="pregunta" class="form-label">Escribe tu consulta:</label>
-            <textarea name="pregunta" id="pregunta" class="form-control" rows="5"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Enviar</button>
-    </form>
+    <?php if ($consultaExistente): ?>
+        <div class="alert alert-info">Ya has enviado una consulta para esta boleta. Por favor, espera nuestra respuesta.</div>
+    <?php else: ?>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="pregunta" class="form-label">Escribe tu consulta:</label>
+                <textarea name="pregunta" id="pregunta" class="form-control" rows="5"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    <?php endif; ?>
+
     <a href="../perfil_usuario/perfil_usuario.php" class="btn btn-secondary mt-3">Volver</a>
 </div>
+
+<?php if ($successMessage): ?>
+    <script>
+        Swal.fire({ icon: 'success', title: '¡Consulta enviada!', text: '<?php echo addslashes($successMessage); ?>', timer: 3000, showConfirmButton: false });
+    </script>
+<?php elseif ($errorMessage): ?>
+    <script>
+        Swal.fire({ icon: 'error', title: 'Error', text: '<?php echo addslashes($errorMessage); ?>', timer: 3000, showConfirmButton: false });
+    </script>
+<?php endif; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
