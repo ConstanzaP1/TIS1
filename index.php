@@ -1,19 +1,27 @@
 <?php
 session_start();
 require('conexion.php');
+require('funcion_filtros/filtrar_productos.php');
 
+// Valores predeterminados para los filtros de marca, precio y categoría
+$marca = isset($_POST['marca']) ? $_POST['marca'] : "";
+$precio_min = isset($_POST['precio_min']) ? $_POST['precio_min'] : "";
+$precio_max = isset($_POST['precio_max']) ? $_POST['precio_max'] : "";
+$categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
+// Verificar si hay filtros aplicados
+// Verificar si hay filtros aplicados
+if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categoria)) {
+    // Obtener solo productos destacados
+    $productos = filtrarProductosPorMarcaYRangoYCategoria("", "", "", "", true);
+} else {
+    // Filtrar productos destacados según los criterios
+    $productos = filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria, true);
+}
 // Inicializar variables de filtro
 $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : "";
 $tituloPagina = !empty($categoria) ? "Categoría  " . htmlspecialchars($categoria) : "Productos destacados";
 
-// Lógica de productos
-if (!empty($categoria)) {
-    // Mostrar solo productos de la categoría seleccionada
-    $productos = filtrarProductosPorCategoria(categoria: $categoria);
-} else {
-    // Mostrar productos destacados
-    $productos = obtenerProductosDestacados();
-}
+
 
 /**
  * Función para obtener productos destacados.
@@ -426,7 +434,7 @@ if (isset($_SESSION['user_id'])) {
                         ";
                     }
                 } else {
-                    echo "<p>No se encontraron productos que coincidan con los filtros o destacados.</p>";
+                    echo "<p>No se encontraron productos que coincidan con los filtros.</p>";
                 }
                 ?>
             </div>
