@@ -486,13 +486,12 @@ cargar_productos_y_caracteristicas();
                             <p class="card-text text-center">Precio: $<?php echo number_format($producto['precio'], 0, ',', '.'); ?></p>
                             <h6 class="text-center mt-3">Características:</h6>
                             <ul class="list-unstyled">
-    <?php foreach ($_SESSION['caracteristicas_producto'][$producto['id_producto']] as $caracteristica): ?>
-        <?php if (!empty($caracteristica)): // Verificar si la característica no está vacía ?>
-            <li><i class="fas fa-check-circle text-success"></i> <?php echo htmlspecialchars($caracteristica); ?></li>
-        <?php endif; ?>
-    <?php endforeach; ?>
-</ul>
-
+                                <?php foreach ($_SESSION['caracteristicas_producto'][$producto['id_producto']] as $caracteristica): ?>
+                                    <?php if (!empty($caracteristica)): // Verificar si la característica no está vacía ?>
+                                        <li><i class="fas fa-check-circle text-success"></i> <?php echo htmlspecialchars($caracteristica); ?></li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
                             <form method="POST" action="comparador.php" class="text-center mt-3">
                                 <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
                                 <button type="submit" name="eliminar_comparador" class="btn btn-danger btn-eliminar">Eliminar</button>
