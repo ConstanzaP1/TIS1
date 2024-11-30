@@ -367,6 +367,24 @@ cargar_productos_y_caracteristicas();
                 height: 150px;
             }
         }
+        .breadcrumb {
+            background-color: #f9f9f9;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb .breadcrumb-item a {
+            transition: color 0.2s ease-in-out;
+        }
+        
+        .breadcrumb .breadcrumb-item a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb .breadcrumb-item.active {
+            font-weight: bold;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -472,43 +490,66 @@ cargar_productos_y_caracteristicas();
         </div>
     </div>
 </nav>
-
+<!-- Migajas de pan -->
+<nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="../index.php" class="text-primary text-decoration-none">
+                    <i class="fas fa-home me-1"></i>Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="../catalogo_productos/catalogo.php" class="text-primary text-decoration-none">
+                    Catalogo
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">
+                Comparador
+            </li>
+        </ol>
+    </nav>
+<!-- Fin Migajas de pan -->
 <div class="container mt-5">
     <h2 class="text-center mb-4">Comparador de Productos</h2>
     <div class="row justify-content-center g-4">
         <?php if (!empty($_SESSION['productos'])): ?>
             <?php foreach ($_SESSION['productos'] as $producto): ?>
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card">
-                        <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" class="card-img-top product-img" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>">
-                        <div class="card-body">
-                            <h5 class="card-title text-center"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h5>
-                            <p class="card-text text-center">Precio: $<?php echo number_format($producto['precio'], 0, ',', '.'); ?></p>
-                            <h6 class="text-center mt-3">Características:</h6>
-                            <ul class="list-unstyled">
-                                <?php foreach ($_SESSION['caracteristicas_producto'][$producto['id_producto']] as $caracteristica): ?>
-                                    <li><i class="fas fa-check-circle text-success"></i> <?php echo htmlspecialchars($caracteristica); ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                            <form method="POST" action="comparador.php" class="text-center mt-3">
-                                <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
-                                <button type="submit" name="eliminar_comparador" class="btn btn-danger btn-eliminar">Eliminar</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+    <div class="card p-0 shadow">
+        <div class="image-container" style="width: 100%; position: relative; padding-top: 100%; overflow: hidden;">
+            <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" style="width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0;">
+        </div>
+        <div class="card-body text-begin">
+            <h5 class="card-title text-center"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h5>
+            <p class="card-text text-center">Precio: $<?php echo number_format($producto['precio'], 0, ',', '.'); ?></p>
+            <h6 class="text-center mt-3">Características:</h6>
+            <ul class="list-unstyled">
+                <?php foreach ($_SESSION['caracteristicas_producto'][$producto['id_producto']] as $caracteristica): ?>
+                    <?php if (!empty($caracteristica)): ?>
+                        <li><i class="fas fa-check-circle text-success"></i> <?php echo htmlspecialchars($caracteristica); ?></li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </ul>
+            <form method="POST" action="comparador.php" class="text-center mt-3">
+                <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
+                <button type="submit" name="eliminar_comparador" class="btn btn-danger btn-eliminar">Eliminar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
             <?php endforeach; ?>
         <?php else: ?>
             <div class="empty-comparator text-center">
                 <div class="card p-5 shadow">
                     <h4 class="mb-3">No hay productos en el comparador</h4>
-                    <a href="../index.php" class="btn btn-primary">Regresar al catálogo</a>
+                    <a href="../index.php" class="btn btn-secondary">Regresar al catálogo</a>
                 </div>
             </div>
         <?php endif; ?>
     </div>
 </div>
-
+<?php include "../footer.php"?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

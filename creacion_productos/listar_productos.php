@@ -1,10 +1,21 @@
 <?php
 require('../conexion.php'); // Conexión a la base de datos
 
-// Consulta para obtener todos los productos
-$query_productos = "SELECT * FROM producto";
+// Consulta SQL para obtener todos los productos con las categorías y subcategorías
+$query_productos = "
+    SELECT p.id_producto, p.nombre_producto, p.precio, p.costo, p.cantidad, 
+           m.nombre_marca, p.destacado, p.nombre_categoria, p.subcategoria
+    FROM producto p
+    INNER JOIN marca m ON p.marca = m.id_marca
+";
 $resultado = mysqli_query($conexion, $query_productos);
+
+// Verificar si la consulta fue exitosa
+if (!$resultado) {
+    die("Error en la consulta: " . mysqli_error($conexion));
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,6 +29,7 @@ $resultado = mysqli_query($conexion, $query_productos);
 <div class="container mt-5">
     <h2 class="mb-4">Lista de Productos</h2>
     
+    <!-- Comprobamos si hay productos en la consulta -->
     <?php if (mysqli_num_rows($resultado) > 0): ?>
         <div class="table-responsive">
             <table class="table table-hover table-bordered table-striped">
@@ -28,6 +40,7 @@ $resultado = mysqli_query($conexion, $query_productos);
                         <th>Costo</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
+                        <th>Categoría/Subcategoría</th> <!-- Nueva columna para mostrar la categoría/subcategoría -->
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -35,20 +48,22 @@ $resultado = mysqli_query($conexion, $query_productos);
                     <?php while ($producto = mysqli_fetch_assoc($resultado)): ?>
                         <tr id="producto-<?php echo $producto['id_producto']; ?>">
                             <td><?php echo htmlspecialchars($producto['nombre_producto']); ?></td>
-                            <td><?php echo htmlspecialchars($producto['marca']); ?></td>
+                            <td><?php echo htmlspecialchars($producto['nombre_marca']); ?></td> <!-- Mostrar nombre de la marca -->
                             <td><?php echo htmlspecialchars($producto['costo']); ?></td>
                             <td><?php echo htmlspecialchars($producto['precio']); ?></td>
                             <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
+                            <td>
+                                <!-- Mostrar la categoría y subcategoría -->
+                                <?php echo htmlspecialchars($producto['nombre_categoria']) . '/' . htmlspecialchars($producto['subcategoria']); ?>
+                            </td>
                             <td>
                                 <a href="modificar_productos.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-warning btn-sm mx-1">Modificar</a>
                                 <button onclick="eliminarProducto(<?php echo $producto['id_producto']; ?>)" class="btn btn-danger btn-sm mx-1">Eliminar</button>
                                 <form method="POST" action="../catalogo_productos/actualizar_destacados.php" class="d-inline">
                                     <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
                                     <?php if ($producto['destacado']): ?>
-                                        <!-- Botón para quitar destacado -->
                                         <button type="submit" name="quitar_destacado" class="btn btn-secondary btn-sm mx-1">Quitar Destacado</button>
                                     <?php else: ?>
-                                        <!-- Botón para marcar como destacado -->
                                         <button type="submit" name="destacar" class="btn btn-success btn-sm mx-1">Marcar Destacado</button>
                                     <?php endif; ?>
                                 </form>

@@ -271,12 +271,17 @@ $result = $stmt->get_result();
                     <i class="fas fa-home me-1"></i>Inicio
                 </a>
             </li>
+            <li class="breadcrumb-item">
+                <a href="../catalogo_productos/catalogo.php" class="text-primary text-decoration-none">
+                    Catalogo
+                </a>
+            </li>
             <li class="breadcrumb-item active text-dark" aria-current="page">
                 Lista de deseos
             </li>
         </ol>
     </nav>
-    <!-- Fin Migajas de pan -->
+<!-- Fin Migajas de pan -->
 <div class="container mt-5">
     
     <!-- Lista de Deseos -->
@@ -323,7 +328,6 @@ $result = $stmt->get_result();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+3eS2bZqD1zwwu7oZXQAKdf4aJwEr" crossorigin="anonymous"></script>
-<?php include '../footer.php'?>
 </body>
 </html>
 <?php

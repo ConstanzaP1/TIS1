@@ -100,7 +100,64 @@ if (isset($_SESSION['user_id'])) {
     // Usuario no está logeado, asignamos una imagen por defecto
     $img_url = 'default-profile.png';
 }
+function obtenerTiposDeProducto()
+{
+    global $conexion;
+    $query = "SELECT DISTINCT p.tipo_producto
+              FROM producto p";
+    $result = mysqli_query($conexion, $query);
 
+    if (!$result) {
+        die("Error en la consulta: " . mysqli_error($conexion));
+    }
+
+    // Almacenamos los tipos de productos únicos
+    $tiposDeProducto = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $tiposDeProducto[] = $row['tipo_producto'];
+    }
+
+    return $tiposDeProducto;
+}
+// Obtener tipo de producto desde el parámetro GET
+$tipoSeleccionado = isset($_GET['tipo_producto']) ? $_GET['tipo_producto'] : "";
+
+// Si se seleccionó un tipo de producto, filtrar productos por ese tipo
+if (!empty($tipoSeleccionado)) {
+    $productos = filtrarProductosPorTipo($tipoSeleccionado);
+} else {
+    // Si no se seleccionó un tipo, mostrar productos destacados
+    $productos = obtenerProductosDestacados();
+}
+
+/**
+ * Función para filtrar productos por tipo.
+ */
+function filtrarProductosPorTipo($tipo)
+{
+    global $conexion;
+    $query = "SELECT 
+                p.id_producto, 
+                p.nombre_producto, 
+                p.precio, 
+                p.cantidad, 
+                p.tipo_producto, 
+                p.imagen_url, 
+                p.destacado, 
+                p.costo, 
+                p.nombre_categoria, 
+                m.nombre_marca AS marca
+              FROM producto p
+              INNER JOIN marca m ON p.marca = m.id_marca
+              WHERE p.tipo_producto = '" . mysqli_real_escape_string($conexion, $tipo) . "'";
+    $result = mysqli_query($conexion, $query);
+
+    if (!$result) {
+        die("Error en la consulta: " . mysqli_error($conexion));
+    }
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
 ?>
 
 
@@ -114,7 +171,8 @@ if (isset($_SESSION['user_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
 </head>
 <style>
     .navbar {
@@ -162,6 +220,46 @@ if (isset($_SESSION['user_id'])) {
         transform: scale(1.1); /* Hace que el botón crezca ligeramente */
         transition: all 0.3s ease; /* Suaviza la animación */
     }
+    .carousel-inner {
+        position: relative;
+        width: 100%;
+        overflow: hidden; /* Esto asegura que las imágenes no se desborden del contenedor */
+    }
+
+    .carousel-inner img {
+        width: 100%; /* Las imágenes ocupan todo el ancho disponible */
+        height: 100%; /* Las imágenes ocuparán toda la altura disponible */
+        object-fit: cover; /* Asegura que las imágenes cubran el contenedor sin deformarse */
+    }
+
+    /* Para pantallas pequeñas, ajustamos la altura para que el banner no se vea muy alto */
+    @media (max-width: 768px) {
+        .carousel-inner img {
+            object-fit: cover; /* Mantiene el mismo ajuste en pantallas medianas */
+        }
+    }
+
+    @media (max-width: 576px) {
+        .carousel-inner img {
+            object-fit: cover; /* Asegura que la imagen cubra sin deformarse en pantallas pequeñas */
+        }
+    }
+    .custom-carousel-control {
+        top: 50%; /* Centrar verticalmente */
+        transform: translateY(-50%);
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #000; /* Fondo oscuro para los íconos */
+        border-radius: 50%; /* Hacerlos circulares */
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: auto; /* Reducir ancho para que no cubran los productos */
+        margin: 0 10px; /* Separar de los productos */
+    }
 
 </style>
 
@@ -180,17 +278,38 @@ if (isset($_SESSION['user_id'])) {
         <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
+            
             <!-- Barra de búsqueda -->
-            <form class="d-flex ms-auto col-6 shadow" role="search">
+            <form class="d-flex ms-auto col-4 shadow" role="search">
                 <input class="form-control" type="search" placeholder="Buscar en Tisnology" aria-label="Buscar">
             </form>
-
-            <!-- Menú desplegable -->
+            <!-- Menú  -->
             <ul class="navbar-nav ms-auto align-items-center">
-                
+            <li class="nav-item dropdown">
+                <button class="btn btn-bienvenido dropdown-toggle bg-white rounded-start p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Categorias
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="productosDropdown">
+                    <!-- Opción para todos los productos -->
+                    <li>
+                        <a class="dropdown-item" href="catalogo_productos/catalogo.php">Todos los productos</a>
+                    </li>
+
+                    <?php 
+                    // Opciones dinámicas basadas en tipos de producto
+                    $tiposDeProducto = obtenerTiposDeProducto();
+                    foreach ($tiposDeProducto as $tipo): ?>
+                        <li>
+                            <a class="dropdown-item" href="catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
+                                <?php echo htmlspecialchars($tipo); ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='carrito/carrito.php'">
@@ -210,65 +329,62 @@ if (isset($_SESSION['user_id'])) {
                     <button type="button" class="btn btn-deseos p-3 ms-2 rounded-pill me-2" onclick="window.location.href='lista_deseos/lista_deseos.php'">
                     <i class='fas fa-heart'></i>
                     </button>
-                   
                 </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                        </a>
-                        
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
-                                <li>
-                                    <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
-                                </li>
-                            <?php endif; ?>
-                            
-                            
-                            <li>
-                                <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">
-                        <li class="nav-item ms-2">
-                            <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                        </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                     </a>
-                <?php else: ?>
-                    <li class="nav-item">
-                        <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
+                            <li>
+                                <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
+                            </li>
+                        <?php endif; ?>
+                        <li>
+                            <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                </li>
+                <a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">
+                    <li class="nav-item ms-2">
+                        <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
                     </li>
+                </a>
+                <?php else: ?>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
+                </li>
                 <?php endif; ?>
             </ul>
         </div>
     </div>
-
     <!-- Offcanvas para menú lateral -->
     <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        
         <div class="offcanvas-body">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="carrito/carrito.php">Carrito</a>
+                    <a class="nav-link" href="../carrito/carrito.php">Carrito</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="comparador/comparador.php">Comparador</a>
+                    <a class="nav-link" href="../comparador/comparador.php">Comparador</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="lista_deseos/lista_deseos.php">Lista de Deseos</a>
+                    <a class="nav-link" href="../lista_deseos/lista_deseos.php">Lista de Deseos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="login/logout.php">Cerrar Sesión</a>
+                    <a class="nav-link text-danger" href="../login/logout.php">Cerrar Sesión</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+
 <div id="responsiveCarousel" class="carousel slide" data-bs-ride="carousel">
     <!-- Indicadores del carrusel -->
     <div class="carousel-indicators">
@@ -315,141 +431,68 @@ if (isset($_SESSION['user_id'])) {
     </button>
 </div>
 
-<!-- CSS adicional para ajustar el comportamiento de las imágenes -->
-<style>
-    .carousel-inner {
-        position: relative;
-        width: 100%;
-        overflow: hidden; /* Esto asegura que las imágenes no se desborden del contenedor */
-    }
-
-    .carousel-inner img {
-        width: 100%; /* Las imágenes ocupan todo el ancho disponible */
-        height: 100%; /* Las imágenes ocuparán toda la altura disponible */
-        object-fit: cover; /* Asegura que las imágenes cubran el contenedor sin deformarse */
-    }
-
-    /* Para pantallas pequeñas, ajustamos la altura para que el banner no se vea muy alto */
-    @media (max-width: 768px) {
-        .carousel-inner img {
-            object-fit: cover; /* Mantiene el mismo ajuste en pantallas medianas */
-        }
-    }
-
-    @media (max-width: 576px) {
-        .carousel-inner img {
-            object-fit: cover; /* Asegura que la imagen cubra sin deformarse en pantallas pequeñas */
-        }
-    }
-</style>
-
-<!-- Agregar Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<div class="container my-4">
+<div class="container my-2">
     <div class="row">
-        <!-- Columna de filtros a la izquierda -->
-        <div class="col-md-3 d-none d-md-block">
-            <form method="post" action="index.php" id="filterForm" class="border p-3 card-body rounded">
-                <h5>Filtros</h5>
-                
-                <!-- Campos de filtro de precios -->
-                <div class="mb-3">
-                    <label for="precio_min" class="form-label">Precio Mínimo</label>
-                    <input type="number" class="form-control" id="precio_min" name="precio_min" placeholder="ej:0" value="<?php echo htmlspecialchars($precio_min); ?>">
-                </div>
-                <div class="mb-3">
-                    <label for="precio_max" class="form-label">Precio Máximo</label>
-                    <input type="number" class="form-control" id="precio_max" name="precio_max" placeholder="ej:1000" value="<?php echo htmlspecialchars($precio_max); ?>">
-                </div>
+        <div class="col text-center celeste-background text-white py-3">
+            <h1>Te recomendamos</h1>
+        </div>
+        <div class="col-12 py-3">
+            <?php
+            // Filtrar productos destacados
+            $productosDestacados = array_filter($productos, function ($producto) {
+                return $producto['destacado'] == 1;
+            });
 
-                    <!-- Filtro de marca -->
-                    <div class="mb-3">
-                        <label for="marca" class="form-label">Marca</label>
-                        <select name="marca" id="marca" class="form-select">
-                            <option value="">Selecciona una marca</option>
-                            <?php
-                            $marcaQuery = "SELECT nombre_marca FROM marca";
-                            $marcaResult = mysqli_query($conexion, $marcaQuery);
-                            while ($marcaRow = mysqli_fetch_assoc($marcaResult)) {
-                                $selected = ($marcaRow['nombre_marca'] == $marca) ? "selected" : "";
-                                echo "<option value='{$marcaRow['nombre_marca']}' $selected>{$marcaRow['nombre_marca']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <!-- Filtro de categoría -->
-                    <div class="mb-3">
-                        <label for="categoria" class="form-label">Categoría</label>
-                        <select name="categoria" id="categoria" class="form-select">
-                            <option value="">Selecciona una categoría</option>
-                            <option value="audifono">Audífono</option>
-                            <option value="cpu">Procesador</option>
-                            <option value="fuente">Fuente de Poder</option>
-                            <option value="gabinete">Gabinete</option>
-                            <option value="gpu">Tarjeta de Video</option>
-                            <option value="monitor">Monitor</option>
-                            <option value="mouse">Mouse</option>
-                            <option value="notebook">Notebook</option>
-                            <option value="placa">Placa Madre</option>
-                            <option value="ram">Memoria RAM</option>
-                            <option value="teclado">Teclado</option>
-                        </select>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-                        <button type="button" class="btn btn-secondary" onclick="resetFilters()">Limpiar Filtros</button>
-                    </div>
-                </form>
-            </div>
-
-        <div class="col-12 col-md-9">
-            <div class="row gx-3 gy-3"> <!-- espacios entre las columnas y filas -->
-                <?php
-                if (!empty($productos)) {
-                    foreach ($productos as $producto) {
-                        $id_producto = $producto['id_producto'];
-                        $nombre_producto = $producto['nombre_producto'];
-                        $marca_producto = $producto['marca'];
-                        $precio = number_format($producto['precio'], 0, ',', '.');
-                        $imagen_url = $producto['imagen_url'];
-                    
-                        echo "
-                            <div class='col-6 col-md-4'>
-                                <a href='catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
-                                    <div class='card p-0 shadow' style='width: 100%; height: 100%;'>
-                                        <div class='image-container' style='width: 100%; height: 100%; position: relative; overflow: hidden;'>
-                                            <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
-                                        </div>
-                                        <div class='card-body text-begin' style='width: 100%; height: 45%;'>
-                                            <h6 class='text-black fw-bold'>$marca_producto</h6>                               
-                                            <h5 class='text-secondary-emphasis'>$nombre_producto</h5>
-                                            <h5 class='text-secondary-emphasis'>$$precio</h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        ";
-                    }
-                } else {
-                    echo "<p>No se encontraron productos que coincidan con los filtros.</p>";
-                }
+            if (!empty($productosDestacados)) {
+                $chunkedProductos = array_chunk($productosDestacados, 3); // Dividimos en grupos de 3 productos
                 ?>
-            </div>
+                <div id="carouselProductosDestacados" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <?php foreach ($chunkedProductos as $index => $productosChunk): ?>
+                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                                <div class="row gx-3 gy-3">
+                                    <?php foreach ($productosChunk as $producto): ?>
+                                        <div class="col-6 col-md-4">
+                                            <a href="catalogo_productos/detalle_producto.php?id_producto=<?php echo $producto['id_producto']; ?>" class="text-decoration-none">
+                                                <div class="card p-0 shadow" style="width: 100%; height: 100%;">
+                                                    <div class="image-container" style="width: 100%; height: 100%; position: relative; overflow: hidden;">
+                                                        <img src="<?php echo $producto['imagen_url']; ?>" alt="<?php echo $producto['nombre_producto']; ?>" class="card-img-top img-fluid product-image" style="object-fit: contain; width: 100%; height: 100%;">
+                                                    </div>
+                                                    <div class="card-body text-begin" style="width: 100%; height: 45%;">
+                                                        <h6 class="text-black fw-bold"><?php echo $producto['marca']; ?></h6>
+                                                        <h5 class="text-secondary-emphasis"><?php echo $producto['nombre_producto']; ?></h5>
+                                                        <h5 class="text-secondary-emphasis">$<?php echo number_format($producto['precio'], 0, ',', '.'); ?></h5>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <!-- Controles del carrusel -->
+                    <button class="carousel-control-prev custom-carousel-control" type="button" data-bs-target="#carouselProductosDestacados" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next custom-carousel-control" type="button" data-bs-target="#carouselProductosDestacados" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+            <?php
+            } else {
+                echo "<p>No se encontraron productos destacados.</p>";
+            }
+            ?>
         </div>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    function resetFilters() {
-        document.getElementById("filterForm").reset();
-        window.location.href = 'index.php';
-    }
-</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.form-control[type="search"]');

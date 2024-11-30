@@ -129,675 +129,427 @@ $result_users = mysqli_query($conexion, $sql_users);
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
-        body {
-            margin: 0;
-            display: flex;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        .sidebar {
-            width: 30%;
-            background-color: #343a40;
-            color: white;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .sidebar h4 {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .sidebar a {
-            text-decoration: none;
-            color: white;
-            padding: 10px 20px;
-            display: block;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar a:hover,
-        .sidebar a.active {
-            background-color: #495057;
-            border-radius: 5px;
-        }
-
-        .accordion-button {
-            background-color: #495057 !important;
-            color: white !important;
-            border: none;
-            font-weight: bold;
-        }
-
-        .accordion-button:not(.collapsed) {
-            background-color: #6c757d !important;
-            color: white !important;
-        }
-
-        .accordion-item {
-            border: none;
-        }
-
-        .accordion-body {
-            background-color: #495057;
-            color: white;
-            padding-left: 20px;
-        }
-
-        .sub-category-content a {
-            color: #adb5bd;
-            font-size: 0.9rem;
-        }
-
-        .sub-category-content a:hover {
-            color: #f8f9fa;
-        }
-
-        .logout-btn {
-            margin-top: auto;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background-color: #dc3545;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            text-align: center;
-            transition: background-color 0.3s ease;
-            width: 90%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .logout-btn:hover {
-            background-color: #b02a37;
+        .menu-button {
+            position: relative;
+            top: 10px;
+            left: 10px;
+            z-index: 1050; /* Asegura que el botón esté por encima de otros elementos */
+            width: 20%; /* Un poco menos de la mitad de la pantalla */
         }
     </style>
 </head>
-
 <body>
-<div class="container-fluid">
-<div class="row">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="text-center">
-                <a href="../admin_panel/admin_panel.php">
-                    <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
-                </a>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Botón para abrir el menú en pantallas pequeñas -->
+            <button 
+                class="btn btn-primary btn-sm d-lg-none menu-button" 
+                type="button" 
+                data-bs-toggle="offcanvas" 
+                data-bs-target="#sidebar" 
+                aria-controls="sidebar">
+                <i class="fas fa-bars"></i> Menú
+            </button>
+
+            <!-- Sidebar (Offcanvas en móviles, barra fija en pantallas grandes) -->
+            <nav class="col-lg-2 col-md-4 bg-dark text-white vh-100 d-flex flex-column p-3 d-none d-lg-flex">
+                <!-- Logo -->
+                <div class="text-center mb-4">
+                    <a href="../index.php">
+                        <img class="logo img-fluid w-75 rounded-pill" src="../logoblanco.png" alt="Logo">
+                    </a>
+                </div>
+                <h4 class="text-center">Panel de Administración</h4>
+                <!-- Menú principal -->
+                <ul class="nav flex-column">
+                    <!-- Mantenedores -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuMantenedores" role="button">
+                            <i class="fas fa-tools"></i> Mantenedores
+                        </a>
+                        <ul class="collapse list-unstyled ps-3" id="menuMantenedores">
+                            <!-- Hardware -->
+                            <li>
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuHardware" role="button">
+                                    <i class="fas fa-microchip"></i> Hardware
+                                </a>
+                                <ul class="collapse list-unstyled ps-3" id="menuHardware">
+                                    <!-- SSD -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuSSD" role="button">
+                                            SSD
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuSSD">
+                                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php" class="nav-link text-white">Capacidad Almacenamiento</a></li>
+                                            <li><a href="../mantenedores_hardware/bus_ssd.php" class="nav-link text-white">Bus SSD</a></li>
+                                            <li><a href="../mantenedores_hardware/formato_ssd.php" class="nav-link text-white">Formato SSD</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- HDD -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuHDD" role="button">
+                                            HDD
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuHDD">
+                                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php" class="nav-link text-white">Capacidad Almacenamiento</a></li>
+                                            <li><a href="../mantenedores_hardware/bus_hdd.php" class="nav-link text-white">Bus HDD</a></li>
+                                            <li><a href="../mantenedores_hardware/rpm_hdd.php" class="nav-link text-white">RPM HDD</a></li>
+                                            <li><a href="../mantenedores_hardware/tamanio_hdd.php" class="nav-link text-white">Tamaño HDD</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- RAM -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuRAM" role="button">
+                                            RAM
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuRAM">
+                                            <li><a href="../mantenedores_hardware/tipo_ram.php" class="nav-link text-white">Tipo RAM</a></li>
+                                            <li><a href="../mantenedores_hardware/velocidad_ram.php" class="nav-link text-white">Velocidad RAM</a></li>
+                                            <li><a href="../mantenedores_hardware/capacidad_ram.php" class="nav-link text-white">Capacidad RAM</a></li>
+                                            <li><a href="../mantenedores_hardware/formato_ram.php" class="nav-link text-white">Formato RAM</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- CPU -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuCPU" role="button">
+                                            CPU
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuCPU">
+                                            <li><a href="../mantenedores_hardware/frecuencia_cpu.php" class="nav-link text-white">Frecuencia CPU</a></li>
+                                            <li><a href="../mantenedores_hardware/nucleo_hilo_cpu.php" class="nav-link text-white">Núcleo/Hilo CPU</a></li>
+                                            <li><a href="../mantenedores_hardware/socket_cpu.php" class="nav-link text-white">Socket CPU</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- GPU -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuGPU" role="button">
+                                        GPU
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuGPU">
+                                            <li><a href="../mantenedores_hardware/frecuencia_gpu.php" class="nav-link text-white">Frecuencia GPU</a></li>
+                                            <li><a href="../mantenedores_hardware/memoria_gpu.php" class="nav-link text-white">Memoria GPU</a></li>
+                                            <li><a href="../mantenedores_hardware/chipset_gpu.php" class="nav-link text-white">Chipset GPU</a></li>
+                                            <li><a href="../mantenedores_hardware/bus_de_entrada_gpu.php" class="nav-link text-white">Bus de Entrada GPU</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- PLACAS -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuPLACAS" role="button">
+                                        PLACAS MADRE
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuPLACAS">
+                                            <li><a href="../mantenedores_hardware/formato_placa.php" class="nav-link text-white">Formato Placa</a></li>
+                                            <li><a href="../mantenedores_hardware/slot_memoria_placa.php" class="nav-link text-white">Slot Memoria Placa</a></li>
+                                            <li><a href="../mantenedores_hardware/socket_placa.php" class="nav-link text-white">Socket Placa</a></li>
+                                            <li><a href="../mantenedores_hardware/chipset_placa.php" class="nav-link text-white">Chipset Placa</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- FUENTES -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuFUENTE" role="button">
+                                        FUENTE
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuFUENTE">
+                                            <li><a href="../mantenedores_hardware/certificacion_fuente.php" class="nav-link text-white">Certificación Fuente</a></li>
+                                            <li><a href="../mantenedores_hardware/potencia_fuente.php" class="nav-link text-white">Potencia Fuente</a></li>
+                                            <li><a href="../mantenedores_hardware/tamanio_fuente.php" class="nav-link text-white">Tamaño Fuente</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- GABINETE -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuGABINETE" role="button">
+                                        GABINETE
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuGABINETE">
+                                            <li><a href="../mantenedores_hardware/tamanio_max_gabinete.php" class="nav-link text-white">Tamaño Max Gabinete</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Periféricos -->
+                            <li>
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuPeriferico" role="button">
+                                    <i class="fas fa-microchip"></i> Periféricos
+                                </a>
+                                <ul class="collapse list-unstyled ps-3" id="menuPeriferico">
+                                    <!-- Monitores -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuMONITORES" role="button">
+                                        Monitores
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuMONITORES">
+                                            <li><a href="../mantenedores_periferico/resolucion_monitor.php" class="nav-link text-white">Resolución Monitor</a></li>
+                                            <li><a href="../mantenedores_periferico/tamanio_monitor.php" class="nav-link text-white">Tamaño Monitor</a></li>
+                                            <li><a href="../mantenedores_periferico/tasa_refresco.php" class="nav-link text-white">Tasa de Refresco</a></li>
+                                            <li><a href="../mantenedores_periferico/tiempo_respuesta.php" class="nav-link text-white">Tiempo de Respuesta</a></li>
+                                            <li><a href="../mantenedores_periferico/soporte_monitor.php" class="nav-link text-white">Soporte Monitor</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_panel.php" class="nav-link text-white">Tipo Panel</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_curvatura.php" class="nav-link text-white">Tipo Curvatura</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Mouse -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuMouse" role="button">
+                                        Mouse
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuMouse">
+                                            <li><a href="../mantenedores_periferico/dpi_mouse.php" class="nav-link text-white">DPI Mouse</a></li>
+                                            <li><a href="../mantenedores_periferico/peso_mouse.php" class="nav-link text-white">Peso Mouse</a></li>
+                                            <li><a href="../mantenedores_periferico/sensor_mouse.php" class="nav-link text-white">Sensor Mouse</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Audio -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuAudio" role="button">
+                                        Audio
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuAudio">
+                                            <li><a href="../mantenedores_periferico/tipo_audifono.php" class="nav-link text-white">Tipo Audífono</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_microfono.php" class="nav-link text-white">Tipo Micrófono</a></li>
+                                            <li><a href="../mantenedores_periferico/anc.php" class="nav-link text-white">ANC</a></li>
+                                            <li><a href="../mantenedores_periferico/iluminacion.php" class="nav-link text-white">Iluminación</a></li>
+                                            <li><a href="../mantenedores_periferico/conectividad.php" class="nav-link text-white">Conectividad</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Teclados -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuTeclados" role="button">
+                                        Teclados
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuTeclados">
+                                            <li><a href="../mantenedores_periferico/tipo_teclado.php" class="nav-link text-white">Tipo Teclado</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_switch.php" class="nav-link text-white">Tipo Switch</a></li>
+                                            <li><a href="../mantenedores_periferico/categoria_teclado.php" class="nav-link text-white">Categoria</a></li>
+                                            <li><a href="../mantenedores_periferico/iluminacion.php" class="nav-link text-white">Iluminación</a></li>
+                                            <li><a href="../mantenedores_periferico/conectividad.php" class="nav-link text-white">Conectividad</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Notebook -->
+                            <li>
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuNotebook" role="button">
+                                    <i class="fas fa-microchip"></i> Notebook
+                                </a>
+                                <ul class="collapse list-unstyled ps-3" id="menuNotebook">
+                                    <!-- Subcategoría: Batería -->
+                                    <li><a href="../mantenedores_notebook/bateria_notebook.php" class="nav-link text-white">Batería</a></li>
+
+                                    <!-- Subcategoría: Procesador -->
+                                    <li><a href="../mantenedores_notebook/cpu_notebook.php" class="nav-link text-white">Procesador</a></li>
+
+                                    <!-- Subcategoría: Tarjeta de video -->
+                                    <li><a href="../mantenedores_notebook/gpu_notebook.php" class="nav-link text-white">Tarjeta de video</a></li>
+
+                                    <!-- Subcategoría: Pantalla -->
+                                    <li><a href="../mantenedores_notebook/pantalla_notebook.php" class="nav-link text-white">Pantalla</a></li>
+                                    
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Gestion productos -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuGestion_producto" role="button">
+                            <i class="fas fa-tools"></i> Gestionar productos
+                        </a>
+                        <ul class="collapse list-unstyled ps-3" id="menuGestion_producto">
+                            <li><a href="../creacion_productos/index_crear_producto.php" class="nav-link text-white">Crear producto</a></li>
+                            <li><a href="../creacion_productos/listar_productos.php" class="nav-link text-white">Modificar productos</a></li>
+                            <li><a href="../creacion_productos/crear_categoria.php" class="nav-link text-white">Crear Categorías</a></li>
+                            <li><a href="../creacion_productos/gestionar_categoria.php" class="nav-link text-white">Gestionar Categorías</a></li>
+                        </ul>
+                    </li>
+                    <!-- Acciones -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuAcciones" role="button">
+                            <i class="fas fa-tools"></i> Acciones
+                        </a>
+                        <ul class="collapse list-unstyled ps-3" id="menuAcciones">
+                            <!-- Botón para redirigir a lista_usuarios.php -->
+                            <a href="lista_usuarios.php" class="nav-link text-white">Lista de Usuarios</a>
+                            <!-- Nuevo botón para recuperar boletas -->
+                            <a href="../boleta_cotizacion/recuperar_boletas.php" class="nav-link text-white">
+                                Recuperar Boletas
+                            </a>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
+                                Registrar Usuario
+                            </a>
+                            <a href="../postventa/admin_postventa.php" class="nav-link text-white">
+                                Solicitudes Postventa
+                            </a>
+                            <!-- Modal para el formulario de registro de usuario -->
+                            <div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content bg-dark text-white border-secondary">
+                                        <!-- Encabezado del Modal -->
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title" id="registrarUsuarioLabel">Registrar Usuario</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <!-- Cuerpo del Modal -->
+                                        <div class="modal-body">
+                                            <form method="POST" action="">
+                                                <div class="mb-3">
+                                                    <label for="username" class="form-label">Nombre de Usuario</label>
+                                                    <input type="text" class="form-control bg-secondary text-white border-0" name="username" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                                    <input type="email" class="form-control bg-secondary text-white border-0" name="email" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="password" class="form-label">Contraseña</label>
+                                                    <input type="password" class="form-control bg-secondary text-white border-0" name="password" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="role" class="form-label">Rol</label>
+                                                    <select name="role" class="form-select bg-secondary text-white border-0">
+                                                        <?php
+                                                        session_start();
+                                                        $current_role = $_SESSION['role'] ?? 'user'; 
+                                                        if ($current_role === 'superadmin') {
+                                                            echo '<option value="user">Usuario</option>';
+                                                            echo '<option value="admin">Administrador</option>';
+                                                        } elseif ($current_role === 'admin') {
+                                                            echo '<option value="user">Usuario</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary w-100">Registrar</button>
+                                            </form>
+                                            <div class="message mt-3">
+                                                <?php if (!empty($message)): ?>
+                                                    <div class="alert alert-success"><?php echo $message; ?></div>
+                                                <?php endif; ?>
+                                                <?php if (!empty($error_message)): ?>
+                                                    <div class="alert alert-danger"><?php echo $error_message; ?></div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+                <button class="btn btn-secondary mt-auto" onclick="window.location.href='../index.php'">Volver al catalogo</button>
+                <!-- Cerrar sesión -->
+                <button class="btn btn-danger mt-2" onclick="window.location.href='?logout=true'">Cerrar Sesión</button>
+            </nav>
+            <!-- Sidebar para móviles -->
+            <div class="offcanvas offcanvas-start bg-dark text-white d-lg-none" id="sidebar" tabindex="-1" aria-labelledby="sidebarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="sidebarLabel">Panel de Administración</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body p-3">
+                    <!-- Logo -->
+                    <div class="text-center mb-4">
+                        <a href="../index.php">
+                            <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+                        </a>
+                    </div>
+                    <h4 class="text-center">Panel de Administración</h4>
+
+                    <!-- Menú principal -->
+                    <ul class="nav flex-column">
+                        <!-- Mantenedores -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuMantenedoresMobile" role="button">
+                                <i class="fas fa-tools"></i> Mantenedores
+                            </a>
+                            <ul class="collapse list-unstyled ps-3" id="menuMantenedoresMobile">
+                                <li><a href="#" class="nav-link text-white">SSD</a></li>
+                                <li><a href="#" class="nav-link text-white">HDD</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <!-- Cerrar sesión -->
+                    <button class="btn btn-danger mt-auto w-100" onclick="window.location.href='?logout=true'">Cerrar Sesión</button>
+                </div>
+            </div>
+            <!-- Main Content -->
+            <main class="col-lg-10 col-md-12 p-4">
+                <header class="mb-4">
+                    <h1 class="text-center">Dashboard</h1>
+                </header>
+                <body>
+                    <!-- meter cosas aca -->
+                </body>
+            </main>
         </div>
-        <h4>Panel de Administración</h4>
-
-        <!-- Acordeón -->
-        <div class="accordion" id="sidebarAccordion">
-            <!-- Hardware -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#hardware" aria-expanded="false">
-                        Hardware
-                    </button>
-                </h2>
-                <div id="hardware" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
-                    <div class="accordion-body">
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="#">SSD</a>
-                                <ul class="sub-category-content">
-                                    <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
-                                    <li><a href="../mantenedores_hardware/bus_ssd.php">Bus SSD</a></li>
-                                    <li><a href="../mantenedores_hardware/formato_ssd.php">Formato SSD</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">HDD</a>
-                                <ul class="sub-category-content">
-                                    <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
-                                    <li><a href="../mantenedores_hardware/bus_hdd.php">Bus HDD</a></li>
-                                    <li><a href="../mantenedores_hardware/rpm_hdd.php">RPM HDD</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Periféricos -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#perifericos" aria-expanded="false">
-                        Periféricos
-                    </button>
-                </h2>
-                <div id="perifericos" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
-                    <div class="accordion-body">
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="#">Monitores</a>
-                                <ul class="sub-category-content">
-                                    <li><a href="../mantenedores_periferico/resolucion_monitor.php">Resolución Monitor</a></li>
-                                    <li><a href="../mantenedores_periferico/tamanio_monitor.php">Tamaño Monitor</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Teclados</a>
-                                <ul class="sub-category-content">
-                                    <li><a href="../mantenedores_periferico/tipo_teclado.php">Tipo Teclado</a></li>
-                                    <li><a href="../mantenedores_periferico/tipo_switch.php">Tipo Switch</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Notebook -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#notebook" aria-expanded="false">
-                        Notebook
-                    </button>
-                </h2>
-                <div id="notebook" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
-                    <div class="accordion-body">
-                        <ul class="list-unstyled">
-                            <li><a href="../mantenedores_notebook/bateria_notebook.php">Batería</a></li>
-                            <li><a href="../mantenedores_notebook/cpu_notebook.php">Procesador</a></li>
-                            <li><a href="../mantenedores_notebook/gpu_notebook.php">Tarjeta de Video</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Marcas -->
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#marcas" aria-expanded="false">
-                        Marcas
-                    </button>
-                </h2>
-                <div id="marcas" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
-                    <div class="accordion-body">
-                        <ul class="list-unstyled">
-                            <li><a href="../mantenedores_marcas/nombres_marcas.php">Agregar Marcas</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- Gestionar Categorías -->
-            <div class="custom-link">
-                <a href="../creacion_productos/categorias.php" class="text-decoration-none d-block text-white fw-bold px-3 py-2">
-                    Gestionar Categorías
-                </a>
-            </div>
-
-            <!-- Submenús sueltos -->
-            <div class="custom-link">
-                <a href="lista_usuarios.php" class="text-decoration-none d-block text-white fw-bold px-3 py-2">
-                    Lista de Usuarios
-                </a>
-            </div>
-            <div class="custom-link">
-                <button type="button" class="btn text-decoration-none d-block text-white fw-bold px-3 py-2 w-100"
-                    style="background: none; border: none; text-align: left;" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
-                    Registrar Usuario
-                </button>
-            </div>
-            <div class="custom-link">
-                <a href="../boleta_cotizacion/recuperar_boletas.php" class="text-decoration-none d-block text-white fw-bold px-3 py-2">
-                    Recuperar Boletas
-                </a>
-            </div>
-            <div class="custom-link">
-                <a href="../index.php" class="text-decoration-none d-block text-white fw-bold px-3 py-2">
-                    Catálogo productos
-                </a>
-            </div>
-
-            <!-- Estilos -->
-            <style>
-                .custom-link {
-                    background-color: #495057;
-                    /* Fondo uniforme */
-                    border-bottom: 1px solid #343a40;
-                    /* Línea divisoria */
-                }
-
-                .custom-link:last-child {
-                    border-bottom: none;
-                    /* Sin línea divisoria en el último elemento */
-                }
-
-                .custom-link:hover {
-                    background-color: #6c757d;
-                    /* Fondo al pasar el mouse */
-                    text-decoration: none;
-                    /* Sin subrayado */
-                }
-
-                .btn {
-                    padding: 0;
-                    /* Ajustar el padding del botón */
-                }
-            </style>
-
-
-
-        </div>
-
-        <!-- Cerrar Sesión -->
-        <button class="logout-btn">Cerrar Sesión</button>
     </div>
-</div>
-</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '<?php echo $error_message; ?>',
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
+    <script>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: '<?php echo $message; ?>',
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
+    <script>
+        document.querySelectorAll('.sub-category-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const subCategory = this.nextElementSibling;
+                subCategory.style.display = subCategory.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            toastr.options = {
+                'closeButton': true,
+                'positionClass': 'toast-top-right',
+                'timeOut': '50000'
+            };
+
+            // Generar notificaciones dinámicamente desde PHP
+            <?php if (!empty($notificaciones_stock)): ?>
+                <?php foreach ($notificaciones_stock as $producto): ?>
+                    toastr.warning(
+                        'El producto "<?php echo $producto['nombre_producto']; ?>" tiene un stock bajo (<?php echo $producto['cantidad']; ?> unidades).'
+                    );
+                <?php endforeach; ?>
+            <?php else: ?>
+                console.log('No hay productos con stock bajo.');
+            <?php endif; ?>
+        });
+    </script>
+
+    <script>
+        // Script para manejar el acordeón
+        const headers = document.querySelectorAll('.accordion-header');
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                header.classList.toggle('active');
+            });
+        });
+    </script>
 </body>
-
 </html>
-
-
-
-
-<style>
-    .sub-category-header {
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    .sub-category-content {
-        padding-left: 20px;
-        /* Indentación para la subcategoría */
-    }
-</style>
-<script>
-    document.querySelectorAll('.sub-category-header').forEach(header => {
-        header.addEventListener('click', function() {
-            const subCategory = this.nextElementSibling;
-            subCategory.style.display = subCategory.style.display === 'none' ? 'block' : 'none';
-        });
-    });
-</script>
-<hr>
-
-<div class="sidebar-container p-3">
-<div class="d-flex flex-column gap-2">
-    <!-- Botón para redirigir a lista_usuarios.php -->
-    <a href="lista_usuarios.php" class="btn lista-usuarios-btn">Lista de Usuarios</a>
-    
-    <!-- Botón en el sidebar para abrir el modal de registro de usuario -->
-    <button type="button" class="btn lista-usuarios-btn" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
-        Registrar Usuario
-    </button>
-
-    <!-- Nuevo botón para recuperar boletas -->
-    <a href="../boleta_cotizacion/recuperar_boletas.php" class="btn lista-usuarios-btn">
-        Recuperar Boletas
-    </a>
-
-    <!-- Botón para el catálogo de productos -->
-    <a href="../index.php" class="btn lista-usuarios-btn">
-        Catálogo productos
-    </a>
-    <!-- Botón para el catálogo de productos -->
-    <a href="../postventa/admin_postventa.php" class="btn lista-usuarios-btn">
-        Postventa
-    </a>
-
-        <!-- Botón para cerrar sesión -->
-        <a href="?logout" class="btn btn-danger flex-grow-1 d-flex align-items-center justify-content-center">
-            Cerrar Sesión
-        </a>
-    </div>
-</div>
-
-
-<!-- Modal para el formulario de registro de usuario -->
-<div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="registrarUsuarioLabel">Registrar Usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" action="">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" name="password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="role" class="form-label">Rol</label>
-                        <select name="role" class="form-select">
-                            <?php
-                            // Asumiendo que el rol del usuario actual está almacenado en la sesión
-                            session_start();
-                            $current_role = $_SESSION['role'] ?? 'user'; // Por defecto 'user' si no está definido
-
-                            // Lógica para mostrar opciones según el rol actual
-                            if ($current_role === 'superadmin') {
-                                // El superadmin puede asignar tanto 'user' como 'admin'
-                                echo '<option value="user">Usuario</option>';
-                                echo '<option value="admin">Administrador</option>';
-                            } elseif ($current_role === 'admin') {
-                                // El admin solo puede asignar el rol de 'user'
-                                echo '<option value="user">Usuario</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                </form>
-                <div class="message mt-3">
-                    <?php if (!empty($message)): ?>
-                        <div class="alert alert-success"><?php echo $message; ?></div>
-                    <?php endif; ?>
-                    <?php if (!empty($error_message)): ?>
-                        <div class="alert alert-danger"><?php echo $error_message; ?></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php if (!empty($message)): ?>
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: '<?php echo $message; ?>',
-            confirmButtonText: 'Aceptar'
-        });
-    </script>
-<?php endif; ?>
-
-<?php if (!empty($error_message)): ?>
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: '<?php echo $error_message; ?>',
-            confirmButtonText: 'Aceptar'
-        });
-    </script>
-<?php endif; ?>
-
-
-
-        </div>
-    </aside>
-    
-<div id="app" class="container mt-4">
-    <header class="dashboard-header text-center mb-4">
-        <h1>Dashboard</h1>
-    </header>
-
-    <div class="row g-4">
-        <!-- Ganancias por Producto -->
-        <div class="col-md-6">
-            <div class="card p-3">
-                <h2 class="text-center">Ganancias por Producto</h2>
-                <canvas class="w-100" style="height:auto;" id="gananciasChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Ventas Diarias -->
-        <div class="col-md-6">
-            <div class="card p-3">
-                <h2 class="text-center">Ventas Diarias</h2>
-                <canvas class="w-100" style="height:auto;" id="ventasDiariasChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Productos Más Vendidos -->
-        <div class="col-md-6">
-            <div class="card p-3">
-                <h2 class="text-center">Productos Más Vendidos</h2>
-                <canvas class="w-100" style="height:auto;" id="productosMasVendidosChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Problemas de Stock -->
-        <div class="col-md-6">
-            <div class="card p-3">
-                <h2 class="text-center">Problemas de Stock</h2>
-                <canvas class="w-100" style="height:auto;" id="problemasStockChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const ctxGanancias = document.getElementById('gananciasChart').getContext('2d');
-        const ctxVentas = document.getElementById('ventasDiariasChart').getContext('2d');
-        const ctxVendidos = document.getElementById('productosMasVendidosChart').getContext('2d');
-        const ctxStock = document.getElementById('problemasStockChart').getContext('2d');
-
-        // Gráfico de Ganancias
-        new Chart(ctxGanancias, {
-            type: 'bar',
-            data: {
-                labels: ['Producto 1', 'Producto 2', 'Producto 3'],
-                datasets: [{
-                    label: 'Ganancias',
-                    data: [1200, 1900, 3000],
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        // Gráfico de Ventas Diarias
-        new Chart(ctxVentas, {
-            type: 'line',
-            data: {
-                labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
-                datasets: [{
-                    label: 'Ventas Diarias',
-                    data: [120, 150, 180, 200, 170],
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        // Gráfico de Productos Más Vendidos
-        new Chart(ctxVendidos, {
-            type: 'pie',
-            data: {
-                labels: ['Producto A', 'Producto B', 'Producto C'],
-                datasets: [{
-                    label: 'Productos Más Vendidos',
-                    data: [30, 50, 20],
-                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
-                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        // Gráfico de Problemas de Stock
-        new Chart(ctxStock, {
-            type: 'doughnut',
-            data: {
-                labels: ['Producto X', 'Producto Y', 'Producto Z'],
-                datasets: [{
-                    label: 'Problemas de Stock',
-                    data: [5, 10, 3],
-                    backgroundColor: ['rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)'],
-                    borderColor: ['rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(75, 192, 192, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-    });
-</script>
-
-<style>
-    /* Estilos principales */
-    #app {
-        display: flex;
-        flex-direction: row;
-        /* Alineación horizontal */
-        min-height: 100vh;
-        font-family: Arial, sans-serif;
-    }
-
-    aside {
-        width: 20%;
-        /* Por defecto, el sidebar ocupa el 20% */
-        background-color: #f4f4f4;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        overflow-y: auto;
-        flex-shrink: 0;
-        /* Evita que el sidebar se reduzca */
-    }
-
-    main {
-    padding: 20px;
-}
-
-.dashboard-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.dashboard-section {
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-canvas {
-    width: 100% !important;
-    height: auto !important;
-    max-height: 400px;
-}
-.card {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-</style>
-
-
-
-
-
-<style>
-    .registro {
-        max-height: 55vh;
-        /* Ajustar la altura máxima */
-        overflow-y: auto;
-        /* Habilitar scroll vertical */
-        padding: 5px;
-        /* Espaciado interno */
-        border: 1px solid #ccc;
-        /* Borde para el contenedor */
-        background-color: #f9f9f9;
-        /* Color de fondo */
-        box-sizing: border-box;
-        /* Incluir padding y borde en el tamaño total */
-    }
-
-    .mb-3 {
-        margin-bottom: 1px;
-        /* Espacio entre los elementos */
-    }
-
-    .form-control,
-    .form-select {
-        width: 100%;
-        /* Hacer los campos de formulario ocupar el ancho completo */
-    }
-
-    .message {
-        margin-top: 1px;
-        /* Espacio superior para el mensaje */
-    }
-
-    /* Limitar la altura del contenedor de mensajes */
-    .message .alert {
-        max-height: 50px;
-        /* Altura máxima para los mensajes */
-        overflow: hidden;
-        /* Ocultar contenido que se salga */
-    }
-</style>
-<script>
-    $(document).ready(function() {
-        toastr.options = {
-            'closeButton': true,
-            'positionClass': 'toast-top-right',
-            'timeOut': '50000'
-        };
-
-        // Generar notificaciones dinámicamente desde PHP
-        <?php if (!empty($notificaciones_stock)): ?>
-            <?php foreach ($notificaciones_stock as $producto): ?>
-                toastr.warning(
-                    'El producto "<?php echo $producto['nombre_producto']; ?>" tiene un stock bajo (<?php echo $producto['cantidad']; ?> unidades).'
-                );
-            <?php endforeach; ?>
-        <?php else: ?>
-            console.log('No hay productos con stock bajo.');
-        <?php endif; ?>
-    });
-</script>
-
-<script>
-    // Script para manejar el acordeón
-    const headers = document.querySelectorAll('.accordion-header');
-    headers.forEach(header => {
-        header.addEventListener('click', () => {
-            const content = header.nextElementSibling;
-            content.style.display = content.style.display === 'block' ? 'none' : 'block';
-            header.classList.toggle('active');
-        });
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,11 +1,66 @@
 <?php
 session_start();
 require('../conexion.php');
+require('../vendor/autoload.php');
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 // Verificar si el usuario es administrador
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header('Location: ../login/login.php');
     exit;
+}
+
+// Procesar la respuesta del formulario (cuando se envía desde el modal)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_consulta']) && isset($_POST['respuesta'])) {
+    $idConsulta = intval($_POST['id_consulta']);
+    $respuesta = trim($_POST['respuesta']);
+
+    // Obtener datos de la consulta
+    $stmt = $conexion->prepare("SELECT cliente_email, cliente_nombre, pregunta FROM atencion_postventa WHERE id = ?");
+    $stmt->bind_param("i", $idConsulta);
+    $stmt->execute();
+    $consulta = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    if ($consulta) {
+        $clienteEmail = $consulta['cliente_email'];
+        $clienteNombre = $consulta['cliente_nombre'];
+        $pregunta = $consulta['pregunta'];
+
+        // Guardar la respuesta en la base de datos
+        $stmt = $conexion->prepare("UPDATE atencion_postventa SET respuesta = ?, fecha_respuesta = NOW() WHERE id = ?");
+        $stmt->bind_param("si", $respuesta, $idConsulta);
+
+        if ($stmt->execute()) {
+            // Enviar correo con PHPMailer
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'tisnology1@gmail.com'; // Correo del remitente
+                $mail->Password = 'ytfksqrqrginpvge'; // Contraseña de aplicación
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+
+                $mail->setFrom('tisnology1@gmail.com', 'Tisnology - Postventa');
+                $mail->addAddress($clienteEmail);
+
+                $mail->Subject = 'Respuesta a tu consulta - Postventa Tisnology';
+                $mail->Body = "Hola {$clienteNombre},\n\nGracias por contactarnos. Aquí está nuestra respuesta a tu consulta:\n\n{$respuesta}\n\n¡Gracias por confiar en nosotros!\nTisnology";
+
+                $mail->send();
+                $successMessage = "Respuesta enviada correctamente y notificación enviada al cliente.";
+            } catch (Exception $e) {
+                $errorMessage = "Respuesta guardada, pero ocurrió un error al enviar el correo: {$mail->ErrorInfo}";
+            }
+        } else {
+            $errorMessage = "Error al guardar la respuesta en la base de datos.";
+        }
+        $stmt->close();
+    }
 }
 
 // Obtener todas las consultas de postventa
@@ -20,6 +75,7 @@ $result = $conexion->query($query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración de Postventa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .table th, .table td {
             vertical-align: middle;
@@ -97,7 +153,7 @@ $result = $conexion->query($query);
 <div class="modal fade" id="responderModal" tabindex="-1" aria-labelledby="responderModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="POST" action="responder_postventa.php">
+            <form method="POST">
                 <div class="modal-header">
                     <h5 class="modal-title" id="responderModalLabel">Responder Consulta</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -151,6 +207,29 @@ $result = $conexion->query($query);
         document.getElementById('modalPregunta').textContent = pregunta;
         document.getElementById('modalIdConsulta').value = idConsulta;
     });
+
+    <?php if (!empty($successMessage)): ?>
+        Swal.fire({
+            icon: 'success',
+            title: '<?php echo addslashes($successMessage); ?>',
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    <?php elseif (!empty($errorMessage)): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '<?php echo addslashes($errorMessage); ?>',
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    <?php endif; ?>
 </script>
 </body>
 </html>

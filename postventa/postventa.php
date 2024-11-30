@@ -2,6 +2,7 @@
 session_start();
 require('../conexion.php');
 
+// Verificar si hay un usuario autenticado
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../login/login.php');
     exit;
@@ -9,54 +10,75 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 
-// Obtener datos del cliente, incluyendo la imagen de perfil
-$query = "SELECT username, email, img FROM users WHERE id = ?";
-$stmt = $conexion->prepare($query);
+// Obtener datos del usuario
+$stmt = $conexion->prepare("SELECT id, username, email, role, img FROM users WHERE id = ?");
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
-$user = $result->fetch_assoc();
 
-// Verificar que el cliente y el correo existen
-if (empty($user['username']) || empty($user['email'])) {
-    header('Location: ../perfil_usuario/perfil_usuario.php');
+if ($result->num_rows > 0) {
+    $userData = $result->fetch_assoc();
+    $username = $userData['username'];
+    $email = $userData['email'];
+    $role = $userData['role'];
+    $img_url = !empty($userData['img']) ? $userData['img'] : '../imagenes/default-profile.png';
+} else {
+    header('Location: ../login/login.php');
     exit;
 }
+$stmt->close();
 
-// Asignar variables para uso posterior
-$nombre = $user['username'];
-$email = $user['email'];
-$img_url = !empty($user['img']) ? $user['img'] : '../imagenes/default-profile.png'; // Imagen por defecto si no hay una en la BD
+// Verificar si se envió la consulta para una boleta específica
+$boletaId = $_GET['id_boleta'] ?? null;
+$consultaExistente = false;
 
-// Procesar formulario de consulta
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pregunta = isset($_POST['pregunta']) ? trim($_POST['pregunta']) : '';
+if ($boletaId) {
+    $stmt = $conexion->prepare("SELECT id FROM atencion_postventa WHERE cliente_email = ? AND id_boleta = ?");
+    $stmt->bind_param("si", $email, $boletaId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $consultaExistente = true;
+    }
+    $stmt->close();
+}
+
+// Procesar el formulario de consulta
+$successMessage = '';
+$errorMessage = '';
+if (isset($_GET['success']) && $_GET['success'] == 1) {
+    $successMessage = "Tu consulta ha sido enviada. Nos pondremos en contacto pronto.";
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$consultaExistente) {
+    $pregunta = trim($_POST['pregunta'] ?? '');
 
     if (!empty($pregunta)) {
-        // Verificar si ya existe una consulta con la misma pregunta del mismo usuario
-        $checkQuery = "SELECT id FROM atencion_postventa WHERE cliente_nombre = ? AND cliente_email = ? AND pregunta = ?";
-        $checkStmt = $conexion->prepare($checkQuery);
-        $checkStmt->bind_param("sss", $nombre, $email, $pregunta);
-        $checkStmt->execute();
-        $checkResult = $checkStmt->get_result();
+        $stmt = $conexion->prepare("INSERT INTO atencion_postventa (cliente_nombre, cliente_email, id_boleta, pregunta, fecha_pregunta) VALUES (?, ?, ?, ?, NOW())");
+        $stmt->bind_param("ssis", $username, $email, $boletaId, $pregunta);
 
-        if ($checkResult->num_rows > 0) {
-            $errorMessage = "Ya enviaste esta consulta. Por favor, espera una respuesta.";
+        if ($stmt->execute()) {
+            // Redirigir al usuario después de procesar el formulario
+            header("Location: postventa.php?id_boleta=" . $boletaId . "&success=1");
+            exit;
         } else {
-            // Insertar la consulta en la base de datos
-            $stmt = $conexion->prepare("INSERT INTO atencion_postventa (cliente_nombre, cliente_email, pregunta, fecha_pregunta) VALUES (?, ?, ?, NOW())");
-            $stmt->bind_param("sss", $nombre, $email, $pregunta);
-            if ($stmt->execute()) {
-                $successMessage = "Tu consulta ha sido enviada. Nos pondremos en contacto pronto.";
-            } else {
-                $errorMessage = "Ocurrió un error al enviar tu consulta. Inténtalo nuevamente.";
-            }
-            $stmt->close();
+            $errorMessage = "Ocurrió un error al enviar tu consulta. Inténtalo nuevamente.";
         }
-        $checkStmt->close();
-    } else {
-        $errorMessage = "El campo de pregunta no puede estar vacío.";
+        $stmt->close();
     }
+}
+
+// Obtener los detalles de la boleta
+$boletaDetalles = [];
+if ($boletaId) {
+    $stmt = $conexion->prepare("SELECT detalles FROM boletas WHERE id_boleta = ?");
+    $stmt->bind_param("i", $boletaId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $boletaDetalles = json_decode($result->fetch_assoc()['detalles'], true);
+    }
+    $stmt->close();
 }
 ?>
 
@@ -65,22 +87,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Postventa</title>
+    <title>Atención Postventa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        .navbar {
-            background-color: rgba(0, 128, 255, 0.5);
-        }
-        .rounded-circle {
-            object-fit: cover;
-            width: 50px;
-            height: 50px;
-        }
+        .navbar { background-color: rgba(0, 128, 255, 0.5); }
+        .rounded-circle { object-fit: cover; width: 50px; height: 50px; }
     </style>
 </head>
 <body>
-       
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <!-- Logo (centrado en pantallas pequeñas) -->
@@ -183,25 +199,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </nav>
-
 <div class="container mt-5">
     <h2>Atención Postventa</h2>
 
-    <?php if (!empty($successMessage)): ?>
-        <div class="alert alert-success"><?php echo $successMessage; ?></div>
-    <?php elseif (!empty($errorMessage)): ?>
-        <div class="alert alert-danger"><?php echo $errorMessage; ?></div>
+    <?php if ($boletaDetalles): ?>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($boletaDetalles as $detalle): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($detalle['producto']); ?></td>
+                        <td><?php echo htmlspecialchars($detalle['cantidad']); ?></td>
+                        <td><?php echo "$" . number_format($detalle['precio_unitario'], 0, ',', '.'); ?></td>
+                        <td><?php echo "$" . number_format($detalle['total'], 0, ',', '.'); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p class="text-danger">No se encontraron detalles para esta boleta.</p>
     <?php endif; ?>
 
-    <form method="POST">
-        <div class="mb-3">
-            <label for="pregunta" class="form-label">Escribe tu consulta:</label>
-            <textarea name="pregunta" id="pregunta" class="form-control" rows="5"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Enviar</button>
-    </form>
+    <?php if ($consultaExistente): ?>
+        <div class="alert alert-info">Ya has enviado una consulta para esta boleta. Por favor, espera nuestra respuesta.</div>
+    <?php else: ?>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="pregunta" class="form-label">Escribe tu consulta:</label>
+                <textarea name="pregunta" id="pregunta" class="form-control" rows="5"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    <?php endif; ?>
+
     <a href="../perfil_usuario/perfil_usuario.php" class="btn btn-secondary mt-3">Volver</a>
 </div>
+
+<?php if ($successMessage): ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '<?php echo addslashes($successMessage); ?>',
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    </script>
+<?php elseif ($errorMessage): ?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '<?php echo addslashes($errorMessage); ?>',
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    </script>
+<?php endif; ?>
+<?php include "../footer.php"?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
