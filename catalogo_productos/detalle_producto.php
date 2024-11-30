@@ -1213,16 +1213,28 @@ function agregarAlComparador(idProducto) {
     })
     .then(response => response.json())
     .then(data => {
-        // Mostrar mensaje según el resultado
         Swal.fire({
-            icon: data.status === 'success' ? 'success' : 'error',
-            title: data.status === 'success' ? 'Éxito' : 'Error',
-            text: data.message,
+            icon: data.status === 'success' ? 'success' : (data.status === 'exists' ? 'info' : 'error'),
+            title: data.message,
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
         });
     })
     .catch(error => {
         console.error('Error:', error);
-        Swal.fire('Error', 'No se pudo completar la solicitud.', 'error');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo agregar al comparador. Intenta nuevamente más tarde.',
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
     });
 }
 

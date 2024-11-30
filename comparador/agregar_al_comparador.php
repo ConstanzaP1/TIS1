@@ -70,7 +70,7 @@ if (isset($_POST['id_producto'])) {
     }
 }
 
-// Devolver la respuesta en formato JSON
+// Formatear la respuesta como JSON
 header('Content-Type: application/json');
 echo json_encode($response);
 exit();

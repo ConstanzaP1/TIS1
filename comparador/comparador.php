@@ -507,13 +507,13 @@ cargar_productos_y_caracteristicas();
             <div class="empty-comparator text-center">
                 <div class="card p-5 shadow">
                     <h4 class="mb-3">No hay productos en el comparador</h4>
-                    <a href="../index.php" class="btn btn-primary">Regresar al catálogo</a>
+                    <a href="../index.php" class="btn btn-secondary">Regresar al catálogo</a>
                 </div>
             </div>
         <?php endif; ?>
     </div>
 </div>
-
+<?php include "../footer.php"?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
