@@ -1203,12 +1203,13 @@ mysqli_close($conexion);
     </script>
 <script>
 function agregarAlComparador(idProducto) {
-    const formData = new FormData();
+    const formData = new URLSearchParams();
     formData.append('id_producto', idProducto);
 
     fetch('../comparador/agregar_al_comparador.php', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString()
     })
     .then(response => response.json())
     .then(data => {
@@ -1223,7 +1224,7 @@ function agregarAlComparador(idProducto) {
         });
     })
     .catch(error => {
-        console.error('Error en la solicitud:', error);
+        console.error('Error:', error);
         Swal.fire({
             icon: 'error',
             title: 'Error',
