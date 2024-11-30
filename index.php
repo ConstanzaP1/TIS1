@@ -30,7 +30,7 @@ function obtenerProductosDestacados()
                 p.imagen_url, 
                 p.destacado, 
                 p.costo, 
-                p.nombre_categoria, 
+
                 m.nombre_marca AS marca
               FROM producto p
               INNER JOIN marca m ON p.marca = m.id_marca
@@ -445,10 +445,10 @@ if (isset($_SESSION['user_id'])) {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.form-control[type="search"]');
-    const productContainer = document.querySelector('.row.gx-2.gy-3');
+    const productContainer = document.querySelector('.row.gx-3.gy-3');
 
-   // Función para cargar productos según la búsqueda
-   function cargarProductos(query = '') {
+    // Function to fetch and display products
+    function cargarProductos(query = '') {
         $.ajax({
             url: 'funcion_busqueda/buscar_productos.php',
             method: 'GET',
@@ -458,11 +458,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Listen for input changes in the search bar
     searchInput.addEventListener('input', function() {
-        const query = searchInput.value;
+        const query = searchInput.value.trim();
         cargarProductos(query);
     });
 });
+
 </script>
 <?php include "footer.php"?>
 </body>

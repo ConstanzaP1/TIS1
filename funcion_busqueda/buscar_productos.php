@@ -1,62 +1,49 @@
 <?php
-// Conexión a la base de datos
 require('../conexion.php');
 
-// Capturar el término de búsqueda desde AJAX
-$searchQuery = '';
-if (isset($_GET['query']) && !empty($_GET['query'])) {
-    $searchQuery = mysqli_real_escape_string($conexion, $_GET['query']);
-}
+$query = isset($_GET['query']) ? mysqli_real_escape_string($conexion, $_GET['query']) : "";
 
-// Consulta para obtener los productos y el nombre de la marca
-$query = "
-    SELECT 
-        p.id_producto, 
-        m.nombre_marca AS marca, 
-        p.nombre_producto, 
-        p.precio, 
-        p.imagen_url 
-    FROM 
-        producto p
-    JOIN 
-        marca m ON p.marca = m.id_marca
-";
+$sql = "SELECT 
+            p.id_producto, 
+            p.nombre_producto, 
+            p.precio, 
+            p.cantidad, 
+            p.tipo_producto, 
+            p.imagen_url, 
+            p.destacado, 
+            p.costo, 
+            m.nombre_marca AS marca 
+        FROM producto p
+        INNER JOIN marca m ON p.marca = m.id_marca
+        WHERE p.nombre_producto LIKE '%$query%' OR m.nombre_marca LIKE '%$query%'
+        LIMIT 20";
 
-// Añadir condición de búsqueda si existe una consulta
-if (!empty($searchQuery)) {
-    $query .= " WHERE p.nombre_producto LIKE '%$searchQuery%' OR m.nombre_marca LIKE '%$searchQuery%'";
-}
+$result = mysqli_query($conexion, $sql);
 
-$result = mysqli_query($conexion, $query);
+if ($result) {
+    $productos = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    foreach ($productos as $producto) {
+        // Ensure price is properly formatted before displaying
+        $precio_formateado = number_format($producto['precio'], 0, ',', '.');
 
-// Contenedor para mantener el formato de las cards
-echo "<div class='d-flex flex-wrap justify-content-center'>";
-if ($result->num_rows > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        // Variables del producto
-        $id_producto = $row['id_producto'];
-        $marca = $row['marca']; 
-        $nombre_producto = $row['nombre_producto'];
-        $precio = number_format($row['precio'], 0, ',', '.');
-        $imagen_url = $row['imagen_url']; 
-
-        // HTML del producto con enlace al detalle
         echo "
-          <div class='card mx-1 mb-3 p-0 shadow' style='width: 18rem; height: 26rem;'>
-            <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid' style='height: 20rem; object-fit: cover;'>
-              <div class='card-body text-begin'>
-                <a class='text-decoration-none' href='catalogo_productos/detalle_producto.php?id_producto=$id_producto'>
-                    <p class='text-secondary m-0'>$marca</p>
-                    <h5 class='text-black my-1'>$nombre_producto</h5>
-                    <p class='text-secondary'>$$precio</p>
+            <div class='col-6 col-md-4'>
+                <a href='catalogo_productos/detalle_producto.php?id_producto={$producto['id_producto']}' class='text-decoration-none'>
+                    <div class='card p-0 shadow' style='width: 100%; height: 100%;'>
+                        <div class='image-container' style='width: 100%; height: 100%; position: relative; overflow: hidden;'>
+                            <img src='{$producto['imagen_url']}' alt='{$producto['nombre_producto']}' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
+                        </div>
+                        <div class='card-body text-begin' style='width: 100%; height: 45%;'>
+                            <h6 class='text-black fw-bold'>{$producto['marca']}</h6>
+                            <h5 class='text-secondary-emphasis'>{$producto['nombre_producto']}</h5>
+                            <h5 class='text-secondary-emphasis'>\${$precio_formateado}</h5>
+                        </div>
+                    </div>
                 </a>
-              </div>
-          </div>
+            </div>
         ";
     }
 } else {
-    echo "<p>No hay productos disponibles.</p>";
+    echo "<p>No se encontraron productos.</p>";
 }
-echo "</div>"; // Cierre del contenedor
-mysqli_close($conexion);
 ?>
