@@ -46,6 +46,9 @@ if ($boletaId) {
 // Procesar el formulario de consulta
 $successMessage = '';
 $errorMessage = '';
+if (isset($_GET['success']) && $_GET['success'] == 1) {
+    $successMessage = "Tu consulta ha sido enviada. Nos pondremos en contacto pronto.";
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$consultaExistente) {
     $pregunta = trim($_POST['pregunta'] ?? '');
@@ -55,8 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$consultaExistente) {
         $stmt->bind_param("ssis", $username, $email, $boletaId, $pregunta);
 
         if ($stmt->execute()) {
-            $successMessage = "Tu consulta ha sido enviada. Nos pondremos en contacto pronto.";
-            $consultaExistente = true; // Bloquear formulario tras envío
+            // Redirigir al usuario después de procesar el formulario
+            header("Location: postventa.php?id_boleta=" . $boletaId . "&success=1");
+            exit;
         } else {
             $errorMessage = "Ocurrió un error al enviar tu consulta. Inténtalo nuevamente.";
         }
@@ -242,8 +246,7 @@ if ($boletaId) {
     <script>
         Swal.fire({
             icon: 'success',
-            title: '¡Consulta enviada!',
-            text: '<?php echo addslashes($successMessage); ?>',
+            title: '<?php echo addslashes($successMessage); ?>',
             toast: true,
             position: 'top-end',
             timer: 3000,
@@ -266,43 +269,6 @@ if ($boletaId) {
     </script>
 <?php endif; ?>
 
-<script>
-    function agregarAlComparador(idProducto) {
-        const formData = new URLSearchParams();
-        formData.append('id_producto', idProducto);
-
-        fetch('../comparador/agregar_al_comparador.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: formData.toString()
-        })
-        .then(response => response.json())
-        .then(data => {
-            Swal.fire({
-                icon: data.status === 'success' ? 'success' : (data.status === 'exists' ? 'info' : 'error'),
-                title: data.message,
-                toast: true,
-                position: 'top-end',
-                timer: 3000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'No se pudo agregar al comparador. Intenta nuevamente más tarde.',
-                toast: true,
-                position: 'top-end',
-                timer: 3000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-        });
-    }
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
