@@ -107,7 +107,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'tisnology1@gmail.com';
-        $mail->Password = 'kkayajvlxqjtelsn';
+        $mail->Password = 'ytfksqrqrginpvge';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
