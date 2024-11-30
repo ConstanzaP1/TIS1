@@ -382,6 +382,9 @@ $result_users = mysqli_query($conexion, $sql_users);
                             <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
                                 Registrar Usuario
                             </a>
+                            <a href="../postventa/admin_postventa.php" class="nav-link text-white">
+                                Solicitudes Postventa
+                            </a>
                             <!-- Modal para el formulario de registro de usuario -->
                             <div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
