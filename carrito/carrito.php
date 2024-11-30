@@ -476,10 +476,18 @@ if (isset($_POST['pagar'])) {
                         <span>Total:</span>
                         <strong>$<?php echo number_format($_SESSION['total'] ?? 0, 0, ',', '.'); ?></strong>
                     </div>
-                    <a href="../index.php" class="btn btn-success w-100 my-2">Agregar más productos</a>
+                    <a href="../index.php" class="btn btn-secondary w-100">Agregar más productos</a>
+                    <form method="POST" action="../boleta_cotizacion/cotizacion.php">
+                        <div class="my-2">
+                            <input type="hidden" name="correo" id="correo" value="<?php echo htmlspecialchars($correoE); ?>" readonly>
+                            <button type="button" class="btn btn-success w-100" onclick="enviarCotizacion()">Enviar Cotización</button>
+
+                        </div>
+                    </form>
+                    
                     <form method="POST" action="carrito.php" id="formPagoCarrito">
                         <input type="hidden" name="total" value="<?php echo $_SESSION['total'] ?? 0; ?>">         
-                        <button type="submit" name="pagar" class="btn btn-primary w-100">Continuar</button>
+                        <button type="submit" name="pagar" class="btn btn-primary w-100">Proceder al pago</button>
                     </form>
                 </div>
             </div>
@@ -489,6 +497,50 @@ if (isset($_POST['pagar'])) {
 <?php include "../footer.php"; ?>
 
 <script>
+function enviarCotizacion() {
+    fetch('../boleta_cotizacion/cotizacion.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'correo=' + encodeURIComponent(document.getElementById('correo').value)
+    })
+    .then(response => response.json()) // Procesa la respuesta JSON
+    .then(data => {
+        // Mostrar notificación con SweetAlert2
+        Swal.fire({
+            icon: data.status,
+            title: data.status === 'success' ? '¡Éxito!' : 'Error',
+            text: data.message,
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+
+        // Recargar la página si el envío fue exitoso
+        if (data.status === 'success') {
+            setTimeout(() => location.reload(), 3000);
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+
+        // Mostrar alerta en caso de error
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ocurrió un error al procesar la solicitud.',
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    });
+    }
+</script>
+<script>
+    
     const map = L.map('map').setView([-36.82699, -73.04977], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -761,6 +813,5 @@ function seleccionarPunto(nombre) {
     document.getElementById('formPagoCarrito').style.display = 'block'; // Mostrar el botón
 }
 </script>
-<?php include '../footer.php'?>
 </body>
 </html>

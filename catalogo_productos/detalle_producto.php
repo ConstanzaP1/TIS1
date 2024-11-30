@@ -1203,40 +1203,41 @@ mysqli_close($conexion);
     </script>
 <script>
 function agregarAlComparador(idProducto) {
-    Swal.fire({
-        title: '¿Agregar al comparador?',
-        text: "¿Deseas agregar este producto al comparador?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, agregar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const formData = new URLSearchParams();
-            formData.append('id_producto', idProducto);
+    const formData = new URLSearchParams();
+    formData.append('id_producto', idProducto);
 
-            fetch('../comparador/agregar_al_comparador.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: formData.toString()
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    Swal.fire('Agregado', 'El producto se agregó al comparador.', 'success');
-                } else if (data.status === 'exists') {
-                    Swal.fire('Información', 'El producto ya está en el comparador.', 'info');
-                } else {
-                    Swal.fire('Error', data.message, 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire('Error', 'No se pudo completar la solicitud.', 'error');
-            });
-        }
+    fetch('../comparador/agregar_al_comparador.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString()
+    })
+    .then(response => response.json())
+    .then(data => {
+        Swal.fire({
+            icon: data.status === 'success' ? 'success' : (data.status === 'exists' ? 'info' : 'error'),
+            title: data.message,
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo agregar al comparador. Intenta nuevamente más tarde.',
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
     });
 }
+
 </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

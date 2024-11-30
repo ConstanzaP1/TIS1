@@ -495,9 +495,6 @@ $stmt->close();
         $stmt->close();
         ?>
     </div>
-    <div class="text-start mt-3">
-        <a href="../index.php" class="btn btn-secondary">Volver al Catálogo</a>
-    </div>
 </div>
 
 
