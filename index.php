@@ -92,7 +92,64 @@ if (isset($_SESSION['user_id'])) {
     // Usuario no está logeado, asignamos una imagen por defecto
     $img_url = 'default-profile.png';
 }
+function obtenerTiposDeProducto()
+{
+    global $conexion;
+    $query = "SELECT DISTINCT p.tipo_producto
+              FROM producto p";
+    $result = mysqli_query($conexion, $query);
 
+    if (!$result) {
+        die("Error en la consulta: " . mysqli_error($conexion));
+    }
+
+    // Almacenamos los tipos de productos únicos
+    $tiposDeProducto = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $tiposDeProducto[] = $row['tipo_producto'];
+    }
+
+    return $tiposDeProducto;
+}
+// Obtener tipo de producto desde el parámetro GET
+$tipoSeleccionado = isset($_GET['tipo_producto']) ? $_GET['tipo_producto'] : "";
+
+// Si se seleccionó un tipo de producto, filtrar productos por ese tipo
+if (!empty($tipoSeleccionado)) {
+    $productos = filtrarProductosPorTipo($tipoSeleccionado);
+} else {
+    // Si no se seleccionó un tipo, mostrar productos destacados
+    $productos = obtenerProductosDestacados();
+}
+
+/**
+ * Función para filtrar productos por tipo.
+ */
+function filtrarProductosPorTipo($tipo)
+{
+    global $conexion;
+    $query = "SELECT 
+                p.id_producto, 
+                p.nombre_producto, 
+                p.precio, 
+                p.cantidad, 
+                p.tipo_producto, 
+                p.imagen_url, 
+                p.destacado, 
+                p.costo, 
+                p.nombre_categoria, 
+                m.nombre_marca AS marca
+              FROM producto p
+              INNER JOIN marca m ON p.marca = m.id_marca
+              WHERE p.tipo_producto = '" . mysqli_real_escape_string($conexion, $tipo) . "'";
+    $result = mysqli_query($conexion, $query);
+
+    if (!$result) {
+        die("Error en la consulta: " . mysqli_error($conexion));
+    }
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
 ?>
 
 
@@ -106,7 +163,8 @@ if (isset($_SESSION['user_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
 </head>
 <style>
     .navbar {
@@ -172,14 +230,91 @@ if (isset($_SESSION['user_id'])) {
         <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Barra de búsqueda -->
-            <form class="d-flex ms-auto col-6 shadow" role="search">
+            <form class="d-flex ms-auto col-4 shadow" role="search">
                 <input class="form-control" type="search" placeholder="Buscar en Tisnology" aria-label="Buscar">
             </form>
+                <!-- Menú desplegable con Productos y Marcas -->
+    <div class="container-fluid mt-2">
+        <div class="row">
+            <div class="col-6">
+                <ul class="navbar-nav d-flex justify-content-start">
+                    <!-- Dropdown de Productos -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-white rounded-start p-3" href="#" id="productosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn btn-bienvenido">Productos</button>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="productosDropdown">
+                            <?php 
+                            // Obtener los tipos de productos únicos
+                            $tiposDeProducto = obtenerTiposDeProducto();
+                            foreach($tiposDeProducto as $tipo): ?>
+                                <li><a class="dropdown-item" href="?tipo_producto=<?php echo urlencode($tipo); ?>"><?php echo htmlspecialchars($tipo); ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
 
+
+                    <!-- Dropdown de Marcas -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-white p-3" href="#" id="marcasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn btn-bienvenido">Marcas</button>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="marcasDropdown">
+                            <li><a class="dropdown-item" href="#">Asus</a></li>
+                            <li><a class="dropdown-item" href="#">AMD</a></li>
+                            <li><a class="dropdown-item" href="#">Intel</a></li>
+                            <li><a class="dropdown-item" href="#">NVIDIA</a></li>
+                            <li><a class="dropdown-item" href="#">Gigabyte</a></li>
+                            <li><a class="dropdown-item" href="#">MSI</a></li>
+                            <li><a class="dropdown-item" href="#">HyperX</a></li>
+                            <li><a class="dropdown-item" href="#">Corsair</a></li>
+                            <li><a class="dropdown-item" href="#">Samsung</a></li>
+                            <li><a class="dropdown-item" href="#">AZORPA</a></li>
+                            <li><a class="dropdown-item" href="#">Blitzwolf</a></li>
+                            <li><a class="dropdown-item" href="#">Logitech</a></li>
+                            <li><a class="dropdown-item" href="#">HP</a></li>
+                            <li><a class="dropdown-item" href="#">Western Digital</a></li>
+                            <li><a class="dropdown-item" href="#">Toshiba</a></li>
+                            <li><a class="dropdown-item" href="#">AData</a></li>
+                            <li><a class="dropdown-item" href="#">Ocelot</a></li>
+                            <li><a class="dropdown-item" href="#">Cooler Master</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Dropdown de Gamer -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-white p-3" href="#" id="gamerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn btn-bienvenido">Gamer</button>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="gamerDropdown">
+                            <li><a class="dropdown-item" href="#">PC Gamer</a></li>
+                            <li><a class="dropdown-item" href="#">Accesorios Gamer</a></li>
+                            <li><a class="dropdown-item" href="#">Sillas Gaming</a></li>
+                            <li><a class="dropdown-item" href="#">Periféricos</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Dropdown de Ofimática -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bg-white rounded-end p-3" href="#" id="ofimaticaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn btn-bienvenido">Ofimática</button>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="ofimaticaDropdown">
+                            <li><a class="dropdown-item" href="#">Lentes para PC</a></li>
+                            <li><a class="dropdown-item" href="#">Escritorios</a></li>
+                            <li><a class="dropdown-item" href="#">Sillas de Oficina</a></li>
+                            <li><a class="dropdown-item" href="#">Teclados Ergonómicos</a></li>
+                            <li><a class="dropdown-item" href="#">Mouses Ergonómicos</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
             <!-- Menú desplegable -->
             <ul class="navbar-nav ms-auto align-items-center">
                 
@@ -202,65 +337,39 @@ if (isset($_SESSION['user_id'])) {
                     <button type="button" class="btn btn-deseos p-3 ms-2 rounded-pill me-2" onclick="window.location.href='lista_deseos/lista_deseos.php'">
                     <i class='fas fa-heart'></i>
                     </button>
-                   
                 </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                        </a>
-                        
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
-                                <li>
-                                    <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
-                                </li>
-                            <?php endif; ?>
-                            
-                            
-                            <li>
-                                <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">
-                        <li class="nav-item ms-2">
-                            <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                        </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                     </a>
-                <?php else: ?>
-                    <li class="nav-item">
-                        <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
+                            <li>
+                                <a class="dropdown-item" href="admin_panel/admin_panel.php">Panel Admin</a>
+                            </li>
+                        <?php endif; ?>
+                        <li>
+                            <a class="dropdown-item text-danger" href="login/logout.php">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                </li>
+                <a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">
+                    <li class="nav-item ms-2">
+                        <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
                     </li>
+                </a>
+                <?php else: ?>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
+                </li>
                 <?php endif; ?>
             </ul>
         </div>
     </div>
-
-    <!-- Offcanvas para menú lateral -->
-    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        
-        <div class="offcanvas-body">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="carrito/carrito.php">Carrito</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="comparador/comparador.php">Comparador</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="lista_deseos/lista_deseos.php">Lista de Deseos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-danger" href="login/logout.php">Cerrar Sesión</a>
-                </li>
-            </ul>
-        </div>
-    </div>
 </nav>
+
+
 <div id="responsiveCarousel" class="carousel slide" data-bs-ride="carousel">
     <!-- Indicadores del carrusel -->
     <div class="carousel-indicators">

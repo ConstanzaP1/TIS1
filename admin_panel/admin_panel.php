@@ -365,6 +365,8 @@ $result_users = mysqli_query($conexion, $sql_users);
                         <ul class="collapse list-unstyled ps-3" id="menuGestion_producto">
                             <li><a href="../creacion_productos/index_crear_producto.php" class="nav-link text-white">Crear producto</a></li>
                             <li><a href="../creacion_productos/listar_productos.php" class="nav-link text-white">Modificar productos</a></li>
+                            <li><a href="../creacion_productos/crear_categoria.php" class="nav-link text-white">Crear Categorías</a></li>
+                            <li><a href="../creacion_productos/gestionar_categoria.php" class="nav-link text-white">Gestionar Categorías</a></li>
                         </ul>
                     </li>
                     <!-- Acciones -->

@@ -216,9 +216,9 @@ $resultPantalla = mysqli_query($conexion, $queryPantalla);
             <div class="col-md-6">
                 <label for="nombre_marca" class="form-label">Marca:</label>
                 <select name="nombre_marca" id="nombre_marca" class="form-select" required>
-                    <option value="" disabled>Seleccione una marca</option>
+                    <option value="" selected disabled>Seleccione una marca</option>
                     <?php while ($row = mysqli_fetch_assoc($resultMarca)): ?>
-                        <option value="<?= $row['id_marca'] ?>" <?= ($producto['marca'] == $row['nombre_marca']) ? 'selected' : '' ?>>
+                        <option value="<?= $row['id_marca'] ?>" <?= (isset($producto['marca']) && $producto['marca'] == $row['nombre_marca']) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($row['nombre_marca']) ?>
                         </option>
                     <?php endwhile; ?>
