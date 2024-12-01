@@ -24,17 +24,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
     $total = 0;
     $pdf = new FPDF();
     $pdf->AddPage();
+
+    // Encabezado con el logo de Tisnology
+    $pdf->Image('../logopng.png', 10, 10, 50); // Ruta y tamaño del logo
+    $pdf->Ln(30); // Salto de línea para dar espacio al contenido principal
+
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(0, 10, 'Cotización', 0, 1, 'C');
+    $pdf->Cell(0, 10, utf8_decode('Cotización de Productos'), 0, 1, 'C');
     $pdf->Ln(10);
 
+    // Tabla de productos
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(70, 10, 'Producto', 1);
-    $pdf->Cell(30, 10, 'Cantidad', 1);
-    $pdf->Cell(40, 10, 'Precio Unitario', 1);
-    $pdf->Cell(40, 10, 'Subtotal', 1);
-    $pdf->Ln();
+    $pdf->SetFillColor(230, 230, 230); // Fondo gris claro para el encabezado de la tabla
+    $pdf->Cell(80, 10, 'Producto', 1, 0, 'C', true);
+    $pdf->Cell(30, 10, 'Cantidad', 1, 0, 'C', true);
+    $pdf->Cell(40, 10, 'Precio Unitario', 1, 0, 'C', true);
+    $pdf->Cell(40, 10, 'Subtotal', 1, 1, 'C', true);
 
+    // Detalle de productos
+    $pdf->SetFont('Arial', '', 12);
     foreach ($_SESSION['carrito'] as $id_producto => $cantidad) {
         $id_producto = mysqli_real_escape_string($conexion, $id_producto);
         $query = "SELECT nombre_producto, precio FROM producto WHERE id_producto = '$id_producto'";
@@ -45,22 +53,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
             $precio_total = $producto['precio'] * $cantidad;
             $total += $precio_total;
 
-            $pdf->Cell(70, 10, $producto['nombre_producto'], 1);
-            $pdf->Cell(30, 10, $cantidad, 1);
-            $pdf->Cell(40, 10, '$' . number_format($producto['precio'], 0, ',', '.'), 1);
-            $pdf->Cell(40, 10, '$' . number_format($precio_total, 0, ',', '.'), 1);
-            $pdf->Ln();
+            $pdf->Cell(80, 10, utf8_decode($producto['nombre_producto']), 1);
+            $pdf->Cell(30, 10, $cantidad, 1, 0, 'C');
+            $pdf->Cell(40, 10, '$' . number_format($producto['precio'], 0, ',', '.'), 1, 0, 'R');
+            $pdf->Cell(40, 10, '$' . number_format($precio_total, 0, ',', '.'), 1, 1, 'R');
         }
     }
 
+    // Total general
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(140, 10, 'Total a Pagar', 1);
-    $pdf->Cell(40, 10, '$' . number_format($total, 0, ',', '.'), 1);
+    $pdf->Cell(150, 10, 'Total a Pagar', 1, 0, 'R');
+    $pdf->Cell(40, 10, '$' . number_format($total, 0, ',', '.'), 1, 1, 'R');
+    $pdf->Ln(10);
+
+    // Mensaje final
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->MultiCell(0, 10, utf8_decode("Esta cotización tiene validez por 7 días. Si tienes alguna consulta, no dudes en contactarnos. ¡Gracias por elegir Tisnology!"), 0, 'C');
+
+    // Guardar el PDF
     $pdf_filename = '../boleta_cotizacion/cotizacion_productos.pdf';
     $pdf->Output('F', $pdf_filename);
 
+    // Enviar el correo
     try {
-        // Configuración SMTP y envío
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
@@ -74,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correo'])) {
         $mail->addAttachment($pdf_filename, 'Cotizacion_productos.pdf');
         $mail->isHTML(true);
         $mail->Subject = 'Cotización de productos';
-        $mail->Body = 'Adjunto la cotización de sus productos.';
+        $mail->Body = '<p>Adjunto encontrará la cotización de los productos seleccionados.</p>';
 
         $mail->send();
         unlink($pdf_filename);

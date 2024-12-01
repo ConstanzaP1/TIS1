@@ -25,6 +25,7 @@
                 <option value="gpu">Tarjeta de video</option>
                 <option value="ssd">SSD</option>
                 <option value="hdd">HDD</option>
+                <option value="ram">RAM</option>
                 <option value="placa">Placa Madre</option>
                 <option value="fuente">Fuente de poder</option>
                 <option value="gabinete">Gabinete</option>

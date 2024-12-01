@@ -4,7 +4,7 @@ require('../conexion.php'); // Conexión a la base de datos
 // Consulta SQL para obtener todos los productos con las categorías y subcategorías
 $query_productos = "
     SELECT p.id_producto, p.nombre_producto, p.precio, p.costo, p.cantidad, 
-           m.nombre_marca, p.destacado, p.nombre_categoria, p.subcategoria
+           m.nombre_marca, p.destacado
     FROM producto p
     INNER JOIN marca m ON p.marca = m.id_marca
 ";
@@ -40,7 +40,6 @@ if (!$resultado) {
                         <th>Costo</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
-                        <th>Categoría/Subcategoría</th> <!-- Nueva columna para mostrar la categoría/subcategoría -->
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -52,10 +51,6 @@ if (!$resultado) {
                             <td><?php echo htmlspecialchars($producto['costo']); ?></td>
                             <td><?php echo htmlspecialchars($producto['precio']); ?></td>
                             <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
-                            <td>
-                                <!-- Mostrar la categoría y subcategoría -->
-                                <?php echo htmlspecialchars($producto['nombre_categoria']) . '/' . htmlspecialchars($producto['subcategoria']); ?>
-                            </td>
                             <td>
                                 <a href="modificar_productos.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-warning btn-sm mx-1">Modificar</a>
                                 <button onclick="eliminarProducto(<?php echo $producto['id_producto']; ?>)" class="btn btn-danger btn-sm mx-1">Eliminar</button>
