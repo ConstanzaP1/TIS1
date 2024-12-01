@@ -9,10 +9,10 @@
 
         <!-- Links -->
         <div class="mb-4">
-            <a href="#" class="text-decoration-none text-dark mx-2">Términos y Condiciones</a> |
-            <a href="#" class="text-decoration-none text-dark mx-2">Quiénes Somos</a> |
-            <a href="#" class="text-decoration-none text-dark mx-2">Política de Privacidad</a> |
-            <a href="#" class="text-decoration-none text-dark mx-2">Política de Reembolso</a>
+            <a href="../referidos/tyc.php" class="text-decoration-none text-dark mx-2">Términos y Condiciones</a> |
+            <a href="../referidos/quienes_somos.php" class="text-decoration-none text-dark mx-2">Quiénes Somos</a> |
+            <a href="../referidos/politica_privacidad.php" class="text-decoration-none text-dark mx-2">Política de Privacidad</a> |
+            <a href="../referidos/politica_dev_rem.php" class="text-decoration-none text-dark mx-2">Política de Reembolso</a>
         </div>
 
         <!-- Línea de separación -->
