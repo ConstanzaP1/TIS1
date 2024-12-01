@@ -168,12 +168,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                             <label for="password" class="form-label">Contraseña</label>
                             <input type="password" class="form-control" id="password" placeholder="contraseña" name="password" required>
                         </div>
+                        <p class="mt-2">
+                            <a href="recuperar_contrasena.php" class="text-decoration-none text-white">¿Olvidaste tu contraseña?</a>
+                        </p>
                         <button type="submit" name="login" class="btn btn-primary w-100">Iniciar Sesión</button>
                     </form>
                     <p class="mt-3">¿No tienes una cuenta? <a href="#" onclick="toggleForms()" class="text-white">Regístrate aquí</a></p>
                 </div>
             </div>
-        </div>
+        </div>>
         
         <!-- Contenedor de Registro -->
         <div class="row justify-content-center" id="register-container" style="display: none;">
