@@ -71,9 +71,6 @@
         background-color: rgba(0, 128, 255, 0.5); 
         border-color: rgba(0, 128, 255, 0.5);   
     }
-    .card-body{
-        background-color: #e0e0e0;
-    }
     .btn-carrito {
     display: flex;
     align-items: center;
@@ -996,140 +993,141 @@ if (isset($_GET['id_producto'])){
 
         <?php
 
-        if ($id_producto) {
-            $query_resenas = "SELECT rv.valoracion, rv.comentario, rv.fecha, u.username
-                            FROM resena_valoracion AS rv
-                            JOIN users AS u ON rv.user_id = u.id
-                            WHERE rv.id_producto = '$id_producto'
-                            ORDER BY rv.fecha DESC";
-            $result_resenas = mysqli_query($conexion, $query_resenas);
 
+        if ($id_producto) {
+            // Obtener reseñas del producto
+            $query_resenas = "SELECT rv.valoracion, rv.comentario, rv.fecha, u.username
+                              FROM resena_valoracion AS rv
+                              JOIN users AS u ON rv.user_id = u.id
+                              WHERE rv.id_producto = '$id_producto'
+                              ORDER BY rv.fecha DESC";
+            $result_resenas = mysqli_query($conexion, $query_resenas);
+        
             // Calcular la media de las valoraciones
-            $query_media_valoracion = "SELECT AVG(valoracion) AS media_valoracion FROM resena_valoracion WHERE id_producto = '$id_producto'";
+            $query_media_valoracion = "SELECT AVG(valoracion) AS media_valoracion 
+                                       FROM resena_valoracion 
+                                       WHERE id_producto = '$id_producto'";
             $result_media_valoracion = mysqli_query($conexion, $query_media_valoracion);
             $media_valoracion = 0;
             if ($result_media_valoracion && mysqli_num_rows($result_media_valoracion) > 0) {
-                $media_valoracion = round(mysqli_fetch_assoc($result_media_valoracion)['media_valoracion'], 1); // Redondear a 1 decimal
-            }               
-
-                ?> <br> <?php
-                echo "<div class='row bg-white px-5 py-3 shadow border'>";
-
-                // Contenedor con sistema de columnas
-                ?>
-                <div class="row mt-4">
-                    <div class="col-12">
-                <?php
-                echo "<h3 class='me-2'>Reseñas</h3>";
-                echo "<span class='me-3' style='font-size: 1.5rem; color: gold;'>";
-                for ($i = 1; $i <= 5; $i++) {
-                    echo $i <= $media_valoracion ? "&#9733;" : "&#9734;";
-                }
-                echo "</span>";
-                echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
-                echo "</div>";
-                
-                echo "</div>";
-                echo "<hr>";
-                if (mysqli_num_rows($result_resenas) > 0) {
-                    while ($resena = mysqli_fetch_assoc($result_resenas)) {
-                        $valoracion = intval($resena['valoracion']);
-                        echo "<div class='card mb-3'>";
-                        echo "<div class='cardbody'>";
-                        echo "<h5 class='card-title'>";
-                        for ($i = 1; $i <= 5; $i++) {
-                            echo $i <= $valoracion ? "&#9733;" : "&#9734;";
-                        }
-                        echo " - " . htmlspecialchars($resena['username']) . "</h5>";
-                        echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
-                        echo "<p class='card-text'><small class='text-muted'>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
-                        echo "</div>";
-                        echo "</div>";
+                $media_valoracion = round(mysqli_fetch_assoc($result_media_valoracion)['media_valoracion'], 1);
+            }
+        
+            echo "<div class='row bg-white px-5 py-3 shadow border'>";
+            echo "<div class='row mt-4'>";
+            echo "<div class='col-12'>";
+            echo "<h3 class='me-2'>Reseñas</h3>";
+            echo "<span class='me-3' style='font-size: 1.5rem; color: gold;'>";
+            for ($i = 1; $i <= 5; $i++) {
+                echo $i <= $media_valoracion ? "&#9733;" : "&#9734;";
+            }
+            echo "</span>";
+            echo "<span class='ms-1'>(" . $media_valoracion . "/5)</span>";
+            echo "</div>";
+            echo "</div>";
+            echo "<hr>";
+        
+            // Mostrar reseñas existentes
+            if (mysqli_num_rows($result_resenas) > 0) {
+                while ($resena = mysqli_fetch_assoc($result_resenas)) {
+                    $valoracion = intval($resena['valoracion']);
+                    echo "<div class='card mb-3 shadow-sm'>";
+                    echo "<div class='card-body'>";
+                    echo "<h5 class='card-title'>";
+                    echo "<span style='font-size: 1.2rem; color: gold;'>";
+                    for ($i = 1; $i <= 5; $i++) {
+                        echo $i <= $valoracion ? "&#9733;" : "&#9734;";
                     }
+                    echo "</span>";
+                    echo " - <strong>" . htmlspecialchars($resena['username']) . "</strong>";
+                    echo "</h5>";
+                    echo "<p class='card-text text-muted mb-2'><small>Fecha: " . htmlspecialchars($resena['fecha']) . "</small></p>";
+                    echo "<p class='card-text'>" . htmlspecialchars($resena['comentario']) . "</p>";
+                    echo "</div>";
+                    echo "</div>";
+                }
             } else {
                 echo "<div class='alert alert-secondary'>Aún no hay reseñas para este producto.</div>";
             }
-
+        
+            // Validar usuario logueado
             if (isset($_SESSION['user_id'])) {
                 $user_id = $_SESSION['user_id'];
             
-                // Obtener el nombre del producto actual
-                $query_nombre_producto = "SELECT nombre_producto FROM producto WHERE id_producto = '$id_producto'";
+                // Obtener el nombre del producto
+                $query_nombre_producto = "SELECT nombre_producto 
+                                          FROM producto 
+                                          WHERE id_producto = '$id_producto'";
                 $result_nombre_producto = mysqli_query($conexion, $query_nombre_producto);
-                $nombre_producto = mysqli_fetch_assoc($result_nombre_producto)['nombre_producto'];
+                $nombre_producto = mysqli_fetch_assoc($result_nombre_producto)['nombre_producto'] ?? null;
             
-                // Validar que se obtuvo el nombre del producto
                 if ($nombre_producto) {
-                    // Escapar caracteres especiales para el formato JSON
+                    // Escapar caracteres especiales para JSON
                     $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
-            
-                    // Consulta para verificar si el producto fue comprado por nombre en el formato JSON
+                
+                    // Verificar si el producto fue comprado por el usuario
                     $query_compra = "SELECT COUNT(*) AS comprado
                                      FROM boletas
                                      WHERE id_usuario = '$user_id' 
                                      AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'";
                     $result_compra = mysqli_query($conexion, $query_compra);
                     $compra = mysqli_fetch_assoc($result_compra);
+                
                     if ($compra['comprado'] > 0) {
-                        if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'){
-                            echo "<button type='button' class='btn btn-primary rounded-pill mb-2 col-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
-                                Agregar Reseña
-                              </button>";
-                        }
-                        elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
-                            echo "<button type='button' class='btn btn-primary rounded-pill mb-2 col-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
-                                Agregar Reseña
-                              </button>";
-                        }
-                        elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'superadmin'){
-                            echo "<button type='button' class='btn btn-primary rounded-pill mb-2 col-2' data-bs-toggle='modal'  data-bs-target='#modalAgregarResena'>
-                                Agregar Reseña
-                              </button>";
-                        }
-                    ?>   
-                    <!-- Modal para agregar reseña -->
-                    <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Agregar Reseña</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="formAgregarResena">
-                                        <div class="form-group">
-                                            <label for="valoracion">Valoración:</label>
-                                            <div class="star-rating">
-                                                <input type="radio" name="valoracion" value="5" id="star-5">
-                                                <label for="star-5" title="5 estrellas">&#9733;</label>
-                                                <input type="radio" name="valoracion" value="4" id="star-4">
-                                                <label for="star-4" title="4 estrellas">&#9733;</label>
-                                                <input type="radio" name="valoracion" value="3" id="star-3">
-                                                <label for="star-3" title="3 estrellas">&#9733;</label>
-                                                <input type="radio" name="valoracion" value="2" id="star-2">
-                                                <label for="star-2" title="2 estrellas">&#9733;</label>
-                                                <input type="radio" name="valoracion" value="1" id="star-1">
-                                                <label for="star-1" title="1 estrella">&#9733;</label>
-                                            </div>
+                        // Verificar si ya dejó una reseña para este producto
+                        $query_restriccion_resena = "SELECT COUNT(*) AS resena_existe 
+                                                     FROM resena_valoracion 
+                                                     WHERE user_id = '$user_id' 
+                                                     AND id_producto = '$id_producto'";
+                        $result_restriccion_resena = mysqli_query($conexion, $query_restriccion_resena);
+                        $resena_existe = mysqli_fetch_assoc($result_restriccion_resena)['resena_existe'];
+                    
+                        if ($resena_existe > 0) {
+                            echo "<div class='alert alert-secondary'>Ya has agregado una reseña para este producto.</div>";
+                        } else {
+                            // Mostrar botón para agregar reseña
+                            echo "<button type='button' class='btn btn-primary rounded-pill mb-2 col-2' data-bs-toggle='modal' data-bs-target='#modalAgregarResena'>
+                                    Agregar Reseña
+                                  </button>";
+                        
+                            // Modal para agregar reseña
+                            ?>
+                            <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Agregar Reseña</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="comentario">Comentario:</label>
-                                            <textarea name="comentario" id="comentario" class="form-control" rows="3" required></textarea>
+                                        <div class="modal-body">
+                                            <form id="formAgregarResena">
+                                                <div class="form-group">
+                                                    <label for="valoracion">Valoración:</label>
+                                                    <div class="star-rating">
+                                                        <?php for ($i = 5; $i >= 1; $i--): ?>
+                                                            <input type="radio" name="valoracion" value="<?php echo $i; ?>" id="star-<?php echo $i; ?>">
+                                                            <label for="star-<?php echo $i; ?>" title="<?php echo $i; ?> estrellas">&#9733;</label>
+                                                        <?php endfor; ?>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="comentario">Comentario:</label>
+                                                    <textarea name="comentario" id="comentario" class="form-control" rows="3" required></textarea>
+                                                </div>
+                                                <button type="button" onclick="agregarResena(<?php echo $id_producto; ?>)" class="btn btn-primary mt-2">Enviar Reseña</button>
+                                            </form>
                                         </div>
-                                        <button type="button" onclick="agregarResena(<?php echo $id_producto; ?>)" class="btn btn-primary mt-2">Enviar Reseña</button>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                    <?php 
+                            <?php
+                        }
                     } else {
                         echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";
                     }
                 } else {
                     echo "<div class='alert alert-danger'>Error: No se encontró el nombre del producto.</div>";
-                }                
-                
+                }
             }
         } else {
             echo "<p>Producto no encontrado.</p>";
@@ -1176,7 +1174,6 @@ mysqli_close($conexion);
         .then(data => {
             Swal.fire({
                 icon: data.status === 'success' ? 'success' : 'error',
-                title: data.status === 'success' ? 'Reseña agregada' : 'Error',
                 text: data.status === 'success' ? 'Gracias por tu reseña. Ha sido agregada exitosamente.' : 'Hubo un problema al agregar tu reseña. Intenta de nuevo.',
                 toast: true,
                 position: 'top-end',
