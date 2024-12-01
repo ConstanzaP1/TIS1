@@ -143,7 +143,7 @@ if (isset($_POST['user_id']) && isset($_POST['new_role'])) {
                 <?php endif; ?>
 
                 <!-- Botones adicionales -->
-                <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseo</a>
+                <a href="../lista_deseos/lista_deseos.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseos</a>
                 <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
                 <?php if ($row['status'] === 'activo'): ?>
                     <!-- Botón para inhabilitar -->

@@ -298,7 +298,6 @@ function obtenerTodosLosProductos()
         <label for="categoria" class="form-label">Categoría</label>
         <select name="categoria" id="categoria" class="form-select">
             <option value="">Selecciona una categoría</option>
-             <option value="">Selecciona una categoría</option>
             <option value="audifono" <?php echo ($categoria == 'audifono') ? 'selected' : ''; ?>>Audífono</option>
             <option value="cpu" <?php echo ($categoria == 'cpu') ? 'selected' : ''; ?>>Procesador</option>
             <option value="fuente" <?php echo ($categoria == 'fuente') ? 'selected' : ''; ?>>Fuente de Poder</option>

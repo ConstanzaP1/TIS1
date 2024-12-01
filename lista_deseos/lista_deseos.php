@@ -2,18 +2,21 @@
 session_start();
 include '../conexion.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login/login.php");
-    exit();
-}
 // Verificar si el usuario está autenticado
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login/login.php");
     exit();
 }
 
+// Obtener el user_id del parámetro de la URL o de la sesión
+$user_id = isset($_GET['user_id']) ? intval($_GET['user_id']) : (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0);
+
+// Validar acceso para superadmin, admin o el propietario de la lista
+if ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'superadmin' && $_SESSION['user_id'] !== $user_id) {
+    die("Acceso denegado.");
+}
+
 // Obtener datos del usuario
-$user_id = $_SESSION['user_id'];
 $queryUser = "SELECT username, img FROM users WHERE id = ?";
 $stmtUser = $conexion->prepare($queryUser);
 $stmtUser->bind_param("i", $user_id);
@@ -25,9 +28,8 @@ $stmtUser->close();
 // Establecer imagen de perfil por defecto si no se encuentra en la base de datos
 $img_url = $userData['img'] ?? 'https://static.vecteezy.com/system/resources/previews/007/167/661/non_2x/user-blue-icon-isolated-on-white-background-free-vector.jpg';
 
-$user_id = $_SESSION['user_id'];
+// Obtener productos en la lista de deseos
 $nombre_lista = 'mi_lista_deseos';
-
 $query = "SELECT p.id_producto, p.nombre_producto, m.nombre_marca, p.precio, p.imagen_url 
           FROM producto p 
           JOIN lista_deseo_producto ldp ON p.id_producto = ldp.id_producto 
@@ -37,7 +39,6 @@ $stmt = $conexion->prepare($query);
 $stmt->bind_param("si", $nombre_lista, $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
-
 ?>
 
 <!DOCTYPE html>
