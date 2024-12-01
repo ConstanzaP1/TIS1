@@ -503,11 +503,7 @@ if (isset($_GET['id_producto'])){
                         Catalogo
                     </a>
                 </li>
-                <li class="breadcrumb-item">
-                    <a href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
-                        <?php echo ucfirst(htmlspecialchars($producto['tipo_producto'])); ?>
-                    </a>
-                </li>
+                
                 <li class="breadcrumb-item active text-dark" aria-current="page">
                     <?php echo htmlspecialchars($producto['nombre_producto']); ?>
                 </li>

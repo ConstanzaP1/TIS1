@@ -1,50 +1,40 @@
 <?php
 session_start();
 require('../conexion.php');
+require('../funcion_filtros/filtrar_productos.php');
 
-// Inicializar variables de filtro
-$categoria = isset($_GET['categoria']) ? $_GET['categoria'] : "";
-$tituloPagina = !empty($categoria) ? "Categoría  " . htmlspecialchars($categoria) : "Productos destacados";
+// Valores predeterminados para los filtros de marca, precio y categoría
+$marca = isset($_POST['marca']) ? $_POST['marca'] : "";
+$precio_min = isset($_POST['precio_min']) ? $_POST['precio_min'] : "";
+$precio_max = isset($_POST['precio_max']) ? $_POST['precio_max'] : "";
+$categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
 
-// Obtener tipo de producto desde el parámetro GET
-$tipoSeleccionado = isset($_GET['tipo_producto']) ? $_GET['tipo_producto'] : "";
-
-// Si se seleccionó un tipo de producto, filtrar productos por ese tipo
-if (!empty($tipoSeleccionado)) {
-    $productos = filtrarProductosPorTipo($tipoSeleccionado);
+// Mostrar todos los productos o aplicar filtros
+if ($marca || $precio_min || $precio_max || $categoria) {
+    $productos = filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria);
+} else {
+    $productos = obtenerTodosLosProductos();
 }
-// Lógica de productos
-if (!empty($categoria)) {
-    // Mostrar solo productos de la categoría seleccionada
-    $productos = filtrarProductosPorCategoria(categoria: $categoria);
-} 
+// Consulta para obtener la URL de la imagen del usuario actual
+// Comprobamos si el usuario ha iniciado sesión
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 
-function filtrarProductosPorTipo($tipo)
-{
-    global $conexion;
-    $query = "SELECT 
-                p.id_producto, 
-                p.nombre_producto, 
-                p.precio, 
-                p.cantidad, 
-                p.tipo_producto, 
-                p.imagen_url, 
-                p.destacado, 
-                p.costo, 
-                p.nombre_categoria, 
-                m.nombre_marca AS marca
-              FROM producto p
-              INNER JOIN marca m ON p.marca = m.id_marca
-              WHERE p.tipo_producto = '" . mysqli_real_escape_string($conexion, $tipo) . "'";
-    $result = mysqli_query($conexion, $query);
+    // Consulta para obtener la URL de la imagen del usuario actual
+    $query = "SELECT img FROM users WHERE id = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
 
-    if (!$result) {
-        die("Error en la consulta: " . mysqli_error($conexion));
-    }
-
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    // Verifica si se encontró la imagen
+    $img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay una en la BD
+} else {
+    // Usuario no está logeado, asignamos una imagen por defecto
+    $img_url = 'default-profile.png';
 }
-
+// Obtener todos los productos (función para obtener productos sin filtrar)
 function obtenerTodosLosProductos()
 {
     global $conexion;
@@ -70,95 +60,6 @@ function obtenerTodosLosProductos()
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-// Obtener tipo de producto desde el parámetro GET
-$tipoSeleccionado = isset($_GET['tipo_producto']) ? $_GET['tipo_producto'] : "";
-
-// Si se seleccionó un tipo de producto, filtrar productos por ese tipo
-if (!empty($tipoSeleccionado)) {
-    $productos = filtrarProductosPorTipo($tipoSeleccionado);
-} else {
-    // Si no se seleccionó un tipo, mostrar todos los productos
-    $productos = obtenerTodosLosProductos();
-}
-
-
-/**
- * Función para filtrar productos por categoría.
- */
-function filtrarProductosPorCategoria($categoria)
-{
-    global $conexion;
-    $query = "SELECT 
-                p.id_producto, 
-                p.nombre_producto, 
-                p.precio, 
-                p.cantidad, 
-                p.tipo_producto, 
-                p.imagen_url, 
-                p.destacado, 
-                p.costo, 
-                p.nombre_categoria, 
-                m.nombre_marca AS marca
-              FROM producto p
-              INNER JOIN marca m ON p.marca = m.id_marca
-              WHERE p.nombre_categoria = '" . mysqli_real_escape_string($conexion, $categoria) . "'";
-    $result = mysqli_query($conexion, $query);
-
-    if (!$result) {
-        die("Error en la consulta: " . mysqli_error($conexion));
-    }
-
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
-
-// Consulta para obtener la URL de la imagen del usuario actual
-// Comprobamos si el usuario ha iniciado sesión
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-
-    // Consulta para obtener la URL de la imagen del usuario actual
-    $query = "SELECT img FROM users WHERE id = ?";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-
-    // Verifica si se encontró la imagen
-    $img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay una en la BD
-} else {
-    // Usuario no está logeado, asignamos una imagen por defecto
-    $img_url = 'default-profile.png';
-}
-function obtenerTiposDeProducto()
-{
-    global $conexion;
-    $query = "SELECT DISTINCT p.tipo_producto
-              FROM producto p";
-    $result = mysqli_query($conexion, $query);
-
-    if (!$result) {
-        die("Error en la consulta: " . mysqli_error($conexion));
-    }
-
-    // Almacenamos los tipos de productos únicos
-    $tiposDeProducto = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        $tiposDeProducto[] = $row['tipo_producto'];
-    }
-
-    return $tiposDeProducto;
-}
-// Obtener tipo de producto desde el parámetro GET
-$tipoSeleccionado = isset($_GET['tipo_producto']) ? $_GET['tipo_producto'] : "";
-
-// Si se seleccionó un tipo de producto, filtrar productos por ese tipo
-if (!empty($tipoSeleccionado)) {
-    $productos = filtrarProductosPorTipo($tipoSeleccionado);
-} else {
-    // Si no se seleccionó un tipo, mostrar productos destacados
-    $productos = obtenerTodosLosProductos();
-}
 
 ?>
 
@@ -306,7 +207,7 @@ if (!empty($tipoSeleccionado)) {
                         </li>
                     </ul>
                 </li>
-                <a class="dropdown-item" href="perfil_usuario/perfil_usuario.php">
+                <a class="dropdown-item" href="../perfil_usuario/perfil_usuario.php">
                     <li class="nav-item ms-2">
                         <img src="<?php echo htmlspecialchars($img_url); ?>" alt="Foto de perfil" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
                     </li>
@@ -361,59 +262,64 @@ if (!empty($tipoSeleccionado)) {
     <div class="row">
         <!-- Columna de filtros a la izquierda -->
         <div class="col-md-3 d-none d-md-block">
-            <form method="post" action="index.php" id="filterForm" class="border p-3 card-body rounded">
-                <h5>Filtros</h5>
-                
-                <!-- Campos de filtro de precios -->
-                <div class="mb-3">
-                    <label for="precio_min" class="form-label">Precio Mínimo</label>
-                    <input type="number" class="form-control" id="precio_min" name="precio_min" placeholder="ej:0" value="<?php echo htmlspecialchars($precio_min); ?>">
-                </div>
-                <div class="mb-3">
-                    <label for="precio_max" class="form-label">Precio Máximo</label>
-                    <input type="number" class="form-control" id="precio_max" name="precio_max" placeholder="ej:1000" value="<?php echo htmlspecialchars($precio_max); ?>">
-                </div>
+           <form method="post" action="catalogo.php" id="filterForm" class="border p-3 rounded">
+    <h5>Filtros</h5>
 
-                    <!-- Filtro de marca -->
-                    <div class="mb-3">
-                        <label for="marca" class="form-label">Marca</label>
-                        <select name="marca" id="marca" class="form-select">
-                            <option value="">Selecciona una marca</option>
-                            <?php
-                            $marcaQuery = "SELECT nombre_marca FROM marca";
-                            $marcaResult = mysqli_query($conexion, $marcaQuery);
-                            while ($marcaRow = mysqli_fetch_assoc($marcaResult)) {
-                                $selected = ($marcaRow['nombre_marca'] == $marca) ? "selected" : "";
-                                echo "<option value='{$marcaRow['nombre_marca']}' $selected>{$marcaRow['nombre_marca']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    
-                    <!-- Filtro de categoría -->
-                    <div class="mb-3">
-                        <label for="categoria" class="form-label">Categoría</label>
-                        <select name="categoria" id="categoria" class="form-select">
-                            <option value="">Selecciona una categoría</option>
-                            <option value="audifono">Audífono</option>
-                            <option value="cpu">Procesador</option>
-                            <option value="fuente">Fuente de Poder</option>
-                            <option value="gabinete">Gabinete</option>
-                            <option value="gpu">Tarjeta de Video</option>
-                            <option value="monitor">Monitor</option>
-                            <option value="mouse">Mouse</option>
-                            <option value="notebook">Notebook</option>
-                            <option value="placa">Placa Madre</option>
-                            <option value="ram">Memoria RAM</option>
-                            <option value="teclado">Teclado</option>
-                        </select>
-                    </div>
+    <!-- Filtro de precios -->
+    <div class="mb-3">
+        <label for="precio_min" class="form-label">Precio Mínimo</label>
+        <input type="number" class="form-control" id="precio_min" name="precio_min" 
+               value="<?php echo htmlspecialchars($precio_min); ?>">
+    </div>
+    <div class="mb-3">
+        <label for="precio_max" class="form-label">Precio Máximo</label>
+        <input type="number" class="form-control" id="precio_max" name="precio_max" 
+               value="<?php echo htmlspecialchars($precio_max); ?>">
+    </div>
 
-                    <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-                        <button type="button" class="btn btn-secondary" onclick="resetFilters()">Limpiar Filtros</button>
-                    </div>
-                </form>
+    <!-- Filtro de marca -->
+    <div class="mb-3">
+        <label for="marca" class="form-label">Marca</label>
+        <select name="marca" id="marca" class="form-select">
+            <option value="">Selecciona una marca</option>
+            <?php
+            $marcaQuery = "SELECT nombre_marca FROM marca";
+            $marcaResult = mysqli_query($conexion, $marcaQuery);
+            while ($marcaRow = mysqli_fetch_assoc($marcaResult)) {
+                $selected = ($marcaRow['nombre_marca'] == $marca) ? "selected" : "";
+                echo "<option value='{$marcaRow['nombre_marca']}' $selected>{$marcaRow['nombre_marca']}</option>";
+            }
+            ?>
+        </select>
+    </div>
+
+    <!-- Filtro de categoría -->
+    <div class="mb-3">
+        <label for="categoria" class="form-label">Categoría</label>
+        <select name="categoria" id="categoria" class="form-select">
+            <option value="">Selecciona una categoría</option>
+             <option value="">Selecciona una categoría</option>
+            <option value="audifono" <?php echo ($categoria == 'audifono') ? 'selected' : ''; ?>>Audífono</option>
+            <option value="cpu" <?php echo ($categoria == 'cpu') ? 'selected' : ''; ?>>Procesador</option>
+            <option value="fuente" <?php echo ($categoria == 'fuente') ? 'selected' : ''; ?>>Fuente de Poder</option>
+            <option value="gabinete" <?php echo ($categoria == 'gabinete') ? 'selected' : ''; ?>>Gabinete</option>
+            <option value="gpu" <?php echo ($categoria == 'gpu') ? 'selected' : ''; ?>>Tarjeta de Video</option>
+            <option value="monitor" <?php echo ($categoria == 'monitor') ? 'selected' : ''; ?>>Monitor</option>
+            <option value="mouse" <?php echo ($categoria == 'mouse') ? 'selected' : ''; ?>>Mouse</option>
+            <option value="notebook" <?php echo ($categoria == 'notebook') ? 'selected' : ''; ?>>Notebook</option>
+            <option value="placa" <?php echo ($categoria == 'placa') ? 'selected' : ''; ?>>Placa Madre</option>
+            <option value="ram" <?php echo ($categoria == 'ram') ? 'selected' : ''; ?>>Memoria RAM</option>
+            <option value="teclado" <?php echo ($categoria == 'teclado') ? 'selected' : ''; ?>>Teclado</option>
+            <!-- Agrega más categorías según tu base de datos -->
+        </select>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+        <button type="button" class="btn btn-secondary" onclick="resetFilters()">Limpiar Filtros</button>
+    </div>
+</form>
+
             </div>
 
             <div class="col-12 col-md-9">
@@ -459,7 +365,7 @@ if (!empty($tipoSeleccionado)) {
 <script>
     function resetFilters() {
         document.getElementById("filterForm").reset();
-        window.location.href = 'index.php';
+        window.location.href = 'catalogo.php';
     }
 </script>
 <script>
@@ -467,23 +373,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.form-control[type="search"]');
     const productContainer = document.querySelector('.row.gx-3.gy-3');
 
-   // Función para cargar productos según la búsqueda
-   function cargarProductos(query = '') {
+    function cargarProductos(query = '') {
+        const marca = document.getElementById('marca').value;
+        const precioMin = document.getElementById('precio_min').value;
+        const precioMax = document.getElementById('precio_max').value;
+        const categoria = document.getElementById('categoria').value;
+
         $.ajax({
             url: '../funcion_busqueda/buscar_productos.php',
             method: 'GET',
-            data: { query: query },
+            data: {
+                query: query,
+                marca: marca,
+                precio_min: precioMin,
+                precio_max: precioMax,
+                categoria: categoria
+            },
             success: function(response) {
                 productContainer.innerHTML = response;
             }
         });
     }
+
     searchInput.addEventListener('input', function() {
         const query = searchInput.value;
         cargarProductos(query);
     });
 });
 </script>
+
 <?php include "../footer.php"?>
 </body>
 

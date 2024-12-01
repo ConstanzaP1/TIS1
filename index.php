@@ -1,22 +1,8 @@
 <?php
 session_start();
 require('conexion.php');
-require('funcion_filtros/filtrar_productos.php');
 
-// Valores predeterminados para los filtros de marca, precio y categoría
-$marca = isset($_POST['marca']) ? $_POST['marca'] : "";
-$precio_min = isset($_POST['precio_min']) ? $_POST['precio_min'] : "";
-$precio_max = isset($_POST['precio_max']) ? $_POST['precio_max'] : "";
-$categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
-// Verificar si hay filtros aplicados
-// Verificar si hay filtros aplicados
-if (empty($marca) && empty($precio_min) && empty($precio_max) && empty($categoria)) {
-    // Obtener solo productos destacados
-    $productos = filtrarProductosPorMarcaYRangoYCategoria("", "", "", "", true);
-} else {
-    // Filtrar productos destacados según los criterios
-    $productos = filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria, true);
-}
+
 // Inicializar variables de filtro
 $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : "";
 $tituloPagina = !empty($categoria) ? "Categoría  " . htmlspecialchars($categoria) : "Productos destacados";
@@ -288,28 +274,17 @@ function filtrarProductosPorTipo($tipo)
             </form>
             <!-- Menú  -->
             <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-item dropdown">
-                <button class="btn btn-bienvenido dropdown-toggle bg-white rounded-start p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    Categorias
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="productosDropdown">
-                    <!-- Opción para todos los productos -->
-                    <li>
-                        <a class="dropdown-item" href="catalogo_productos/catalogo.php">Todos los productos</a>
-                    </li>
+            <li class="nav-item">
+        <li class="nav-item">
+            <button 
+                class="btn btn-light rounded-pill px-4 py-2 border shadow-sm" 
+                style="background-color: white; color: #000; border-color: #ddd;"
+                onclick="window.location.href='catalogo_productos/catalogo.php'">
+                Ir al Catálogo
+            </button>
+        </li>
 
-                    <?php 
-                    // Opciones dinámicas basadas en tipos de producto
-                    $tiposDeProducto = obtenerTiposDeProducto();
-                    foreach ($tiposDeProducto as $tipo): ?>
-                        <li>
-                            <a class="dropdown-item" href="catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
-                                <?php echo htmlspecialchars($tipo); ?>
-                            </a>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </li>
+        </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='carrito/carrito.php'">
