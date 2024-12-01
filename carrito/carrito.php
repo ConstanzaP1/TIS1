@@ -575,7 +575,7 @@ function enviarCotizacion() {
         // Mostrar notificación con SweetAlert2
         Swal.fire({
             icon: data.status,
-            title: data.status === 'success' ? '¡Éxito!' : 'Error',
+
             text: data.message,
             toast: true,
             position: 'top-end',

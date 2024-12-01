@@ -70,17 +70,30 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
     if (!mysqli_query($conexion, $query_historial)) {
         die("Error al guardar en el historial de compras: " . mysqli_error($conexion));
     }
-    // Crear el PDF en memoria
+   // Crear el PDF
     $pdf = new FPDF();
     $pdf->AddPage();
+    $pdf->SetFont('Arial', 'B', 18);
+
+    // Insertar logo de Tisnology (asegúrate de que la ruta al logo sea correcta)
+    $pdf->Image('../logopng.png', 10, 10, 50); // Ajusta la posición y tamaño del logo
+    $pdf->Ln(30); // Salto de línea para dar espacio al contenido principal
+
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(0, 10, 'Boleta de Compra Tisnology', 0, 1, 'C');
+    $pdf->Cell(0, 10, utf8_decode('¡Gracias por tu compra, ' . $username . '!'), 0, 1, 'C');
+    $pdf->Ln(5);
+
     $pdf->SetFont('Arial', '', 12);
-    $pdf->Cell(0, 10, 'ID Boleta: ' . $id_boleta, 0, 1);
-    $pdf->Cell(0, 10, 'Fecha: ' . date('d/m/Y H:i', strtotime($fecha)), 0, 1);
-    $pdf->Cell(0, 10, 'Codigo de Autorizacion: ' . $codigo_autorizacion, 0, 1);
+    $pdf->MultiCell(0, 10, utf8_decode("Hemos recibido tu pedido y te enviamos la boleta de compra. A continuación, los detalles de tu pedido:"), 0, 'C');
     $pdf->Ln(10);
 
+
+    // Detalles de la boleta
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->Cell(0, 10, 'Detalle de tu compra', 0, 1, 'L');
+    $pdf->Ln(5);
+
+    // Tabla de productos
     $pdf->SetFont('Arial', 'B', 12);
     $pdf->Cell(80, 10, 'Producto', 1);
     $pdf->Cell(30, 10, 'Cantidad', 1, 0, 'C');
@@ -98,27 +111,36 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
     $pdf->SetFont('Arial', 'B', 12);
     $pdf->Cell(150, 10, 'Total a Pagar', 1, 0, 'R');
     $pdf->Cell(40, 10, "$" . number_format($total, 0, ',', '.'), 1, 1, 'R');
+    $pdf->Ln(10);
+
+    // Agregar mensaje final
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->MultiCell(0, 10, "Gracias por elegir Tisnology. Si tienes alguna consulta, no dudes en contactarnos.", 0, 'C');
+
+    // Guardar el PDF en memoria
     $pdf_content = $pdf->Output('S');
 
     // Enviar PDF por correo
     $mail = new PHPMailer(true);
     try {
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'tisnology1@gmail.com';
-        $mail->Password = 'ytfksqrqrginpvge';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+    // Configuración SMTP y envío
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'tisnology1@gmail.com';
+    $mail->Password = 'ytfksqrqrginpvge';
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
 
-        $mail->setFrom('tisnology1@gmail.com', 'Tisnology');
-        $mail->addAddress($correoE);
+    $mail->setFrom('tisnology1@gmail.com', 'Tisnology');
+    $mail->addAddress($correoE);
 
-        $mail->Subject = 'Boleta de Compra - Tisnology';
-        $mail->Body = "Estimado $username,\n\nGracias por su compra.\n\nAdjuntamos su boleta de compra en formato PDF.¡Gracias por su preferencia!";
-        $mail->addStringAttachment($pdf_content, "Boleta_Compra_$id_boleta.pdf");
+    $mail->Subject = 'Boleta de Compra - Tisnology';
+    $mail->Body = "Estimado $username,\n\nGracias por su compra.\n\nAdjuntamos su boleta de compra en formato PDF.¡Gracias por su preferencia!";
+    $mail->addStringAttachment($pdf_content, "Boleta_Compra_$id_boleta.pdf");
 
-        $mail->send();
+    $mail->send();
+
 
         echo "
         <script>
