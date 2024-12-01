@@ -1,7 +1,7 @@
 <?php
 function filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria, $soloDestacados = false) {
     // Conexión a la base de datos
-    require('conexion.php');
+    require('../conexion.php');
 
     // Consulta base
     $query = "

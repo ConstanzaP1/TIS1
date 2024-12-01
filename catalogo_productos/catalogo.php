@@ -465,12 +465,12 @@ if (!empty($tipoSeleccionado)) {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.form-control[type="search"]');
-    const productContainer = document.querySelector('.row.gx-2.gy-3');
+    const productContainer = document.querySelector('.row.gx-3.gy-3');
 
    // Función para cargar productos según la búsqueda
    function cargarProductos(query = '') {
         $.ajax({
-            url: 'funcion_busqueda/buscar_productos.php',
+            url: '../funcion_busqueda/buscar_productos.php',
             method: 'GET',
             data: { query: query },
             success: function(response) {
