@@ -255,16 +255,7 @@ function obtenerTodosLosProductos()
                         <li>
                             <a class="dropdown-item" href="../catalogo_productos/catalogo.php">Todos los productos</a>
                         </li>
-                        <?php 
-                        // Opciones dinámicas basadas en tipos de producto
-                        $tiposDeProducto = obtenerTiposDeProducto();
-                        foreach ($tiposDeProducto as $tipo): ?>
-                            <li>
-                                <a class="dropdown-item text-capitalize" href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
-                                    <?php echo htmlspecialchars($tipo); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
+                       
                     </ul>
                 </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
