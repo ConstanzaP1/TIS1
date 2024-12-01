@@ -277,7 +277,7 @@ function filtrarProductosPorTipo($tipo)
             <li class="nav-item">
         <li class="nav-item">
             <button 
-                class="btn btn-light rounded-pill px-4 py-2 me-1 border shadow-sm" 
+                class="btn btn-light rounded-pill px-4 py-2 ms-1 me-1 border shadow-sm" 
                 style="background-color: white; color: #000; border-color: #ddd;"
                 onclick="window.location.href='catalogo_productos/catalogo.php'">
                 Ir al Catálogo
