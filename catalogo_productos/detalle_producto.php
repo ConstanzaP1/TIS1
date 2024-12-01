@@ -35,7 +35,7 @@
 
     </head>
     <style>
-    @media (max-width: 576px) {
+        @media (max-width: 576px) {
     .btn-comparador, .btn-wishlist {
         opacity: 0.7; /* Cambia la opacidad */
         transition: opacity 0.3s ease; /* Transición suave */
@@ -303,7 +303,7 @@
             opacity: 1;
         }
     }
-    
+    <style>
     @media (max-width: 768px) {
     .producto-detalle {
         flex-direction: column; /* Cambiar la disposición a columna */
