@@ -18,6 +18,7 @@ if (isset($_GET['id_producto'])) {
         $caracteristicas[$fila['caracteristica']] = $fila['valor_caracteristica'];
     }
 }
+
 $queryMarca = "SELECT id_marca, nombre_marca FROM marca";
 $resultMarca = mysqli_query($conexion, $queryMarca);
 
@@ -213,12 +214,16 @@ $resultPantalla = mysqli_query($conexion, $queryPantalla);
                 <input type="number" name="costo" id="costo" value="<?php echo htmlspecialchars($producto['costo']); ?>" class="form-control" required>
             </div>
 
+            <?php
+            $marcaSeleccionada = isset($producto['marca']) ? $producto['marca'] : null;
+            ?>
+
             <div class="col-md-6">
-                <label for="nombre_marca" class="form-label">Marca:</label>
-                <select name="nombre_marca" id="nombre_marca" class="form-select" required>
-                    <option value="" selected disabled>Seleccione una marca</option>
+                <label for="nombre_marca" class="form-label">Marca</label>
+                <select name="nombre_marca" class="form-select" required>
+                    <option value="" disabled <?= is_null($marcaSeleccionada) ? 'selected' : '' ?>>Seleccione una marca</option>
                     <?php while ($row = mysqli_fetch_assoc($resultMarca)): ?>
-                        <option value="<?= $row['id_marca'] ?>" <?= (isset($producto['marca']) && $producto['marca'] == $row['nombre_marca']) ? 'selected' : '' ?>>
+                        <option value="<?= $row['id_marca'] ?>" <?= ($row['id_marca'] == $marcaSeleccionada) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($row['nombre_marca']) ?>
                         </option>
                     <?php endwhile; ?>
@@ -232,7 +237,7 @@ $resultPantalla = mysqli_query($conexion, $queryPantalla);
 
             <div class="col-md-6">
                 <label for="categoria_producto" class="form-label">Categoría:</label>
-                <input type="text" name="categoria_producto" id="categoria_producto" value="<?php echo htmlspecialchars($producto['tipo_producto']); ?>" class="form-control" required>
+                <input type="text" name="categoria_producto" id="categoria_producto" value="<?php echo htmlspecialchars($producto['tipo_producto']); ?>" class="form-control" readonly required>
             </div>
 
             <div class="col-md-6">

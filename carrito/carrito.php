@@ -158,6 +158,25 @@ if (isset($_POST['pagar'])) {
         exit;
     }
 }
+function obtenerTiposDeProducto()
+{
+    global $conexion;
+    $query = "SELECT DISTINCT p.tipo_producto
+              FROM producto p";
+    $result = mysqli_query($conexion, $query);
+
+    if (!$result) {
+        die("Error en la consulta: " . mysqli_error($conexion));
+    }
+
+    // Almacenamos los tipos de productos únicos
+    $tiposDeProducto = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $tiposDeProducto[] = $row['tipo_producto'];
+    }
+
+    return $tiposDeProducto;
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -277,16 +296,15 @@ if (isset($_POST['pagar'])) {
             </a>
         </div>
     
-        <div class="d-lg-none w-100 text-center">
-            <a href="../index.php">
-                <img class="logo img-fluid" src="../logopng.png" alt="Logo" style="width: 120px;">
-            </a>    
+        <div class="d-lg-none d-flex justify-content-between align-items-center w-100">
+            <!-- Botón para abrir el menú lateral -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a href="../index.php" class="mx-auto">
+                <img class="logo img-fluid" src="../logopng.png" alt="Logo" style="width: 180px;">
+            </a>
         </div>
-
-        <!-- Botón para abrir el menú lateral en pantallas pequeñas -->
-        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -353,26 +371,81 @@ if (isset($_POST['pagar'])) {
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
+                            <li>
+                                <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
+                            </li>
+                        <?php endif; ?>
+                        <li>
+                            <a class="dropdown-item text-black" href="../perfil_usuario/perfil_usuario.php">Mi perfil</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Categorias
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
+                        <!-- Opción para todos los productos -->
+                        <li>
+                            <a class="dropdown-item" href="../catalogo_productos/catalogo.php">Todos los productos</a>
+                        </li>
+                        <?php 
+                        // Opciones dinámicas basadas en tipos de producto
+                        $tiposDeProducto = obtenerTiposDeProducto();
+                        foreach ($tiposDeProducto as $tipo): ?>
+                            <li>
+                                <a class="dropdown-item text-capitalize" href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
+                                    <?php echo htmlspecialchars($tipo); ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="d-flex">
                 <li class="nav-item">
-                    <a class="nav-link" href="../carrito/carrito.php">Carrito</a>
+                    <button type="button" class="btn btn-cart p-3 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                        </svg>
+                    </button>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../comparador/comparador.php">Comparador</a>
+                    <button type="button" class="btn btn-comparar p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../comparador/comparador.php'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+                        </svg>
+                    </button>
                 </li>
+                <li>
+                    <button type="button" class="btn btn-deseos p-3 ms-2 rounded-pill me-2" onclick="window.location.href='../lista_deseos/lista_deseos.php'">
+                    <i class='fas fa-heart'></i>
+                    </button>
+                </li>
+                </div> 
+                
+                
+                <?php else: ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="../lista_deseos/lista_deseos.php">Lista de Deseos</a>
+                    <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-danger" href="../login/logout.php">Cerrar Sesión</a>
-                </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
 </nav>
-</head>
 <body>
-    <!-- Migajas de pan -->
+<!-- Migajas de pan -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
             <li class="breadcrumb-item">
@@ -392,21 +465,20 @@ if (isset($_POST['pagar'])) {
     </nav>
 <!-- Fin Migajas de pan -->
 <div class="container py-5">
-    
-    <h2 class="mb-4">Tu carro (<?php echo count($_SESSION['carrito'] ?? []); ?> productos)</h2>
+    <h2 class="mb-4 text-center text-md-start">Tu carro (<?php echo count($_SESSION['carrito'] ?? []); ?> productos)</h2>
 
     <?php if (empty($_SESSION['carrito'])): ?>
         <div class="text-center py-5">
-            <img src="../icono_carrito.png" alt="Carrito vacío">
+            <img src="../icono_carrito.png" alt="Carrito vacío" class="img-fluid mb-4">
             <h3 class="mt-4">Aún no tienes productos agregados</h3>
             <p class="text-muted">¡Puedes ver nuestras categorías destacadas y hacer tu primera compra con nosotros!</p>
             <a href="../index.php" class="btn btn-secondary">Regresar al catálogo</a>
         </div>
     <?php else: ?>
         <div class="row">
-            <div class="col-lg-8">
-                <table class="table table-borderless align-middle">
-                    <thead>
+            <div class="col-lg-8 mb-4">
+                <table class="table table-borderless align-middle table-responsive-sm">
+                    <thead class="text-center">
                         <tr>
                             <th>Producto</th>
                             <th>Cantidad</th>
@@ -426,40 +498,33 @@ if (isset($_POST['pagar'])) {
                         ?>
                         <tr>
                             <td>
-                                <div class="d-flex align-items-center">
+                                <div class="d-flex flex-column flex-sm-row align-items-center text-center text-sm-start">
                                     <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" 
                                          alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" 
-                                         class="img-fluid me-3" 
+                                         class="img-fluid mb-2 mb-sm-0 me-sm-3" 
                                          style="width: 80px; height: auto;">
                                     <div>
                                         <h6 class="mb-1"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h6>
                                     </div>
                                 </div>
                             </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <!-- Botón para decrementar -->
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center align-items-center">
                                     <button class="btn btn-light btn-sm me-2" onclick="decrement('<?php echo $id_producto; ?>')">-</button>
-                                                        
-                                    <!-- Campo de entrada para cantidad -->
                                     <input type="number" name="cantidad" id="cantidad_<?php echo $id_producto; ?>" 
                                            value="<?php echo $cantidad; ?>" 
                                            class="form-control text-center" 
                                            min="1" max="<?php echo $producto['cantidad']; ?>" 
                                            style="width: 60px;" 
                                            onchange="actualizarCantidad('<?php echo $id_producto; ?>', this.value)">
-                                                        
-                                    <!-- Botón para incrementar -->
                                     <button class="btn btn-light btn-sm ms-2" onclick="increment('<?php echo $id_producto; ?>', <?php echo $producto['cantidad']; ?>)">+</button>
                                 </div>
-                                <small class="text-muted">Disponibles: <?php echo $producto['cantidad']; ?></small>
-                                <!-- Contenedor para el mensaje de error -->
-                                <div id="error_<?php echo $id_producto; ?>" class="text-danger small mt-1" style="display: none;"></div>
-                                </td>
-                                <td id="precio_<?php echo $id_producto; ?>">
-                                    <strong>$<?php echo number_format($precio_total, 0, ',', '.'); ?></strong>
-                                </td>
-                            <td>
+                                <small class="text-muted d-block mt-1">Disponibles: <?php echo $producto['cantidad']; ?></small>
+                            </td>
+                            <td class="text-center" id="precio_<?php echo $id_producto; ?>">
+                                <strong>$<?php echo number_format($precio_total, 0, ',', '.'); ?></strong>
+                            </td>
+                            <td class="text-center">
                                 <form method="POST" action="carrito.php">
                                     <input type="hidden" name="id_producto" value="<?php echo $id_producto; ?>">
                                     <button type="submit" name="eliminar_producto" class="btn btn-danger btn-sm">Eliminar</button>
@@ -476,21 +541,17 @@ if (isset($_POST['pagar'])) {
 
             <div class="col-lg-4">
                 <div class="border rounded p-3 bg-light">
-                    <h5>Resumen de tu compra</h5>
+                    <h5 class="text-center text-lg-start">Resumen de tu compra</h5>
                     <div class="d-flex justify-content-between py-2 border-bottom">
                         <span>Total:</span>
                         <strong>$<?php echo number_format($_SESSION['total'] ?? 0, 0, ',', '.'); ?></strong>
                     </div>
                     <a href="../index.php" class="btn btn-secondary w-100">Agregar más productos</a>
-                    <form method="POST" action="../boleta_cotizacion/cotizacion.php">
-                        <div class="my-2">
-                            <input type="hidden" name="correo" id="correo" value="<?php echo htmlspecialchars($correoE); ?>" readonly>
-                            <button type="button" class="btn btn-success w-100" onclick="enviarCotizacion()">Enviar Cotización</button>
-
-                        </div>
+                    <form method="POST" action="../boleta_cotizacion/cotizacion.php" class="mt-2">
+                        <input type="hidden" name="correo" id="correo" value="<?php echo htmlspecialchars($correoE); ?>" readonly>
+                        <button type="button" class="btn btn-success w-100" onclick="enviarCotizacion()">Enviar Cotización</button>
                     </form>
-                    
-                    <form method="POST" action="carrito.php" id="formPagoCarrito">
+                    <form method="POST" action="carrito.php" id="formPagoCarrito" class="mt-2">
                         <input type="hidden" name="total" value="<?php echo $_SESSION['total'] ?? 0; ?>">         
                         <button type="submit" name="pagar" class="btn btn-primary w-100">Proceder al pago</button>
                     </form>
@@ -499,6 +560,7 @@ if (isset($_POST['pagar'])) {
         </div>
     <?php endif; ?>
 </div>
+
 <?php include "../footer.php"; ?>
 
 <script>

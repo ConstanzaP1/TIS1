@@ -303,7 +303,7 @@
             opacity: 1;
         }
     }
-    
+    <style>
     @media (max-width: 768px) {
     .producto-detalle {
         flex-direction: column; /* Cambiar la disposición a columna */
@@ -356,6 +356,7 @@
     color: #333;
 }
 </style>
+
 
 <body>        
 <nav class="navbar navbar-expand-lg">
@@ -657,6 +658,42 @@ if (isset($_GET['id_producto'])){
                             producto_caracteristica pa
                         LEFT JOIN frecuencia_gpu fg ON pa.valor_caracteristica = fg.id_hardware AND pa.caracteristica = 'frecuencia_gpu'
                         LEFT JOIN memoria_gpu mg ON pa.valor_caracteristica = mg.id_hardware AND pa.caracteristica = 'memoria_gpu'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+                case 'ssd':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'capacidad_almacenamiento' THEN CONCAT('Capacidad almacenamiento: ', ca.capacidad_almacenamiento)
+                                WHEN pa.caracteristica = 'bus_ssd' THEN CONCAT('Bus: ', bs.bus_ssd)
+                                WHEN pa.caracteristica = 'formato_ssd' THEN CONCAT('Formato: ', fs.formato_ssd)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN capacidad_almacenamiento ca ON pa.valor_caracteristica = ca.id_hardware AND pa.caracteristica = 'capacidad_almacenamiento'
+                        LEFT JOIN bus_ssd bs ON pa.valor_caracteristica = bs.id_hardware AND pa.caracteristica = 'bus_ssd'
+                        LEFT JOIN formato_ssd fs ON pa.valor_caracteristica = fs.id_hardware AND pa.caracteristica = 'formato_ssd'
+                        WHERE pa.id_producto = '$id_producto'
+                    ";
+                        break;
+                case 'hdd':
+                    $query_caracteristicas = "
+                        SELECT 
+                            CASE 
+                                WHEN pa.caracteristica = 'capacidad_almacenamiento' THEN CONCAT('Capacidad almacenamiento: ', ca.capacidad_almacenamiento)
+                                WHEN pa.caracteristica = 'bus_hdd' THEN CONCAT('Bus: ', bs.bus_hdd)
+                                WHEN pa.caracteristica = 'rpm_hdd' THEN CONCAT('RPM: ', rh.rpm_hdd)
+                                WHEN pa.caracteristica = 'tamanio_hdd' THEN CONCAT('Tamaño: ', th.tamanio_hdd)
+                                ELSE NULL
+                            END AS caracteristica
+                        FROM 
+                            producto_caracteristica pa
+                        LEFT JOIN capacidad_almacenamiento ca ON pa.valor_caracteristica = ca.id_hardware AND pa.caracteristica = 'capacidad_almacenamiento'
+                        LEFT JOIN bus_hdd bs ON pa.valor_caracteristica = bs.id_hardware AND pa.caracteristica = 'bus_hdd'
+                        LEFT JOIN rpm_hdd rh ON pa.valor_caracteristica = rh.id_hardware AND pa.caracteristica = 'rpm_hdd'
+                        LEFT JOIN tamanio_hdd th ON pa.valor_caracteristica = th.id_hardware AND pa.caracteristica = 'tamanio_hdd'
                         WHERE pa.id_producto = '$id_producto'
                     ";
                         break;
@@ -1033,7 +1070,7 @@ mysqli_close($conexion);
 ?>
 </div>
     
-    <script>
+<script>
     function agregarResena(idProducto) {
         const valoracion = document.querySelector('input[name="valoracion"]:checked');
         const comentario = document.getElementById('comentario').value;
@@ -1042,7 +1079,12 @@ mysqli_close($conexion);
             Swal.fire({
                 icon: 'warning',
                 title: 'Valoración requerida',
-                text: 'Por favor selecciona una valoración.'
+                text: 'Por favor selecciona una valoración.',
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
             });
             return;
         }
@@ -1058,33 +1100,36 @@ mysqli_close($conexion);
         })
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Reseña agregada',
-                    text: 'Gracias por tu reseña. Ha sido agregada exitosamente.'
-                }).then(() => {
+            Swal.fire({
+                icon: data.status === 'success' ? 'success' : 'error',
+                text: data.status === 'success' ? 'Gracias por tu reseña. Ha sido agregada exitosamente.' : 'Hubo un problema al agregar tu reseña. Intenta de nuevo.',
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            }).then(() => {
+                if (data.status === 'success') {
                     // Recargar la página para mostrar la reseña agregada
                     location.reload();
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Hubo un problema al agregar tu reseña. Intenta de nuevo.'
-                });
-            }
+                }
+            });
         })
         .catch(error => {
             console.error("Error en la solicitud:", error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Error en la solicitud. Intenta de nuevo más tarde.'
+                text: 'Error en la solicitud. Intenta de nuevo más tarde.',
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
             });
         });
     }
-    </script>
+</script>
     
     <script>
     function eliminarProducto(id_producto) {
@@ -1149,26 +1194,10 @@ mysqli_close($conexion);
     })
     .then(response => response.json()) // Asegura que el servidor devuelva JSON
     .then(data => {
-        // Determinar el estado y mensaje según la respuesta
-        let status;
-        let message;
-
-        if (data.status === 'success') {
-            status = 'success';
-            message = 'El producto se ha agregado a tu lista de deseos.';
-        } else if (data.status === 'exists') {
-            status = 'info';
-            message = 'Este producto ya está en tu lista de deseos.';
-        } else {
-            status = 'error';
-            message = 'Error al agregar el producto a la lista de deseos.';
-        }
-
         // Mostrar notificación con SweetAlert2
         Swal.fire({
-            icon: status,
-            title: status === 'success' ? 'Éxito' : (status === 'info' ? 'Información' : 'Error'),
-            text: message,
+            icon: data.status === 'success' ? 'success' : (data.status === 'exists' ? 'info' : 'error'),
+            title: data.message,
             toast: true,
             position: 'top-end',
             timer: 3000,
@@ -1183,7 +1212,7 @@ mysqli_close($conexion);
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Error en la solicitud. Intenta de nuevo más tarde.',
+            text: 'No se pudo agregar a la lista de deseos. Intenta nuevamente más tarde.',
             toast: true,
             position: 'top-end',
             timer: 3000,
