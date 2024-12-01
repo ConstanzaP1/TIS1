@@ -311,6 +311,7 @@ function filtrarProductosPorTipo($tipo)
                             <li><a class="dropdown-item" href="#">Mouses Ergonómicos</a></li>
                         </ul>
                     </li>
+                    
                 </ul>
             </div>
         </div>

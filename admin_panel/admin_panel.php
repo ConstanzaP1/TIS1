@@ -365,8 +365,6 @@ $result_users = mysqli_query($conexion, $sql_users);
                         <ul class="collapse list-unstyled ps-3" id="menuGestion_producto">
                             <li><a href="../creacion_productos/index_crear_producto.php" class="nav-link text-white">Crear producto</a></li>
                             <li><a href="../creacion_productos/listar_productos.php" class="nav-link text-white">Modificar productos</a></li>
-                            <li><a href="../creacion_productos/crear_categoria.php" class="nav-link text-white">Crear Categorías</a></li>
-                            <li><a href="../creacion_productos/gestionar_categoria.php" class="nav-link text-white">Gestionar Categorías</a></li>
                         </ul>
                     </li>
                     <!-- Acciones -->
@@ -485,8 +483,179 @@ $result_users = mysqli_query($conexion, $sql_users);
                     <h1 class="text-center">Dashboard</h1>
                 </header>
                 <body>
-                    <!-- meter cosas aca -->
+                    <div class="row mt-4">
+                        <!-- Columna 1: Reporte de Ventas por Producto -->
+                        <div class="col-md-6">
+                            <section>
+                                <h2 class="text-center mt-4">Reporte de Ventas por Producto</h2>
+                                <?php
+                                // Consulta SQL para obtener los datos de ventas
+                                $sql_ventas = "
+                                    SELECT 
+                                        p.id_producto AS ID_Producto,
+                                        p.nombre_producto AS Nombre_Producto,
+                                        p.costo AS Costo_Producto,
+                                        p.precio AS Precio_Venta,
+                                        SUM(vp.cantidad) AS Cantidad_Vendida,
+                                        SUM(vp.cantidad * p.precio) AS Total_Ventas,
+                                        SUM(vp.cantidad * (p.precio - p.costo)) AS Ganancia_Generada
+                                    FROM 
+                                        producto p
+                                    JOIN 
+                                        venta_producto vp ON p.id_producto = vp.id_producto
+                                    JOIN 
+                                        ventas v ON vp.id_venta = v.id_venta
+                                    GROUP BY 
+                                        p.id_producto, p.nombre_producto, p.costo, p.precio
+                                    ORDER BY 
+                                        Ganancia_Generada DESC
+                                ";
+                                $result_ventas = mysqli_query($conexion, $sql_ventas);
+                                ?>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Nombre Producto</th>
+                                                <th>Costo Producto</th>
+                                                <th>Precio Venta</th>
+                                                <th>Cantidad Vendida</th>
+                                                <th>Total Ventas</th>
+                                                <th>Ganancia Generada</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (mysqli_num_rows($result_ventas) > 0): ?>
+                                                <?php while ($row = mysqli_fetch_assoc($result_ventas)): ?>
+                                                    <tr>
+                                                        <td><?php echo $row['Nombre_Producto']; ?></td>
+                                                        <td><?php echo '$' . number_format($row['Costo_Producto']); ?></td>
+                                                        <td><?php echo '$' . number_format($row['Precio_Venta']); ?></td>
+                                                        <td><?php echo $row['Cantidad_Vendida']; ?></td>
+                                                        <td><?php echo '$' . number_format($row['Total_Ventas']); ?></td>
+                                                        <td><?php echo '$' . number_format($row['Ganancia_Generada']); ?></td>
+                                                    </tr>
+                                                <?php endwhile; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No se encontraron datos de ventas.</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Columna 2: Stock y Atención Postventa -->
+                        <div class="col-md-6">
+                            <!-- Tabla 2: Productos con Bajo Stock -->
+                            <section>
+                                <h2 class="text-center mt-4">Productos con Bajo Stock</h2>
+                                <?php
+                                // Consulta SQL para productos con bajo stock
+                                $sql_bajo_stock = "
+                                    SELECT 
+                                        id_producto, 
+                                        nombre_producto, 
+                                        cantidad 
+                                    FROM 
+                                        producto 
+                                    WHERE 
+                                        cantidad <= 20 
+                                    ORDER BY 
+                                        cantidad ASC 
+                                    LIMIT 10
+                                ";
+
+                                $result_bajo_stock = mysqli_query($conexion, $sql_bajo_stock);
+                                ?>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Nombre Producto</th>
+                                                <th>Stock</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (mysqli_num_rows($result_bajo_stock) > 0): ?>
+                                                <?php while ($row = mysqli_fetch_assoc($result_bajo_stock)): ?>
+                                                    <tr>
+                                                        <td><?php echo $row['nombre_producto']; ?></td>
+                                                        <td><?php echo $row['cantidad']; ?></td>
+                                                    </tr>
+                                                <?php endwhile; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="2" class="text-center">No hay productos con stock bajo.</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                            <!-- Tabla 3: Atención Postventa -->
+                            <section>
+                                <h2 class="text-center mt-4">Atención Postventa</h2>
+                                <?php
+                                // Consulta SQL para obtener las solicitudes de atención postventa
+                                $sql_postventa = "
+                                    SELECT 
+                                        id, 
+                                        cliente_nombre, 
+                                        cliente_email, 
+                                        pregunta, 
+                                        respuesta, 
+                                        fecha_pregunta, 
+                                        fecha_respuesta 
+                                    FROM 
+                                        atencion_postventa 
+                                    ORDER BY 
+                                        fecha_pregunta DESC
+                                ";
+
+                                $result_postventa = mysqli_query($conexion, $sql_postventa);
+                                ?>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Cliente Nombre</th>
+                                                <th>Cliente Email</th>
+                                                <th>Pregunta</th>
+                                                <th>Respuesta</th>
+                                                <th>Fecha Pregunta</th>
+                                                <th>Fecha Respuesta</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (mysqli_num_rows($result_postventa) > 0): ?>
+                                                <?php while ($row = mysqli_fetch_assoc($result_postventa)): ?>
+                                                    <tr>
+                                                        <td><?php echo $row['cliente_nombre']; ?></td>
+                                                        <td><?php echo $row['cliente_email']; ?></td>
+                                                        <td><?php echo $row['pregunta']; ?></td>
+                                                        <td><?php echo $row['respuesta'] ? $row['respuesta'] : 'Sin respuesta'; ?></td>
+                                                        <td><?php echo date('d-m-Y', strtotime($row['fecha_pregunta'])); ?></td>
+                                                        <td><?php echo $row['fecha_respuesta'] ? date('d-m-Y', strtotime($row['fecha_respuesta'])) : 'Pendiente'; ?></td>
+                                                    </tr>
+                                                <?php endwhile; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="7" class="text-center">No hay solicitudes de atención postventa.</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
                 </body>
+
+
             </main>
         </div>
     </div>
