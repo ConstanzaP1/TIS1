@@ -1,7 +1,26 @@
 <?php
 session_start();
 include '../conexion.php';
+// Obtener productos en la lista de deseos
+$nombre_lista = 'mi_lista_deseos';
+$query = "SELECT p.id_producto, p.nombre_producto, m.nombre_marca, p.precio, p.imagen_url 
+          FROM producto p 
+          JOIN lista_deseo_producto ldp ON p.id_producto = ldp.id_producto 
+          JOIN marca m ON p.marca = m.id_marca 
+          WHERE ldp.nombre_lista = ? AND ldp.user_id = ?";
+$stmt = $conexion->prepare($query);
+$stmt->bind_param("si", $nombre_lista, $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
+// Inicializar $productos_deseados como un array vacío si no hay resultados
+$productos_deseados = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $productos_deseados[] = $row;
+    }
+}
+$stmt->close();
 // Verificar si el usuario está autenticado
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login/login.php");
@@ -273,17 +292,12 @@ $result = $stmt->get_result();
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorias
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
-                        <!-- Opción para todos los productos -->
-                        <li>
-                            <a class="dropdown-item" href="../catalogo_productos/catalogo.php">Todos los productos</a>
-                        </li>
-                        
-                    </ul>
+                <li class="nav-item">
+                    <button 
+                        class="nav-link  bg-white rounded-pill p-3" 
+                        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                        Ir al Catálogo
+                    </button>
                 </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="d-flex">
@@ -342,27 +356,32 @@ $result = $stmt->get_result();
     <h2 class="text-center">Lista de Deseos</h2>
     <?php if ($result->num_rows > 0): ?>
         <?php while ($producto = $result->fetch_assoc()): ?>
-            <div class="wishlist-card d-flex align-items-center">
-                <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" alt="Producto">
-                <div class="ms-3 w-100">
-                    <h5 class="mb-0"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h5>
-                    <p class="mb-1">Marca: <?php echo htmlspecialchars($producto['nombre_marca']); ?></p>
-                    <p class="price mb-2">$<?php echo number_format($producto['precio'], 0, ',', '.'); ?></p>
-                    <form action="eliminar_producto.php" method="post">
-                        <input type="hidden" name="producto_id" value="<?php echo $producto['id_producto']; ?>">
-                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                    </form>
-                </div>
+            <div class="wishlist-card d-flex align-items-center justify-content-between" id="wishlist-item-<?php echo $producto['id_producto']; ?>">
+                <!-- Enlace al detalle del producto -->
+                <a href="../catalogo_productos/detalle_producto.php?id_producto=<?php echo urlencode($producto['id_producto']); ?>" class="d-flex align-items-center text-decoration-none text-dark">
+                    <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" alt="Producto">
+                    <div class="ms-3">
+                        <h5 class="mb-0"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h5>
+                        <p class="mb-1">Marca: <?php echo htmlspecialchars($producto['nombre_marca']); ?></p>
+                        <p class="price mb-2">$<?php echo number_format($producto['precio'], 0, ',', '.'); ?></p>
+                    </div>
+                </a>
+                <!-- Botón para eliminar el producto -->
+                <form action="eliminar_producto.php" method="post" class="ms-3">
+                    <input type="hidden" name="producto_id" value="<?php echo $producto['id_producto']; ?>">
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
             </div>
         <?php endwhile; ?>
     <?php else: ?>
         <div class="text-center py-5">
-                <h3 class="mt-4">No hay productos en la lista de deseos</h3>
-                <a href="../index.php" class="btn btn-secondary">Regresar al catálogo</a>
-            </div>
+            <h3 class="mt-4">No hay productos en la lista de deseos</h3>
+            <a href="../index.php" class="btn btn-secondary">Regresar al catálogo</a>
         </div>
     <?php endif; ?>
 </div>
+
+
 <?php include "../footer.php"?>
 <script>
     function removeFromWishlist(producto_id) {
