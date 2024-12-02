@@ -84,6 +84,25 @@ if (isset($_GET['download']) && $_GET['download'] == 'true') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin_panel.php">
+                <img src="../logoblanco.png" alt="Logo" style="width: auto; height: auto;" class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin_panel.php">Volver al Panel</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container my-5">
         <h2>Historial de Compras</h2>
         <table class="table table-bordered">
@@ -125,7 +144,6 @@ if (isset($_GET['download']) && $_GET['download'] == 'true') {
             </tbody>
         </table>
         <a href="?download=true&user_id=<?php echo $user_id; ?>" class="btn btn-primary">Descargar Historial en PDF</a>
-        <a href="javascript:history.back()" class="btn btn-secondary">Volver Atrás</a>
     </div>
 </body>
 </html>
