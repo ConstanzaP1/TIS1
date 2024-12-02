@@ -54,7 +54,7 @@ $url_tbk = "";
 
 // Verificar que el total esté configurado en la sesión antes de proceder
 if (!isset($_SESSION['total']) || $_SESSION['total'] <= 0) {
-    header("Location: ../index.php?error=No se encontraron datos de compra o el total es inválido");
+    header("Location: error.php");
     exit;
 }
 
@@ -85,7 +85,7 @@ switch ($action) {
             echo "</form>";
             echo "<script>document.getElementById('webpay_form').submit();</script>";
         } else {
-            header("Location: ../index.php?error=Error al iniciar la transacción con Webpay");
+            header("Location: error.php");
             exit;
         }
         break;
@@ -94,7 +94,7 @@ switch ($action) {
         $token = $_POST['token_ws'] ?? $_GET['token_ws'] ?? null;
         
         if (!$token) {
-            header("Location: ../index.php?error=No se recibió el token de Webpay");
+            header("Location: error.php");
             exit;
         }
 
@@ -110,13 +110,13 @@ switch ($action) {
             header("Location: ../boleta_cotizacion/boleta.php?status=success&auth_code={$response->authorization_code}");
             exit;
         } else {
-            header("Location: ../index.php?error=La transacción no fue autorizada");
+            header("Location: error.php");
             exit;
         }
         break;
 
     default:
-        header("Location: ../index.php?error=Acción no reconocida");
+        header("Location: error.php");
         exit;
 }
 ?>

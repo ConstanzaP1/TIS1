@@ -227,8 +227,8 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
                     </table>
                     <h5 class='text-end'>Total a Pagar: $" . number_format($total, 0, ',', '.') . "</h5>
                     <div class='text-center mt-4'>
-                        <a href='data:application/pdf;base64," . base64_encode($pdf_content) . "' download='Boleta_Compra_$id_boleta.pdf' class='btn btn-primary'>Descargar Boleta en PDF</a>
-                        <a href='../index.php' class='btn btn-secondary'>Volver al Catálogo</a>
+                        <a  href='data:application/pdf;base64," . base64_encode($pdf_content) . "' download='Boleta_Compra_$id_boleta.pdf' class='btn btn-primary mt-2'>Descargar Boleta en PDF</a>
+                        <a href='../index.php' class='btn btn-secondary mt-2'>Volver al Catálogo</a>
                     </div>
                 </div>
             </div>

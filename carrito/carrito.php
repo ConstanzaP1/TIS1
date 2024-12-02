@@ -531,7 +531,7 @@ if (isset($_POST['pagar'])) {
                     <a href="../index.php" class="btn btn-secondary w-100">Agregar más productos</a>
                     <form method="POST" action="../boleta_cotizacion/cotizacion.php" class="mt-2">
                         <input type="hidden" name="correo" id="correo" value="<?php echo htmlspecialchars($correoE); ?>" readonly>
-                        <button type="button" class="btn btn-success w-100" onclick="enviarCotizacion()">Enviar Cotización</button>
+                        <button type="button" class="btn btn-secondary w-100" onclick="enviarCotizacion()">Enviar Cotización</button>
                     </form>
                     <form method="POST" action="carrito.php" id="formPagoCarrito" class="mt-2">
                         <input type="hidden" name="total" value="<?php echo $_SESSION['total'] ?? 0; ?>">         

@@ -378,9 +378,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                             <a href="../boleta_cotizacion/recuperar_boletas.php" class="nav-link text-white">
                                 Recuperar boletas
                             </a>
-                            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
-                                Registrar usuario
-                            </a>
+                            
                             <a href="../postventa/admin_postventa.php" class="nav-link text-white">
                                 Solicitudes postventa
                             </a>
@@ -412,7 +410,6 @@ $result_users = mysqli_query($conexion, $sql_users);
                                                     <label for="role" class="form-label">Rol</label>
                                                     <select name="role" class="form-select bg-secondary text-white border-0">
                                                         <?php
-                                                        session_start();
                                                         $current_role = $_SESSION['role'] ?? 'user'; 
                                                         if ($current_role === 'superadmin') {
                                                             echo '<option value="user">Usuario</option>';
@@ -670,9 +667,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                             <a href="../boleta_cotizacion/recuperar_boletas.php" class="nav-link text-white">
                                 Recuperar boletas
                             </a>
-                            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
-                                Registrar usuario
-                            </a>
+                            
                             <a href="../postventa/admin_postventa.php" class="nav-link text-white">
                                 Solicitudes postventa
                             </a>
@@ -704,7 +699,6 @@ $result_users = mysqli_query($conexion, $sql_users);
                                                     <label for="role" class="form-label">Rol</label>
                                                     <select name="role" class="form-select bg-secondary text-white border-0">
                                                         <?php
-                                                        session_start();
                                                         $current_role = $_SESSION['role'] ?? 'user'; 
                                                         if ($current_role === 'superadmin') {
                                                             echo '<option value="user">Usuario</option>';
@@ -967,6 +961,9 @@ $result_users = mysqli_query($conexion, $sql_users);
                 header.classList.toggle('active');
             });
         });
+    </script>
+    <script>
+        
     </script>
 </body>
 </html>

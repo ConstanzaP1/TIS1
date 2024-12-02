@@ -20,7 +20,69 @@ if (!$result_users) {
     die("Error en la consulta: " . $conexion->error);
 }
 
-$roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin' => 'Superadministrador'];
+$roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar']; // Superadmin no estará disponible para asignar
+
+// Manejo de actualización de roles
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_role']) && $role === 'superadmin') {
+    $user_id = $_POST['user_id'];
+    $new_role = $_POST['new_role'];
+
+    // Prevenir que el rol de superadmin sea modificado
+    $prevent_superadmin_edit_query = "SELECT role FROM users WHERE id = ?";
+    $stmt_prevent = $conexion->prepare($prevent_superadmin_edit_query);
+    $stmt_prevent->bind_param("i", $user_id);
+    $stmt_prevent->execute();
+    $stmt_prevent->bind_result($current_role);
+    $stmt_prevent->fetch();
+    $stmt_prevent->close();
+
+    if ($current_role === 'superadmin') {
+        echo "<script>
+                alert('No se puede editar el rol de un superadministrador.');
+                window.location.href = 'lista_usuarios.php';
+              </script>";
+        exit;
+    }
+
+    $update_query = "UPDATE users SET role = ? WHERE id = ?";
+    $stmt = $conexion->prepare($update_query);
+    $stmt->bind_param("si", $new_role, $user_id);
+
+    if ($stmt->execute()) {
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Rol actualizado correctamente.',
+                toast: true,
+                position: 'top-end',
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = 'lista_usuarios.php';
+            });
+        });
+    </script>";
+} else {
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo actualizar el rol. Intenta nuevamente más tarde.',
+                toast: true,
+                position: 'top-end',
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        });
+    </script>";
+}
+    $stmt->close();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -94,21 +156,45 @@ $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin
                         <tr>
                             <td><?php echo htmlspecialchars($row['username']); ?></td>
                             <td><?php echo htmlspecialchars($row['email']); ?></td>
-                            <td><?php echo $roles[$row['role']]; ?></td>
+                            <td>
+                                <?php if ($row['role'] === 'superadmin'): ?>
+                                    Superadministrador
+                                <?php else: ?>
+                                    <?php echo $roles[$row['role']]; ?>
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <!-- Acciones Responsivas -->
                                 <!-- Para pantallas grandes -->
                                 <div class="d-none d-lg-flex justify-content-start align-items-center gap-2">
+                                <?php if ($role === 'superadmin'): ?>
+                                    <form method="POST" class="d-inline-block">
+                                        <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                                        <select name="new_role" class="form-select form-select-sm d-inline-block w-auto" <?php echo ($row['role'] === 'superadmin') ? 'disabled' : ''; ?>>
+                                            <?php foreach ($roles as $key => $value): ?>
+                                                <option value="<?php echo $key; ?>" <?php echo ($row['role'] === $key) ? 'selected' : ''; ?>>
+                                                    <?php echo $value; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <button type="submit" name="update_role" class="btn btn-dark btn-sm" <?php echo ($row['role'] === 'superadmin') ? 'disabled' : ''; ?>>
+                                            Actualizar
+                                        </button>
+                                    </form>
+                                <?php else: ?>
+                                    <span class="text-muted">No permitido</span>
+                                <?php endif; ?>
                                 <a href="../lista_deseos/lista_deseos.php?user_id=<?php echo $row['id']; ?>" class="btn btn-dark btn-sm">Lista de deseos</a>
                                 <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-dark btn-sm">Historial</a>
                                     <?php if ($row['status'] === 'activo'): ?>
-                                        <button class="btn btn-danger btn-sm"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#inhabilitarModal"
-                                                data-user-id="<?php echo $row['id']; ?>"
-                                                data-username="<?php echo htmlspecialchars($row['username']); ?>">
-                                            Inhabilitar
-                                        </button>
+                                        <button class="btn btn-danger btn-sm" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#inhabilitarModal" 
+                                            data-user-id="<?php echo $row['id']; ?>" 
+                                            data-username="<?php echo htmlspecialchars($row['username']); ?>"
+                                            <?php echo ($row['role'] === 'superadmin') ? 'disabled' : ''; ?>>
+                                        Inhabilitar
+                                    </button>
                                     <?php else: ?>
                                         <form method="POST" action="inhabilitar_usuario.php" class="d-inline-block">
                                             <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
@@ -193,6 +279,7 @@ $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         const inhabilitarModal = document.getElementById('inhabilitarModal');
