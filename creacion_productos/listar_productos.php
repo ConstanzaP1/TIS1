@@ -44,62 +44,6 @@ if (!$resultado) {
         </div>
     </nav>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="../admin_panel/admin_panel.php">
-                <img src="../logoblanco.png" alt="Logo" style="width: auto; height: auto;" class="d-inline-block align-text-top">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin_panel/admin_panel.php">Volver al Panel</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Migajas de pan -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
-            <li class="breadcrumb-item">
-                <a href="../index.php" class="text-primary text-decoration-none">
-                    <i class="fas fa-home me-1"></i> Inicio
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="../admin_panel/admin_panel.php" class="text-primary text-decoration-none">
-                    Panel de Administración
-                </a>
-            </li>
-            <li class="breadcrumb-item active text-dark" aria-current="page">
-                Modificar Productos
-            </li>
-        </ol>
-    </nav>
-
-    <style>
-        .breadcrumb {
-            background-color: #f9f9f9;
-            font-size: 0.9rem;
-        }
-        .breadcrumb .breadcrumb-item a {
-            transition: color 0.2s ease-in-out;
-        }
-        .breadcrumb .breadcrumb-item a:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
-        .breadcrumb .breadcrumb-item.active {
-            font-weight: bold;
-            color: #333;
-        }
-    </style>
-
     <!-- Contenedor Principal -->
     <div class="container mt-4">
         <h2 class="text-center mb-4">Modificar Productos</h2>
@@ -128,7 +72,7 @@ if (!$resultado) {
                             <td>
                                 <div class="d-none d-lg-flex gap-2">
                                     <a href="modificar_productos.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-warning btn-sm">Modificar</a>
-                                    <button onclick="eliminarProducto(<?php echo $producto['id_producto']; ?>)" class="btn btn-danger btn-sm">Eliminar</button>
+                                    
                                     <form method="POST" action="../catalogo_productos/actualizar_destacados.php" class="d-inline">
                                         <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
                                         <?php if ($producto['destacado']): ?>
@@ -137,6 +81,7 @@ if (!$resultado) {
                                             <button type="submit" name="destacar" class="btn btn-success btn-sm">Marcar Destacado</button>
                                         <?php endif; ?>
                                     </form>
+                                    <button onclick="eliminarProducto(<?php echo $producto['id_producto']; ?>)" class="btn btn-danger btn-sm">Eliminar</button>
                                 </div>
                                 <!-- Acciones para pantallas medianas -->
                                 <div class="d-none d-md-flex d-lg-none flex-column gap-2 mt-2">

@@ -52,26 +52,6 @@ $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin
             </div>
         </div>
     </nav>
-<!-- Migajas de pan -->
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
-        <li class="breadcrumb-item">
-            <a href="../index.php" class="text-primary text-decoration-none">
-                <i class="fas fa-home me-1"></i> Inicio
-            </a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="admin_panel.php" class="text-primary text-decoration-none">
-                Panel de Administración
-            </a>
-        </li>
-        <li class="breadcrumb-item active text-dark" aria-current="page">
-            Lista de Usuarios
-        </li>
-    </ol>
-</nav>
-
-<!-- Fin Migajas de pan -->
 <style>
     .breadcrumb {
     background-color: #f9f9f9;
