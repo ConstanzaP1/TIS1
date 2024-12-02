@@ -135,8 +135,12 @@ $result_users = mysqli_query($conexion, $sql_users);
     <title>Panel de Administración</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
 </head>
+<style>
+    main {
+    margin-left: 16.6667%; /* Ancho de la barra lateral (2 columnas en un grid de 12) */
+}
+</style>
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -153,8 +157,8 @@ $result_users = mysqli_query($conexion, $sql_users);
                 <img class="logo img-fluid mx-auto" src="../logopng.png" alt="Logo" style="width: 180px;">
             </div>
 
-            <!-- Sidebar (Offcanvas en móviles, barra fija en pantallas grandes) -->
-            <nav class="col-lg-2 col-md-4 bg-dark text-white vh-100 d-flex flex-column p-3 d-none d-lg-flex">
+            <!-- Sidebar  -->
+            <nav class="col-lg-2 col-md-4 bg-dark text-white vh-100 d-flex flex-column p-3 d-none d-lg-flex position-fixed">
                 <!-- Logo -->
                 <div class="text-center mb-4">
                     <a href="../index.php">
@@ -734,7 +738,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                 </div>
             </div>
             <!-- Main Content -->
-            <main class="col-lg-10 col-md-12 p-4">
+            <main class="col-lg-10 border col-md-12 p-4">
                 <header class="mb-4">
                     <h1 class="text-center">Dashboard</h1>
                 </header>
@@ -799,8 +803,6 @@ $result_users = mysqli_query($conexion, $sql_users);
                                 </div>
                             </section>
                         </div>
-
-
 
                         <!-- Columna 2: Stock y Atención Postventa -->
                         <div class="col-md-6">
@@ -909,8 +911,6 @@ $result_users = mysqli_query($conexion, $sql_users);
                         </div>
                     </div>
                 </body>
-
-
             </main>
         </div>
     </div>

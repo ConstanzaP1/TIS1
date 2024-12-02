@@ -1,11 +1,8 @@
 <?php
 session_start();
-require('../vendor/autoload.php'); // Asegúrate de que esta ruta sea correcta
+require('../vendor/autoload.php');
 use Transbank\Webpay\WebpayPlus\Transaction;
 require('../conexion.php'); // Conexión a la base de datos
-
-
-
 
 if (isset($_GET['token_ws'])) {
     $token = $_GET['token_ws'];

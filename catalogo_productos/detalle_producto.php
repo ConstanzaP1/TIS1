@@ -1055,31 +1055,32 @@ if (isset($_GET['id_producto'])){
                     // Escapar caracteres especiales para JSON
                     $nombre_producto_escapado = mysqli_real_escape_string($conexion, $nombre_producto);
                 
-                    // Verificar si el producto fue comprado por el usuario
-                    $query_compra = "SELECT COUNT(*) AS comprado
-                                     FROM boletas
-                                     WHERE id_usuario = '$user_id' 
-                                     AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'";
-                    $result_compra = mysqli_query($conexion, $query_compra);
-                    $compra = mysqli_fetch_assoc($result_compra);
+                    // Verificar si ya dejó una reseña para este producto
+                    $query_restriccion_resena = "SELECT COUNT(*) AS resena_existe 
+                                                 FROM resena_valoracion 
+                                                 WHERE user_id = '$user_id' 
+                                                 AND id_producto = '$id_producto'";
+                    $result_restriccion_resena = mysqli_query($conexion, $query_restriccion_resena);
+                    $resena_existe = mysqli_fetch_assoc($result_restriccion_resena)['resena_existe'] ?? 0;
                 
-                    if ($compra['comprado'] > 0) {
-                        // Verificar si ya dejó una reseña para este producto
-                        $query_restriccion_resena = "SELECT COUNT(*) AS resena_existe 
-                                                     FROM resena_valoracion 
-                                                     WHERE user_id = '$user_id' 
-                                                     AND id_producto = '$id_producto'";
-                        $result_restriccion_resena = mysqli_query($conexion, $query_restriccion_resena);
-                        $resena_existe = mysqli_fetch_assoc($result_restriccion_resena)['resena_existe'];
-                    
-                        if ($resena_existe > 0) {
-                            echo "<div class='alert alert-secondary'>Ya has agregado una reseña para este producto.</div>";
-                        } else {
+                    if ($resena_existe > 0) {
+                        // Mostrar mensaje si ya existe una reseña
+                        echo "<div class='alert alert-secondary'>Ya has agregado una reseña para este producto.</div>";
+                    } else {
+                        // Verificar si el producto fue comprado por el usuario
+                        $query_compra = "SELECT COUNT(*) AS comprado
+                                         FROM boletas
+                                         WHERE id_usuario = '$user_id' 
+                                         AND detalles LIKE '%\"producto\":\"$nombre_producto_escapado\"%'";
+                        $result_compra = mysqli_query($conexion, $query_compra);
+                        $compra = mysqli_fetch_assoc($result_compra)['comprado'] ?? 0;
+                
+                        if ($compra > 0) {
                             // Mostrar botón para agregar reseña
                             echo "<button type='button' class='btn btn-primary rounded-pill mb-2 col-2' data-bs-toggle='modal' data-bs-target='#modalAgregarResena'>
                                     Agregar Reseña
                                   </button>";
-                        
+                
                             // Modal para agregar reseña
                             ?>
                             <div class="modal fade" id="modalAgregarResena" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1111,12 +1112,10 @@ if (isset($_GET['id_producto'])){
                                 </div>
                             </div>
                             <?php
+                        } else {
+                            echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";
                         }
-                    } else {
-                        echo "<div class='alert alert-secondary'>Debes comprar este producto antes de poder agregar una reseña.</div>";
                     }
-                } else {
-                    echo "<div class='alert alert-danger'>Error: No se encontró el nombre del producto.</div>";
                 }
             }
         } else {

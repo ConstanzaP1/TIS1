@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 30-11-2024 a las 09:00:46
--- Versión del servidor: 10.4.27-MariaDB
--- Versión de PHP: 8.1.12
+-- Host: 127.0.0.1
+-- Generation Time: Dec 02, 2024 at 05:02 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `proyecto_tis1`
+-- Database: `proyecto_tis1`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `agregar_carrito`
+-- Table structure for table `agregar_carrito`
 --
 
 CREATE TABLE `agregar_carrito` (
@@ -33,25 +33,10 @@ CREATE TABLE `agregar_carrito` (
   `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `agregar_carrito`
---
-
-INSERT INTO `agregar_carrito` (`id_carrito`, `id_producto`, `cantidad`) VALUES
-(1, 35, 1),
-(2, 36, 2),
-(3, 37, 3),
-(4, 35, 1),
-(5, 36, 2),
-(6, 37, 3),
-(7, 35, 1),
-(8, 36, 2),
-(9, 37, 3);
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `anc`
+-- Table structure for table `anc`
 --
 
 CREATE TABLE `anc` (
@@ -60,7 +45,7 @@ CREATE TABLE `anc` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `anc`
+-- Dumping data for table `anc`
 --
 
 INSERT INTO `anc` (`id_periferico`, `anc`) VALUES
@@ -70,7 +55,7 @@ INSERT INTO `anc` (`id_periferico`, `anc`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `asocia`
+-- Table structure for table `asocia`
 --
 
 CREATE TABLE `asocia` (
@@ -81,11 +66,12 @@ CREATE TABLE `asocia` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `atencion_postventa`
+-- Table structure for table `atencion_postventa`
 --
 
 CREATE TABLE `atencion_postventa` (
   `id` int(11) NOT NULL,
+  `id_boleta` int(11) DEFAULT NULL,
   `cliente_nombre` varchar(255) DEFAULT NULL,
   `cliente_email` varchar(255) DEFAULT NULL,
   `pregunta` text DEFAULT NULL,
@@ -95,16 +81,17 @@ CREATE TABLE `atencion_postventa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `atencion_postventa`
+-- Dumping data for table `atencion_postventa`
 --
 
-INSERT INTO `atencion_postventa` (`id`, `cliente_nombre`, `cliente_email`, `pregunta`, `respuesta`, `fecha_pregunta`, `fecha_respuesta`) VALUES
-(1, 'pedro', 'admin@admin.cl', 'hola]?', NULL, '2024-11-20 00:39:59', NULL);
+INSERT INTO `atencion_postventa` (`id`, `id_boleta`, `cliente_nombre`, `cliente_email`, `pregunta`, `respuesta`, `fecha_pregunta`, `fecha_respuesta`) VALUES
+(4, 17, 'Rodrigo', 'rsanchezm@ing.ucsc.cl', 'El teclado no duro nada, las teclas se salian solas y algunas no funcionaban', NULL, '2024-12-02 12:50:52', NULL),
+(5, 16, 'Maty', 'mgonzalezp@ing.ucsc.cl', 'La caja venia un poco golpeada y esto provoco que el computador se dañe', 'Disculpanos por el incoveniente, envianos el producto al mismo remitente para proceder con tu reembolso.', '2024-12-02 12:51:58', '2024-12-02 12:55:46');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `bateria_notebook`
+-- Table structure for table `bateria_notebook`
 --
 
 CREATE TABLE `bateria_notebook` (
@@ -113,7 +100,7 @@ CREATE TABLE `bateria_notebook` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `bateria_notebook`
+-- Dumping data for table `bateria_notebook`
 --
 
 INSERT INTO `bateria_notebook` (`id_notebook`, `bateria_notebook`) VALUES
@@ -123,7 +110,7 @@ INSERT INTO `bateria_notebook` (`id_notebook`, `bateria_notebook`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `boletas`
+-- Table structure for table `boletas`
 --
 
 CREATE TABLE `boletas` (
@@ -136,19 +123,21 @@ CREATE TABLE `boletas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `boletas`
+-- Dumping data for table `boletas`
 --
 
 INSERT INTO `boletas` (`id_boleta`, `id_usuario`, `fecha`, `total`, `codigo_autorizacion`, `detalles`) VALUES
-(2, 46, '2024-11-10 22:10:09', '300000.00', '1213', '[{\"producto\":\"Monitor Gamer\",\"cantidad\":2,\"precio_unitario\":\"120000.00\",\"total\":240000},{\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
-(3, 46, '2024-11-11 01:09:47', '60000.00', '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000.00\",\"total\":60000}]'),
-(4, 46, '2024-11-19 02:16:54', '120000.00', '1213', '[{\"producto\":\"Audifono generico\",\"cantidad\":12,\"precio_unitario\":\"10000\",\"total\":120000}]'),
-(5, 46, '2024-11-20 01:03:50', '60000.00', '1213', '[{\"producto\":\"Teclado gamer\",\"cantidad\":1,\"precio_unitario\":\"60000\",\"total\":60000}]');
+(13, 58, '2024-12-02 12:29:25', 3093960.00, '1213', '[{\"producto\":\"AZORPA One-Knob\",\"cantidad\":1,\"precio_unitario\":\"75990\",\"total\":75990},{\"producto\":\"SAMSUNG ODYSSEY G3\",\"cantidad\":1,\"precio_unitario\":\"279990\",\"total\":279990},{\"producto\":\"CORSAIR VIRTUOSO\",\"cantidad\":1,\"precio_unitario\":\"217990\",\"total\":217990},{\"producto\":\"ROG Zephyrus G16\",\"cantidad\":1,\"precio_unitario\":\"2519990\",\"total\":2519990}]'),
+(14, 59, '2024-12-02 12:36:21', 413970.00, '1213', '[{\"producto\":\"AZORPA One-Knob\",\"cantidad\":1,\"precio_unitario\":\"75990\",\"total\":75990},{\"producto\":\"SAMSUNG ODYSSEY G3\",\"cantidad\":1,\"precio_unitario\":\"279990\",\"total\":279990},{\"producto\":\"GALAXY BUDS FE\",\"cantidad\":1,\"precio_unitario\":\"57990\",\"total\":57990}]'),
+(15, 59, '2024-12-02 12:38:56', 2519990.00, '1213', '[{\"producto\":\"ROG Zephyrus G16\",\"cantidad\":1,\"precio_unitario\":\"2519990\",\"total\":2519990}]'),
+(16, 58, '2024-12-02 12:41:24', 719990.00, '1213', '[{\"producto\":\"HP Victus 15\",\"cantidad\":1,\"precio_unitario\":\"719990\",\"total\":719990}]'),
+(17, 61, '2024-12-02 12:44:30', 435970.00, '1213', '[{\"producto\":\"AZORPA One-Knob\",\"cantidad\":1,\"precio_unitario\":\"75990\",\"total\":75990},{\"producto\":\"SAMSUNG ODYSSEY G3\",\"cantidad\":1,\"precio_unitario\":\"279990\",\"total\":279990},{\"producto\":\"LOGITECH G335\",\"cantidad\":1,\"precio_unitario\":\"79990\",\"total\":79990}]'),
+(18, 61, '2024-12-02 12:47:04', 2519990.00, '1213', '[{\"producto\":\"ROG Zephyrus G16\",\"cantidad\":1,\"precio_unitario\":\"2519990\",\"total\":2519990}]');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `bus_de_entrada_gpu`
+-- Table structure for table `bus_de_entrada_gpu`
 --
 
 CREATE TABLE `bus_de_entrada_gpu` (
@@ -157,7 +146,7 @@ CREATE TABLE `bus_de_entrada_gpu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `bus_de_entrada_gpu`
+-- Dumping data for table `bus_de_entrada_gpu`
 --
 
 INSERT INTO `bus_de_entrada_gpu` (`id_hardware`, `bus_de_entrada_gpu`) VALUES
@@ -167,7 +156,7 @@ INSERT INTO `bus_de_entrada_gpu` (`id_hardware`, `bus_de_entrada_gpu`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `bus_hdd`
+-- Table structure for table `bus_hdd`
 --
 
 CREATE TABLE `bus_hdd` (
@@ -176,7 +165,7 @@ CREATE TABLE `bus_hdd` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `bus_hdd`
+-- Dumping data for table `bus_hdd`
 --
 
 INSERT INTO `bus_hdd` (`id_hardware`, `bus_hdd`) VALUES
@@ -185,7 +174,7 @@ INSERT INTO `bus_hdd` (`id_hardware`, `bus_hdd`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `bus_ssd`
+-- Table structure for table `bus_ssd`
 --
 
 CREATE TABLE `bus_ssd` (
@@ -194,7 +183,7 @@ CREATE TABLE `bus_ssd` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `bus_ssd`
+-- Dumping data for table `bus_ssd`
 --
 
 INSERT INTO `bus_ssd` (`id_hardware`, `bus_ssd`) VALUES
@@ -204,7 +193,7 @@ INSERT INTO `bus_ssd` (`id_hardware`, `bus_ssd`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `capacidad_almacenamiento`
+-- Table structure for table `capacidad_almacenamiento`
 --
 
 CREATE TABLE `capacidad_almacenamiento` (
@@ -213,7 +202,7 @@ CREATE TABLE `capacidad_almacenamiento` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `capacidad_almacenamiento`
+-- Dumping data for table `capacidad_almacenamiento`
 --
 
 INSERT INTO `capacidad_almacenamiento` (`id_hardware`, `capacidad_almacenamiento`) VALUES
@@ -224,7 +213,7 @@ INSERT INTO `capacidad_almacenamiento` (`id_hardware`, `capacidad_almacenamiento
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `capacidad_ram`
+-- Table structure for table `capacidad_ram`
 --
 
 CREATE TABLE `capacidad_ram` (
@@ -233,7 +222,7 @@ CREATE TABLE `capacidad_ram` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `capacidad_ram`
+-- Dumping data for table `capacidad_ram`
 --
 
 INSERT INTO `capacidad_ram` (`id_hardware`, `capacidad_ram`) VALUES
@@ -244,32 +233,7 @@ INSERT INTO `capacidad_ram` (`id_hardware`, `capacidad_ram`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `categorias`
---
-
-CREATE TABLE `categorias` (
-  `id_categoria` int(11) NOT NULL,
-  `nombre_categoria` varchar(255) NOT NULL,
-  `subcategoria` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `categorias`
---
-
-INSERT INTO `categorias` (`id_categoria`, `nombre_categoria`, `subcategoria`) VALUES
-(1, 'Monitor', 'Gamer'),
-(2, 'Monitor', NULL),
-(3, 'PEPE', NULL),
-(4, 'Monitor', NULL),
-(5, 'Monitor', NULL),
-(6, 'rico', 'Gamer'),
-(7, 'aaa', 'aaaaaa');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `categoria_teclado`
+-- Table structure for table `categoria_teclado`
 --
 
 CREATE TABLE `categoria_teclado` (
@@ -278,7 +242,7 @@ CREATE TABLE `categoria_teclado` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `categoria_teclado`
+-- Dumping data for table `categoria_teclado`
 --
 
 INSERT INTO `categoria_teclado` (`id_periferico`, `categoria_teclado`) VALUES
@@ -289,7 +253,7 @@ INSERT INTO `categoria_teclado` (`id_periferico`, `categoria_teclado`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `certificacion_fuente`
+-- Table structure for table `certificacion_fuente`
 --
 
 CREATE TABLE `certificacion_fuente` (
@@ -298,7 +262,7 @@ CREATE TABLE `certificacion_fuente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `certificacion_fuente`
+-- Dumping data for table `certificacion_fuente`
 --
 
 INSERT INTO `certificacion_fuente` (`id_hardware`, `certificacion_fuente`) VALUES
@@ -310,7 +274,7 @@ INSERT INTO `certificacion_fuente` (`id_hardware`, `certificacion_fuente`) VALUE
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `chipset_placa`
+-- Table structure for table `chipset_placa`
 --
 
 CREATE TABLE `chipset_placa` (
@@ -319,7 +283,7 @@ CREATE TABLE `chipset_placa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `chipset_placa`
+-- Dumping data for table `chipset_placa`
 --
 
 INSERT INTO `chipset_placa` (`id_hardware`, `chipset_placa`) VALUES
@@ -329,7 +293,7 @@ INSERT INTO `chipset_placa` (`id_hardware`, `chipset_placa`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `conectividad`
+-- Table structure for table `conectividad`
 --
 
 CREATE TABLE `conectividad` (
@@ -338,7 +302,7 @@ CREATE TABLE `conectividad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `conectividad`
+-- Dumping data for table `conectividad`
 --
 
 INSERT INTO `conectividad` (`id_periferico`, `conectividad`) VALUES
@@ -348,7 +312,7 @@ INSERT INTO `conectividad` (`id_periferico`, `conectividad`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `cpu_notebook`
+-- Table structure for table `cpu_notebook`
 --
 
 CREATE TABLE `cpu_notebook` (
@@ -357,7 +321,7 @@ CREATE TABLE `cpu_notebook` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `cpu_notebook`
+-- Dumping data for table `cpu_notebook`
 --
 
 INSERT INTO `cpu_notebook` (`id_notebook`, `cpu_notebook`) VALUES
@@ -367,7 +331,7 @@ INSERT INTO `cpu_notebook` (`id_notebook`, `cpu_notebook`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `detalle_boletas`
+-- Table structure for table `detalle_boletas`
 --
 
 CREATE TABLE `detalle_boletas` (
@@ -379,38 +343,10 @@ CREATE TABLE `detalle_boletas` (
   `precio_total` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `detalle_boletas`
---
-
-INSERT INTO `detalle_boletas` (`id_detalle_boleta`, `id_boleta`, `id_producto`, `cantidad`, `precio_unitario`, `precio_total`) VALUES
-(2, 11, 35, 1, '60000.00', '60000.00'),
-(3, 12, 35, 1, '60000.00', '60000.00'),
-(4, 13, 36, 1, '120000.00', '120000.00'),
-(5, 14, 35, 1, '60000.00', '60000.00'),
-(6, 14, 36, 5, '120000.00', '600000.00'),
-(7, 15, 35, 1, '60000.00', '60000.00'),
-(8, 16, 35, 1, '60000.00', '60000.00'),
-(9, 17, 35, 1, '60000.00', '60000.00'),
-(10, 18, 36, 1, '120000.00', '120000.00'),
-(11, 19, 35, 1, '60000.00', '60000.00'),
-(12, 20, 36, 1, '120000.00', '120000.00'),
-(13, 21, 35, 1, '60000.00', '60000.00'),
-(14, 22, 35, 1, '60000.00', '60000.00'),
-(15, 23, 35, 1, '60000.00', '60000.00'),
-(16, 24, 35, 1, '60000.00', '60000.00'),
-(17, 25, 35, 1, '60000.00', '60000.00'),
-(18, 26, 36, 1, '120000.00', '120000.00'),
-(19, 27, 36, 1, '120000.00', '120000.00'),
-(20, 28, 36, 6, '120000.00', '720000.00'),
-(21, 29, 35, 1, '60000.00', '60000.00'),
-(22, 30, 35, 3, '60000.00', '180000.00'),
-(23, 30, 49, 2, '123.00', '246.00');
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `dpi_mouse`
+-- Table structure for table `dpi_mouse`
 --
 
 CREATE TABLE `dpi_mouse` (
@@ -419,7 +355,7 @@ CREATE TABLE `dpi_mouse` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `dpi_mouse`
+-- Dumping data for table `dpi_mouse`
 --
 
 INSERT INTO `dpi_mouse` (`id_periferico`, `dpi_mouse`) VALUES
@@ -430,7 +366,7 @@ INSERT INTO `dpi_mouse` (`id_periferico`, `dpi_mouse`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `formato_placa`
+-- Table structure for table `formato_placa`
 --
 
 CREATE TABLE `formato_placa` (
@@ -439,7 +375,7 @@ CREATE TABLE `formato_placa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `formato_placa`
+-- Dumping data for table `formato_placa`
 --
 
 INSERT INTO `formato_placa` (`id_hardware`, `formato_placa`) VALUES
@@ -449,7 +385,7 @@ INSERT INTO `formato_placa` (`id_hardware`, `formato_placa`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `formato_ram`
+-- Table structure for table `formato_ram`
 --
 
 CREATE TABLE `formato_ram` (
@@ -458,7 +394,7 @@ CREATE TABLE `formato_ram` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `formato_ram`
+-- Dumping data for table `formato_ram`
 --
 
 INSERT INTO `formato_ram` (`id_hardware`, `formato_ram`) VALUES
@@ -468,7 +404,7 @@ INSERT INTO `formato_ram` (`id_hardware`, `formato_ram`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `formato_ssd`
+-- Table structure for table `formato_ssd`
 --
 
 CREATE TABLE `formato_ssd` (
@@ -477,7 +413,7 @@ CREATE TABLE `formato_ssd` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `formato_ssd`
+-- Dumping data for table `formato_ssd`
 --
 
 INSERT INTO `formato_ssd` (`id_hardware`, `formato_ssd`) VALUES
@@ -487,7 +423,7 @@ INSERT INTO `formato_ssd` (`id_hardware`, `formato_ssd`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `frecuencia_cpu`
+-- Table structure for table `frecuencia_cpu`
 --
 
 CREATE TABLE `frecuencia_cpu` (
@@ -496,7 +432,7 @@ CREATE TABLE `frecuencia_cpu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `frecuencia_cpu`
+-- Dumping data for table `frecuencia_cpu`
 --
 
 INSERT INTO `frecuencia_cpu` (`id_hardware`, `frecuencia_cpu`) VALUES
@@ -508,7 +444,7 @@ INSERT INTO `frecuencia_cpu` (`id_hardware`, `frecuencia_cpu`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `frecuencia_gpu`
+-- Table structure for table `frecuencia_gpu`
 --
 
 CREATE TABLE `frecuencia_gpu` (
@@ -517,7 +453,7 @@ CREATE TABLE `frecuencia_gpu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `frecuencia_gpu`
+-- Dumping data for table `frecuencia_gpu`
 --
 
 INSERT INTO `frecuencia_gpu` (`id_hardware`, `frecuencia_gpu`) VALUES
@@ -528,7 +464,7 @@ INSERT INTO `frecuencia_gpu` (`id_hardware`, `frecuencia_gpu`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `gpu_notebook`
+-- Table structure for table `gpu_notebook`
 --
 
 CREATE TABLE `gpu_notebook` (
@@ -537,7 +473,7 @@ CREATE TABLE `gpu_notebook` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `gpu_notebook`
+-- Dumping data for table `gpu_notebook`
 --
 
 INSERT INTO `gpu_notebook` (`id_notebook`, `gpu_notebook`) VALUES
@@ -549,7 +485,7 @@ INSERT INTO `gpu_notebook` (`id_notebook`, `gpu_notebook`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `hardware`
+-- Table structure for table `hardware`
 --
 
 CREATE TABLE `hardware` (
@@ -558,7 +494,7 @@ CREATE TABLE `hardware` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `hardware`
+-- Dumping data for table `hardware`
 --
 
 INSERT INTO `hardware` (`id_hardware`, `id_producto`) VALUES
@@ -635,7 +571,7 @@ INSERT INTO `hardware` (`id_hardware`, `id_producto`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `historial_compras`
+-- Table structure for table `historial_compras`
 --
 
 CREATE TABLE `historial_compras` (
@@ -647,19 +583,21 @@ CREATE TABLE `historial_compras` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `historial_compras`
+-- Dumping data for table `historial_compras`
 --
 
 INSERT INTO `historial_compras` (`id_historial`, `id_usuario`, `id_boleta`, `fecha_compra`, `total`) VALUES
-(1, 46, 2, '2024-11-10 22:10:09', '300000.00'),
-(2, 46, 3, '2024-11-11 01:09:47', '60000.00'),
-(3, 46, 4, '2024-11-19 02:16:54', '120000.00'),
-(4, 46, 5, '2024-11-20 01:03:50', '60000.00');
+(13, 58, 13, '2024-12-02 12:29:25', 3093960.00),
+(14, 59, 14, '2024-12-02 12:36:21', 413970.00),
+(15, 59, 15, '2024-12-02 12:38:56', 2519990.00),
+(16, 58, 16, '2024-12-02 12:41:24', 719990.00),
+(17, 61, 17, '2024-12-02 12:44:30', 435970.00),
+(18, 61, 18, '2024-12-02 12:47:04', 2519990.00);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `iluminacion`
+-- Table structure for table `iluminacion`
 --
 
 CREATE TABLE `iluminacion` (
@@ -668,7 +606,7 @@ CREATE TABLE `iluminacion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `iluminacion`
+-- Dumping data for table `iluminacion`
 --
 
 INSERT INTO `iluminacion` (`id_periferico`, `iluminacion`) VALUES
@@ -678,7 +616,7 @@ INSERT INTO `iluminacion` (`id_periferico`, `iluminacion`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `lista_deseo_producto`
+-- Table structure for table `lista_deseo_producto`
 --
 
 CREATE TABLE `lista_deseo_producto` (
@@ -688,25 +626,10 @@ CREATE TABLE `lista_deseo_producto` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `lista_deseo_producto`
---
-
-INSERT INTO `lista_deseo_producto` (`id_lista`, `nombre_lista`, `id_producto`, `user_id`) VALUES
-(2, 'mi_lista_deseos', 36, NULL),
-(3, 'mi_lista_deseos', 35, NULL),
-(4, 'mi_lista_deseos', 37, NULL),
-(5, 'mi_lista_deseos', 41, NULL),
-(6, 'mi_lista_deseos', 49, NULL),
-(7, 'mi_lista_deseos', 35, 50),
-(8, 'mi_lista_deseos', 36, 50),
-(12, 'mi_lista_deseos', 35, 49),
-(13, 'mi_lista_deseos', 35, 46);
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `marca`
+-- Table structure for table `marca`
 --
 
 CREATE TABLE `marca` (
@@ -715,7 +638,7 @@ CREATE TABLE `marca` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `marca`
+-- Dumping data for table `marca`
 --
 
 INSERT INTO `marca` (`id_marca`, `nombre_marca`) VALUES
@@ -741,7 +664,7 @@ INSERT INTO `marca` (`id_marca`, `nombre_marca`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `memoria`
+-- Table structure for table `memoria`
 --
 
 CREATE TABLE `memoria` (
@@ -752,7 +675,7 @@ CREATE TABLE `memoria` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `memoria_gpu`
+-- Table structure for table `memoria_gpu`
 --
 
 CREATE TABLE `memoria_gpu` (
@@ -761,7 +684,7 @@ CREATE TABLE `memoria_gpu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `memoria_gpu`
+-- Dumping data for table `memoria_gpu`
 --
 
 INSERT INTO `memoria_gpu` (`id_hardware`, `memoria_gpu`) VALUES
@@ -771,7 +694,7 @@ INSERT INTO `memoria_gpu` (`id_hardware`, `memoria_gpu`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `notebook`
+-- Table structure for table `notebook`
 --
 
 CREATE TABLE `notebook` (
@@ -780,7 +703,7 @@ CREATE TABLE `notebook` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `notebook`
+-- Dumping data for table `notebook`
 --
 
 INSERT INTO `notebook` (`id_notebook`, `id_producto`) VALUES
@@ -798,7 +721,7 @@ INSERT INTO `notebook` (`id_notebook`, `id_producto`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `nucleo_hilo_cpu`
+-- Table structure for table `nucleo_hilo_cpu`
 --
 
 CREATE TABLE `nucleo_hilo_cpu` (
@@ -807,7 +730,7 @@ CREATE TABLE `nucleo_hilo_cpu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `nucleo_hilo_cpu`
+-- Dumping data for table `nucleo_hilo_cpu`
 --
 
 INSERT INTO `nucleo_hilo_cpu` (`id_hardware`, `nucleo_hilo_cpu`) VALUES
@@ -817,7 +740,7 @@ INSERT INTO `nucleo_hilo_cpu` (`id_hardware`, `nucleo_hilo_cpu`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `orden_compra`
+-- Table structure for table `orden_compra`
 --
 
 CREATE TABLE `orden_compra` (
@@ -832,7 +755,7 @@ CREATE TABLE `orden_compra` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pantalla_notebook`
+-- Table structure for table `pantalla_notebook`
 --
 
 CREATE TABLE `pantalla_notebook` (
@@ -841,7 +764,7 @@ CREATE TABLE `pantalla_notebook` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `pantalla_notebook`
+-- Dumping data for table `pantalla_notebook`
 --
 
 INSERT INTO `pantalla_notebook` (`id_notebook`, `pantalla_notebook`) VALUES
@@ -851,7 +774,7 @@ INSERT INTO `pantalla_notebook` (`id_notebook`, `pantalla_notebook`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `periferico`
+-- Table structure for table `periferico`
 --
 
 CREATE TABLE `periferico` (
@@ -860,7 +783,7 @@ CREATE TABLE `periferico` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `periferico`
+-- Dumping data for table `periferico`
 --
 
 INSERT INTO `periferico` (`id_periferico`, `id_producto`) VALUES
@@ -915,7 +838,7 @@ INSERT INTO `periferico` (`id_periferico`, `id_producto`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pertenece`
+-- Table structure for table `pertenece`
 --
 
 CREATE TABLE `pertenece` (
@@ -926,7 +849,7 @@ CREATE TABLE `pertenece` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `peso_mouse`
+-- Table structure for table `peso_mouse`
 --
 
 CREATE TABLE `peso_mouse` (
@@ -935,7 +858,7 @@ CREATE TABLE `peso_mouse` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `peso_mouse`
+-- Dumping data for table `peso_mouse`
 --
 
 INSERT INTO `peso_mouse` (`id_periferico`, `peso_mouse`) VALUES
@@ -945,7 +868,7 @@ INSERT INTO `peso_mouse` (`id_periferico`, `peso_mouse`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `potencia_fuente`
+-- Table structure for table `potencia_fuente`
 --
 
 CREATE TABLE `potencia_fuente` (
@@ -954,7 +877,7 @@ CREATE TABLE `potencia_fuente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `potencia_fuente`
+-- Dumping data for table `potencia_fuente`
 --
 
 INSERT INTO `potencia_fuente` (`id_hardware`, `potencia_fuente`) VALUES
@@ -965,7 +888,7 @@ INSERT INTO `potencia_fuente` (`id_hardware`, `potencia_fuente`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `producto`
+-- Table structure for table `producto`
 --
 
 CREATE TABLE `producto` (
@@ -977,58 +900,55 @@ CREATE TABLE `producto` (
   `marca` varchar(55) DEFAULT NULL,
   `imagen_url` varchar(255) NOT NULL,
   `destacado` tinyint(1) DEFAULT 0,
-  `costo` decimal(10,0) NOT NULL DEFAULT 0,
-  `nombre_categoria` varchar(255) DEFAULT NULL,
-  `subcategoria` varchar(255) NOT NULL,
-  `id_categoria` int(11) NOT NULL
+  `costo` decimal(10,0) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `producto`
+-- Dumping data for table `producto`
 --
 
-INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio`, `cantidad`, `tipo_producto`, `marca`, `imagen_url`, `destacado`, `costo`, `nombre_categoria`, `subcategoria`, `id_categoria`) VALUES
-(70, 'AZORPA One-Knob', 75990, 51, 'teclado', '10', 'https://m.media-amazon.com/images/I/61pRioARU1L._AC_SL1500_.jpg', 1, '40000', 'aaa', 'aaaaaa', 7),
-(71, 'Blitzwolf KB-1', 35990, 34, 'teclado', '11', 'https://imgaz2.staticbg.com/thumb/large/oaupload/banggood/images/8B/2F/1bc363d6-2e0f-48c4-98ea-9b23a6a6e90b.jpg', 1, '20000', NULL, '', 0),
-(74, 'HP K500', 14990, 123, 'teclado', '13', 'https://m.media-amazon.com/images/I/61YFZs8A+2L.jpg', 1, '10000', NULL, '', 0),
-(75, 'SAMSUNG ODYSSEY G3', 279990, 124, 'monitor', '9', 'https://images.samsung.com/is/image/samsung/p6pim/cl/ls27dg300elxzs/gallery/cl-odyssey-g3-g30d-ls27dg300elxzs-543059014?$1300_1038_PNG$', 1, '200000', NULL, '', 0),
-(76, 'MONITOR ASUS 27IN', 279990, 24, 'monitor', '1', 'https://m.media-amazon.com/images/I/71u4mAb+V6L._AC_SL1500_.jpg', 1, '200000', NULL, '', 0),
-(77, 'MONITOR HP M24F FHD', 169990, 12, 'monitor', '13', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/133078862_02/w=800,h=800,fit=pad', 1, '100000', NULL, '', 0),
-(78, 'CORSAIR VIRTUOSO', 217990, 123, 'audifono', '8', 'https://sipoonline.cl/wp-content/uploads/2024/09/Audifonos-Wireless-Corsair-Virtuoso-RGB-Sonido-7.1-White.png', 1, '150000', NULL, '', 0),
-(79, 'LOGITECH G335', 79990, 124, 'audifono', '12', 'https://fotosol.cl/cdn/shop/products/audifonos_logitech_g335_2_1200x.jpg?v=1666214019', 1, '60000', NULL, '', 0),
-(80, 'GALAXY BUDS FE', 57990, 234, 'audifono', '1', 'https://mrclick.cl/cdn/shop/files/004_1500x1500_4_17ead26b-90d6-4c2d-b3c9-81215d6cb804_1500x.jpg?v=1706709360', 1, '40000', NULL, '', 0),
-(81, 'CHAMPION SERIES SABRE PRO NEGRO', 159990, 53, 'mouse', '8', 'https://prophonechile.cl/wp-content/uploads/2022/01/SABRERGBPRO.png', 1, '124000', NULL, '', 0),
-(82, 'LOGITECH G102', 29990, 53, 'mouse', '12', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127630797_01/w=1500,h=1500,fit=pad', 1, '15000', NULL, '', 0),
-(83, 'MOUSE HP 200', 5990, 235, 'mouse', '13', 'https://elgeniox.com/cdn/shop/files/mouse-inalambrico-hp-200-plateado--693983--2520240919T213228552.jpg?v=1726781555', 1, '2000', NULL, '', 0),
-(84, 'AMD Ryzen 7 5700x', 199990, 43, 'cpu', '2', 'https://assets.pcfactory.cl/public/foto/46746/google_1000.jpg', 1, '170000', NULL, '', 0),
-(85, 'Intel Core i5 12400F', 149990, 53, 'cpu', '3', 'https://megadrivestore.cl/968-large_default/intel-core-i5-12400f-25-ghz-6-nucleos-12-subprocesos-18-mb-de-cache-zocalo-lga1700.jpg', 1, '120000', NULL, '', 0),
-(86, 'Intel Core i9 12900K', 459990, 43, 'cpu', '3', 'https://pegasum.cl/wp-content/uploads/2023/01/1498180_picture_1637592613-1.png', 1, '230000', NULL, '', 0),
-(87, 'Asus Tuf RTX 3060', 249990, 54, 'gpu', '1', 'https://www.exertis.ie/images/products/34563/112485/600x600/TUF-RTX3060-O12G-V.webp', 1, '160000', NULL, '', 0),
-(88, 'Radeon RX 7600', 319990, 42, 'gpu', '2', 'https://n1g.cl/Home/9518-large_default/sapphire-pulse-radeon-rx-7600-8gb-gddr6-pci-express-40-x8-atx-video-card-11324-01-20g.jpg', 1, '280000', NULL, '', 0),
-(89, 'Nvidia GTX 1080', 149990, 15, 'gpu', '4', 'https://static.gigabyte.com/StaticFile/Image/Global/62c0b2b60a46145c021a1f64afec3a2a/Product/16867', 1, '110000', NULL, '', 0),
-(90, 'WD WGreen SSD', 31990, 15, 'ssd', '15', 'https://s3.amazonaws.com/w3.assets/fotos/33142/2..webp?v=100328130', 1, '19000', NULL, '', 0),
-(91, 'SSD ADATA Ultimate SU650', 24990, 52, 'ssd', '17', 'https://media.spdigital.cl/thumbnails/products/7yow1o1x_ffc43df9_thumbnail_512.jpg', 1, '20000', NULL, '', 0),
-(92, 'ADATA Legend 800', 34990, 53, 'ssd', '17', 'https://media.spdigital.cl/thumbnails/products/57txoq6c_aa13ced4_thumbnail_512.jpg', 1, '21000', NULL, '', 0),
-(93, 'WD Blue 3.5', 71990, 52, 'hdd', '15', 'https://media.spdigital.cl/thumbnails/products/5nobcw1v_e9578faa_thumbnail_512.jpg', 1, '59000', NULL, '', 0),
-(94, 'WD WPurple Surveilance', 52990, 42, 'hdd', '15', 'https://www.virec.cl/wp-content/uploads/2024/03/WD10PURZ.jpg', 1, '39000', NULL, '', 0),
-(95, 'PC P300', 21990, 42, 'hdd', '16', 'https://supplyline.cl/wp-content/uploads/2019/08/HDWK105UZSVA.jpg', 1, '18000', NULL, '', 0),
-(96, 'Asus H410M-E', 89990, 56, 'placa', '1', 'https://www.asus.com/media/global/gallery/cdrhcxg7gtwfagts_setting_xxx_0_90_end_800.png', 1, '71000', NULL, '', 0),
-(97, 'H610M-H', 102990, 56, 'placa', '5', 'https://centrale.cl/wp-content/uploads/Placa-Madre-Micro-ATX-Gigabyte-H610M-H-Socket-Intel-LGA-1700-DDR5.webp', 1, '80000', NULL, '', 0),
-(98, 'MSI PRO B760M-P ', 119990, 22, 'placa', '6', 'https://n1g.cl/Home/10789-large_default/msi-pro-b760m-p-ddr4-lga-1700-intel-b760-sata-6gbs-micro-atx-motherboard.jpg', 1, '90000', NULL, '', 0),
-(99, 'CX750F', 118990, 51, 'fuente', '8', 'https://cdn3.spider.cl/19139-large_default/fuente-de-poder-corsair-cx750f-rgb-750w-certgold-blanca.jpg', 1, '92000', NULL, '', 0),
-(100, 'P650B', 138990, 53, 'fuente', '5', 'https://cache.zoey.com.ar/foto.php?src=/fotos/650W80PLGIGABYYTE.JPG&ancho=750&alto=750', 1, '96000', NULL, '', 0),
-(101, 'SF750', 169990, 13, 'fuente', '1', 'https://assets.corsair.com/image/upload/c_pad,q_auto,h_1024,w_1024,f_auto/products/Power-Supply-Units/CP-9020186-EU/Gallery/SF750_01_300m.webp', 1, '159000', NULL, '', 0),
-(102, 'Ocelot Box1', 71990, 42, 'gabinete', '1', 'https://mcashop.mx/ecommerce/wp-content/uploads/2024/07/21089cdcb3977bbdbac759dc0a2383c3.webp', 1, '69000', NULL, '', 0),
-(103, 'Icue 4000x', 62990, 12, 'gabinete', '8', 'https://http2.mlstatic.com/D_NQ_NP_876894-MLU71267144605_082023-O.webp', 1, '59000', NULL, '', 0),
-(104, 'Cooler Master CMP 520', 71990, 17, 'gabinete', '19', 'https://centrale.cl/wp-content/uploads/Gabinete-Gamer-Cooler-Master-CMP-520-ARGB-ATX-Black-3-Ventiladores-ARGB-IncluC3ADd.webp', 1, '52000', NULL, '', 0),
-(105, 'HP Victus 15', 719990, 49, 'notebook', '13', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/17031115_1/w=800,h=800,fit=pad', 1, '650000', NULL, '', 0),
-(106, 'HP 15', 589990, 24, 'notebook', '1', 'https://d1pc5hp1w29h96.cloudfront.net/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/8/2/827B1LA-1_T1694733380.png', 1, '500000', NULL, '', 0),
-(107, 'ROG Zephyrus G16', 2519990, 12, 'notebook', '1', 'https://dlcdnwebimgs.asus.com/gain/9E8B3BDF-4BB7-45CC-B7BE-F38810969B9A/w717/h525', 1, '2000000', NULL, '', 0);
+INSERT INTO `producto` (`id_producto`, `nombre_producto`, `precio`, `cantidad`, `tipo_producto`, `marca`, `imagen_url`, `destacado`, `costo`) VALUES
+(70, 'AZORPA ONE-KNOB', 75990, 44, 'teclado', '10', 'https://m.media-amazon.com/images/I/61pRioARU1L._AC_SL1500_.jpg', 1, 40000),
+(71, 'Blitzwolf KB-1', 35990, 34, 'teclado', '11', 'https://imgaz2.staticbg.com/thumb/large/oaupload/banggood/images/8B/2F/1bc363d6-2e0f-48c4-98ea-9b23a6a6e90b.jpg', 0, 20000),
+(74, 'HP K500', 14990, 123, 'teclado', '13', 'https://m.media-amazon.com/images/I/61YFZs8A+2L.jpg', 0, 10000),
+(75, 'SAMSUNG ODYSSEY G3', 279990, 117, 'monitor', '9', 'https://images.samsung.com/is/image/samsung/p6pim/cl/ls27dg300elxzs/gallery/cl-odyssey-g3-g30d-ls27dg300elxzs-543059014?$1300_1038_PNG$', 1, 200000),
+(76, 'MONITOR ASUS 27IN', 279990, 24, 'monitor', '1', 'https://rimage.ripley.cl/home.ripley/Attachment/MKP/7339/MPM10001814188/full_image-1.jpeg', 0, 200000),
+(77, 'MONITOR HP M24F FHD', 169990, 12, 'monitor', '13', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/133078862_02/w=800,h=800,fit=pad', 0, 100000),
+(78, 'CORSAIR VIRTUOSO', 217990, 120, 'audifono', '8', 'https://sipoonline.cl/wp-content/uploads/2024/09/Audifonos-Wireless-Corsair-Virtuoso-RGB-Sonido-7.1-White.png', 0, 150000),
+(79, 'LOGITECH G335', 79990, 122, 'audifono', '12', 'https://fotosol.cl/cdn/shop/products/audifonos_logitech_g335_2_1200x.jpg?v=1666214019', 1, 60000),
+(80, 'GALAXY BUDS FE', 57990, 231, 'audifono', '1', 'https://mrclick.cl/cdn/shop/files/004_1500x1500_4_17ead26b-90d6-4c2d-b3c9-81215d6cb804_1500x.jpg?v=1706709360', 0, 40000),
+(81, 'CHAMPION SERIES SABRE PRO NEGRO', 159990, 53, 'mouse', '8', 'https://prophonechile.cl/wp-content/uploads/2022/01/SABRERGBPRO.png', 0, 124000),
+(82, 'LOGITECH G102', 29990, 52, 'mouse', '12', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/127630797_01/w=1500,h=1500,fit=pad', 0, 15000),
+(83, 'MOUSE HP 200', 5990, 235, 'mouse', '13', 'https://elgeniox.com/cdn/shop/files/mouse-inalambrico-hp-200-plateado--693983--2520240919T213228552.jpg?v=1726781555', 0, 2000),
+(84, 'AMD Ryzen 7 5700x', 199990, 43, 'cpu', '2', 'https://assets.pcfactory.cl/public/foto/46746/google_1000.jpg', 0, 170000),
+(85, 'Intel Core i5 12400F', 149990, 53, 'cpu', '3', 'https://megadrivestore.cl/968-large_default/intel-core-i5-12400f-25-ghz-6-nucleos-12-subprocesos-18-mb-de-cache-zocalo-lga1700.jpg', 0, 120000),
+(86, 'Intel Core i9 12900K', 459990, 43, 'cpu', '3', 'https://pegasum.cl/wp-content/uploads/2023/01/1498180_picture_1637592613-1.png', 0, 230000),
+(87, 'Asus Tuf RTX 3060', 249990, 54, 'gpu', '1', 'https://www.exertis.ie/images/products/34563/112485/600x600/TUF-RTX3060-O12G-V.webp', 0, 160000),
+(88, 'Radeon RX 7600', 319990, 42, 'gpu', '2', 'https://n1g.cl/Home/9518-large_default/sapphire-pulse-radeon-rx-7600-8gb-gddr6-pci-express-40-x8-atx-video-card-11324-01-20g.jpg', 0, 280000),
+(89, 'Nvidia GTX 1080', 149990, 15, 'gpu', '4', 'https://static.gigabyte.com/StaticFile/Image/Global/62c0b2b60a46145c021a1f64afec3a2a/Product/16867', 0, 110000),
+(90, 'WD WGreen SSD', 31990, 15, 'ssd', '15', 'https://s3.amazonaws.com/w3.assets/fotos/33142/2..webp?v=100328130', 0, 19000),
+(91, 'SSD ADATA Ultimate SU650', 24990, 52, 'ssd', '17', 'https://media.spdigital.cl/thumbnails/products/7yow1o1x_ffc43df9_thumbnail_512.jpg', 0, 20000),
+(92, 'ADATA Legend 800', 34990, 53, 'ssd', '17', 'https://media.spdigital.cl/thumbnails/products/57txoq6c_aa13ced4_thumbnail_512.jpg', 0, 21000),
+(93, 'WD Blue 3.5', 71990, 52, 'hdd', '15', 'https://media.spdigital.cl/thumbnails/products/5nobcw1v_e9578faa_thumbnail_512.jpg', 0, 59000),
+(94, 'WD WPurple Surveilance', 52990, 42, 'hdd', '15', 'https://www.virec.cl/wp-content/uploads/2024/03/WD10PURZ.jpg', 0, 39000),
+(95, 'PC P300', 21990, 42, 'hdd', '16', 'https://supplyline.cl/wp-content/uploads/2019/08/HDWK105UZSVA.jpg', 0, 18000),
+(96, 'Asus H410M-E', 89990, 56, 'placa', '1', 'https://www.asus.com/media/global/gallery/cdrhcxg7gtwfagts_setting_xxx_0_90_end_800.png', 0, 71000),
+(97, 'H610M-H', 102990, 56, 'placa', '5', 'https://centrale.cl/wp-content/uploads/Placa-Madre-Micro-ATX-Gigabyte-H610M-H-Socket-Intel-LGA-1700-DDR5.webp', 0, 80000),
+(98, 'MSI PRO B760M-P ', 119990, 22, 'placa', '6', 'https://n1g.cl/Home/10789-large_default/msi-pro-b760m-p-ddr4-lga-1700-intel-b760-sata-6gbs-micro-atx-motherboard.jpg', 0, 90000),
+(99, 'CX750F', 118990, 51, 'fuente', '8', 'https://cdn3.spider.cl/19139-large_default/fuente-de-poder-corsair-cx750f-rgb-750w-certgold-blanca.jpg', 0, 92000),
+(100, 'P650B', 138990, 53, 'fuente', '5', 'https://cache.zoey.com.ar/foto.php?src=/fotos/650W80PLGIGABYYTE.JPG&ancho=750&alto=750', 0, 96000),
+(101, 'SF750', 169990, 13, 'fuente', '1', 'https://assets.corsair.com/image/upload/c_pad,q_auto,h_1024,w_1024,f_auto/products/Power-Supply-Units/CP-9020186-EU/Gallery/SF750_01_300m.webp', 0, 159000),
+(102, 'Ocelot Box1', 71990, 42, 'gabinete', '1', 'https://mcashop.mx/ecommerce/wp-content/uploads/2024/07/21089cdcb3977bbdbac759dc0a2383c3.webp', 0, 69000),
+(103, 'Icue 4000x', 62990, 12, 'gabinete', '8', 'https://http2.mlstatic.com/D_NQ_NP_876894-MLU71267144605_082023-O.webp', 0, 59000),
+(104, 'Cooler Master CMP 520', 71990, 17, 'gabinete', '19', 'https://centrale.cl/wp-content/uploads/Gabinete-Gamer-Cooler-Master-CMP-520-ARGB-ATX-Black-3-Ventiladores-ARGB-IncluC3ADd.webp', 0, 52000),
+(105, 'HP Victus 15', 719990, 48, 'notebook', '13', 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/17031115_1/w=800,h=800,fit=pad', 0, 650000),
+(106, 'HP 15', 589990, 24, 'notebook', '1', 'https://d1pc5hp1w29h96.cloudfront.net/catalog/product/cache/b3b166914d87ce343d4dc5ec5117b502/8/2/827B1LA-1_T1694733380.png', 0, 500000),
+(107, 'ROG Zephyrus G16', 2519990, 6, 'notebook', '1', 'https://dlcdnwebimgs.asus.com/gain/9E8B3BDF-4BB7-45CC-B7BE-F38810969B9A/w717/h525', 0, 2000000);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `producto_caracteristica`
+-- Table structure for table `producto_caracteristica`
 --
 
 CREATE TABLE `producto_caracteristica` (
@@ -1039,7 +959,7 @@ CREATE TABLE `producto_caracteristica` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `producto_caracteristica`
+-- Dumping data for table `producto_caracteristica`
 --
 
 INSERT INTO `producto_caracteristica` (`id_caracteristica`, `id_producto`, `caracteristica`, `valor_caracteristica`) VALUES
@@ -1194,7 +1114,7 @@ INSERT INTO `producto_caracteristica` (`id_caracteristica`, `id_producto`, `cara
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `resena_valoracion`
+-- Table structure for table `resena_valoracion`
 --
 
 CREATE TABLE `resena_valoracion` (
@@ -1207,19 +1127,20 @@ CREATE TABLE `resena_valoracion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `resena_valoracion`
+-- Dumping data for table `resena_valoracion`
 --
 
 INSERT INTO `resena_valoracion` (`id_resena`, `valoracion`, `comentario`, `id_producto`, `user_id`, `fecha`) VALUES
-(13, 5, 'Buen producto :)', 35, 47, '2024-11-08 20:11:07'),
-(14, 4, 'xd', 60, 46, '2024-11-09 19:29:23'),
-(15, 5, 'xd', 36, 46, '2024-11-11 01:15:28'),
-(16, 5, 'xdddd', 35, 46, '2024-11-11 19:37:35');
+(20, 5, 'Buen teclado :)', 70, 58, '2024-12-02 12:34:17'),
+(21, 3, 'El RGB tenia baja iluminacion', 70, 59, '2024-12-02 12:37:14'),
+(22, 5, 'Bonitos colores', 75, 59, '2024-12-02 12:38:00'),
+(23, 4, 'excelente calidad precio', 80, 59, '2024-12-02 12:38:27'),
+(24, 1, 'Sabia que los teclados chinos no eran de buena calidad pero este teclado se pasó, con unas teclas de pbc que no aguantan una partida de lol, por culpa de este teclado baje a hierro.', 70, 61, '2024-12-02 12:47:22');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `resolucion_monitor`
+-- Table structure for table `resolucion_monitor`
 --
 
 CREATE TABLE `resolucion_monitor` (
@@ -1228,7 +1149,7 @@ CREATE TABLE `resolucion_monitor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `resolucion_monitor`
+-- Dumping data for table `resolucion_monitor`
 --
 
 INSERT INTO `resolucion_monitor` (`id_periferico`, `resolucion_monitor`) VALUES
@@ -1238,7 +1159,7 @@ INSERT INTO `resolucion_monitor` (`id_periferico`, `resolucion_monitor`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rpm_hdd`
+-- Table structure for table `rpm_hdd`
 --
 
 CREATE TABLE `rpm_hdd` (
@@ -1247,7 +1168,7 @@ CREATE TABLE `rpm_hdd` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `rpm_hdd`
+-- Dumping data for table `rpm_hdd`
 --
 
 INSERT INTO `rpm_hdd` (`id_hardware`, `rpm_hdd`) VALUES
@@ -1257,7 +1178,7 @@ INSERT INTO `rpm_hdd` (`id_hardware`, `rpm_hdd`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `sensor_mouse`
+-- Table structure for table `sensor_mouse`
 --
 
 CREATE TABLE `sensor_mouse` (
@@ -1266,7 +1187,7 @@ CREATE TABLE `sensor_mouse` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `sensor_mouse`
+-- Dumping data for table `sensor_mouse`
 --
 
 INSERT INTO `sensor_mouse` (`id_periferico`, `sensor_mouse`) VALUES
@@ -1276,7 +1197,7 @@ INSERT INTO `sensor_mouse` (`id_periferico`, `sensor_mouse`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `slot_memoria_placa`
+-- Table structure for table `slot_memoria_placa`
 --
 
 CREATE TABLE `slot_memoria_placa` (
@@ -1285,7 +1206,7 @@ CREATE TABLE `slot_memoria_placa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `slot_memoria_placa`
+-- Dumping data for table `slot_memoria_placa`
 --
 
 INSERT INTO `slot_memoria_placa` (`id_hardware`, `slot_memoria_placa`) VALUES
@@ -1296,7 +1217,7 @@ INSERT INTO `slot_memoria_placa` (`id_hardware`, `slot_memoria_placa`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `socket_cpu`
+-- Table structure for table `socket_cpu`
 --
 
 CREATE TABLE `socket_cpu` (
@@ -1305,7 +1226,7 @@ CREATE TABLE `socket_cpu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `socket_cpu`
+-- Dumping data for table `socket_cpu`
 --
 
 INSERT INTO `socket_cpu` (`id_hardware`, `socket_cpu`) VALUES
@@ -1316,7 +1237,7 @@ INSERT INTO `socket_cpu` (`id_hardware`, `socket_cpu`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `socket_placa`
+-- Table structure for table `socket_placa`
 --
 
 CREATE TABLE `socket_placa` (
@@ -1325,7 +1246,7 @@ CREATE TABLE `socket_placa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `socket_placa`
+-- Dumping data for table `socket_placa`
 --
 
 INSERT INTO `socket_placa` (`id_hardware`, `socket_placa`) VALUES
@@ -1335,7 +1256,7 @@ INSERT INTO `socket_placa` (`id_hardware`, `socket_placa`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `soporte_monitor`
+-- Table structure for table `soporte_monitor`
 --
 
 CREATE TABLE `soporte_monitor` (
@@ -1344,7 +1265,7 @@ CREATE TABLE `soporte_monitor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `soporte_monitor`
+-- Dumping data for table `soporte_monitor`
 --
 
 INSERT INTO `soporte_monitor` (`id_periferico`, `soporte_monitor`) VALUES
@@ -1356,19 +1277,7 @@ INSERT INTO `soporte_monitor` (`id_periferico`, `soporte_monitor`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `subcategorias`
---
-
-CREATE TABLE `subcategorias` (
-  `id_subcategoria` int(11) NOT NULL,
-  `nombre_subcategoria` varchar(255) NOT NULL,
-  `id_categoria` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tamanio_fuente`
+-- Table structure for table `tamanio_fuente`
 --
 
 CREATE TABLE `tamanio_fuente` (
@@ -1377,7 +1286,7 @@ CREATE TABLE `tamanio_fuente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tamanio_fuente`
+-- Dumping data for table `tamanio_fuente`
 --
 
 INSERT INTO `tamanio_fuente` (`id_hardware`, `tamanio_fuente`) VALUES
@@ -1387,7 +1296,7 @@ INSERT INTO `tamanio_fuente` (`id_hardware`, `tamanio_fuente`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tamanio_hdd`
+-- Table structure for table `tamanio_hdd`
 --
 
 CREATE TABLE `tamanio_hdd` (
@@ -1396,7 +1305,7 @@ CREATE TABLE `tamanio_hdd` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tamanio_hdd`
+-- Dumping data for table `tamanio_hdd`
 --
 
 INSERT INTO `tamanio_hdd` (`id_hardware`, `tamanio_hdd`) VALUES
@@ -1406,7 +1315,7 @@ INSERT INTO `tamanio_hdd` (`id_hardware`, `tamanio_hdd`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tamanio_max_gabinete`
+-- Table structure for table `tamanio_max_gabinete`
 --
 
 CREATE TABLE `tamanio_max_gabinete` (
@@ -1415,7 +1324,7 @@ CREATE TABLE `tamanio_max_gabinete` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tamanio_max_gabinete`
+-- Dumping data for table `tamanio_max_gabinete`
 --
 
 INSERT INTO `tamanio_max_gabinete` (`id_hardware`, `tamanio_max_gabinete`) VALUES
@@ -1425,7 +1334,7 @@ INSERT INTO `tamanio_max_gabinete` (`id_hardware`, `tamanio_max_gabinete`) VALUE
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tamanio_monitor`
+-- Table structure for table `tamanio_monitor`
 --
 
 CREATE TABLE `tamanio_monitor` (
@@ -1434,7 +1343,7 @@ CREATE TABLE `tamanio_monitor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tamanio_monitor`
+-- Dumping data for table `tamanio_monitor`
 --
 
 INSERT INTO `tamanio_monitor` (`id_periferico`, `tamanio_monitor`) VALUES
@@ -1445,7 +1354,7 @@ INSERT INTO `tamanio_monitor` (`id_periferico`, `tamanio_monitor`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tasa_refresco`
+-- Table structure for table `tasa_refresco`
 --
 
 CREATE TABLE `tasa_refresco` (
@@ -1454,7 +1363,7 @@ CREATE TABLE `tasa_refresco` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tasa_refresco`
+-- Dumping data for table `tasa_refresco`
 --
 
 INSERT INTO `tasa_refresco` (`id_periferico`, `tasa_refresco`) VALUES
@@ -1465,7 +1374,7 @@ INSERT INTO `tasa_refresco` (`id_periferico`, `tasa_refresco`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tiempo_respuesta`
+-- Table structure for table `tiempo_respuesta`
 --
 
 CREATE TABLE `tiempo_respuesta` (
@@ -1474,7 +1383,7 @@ CREATE TABLE `tiempo_respuesta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tiempo_respuesta`
+-- Dumping data for table `tiempo_respuesta`
 --
 
 INSERT INTO `tiempo_respuesta` (`id_periferico`, `tiempo_respuesta`) VALUES
@@ -1484,7 +1393,7 @@ INSERT INTO `tiempo_respuesta` (`id_periferico`, `tiempo_respuesta`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_audifono`
+-- Table structure for table `tipo_audifono`
 --
 
 CREATE TABLE `tipo_audifono` (
@@ -1493,7 +1402,7 @@ CREATE TABLE `tipo_audifono` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tipo_audifono`
+-- Dumping data for table `tipo_audifono`
 --
 
 INSERT INTO `tipo_audifono` (`id_periferico`, `tipo_audifono`) VALUES
@@ -1503,7 +1412,7 @@ INSERT INTO `tipo_audifono` (`id_periferico`, `tipo_audifono`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_cableado`
+-- Table structure for table `tipo_cableado`
 --
 
 CREATE TABLE `tipo_cableado` (
@@ -1514,7 +1423,7 @@ CREATE TABLE `tipo_cableado` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_curvatura`
+-- Table structure for table `tipo_curvatura`
 --
 
 CREATE TABLE `tipo_curvatura` (
@@ -1523,7 +1432,7 @@ CREATE TABLE `tipo_curvatura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tipo_curvatura`
+-- Dumping data for table `tipo_curvatura`
 --
 
 INSERT INTO `tipo_curvatura` (`id_periferico`, `tipo_curvatura`) VALUES
@@ -1533,7 +1442,7 @@ INSERT INTO `tipo_curvatura` (`id_periferico`, `tipo_curvatura`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_microfono`
+-- Table structure for table `tipo_microfono`
 --
 
 CREATE TABLE `tipo_microfono` (
@@ -1542,7 +1451,7 @@ CREATE TABLE `tipo_microfono` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tipo_microfono`
+-- Dumping data for table `tipo_microfono`
 --
 
 INSERT INTO `tipo_microfono` (`id_periferico`, `tipo_microfono`) VALUES
@@ -1552,7 +1461,7 @@ INSERT INTO `tipo_microfono` (`id_periferico`, `tipo_microfono`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_panel`
+-- Table structure for table `tipo_panel`
 --
 
 CREATE TABLE `tipo_panel` (
@@ -1561,7 +1470,7 @@ CREATE TABLE `tipo_panel` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tipo_panel`
+-- Dumping data for table `tipo_panel`
 --
 
 INSERT INTO `tipo_panel` (`id_periferico`, `tipo_panel`) VALUES
@@ -1573,7 +1482,7 @@ INSERT INTO `tipo_panel` (`id_periferico`, `tipo_panel`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_ram`
+-- Table structure for table `tipo_ram`
 --
 
 CREATE TABLE `tipo_ram` (
@@ -1582,7 +1491,7 @@ CREATE TABLE `tipo_ram` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tipo_ram`
+-- Dumping data for table `tipo_ram`
 --
 
 INSERT INTO `tipo_ram` (`id_hardware`, `tipo_ram`) VALUES
@@ -1592,7 +1501,7 @@ INSERT INTO `tipo_ram` (`id_hardware`, `tipo_ram`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_switch`
+-- Table structure for table `tipo_switch`
 --
 
 CREATE TABLE `tipo_switch` (
@@ -1601,7 +1510,7 @@ CREATE TABLE `tipo_switch` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tipo_switch`
+-- Dumping data for table `tipo_switch`
 --
 
 INSERT INTO `tipo_switch` (`id_periferico`, `tipo_switch`) VALUES
@@ -1612,7 +1521,7 @@ INSERT INTO `tipo_switch` (`id_periferico`, `tipo_switch`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_teclado`
+-- Table structure for table `tipo_teclado`
 --
 
 CREATE TABLE `tipo_teclado` (
@@ -1621,7 +1530,7 @@ CREATE TABLE `tipo_teclado` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tipo_teclado`
+-- Dumping data for table `tipo_teclado`
 --
 
 INSERT INTO `tipo_teclado` (`id_periferico`, `tipo_teclado`) VALUES
@@ -1631,7 +1540,7 @@ INSERT INTO `tipo_teclado` (`id_periferico`, `tipo_teclado`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -1642,30 +1551,27 @@ CREATE TABLE `users` (
   `role` enum('admin','user','superadmin') NOT NULL DEFAULT 'user',
   `status` enum('activo','inhabilitado') DEFAULT 'activo',
   `fecha_registro` datetime DEFAULT current_timestamp(),
-  `img` varchar(255) DEFAULT NULL
+  `img` varchar(255) DEFAULT NULL,
+  `recovery_token` varchar(255) DEFAULT NULL,
+  `token_expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `status`, `fecha_registro`, `img`) VALUES
-(1, 'cliente1', 'cliente1@correo.com', 'hashed_password1', 'user', 'activo', '2023-11-10 10:00:00', NULL),
-(2, 'cliente2', 'cliente2@correo.com', 'hashed_password2', 'user', 'activo', '2023-11-11 11:00:00', NULL),
-(3, 'cliente3', 'cliente3@correo.com', 'hashed_password3', 'user', 'activo', '2023-11-12 12:00:00', NULL),
-(46, 'admin', 'admin@admin.cl', '$2y$10$hnEq7BCps9MjNagRZbMkoO64Y9u7SDComOz8hPrNiRbQA3tAnjiKu', 'admin', 'activo', '2024-11-17 01:56:20', 'https://i.pinimg.com/736x/4f/91/0e/4f910e02fef7145d49ee7b934021026a.jpg'),
-(47, 'maty', 'matias@matias.cl', '$2y$10$1EF01TysLiHJkPLD3UTfoes/f1ocQmAJfR5IV.ODk.0P8VUJsc13S', 'user', 'activo', '2024-11-17 01:56:20', NULL),
-(50, 'pepe', 'pee@pee.cl', '$2y$10$G0pfGwL7/PNO.vJirg1PIOg5G4A1R7eqbzLq70FOZslR/6xlxdnVq', 'user', 'activo', '2024-11-17 01:56:20', NULL),
-(51, 'prueba', 'prueba@prueba.cl', '$2y$10$48yLlR2mmE0EpSe0uN4i2.t4FRKE3lGY2ZCA7996b8eGvo8R6E5ma', 'user', 'activo', '2024-11-17 01:56:20', NULL),
-(52, 'dan', 'dan.programas.oc@gmail.com', '$2y$10$zSbYIAYWhm0nPLPl0i0wBO3T1kXMmPCvJzz/s.wj8XrwwQjXm55VK', 'user', 'activo', '2024-11-17 01:56:20', NULL),
-(55, 'superadmin', 'superadmin@admin.cl', '$2y$10$V5kKuWrOSGkmM75nlrNAlu9qyFMvxkVCvIO2faGDBUsRK7cLMOdPm', 'superadmin', 'activo', '2024-11-17 01:56:20', NULL),
-(56, 'dan', 'dan.1997simon@gmail.com', '$2y$10$YTa3jBCViArfGlDBHYdZhuI5QybyvxqUO9TYo0mJI6HnT0XED9Lni', 'user', 'activo', '2024-11-17 01:56:20', NULL),
-(57, 'matias', 'matiasg206@gmail.com', '$2y$10$p4dK5oLfmp5wje9/wyj6IuGb2GPj6h7DuwUDH/btoZPRf1LiLUBu.', 'user', 'activo', '2024-11-17 01:56:20', NULL);
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `status`, `fecha_registro`, `img`, `recovery_token`, `token_expiry`) VALUES
+(46, 'admin', 'admin@admin.cl', '$2y$10$hnEq7BCps9MjNagRZbMkoO64Y9u7SDComOz8hPrNiRbQA3tAnjiKu', 'admin', 'activo', '2024-11-17 01:56:20', 'https://i.pinimg.com/736x/4f/91/0e/4f910e02fef7145d49ee7b934021026a.jpg', NULL, NULL),
+(55, 'superadmin', 'superadmin@admin.cl', '$2y$10$V5kKuWrOSGkmM75nlrNAlu9qyFMvxkVCvIO2faGDBUsRK7cLMOdPm', 'superadmin', 'activo', '2024-11-17 01:56:20', 'https://i.pinimg.com/736x/8e/84/ae/8e84aef392fa0dffd19cf85ad67a9231.jpg', NULL, NULL),
+(58, 'Maty', 'mgonzalezp@ing.ucsc.cl', '$2y$10$qpXdesFweIklh/218zgNAejjCLScLesntHLE8xp42qeg8QTFcjPNC', 'user', 'activo', '2024-12-02 01:09:31', 'https://i.pinimg.com/736x/4f/91/0e/4f910e02fef7145d49ee7b934021026a.jpg', NULL, NULL),
+(59, 'July', 'jmunozse@ing.ucsc.cl', '$2y$10$lzSRFGH1KM.D/PQM.ocd5edUhioCxMw6qqmFOH6folKDm2Rz2I8NG', 'user', 'activo', '2024-12-02 01:10:14', 'https://static.vecteezy.com/system/resources/previews/007/167/661/non_2x/user-blue-icon-isolated-on-white-background-free-vector.jpg', NULL, NULL),
+(60, 'Dan', 'docampo@ing.ucsc.cl', '$2y$10$iMcGtsrwxcWNAN936RJWge2kyoqvzot05BMHjT0.7Ugry5gLE5hlG', 'user', 'activo', '2024-12-02 01:10:31', 'https://static.vecteezy.com/system/resources/previews/007/167/661/non_2x/user-blue-icon-isolated-on-white-background-free-vector.jpg', NULL, NULL),
+(61, 'Rodrigo', 'rsanchezm@ing.ucsc.cl', '$2y$10$qD/WvNouV7aK98ZC7zq3KOg8Mbh4KdKQjhvklBp4QxI6hcg21yfVS', 'user', 'activo', '2024-12-02 01:10:48', 'https://static.vecteezy.com/system/resources/previews/007/167/661/non_2x/user-blue-icon-isolated-on-white-background-free-vector.jpg', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `velocidad_ram`
+-- Table structure for table `velocidad_ram`
 --
 
 CREATE TABLE `velocidad_ram` (
@@ -1674,7 +1580,7 @@ CREATE TABLE `velocidad_ram` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `velocidad_ram`
+-- Dumping data for table `velocidad_ram`
 --
 
 INSERT INTO `velocidad_ram` (`id_hardware`, `velocidad_ram`) VALUES
@@ -1684,30 +1590,42 @@ INSERT INTO `velocidad_ram` (`id_hardware`, `velocidad_ram`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ventas`
+-- Table structure for table `ventas`
 --
 
 CREATE TABLE `ventas` (
   `id_venta` int(11) NOT NULL,
-  `fecha_compra` datetime NOT NULL,
-  `total` decimal(10,0) NOT NULL
+  `id_producto` int(11) NOT NULL,
+  `nombre_producto` varchar(255) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precio_unitario` decimal(10,2) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `id_boleta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `ventas`
+-- Dumping data for table `ventas`
 --
 
-INSERT INTO `ventas` (`id_venta`, `fecha_compra`, `total`) VALUES
-(1, '2023-11-10 10:30:00', '150'),
-(2, '2023-11-11 15:45:00', '250'),
-(3, '2023-11-12 18:20:00', '1001111'),
-(4, '2023-11-13 20:15:00', '300'),
-(5, '2023-11-14 12:00:00', '120');
+INSERT INTO `ventas` (`id_venta`, `id_producto`, `nombre_producto`, `cantidad`, `precio_unitario`, `total`, `id_boleta`) VALUES
+(5, 70, 'AZORPA One-Knob', 1, 75990.00, 75990.00, 13),
+(6, 75, 'SAMSUNG ODYSSEY G3', 1, 279990.00, 279990.00, 13),
+(7, 78, 'CORSAIR VIRTUOSO', 1, 217990.00, 217990.00, 13),
+(8, 107, 'ROG Zephyrus G16', 1, 2519990.00, 2519990.00, 13),
+(9, 70, 'AZORPA One-Knob', 1, 75990.00, 75990.00, 14),
+(10, 75, 'SAMSUNG ODYSSEY G3', 1, 279990.00, 279990.00, 14),
+(11, 80, 'GALAXY BUDS FE', 1, 57990.00, 57990.00, 14),
+(12, 107, 'ROG Zephyrus G16', 1, 2519990.00, 2519990.00, 15),
+(13, 105, 'HP Victus 15', 1, 719990.00, 719990.00, 16),
+(14, 70, 'AZORPA One-Knob', 1, 75990.00, 75990.00, 17),
+(15, 75, 'SAMSUNG ODYSSEY G3', 1, 279990.00, 279990.00, 17),
+(16, 79, 'LOGITECH G335', 1, 79990.00, 79990.00, 17),
+(17, 107, 'ROG Zephyrus G16', 1, 2519990.00, 2519990.00, 18);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `venta_producto`
+-- Table structure for table `venta_producto`
 --
 
 CREATE TABLE `venta_producto` (
@@ -1717,22 +1635,10 @@ CREATE TABLE `venta_producto` (
   `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `venta_producto`
---
-
-INSERT INTO `venta_producto` (`id_venta_producto`, `id_venta`, `id_producto`, `cantidad`) VALUES
-(8, 1, 35, 2),
-(9, 1, 36, 1),
-(10, 2, 37, 4),
-(11, 3, 39, 1),
-(12, 4, 46, 3),
-(13, 5, 49, 2);
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `voltaje_ram`
+-- Table structure for table `voltaje_ram`
 --
 
 CREATE TABLE `voltaje_ram` (
@@ -1741,116 +1647,110 @@ CREATE TABLE `voltaje_ram` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `agregar_carrito`
+-- Indexes for table `agregar_carrito`
 --
 ALTER TABLE `agregar_carrito`
   ADD PRIMARY KEY (`id_carrito`),
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `anc`
+-- Indexes for table `anc`
 --
 ALTER TABLE `anc`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `asocia`
+-- Indexes for table `asocia`
 --
 ALTER TABLE `asocia`
   ADD PRIMARY KEY (`id_orden`,`id_producto`),
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `atencion_postventa`
+-- Indexes for table `atencion_postventa`
 --
 ALTER TABLE `atencion_postventa`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `bateria_notebook`
+-- Indexes for table `bateria_notebook`
 --
 ALTER TABLE `bateria_notebook`
   ADD PRIMARY KEY (`id_notebook`);
 
 --
--- Indices de la tabla `boletas`
+-- Indexes for table `boletas`
 --
 ALTER TABLE `boletas`
   ADD PRIMARY KEY (`id_boleta`),
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
--- Indices de la tabla `bus_de_entrada_gpu`
+-- Indexes for table `bus_de_entrada_gpu`
 --
 ALTER TABLE `bus_de_entrada_gpu`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `bus_hdd`
+-- Indexes for table `bus_hdd`
 --
 ALTER TABLE `bus_hdd`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `bus_ssd`
+-- Indexes for table `bus_ssd`
 --
 ALTER TABLE `bus_ssd`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `capacidad_almacenamiento`
+-- Indexes for table `capacidad_almacenamiento`
 --
 ALTER TABLE `capacidad_almacenamiento`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `capacidad_ram`
+-- Indexes for table `capacidad_ram`
 --
 ALTER TABLE `capacidad_ram`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `categorias`
---
-ALTER TABLE `categorias`
-  ADD PRIMARY KEY (`id_categoria`);
-
---
--- Indices de la tabla `categoria_teclado`
+-- Indexes for table `categoria_teclado`
 --
 ALTER TABLE `categoria_teclado`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `certificacion_fuente`
+-- Indexes for table `certificacion_fuente`
 --
 ALTER TABLE `certificacion_fuente`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `chipset_placa`
+-- Indexes for table `chipset_placa`
 --
 ALTER TABLE `chipset_placa`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `conectividad`
+-- Indexes for table `conectividad`
 --
 ALTER TABLE `conectividad`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `cpu_notebook`
+-- Indexes for table `cpu_notebook`
 --
 ALTER TABLE `cpu_notebook`
   ADD PRIMARY KEY (`id_notebook`);
 
 --
--- Indices de la tabla `detalle_boletas`
+-- Indexes for table `detalle_boletas`
 --
 ALTER TABLE `detalle_boletas`
   ADD PRIMARY KEY (`id_detalle_boleta`),
@@ -1858,56 +1758,56 @@ ALTER TABLE `detalle_boletas`
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `dpi_mouse`
+-- Indexes for table `dpi_mouse`
 --
 ALTER TABLE `dpi_mouse`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `formato_placa`
+-- Indexes for table `formato_placa`
 --
 ALTER TABLE `formato_placa`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `formato_ram`
+-- Indexes for table `formato_ram`
 --
 ALTER TABLE `formato_ram`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `formato_ssd`
+-- Indexes for table `formato_ssd`
 --
 ALTER TABLE `formato_ssd`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `frecuencia_cpu`
+-- Indexes for table `frecuencia_cpu`
 --
 ALTER TABLE `frecuencia_cpu`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `frecuencia_gpu`
+-- Indexes for table `frecuencia_gpu`
 --
 ALTER TABLE `frecuencia_gpu`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `gpu_notebook`
+-- Indexes for table `gpu_notebook`
 --
 ALTER TABLE `gpu_notebook`
   ADD PRIMARY KEY (`id_notebook`);
 
 --
--- Indices de la tabla `hardware`
+-- Indexes for table `hardware`
 --
 ALTER TABLE `hardware`
   ADD PRIMARY KEY (`id_hardware`),
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `historial_compras`
+-- Indexes for table `historial_compras`
 --
 ALTER TABLE `historial_compras`
   ADD PRIMARY KEY (`id_historial`),
@@ -1915,13 +1815,13 @@ ALTER TABLE `historial_compras`
   ADD KEY `id_boleta` (`id_boleta`);
 
 --
--- Indices de la tabla `iluminacion`
+-- Indexes for table `iluminacion`
 --
 ALTER TABLE `iluminacion`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `lista_deseo_producto`
+-- Indexes for table `lista_deseo_producto`
 --
 ALTER TABLE `lista_deseo_producto`
   ADD PRIMARY KEY (`id_lista`),
@@ -1929,89 +1829,89 @@ ALTER TABLE `lista_deseo_producto`
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `marca`
+-- Indexes for table `marca`
 --
 ALTER TABLE `marca`
   ADD PRIMARY KEY (`id_marca`);
 
 --
--- Indices de la tabla `memoria`
+-- Indexes for table `memoria`
 --
 ALTER TABLE `memoria`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `memoria_gpu`
+-- Indexes for table `memoria_gpu`
 --
 ALTER TABLE `memoria_gpu`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `notebook`
+-- Indexes for table `notebook`
 --
 ALTER TABLE `notebook`
   ADD PRIMARY KEY (`id_notebook`),
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `nucleo_hilo_cpu`
+-- Indexes for table `nucleo_hilo_cpu`
 --
 ALTER TABLE `nucleo_hilo_cpu`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `orden_compra`
+-- Indexes for table `orden_compra`
 --
 ALTER TABLE `orden_compra`
   ADD PRIMARY KEY (`id_orden`);
 
 --
--- Indices de la tabla `pantalla_notebook`
+-- Indexes for table `pantalla_notebook`
 --
 ALTER TABLE `pantalla_notebook`
   ADD PRIMARY KEY (`id_notebook`);
 
 --
--- Indices de la tabla `periferico`
+-- Indexes for table `periferico`
 --
 ALTER TABLE `periferico`
   ADD PRIMARY KEY (`id_periferico`),
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `pertenece`
+-- Indexes for table `pertenece`
 --
 ALTER TABLE `pertenece`
   ADD PRIMARY KEY (`nombre_lista`,`id_producto`),
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `peso_mouse`
+-- Indexes for table `peso_mouse`
 --
 ALTER TABLE `peso_mouse`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `potencia_fuente`
+-- Indexes for table `potencia_fuente`
 --
 ALTER TABLE `potencia_fuente`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `producto`
+-- Indexes for table `producto`
 --
 ALTER TABLE `producto`
   ADD PRIMARY KEY (`id_producto`);
 
 --
--- Indices de la tabla `producto_caracteristica`
+-- Indexes for table `producto_caracteristica`
 --
 ALTER TABLE `producto_caracteristica`
   ADD PRIMARY KEY (`id_caracteristica`),
   ADD KEY `producto_caracteristica_ibfk_1` (`id_producto`);
 
 --
--- Indices de la tabla `resena_valoracion`
+-- Indexes for table `resena_valoracion`
 --
 ALTER TABLE `resena_valoracion`
   ADD PRIMARY KEY (`id_resena`),
@@ -2019,158 +1919,153 @@ ALTER TABLE `resena_valoracion`
   ADD KEY `id_usuario` (`user_id`);
 
 --
--- Indices de la tabla `resolucion_monitor`
+-- Indexes for table `resolucion_monitor`
 --
 ALTER TABLE `resolucion_monitor`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `rpm_hdd`
+-- Indexes for table `rpm_hdd`
 --
 ALTER TABLE `rpm_hdd`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `sensor_mouse`
+-- Indexes for table `sensor_mouse`
 --
 ALTER TABLE `sensor_mouse`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `slot_memoria_placa`
+-- Indexes for table `slot_memoria_placa`
 --
 ALTER TABLE `slot_memoria_placa`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `socket_cpu`
+-- Indexes for table `socket_cpu`
 --
 ALTER TABLE `socket_cpu`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `socket_placa`
+-- Indexes for table `socket_placa`
 --
 ALTER TABLE `socket_placa`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `soporte_monitor`
+-- Indexes for table `soporte_monitor`
 --
 ALTER TABLE `soporte_monitor`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `subcategorias`
---
-ALTER TABLE `subcategorias`
-  ADD PRIMARY KEY (`id_subcategoria`),
-  ADD KEY `id_categoria` (`id_categoria`);
-
---
--- Indices de la tabla `tamanio_fuente`
+-- Indexes for table `tamanio_fuente`
 --
 ALTER TABLE `tamanio_fuente`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `tamanio_hdd`
+-- Indexes for table `tamanio_hdd`
 --
 ALTER TABLE `tamanio_hdd`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `tamanio_max_gabinete`
+-- Indexes for table `tamanio_max_gabinete`
 --
 ALTER TABLE `tamanio_max_gabinete`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `tamanio_monitor`
+-- Indexes for table `tamanio_monitor`
 --
 ALTER TABLE `tamanio_monitor`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `tasa_refresco`
+-- Indexes for table `tasa_refresco`
 --
 ALTER TABLE `tasa_refresco`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `tiempo_respuesta`
+-- Indexes for table `tiempo_respuesta`
 --
 ALTER TABLE `tiempo_respuesta`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `tipo_audifono`
+-- Indexes for table `tipo_audifono`
 --
 ALTER TABLE `tipo_audifono`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `tipo_cableado`
+-- Indexes for table `tipo_cableado`
 --
 ALTER TABLE `tipo_cableado`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `tipo_curvatura`
+-- Indexes for table `tipo_curvatura`
 --
 ALTER TABLE `tipo_curvatura`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `tipo_microfono`
+-- Indexes for table `tipo_microfono`
 --
 ALTER TABLE `tipo_microfono`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `tipo_panel`
+-- Indexes for table `tipo_panel`
 --
 ALTER TABLE `tipo_panel`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `tipo_ram`
+-- Indexes for table `tipo_ram`
 --
 ALTER TABLE `tipo_ram`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `tipo_switch`
+-- Indexes for table `tipo_switch`
 --
 ALTER TABLE `tipo_switch`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `tipo_teclado`
+-- Indexes for table `tipo_teclado`
 --
 ALTER TABLE `tipo_teclado`
   ADD PRIMARY KEY (`id_periferico`);
 
 --
--- Indices de la tabla `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `velocidad_ram`
+-- Indexes for table `velocidad_ram`
 --
 ALTER TABLE `velocidad_ram`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- Indices de la tabla `ventas`
+-- Indexes for table `ventas`
 --
 ALTER TABLE `ventas`
-  ADD PRIMARY KEY (`id_venta`);
+  ADD PRIMARY KEY (`id_venta`),
+  ADD KEY `id_boleta` (`id_boleta`),
+  ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `venta_producto`
+-- Indexes for table `venta_producto`
 --
 ALTER TABLE `venta_producto`
   ADD PRIMARY KEY (`id_venta_producto`),
@@ -2178,144 +2073,133 @@ ALTER TABLE `venta_producto`
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `voltaje_ram`
+-- Indexes for table `voltaje_ram`
 --
 ALTER TABLE `voltaje_ram`
   ADD PRIMARY KEY (`id_hardware`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `agregar_carrito`
+-- AUTO_INCREMENT for table `agregar_carrito`
 --
 ALTER TABLE `agregar_carrito`
   MODIFY `id_carrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT de la tabla `atencion_postventa`
+-- AUTO_INCREMENT for table `atencion_postventa`
 --
 ALTER TABLE `atencion_postventa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `boletas`
+-- AUTO_INCREMENT for table `boletas`
 --
 ALTER TABLE `boletas`
-  MODIFY `id_boleta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_boleta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT de la tabla `categorias`
---
-ALTER TABLE `categorias`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT de la tabla `detalle_boletas`
+-- AUTO_INCREMENT for table `detalle_boletas`
 --
 ALTER TABLE `detalle_boletas`
   MODIFY `id_detalle_boleta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT de la tabla `hardware`
+-- AUTO_INCREMENT for table `hardware`
 --
 ALTER TABLE `hardware`
   MODIFY `id_hardware` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
 
 --
--- AUTO_INCREMENT de la tabla `historial_compras`
+-- AUTO_INCREMENT for table `historial_compras`
 --
 ALTER TABLE `historial_compras`
-  MODIFY `id_historial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_historial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT de la tabla `lista_deseo_producto`
+-- AUTO_INCREMENT for table `lista_deseo_producto`
 --
 ALTER TABLE `lista_deseo_producto`
-  MODIFY `id_lista` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_lista` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT de la tabla `marca`
+-- AUTO_INCREMENT for table `marca`
 --
 ALTER TABLE `marca`
   MODIFY `id_marca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT de la tabla `notebook`
+-- AUTO_INCREMENT for table `notebook`
 --
 ALTER TABLE `notebook`
   MODIFY `id_notebook` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- AUTO_INCREMENT de la tabla `orden_compra`
+-- AUTO_INCREMENT for table `orden_compra`
 --
 ALTER TABLE `orden_compra`
   MODIFY `id_orden` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `periferico`
+-- AUTO_INCREMENT for table `periferico`
 --
 ALTER TABLE `periferico`
   MODIFY `id_periferico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=201;
 
 --
--- AUTO_INCREMENT de la tabla `producto`
+-- AUTO_INCREMENT for table `producto`
 --
 ALTER TABLE `producto`
   MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
--- AUTO_INCREMENT de la tabla `producto_caracteristica`
+-- AUTO_INCREMENT for table `producto_caracteristica`
 --
 ALTER TABLE `producto_caracteristica`
   MODIFY `id_caracteristica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=426;
 
 --
--- AUTO_INCREMENT de la tabla `resena_valoracion`
+-- AUTO_INCREMENT for table `resena_valoracion`
 --
 ALTER TABLE `resena_valoracion`
-  MODIFY `id_resena` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_resena` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- AUTO_INCREMENT de la tabla `subcategorias`
---
-ALTER TABLE `subcategorias`
-  MODIFY `id_subcategoria` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
--- AUTO_INCREMENT de la tabla `ventas`
+-- AUTO_INCREMENT for table `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT de la tabla `venta_producto`
+-- AUTO_INCREMENT for table `venta_producto`
 --
 ALTER TABLE `venta_producto`
-  MODIFY `id_venta_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_venta_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- Restricciones para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `anc`
+-- Constraints for table `anc`
 --
 ALTER TABLE `anc`
   ADD CONSTRAINT `anc_ibfk_1` FOREIGN KEY (`id_periferico`) REFERENCES `periferico` (`id_periferico`);
 
 --
--- Filtros para la tabla `subcategorias`
+-- Constraints for table `ventas`
 --
-ALTER TABLE `subcategorias`
-  ADD CONSTRAINT `subcategorias_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`);
+ALTER TABLE `ventas`
+  ADD CONSTRAINT `ventas_ibfk_1` FOREIGN KEY (`id_boleta`) REFERENCES `boletas` (`id_boleta`),
+  ADD CONSTRAINT `ventas_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
