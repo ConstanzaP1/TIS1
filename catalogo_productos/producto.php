@@ -49,17 +49,6 @@ if (isset($_POST['guardar_producto'])) {
             <input type="number" class="form-control" name="precio" id="precio" step="0.01" required>
         </div>
 
-        <div class="mb-3">
-            <label for="id_categoria" class="form-label">Categoría/Subcategoría</label>
-            <select class="form-select" name="id_categoria" required>
-                <option value="">Seleccionar Categoría/Subcategoría</option>
-                <?php while ($categoria = mysqli_fetch_assoc($categorias)): ?>
-                    <option value="<?php echo $categoria['id_categoria']; ?>">
-                        <?php echo $categoria['nombre_categoria']; ?> / <?php echo $categoria['subcategoria']; ?>
-                    </option>
-                <?php endwhile; ?>
-            </select>
-        </div>
 
         <div class="mb-3">
             <label for="imagen_url" class="form-label">URL de la Imagen</label>

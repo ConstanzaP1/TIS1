@@ -20,9 +20,10 @@ $result_boletas = mysqli_query($conexion, $sql_boletas);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Boletas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
@@ -42,7 +43,46 @@ $result_boletas = mysqli_query($conexion, $sql_boletas);
             </div>
         </div>
     </nav>
+<!-- Migajas de pan -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
+        <li class="breadcrumb-item">
+            <a href="../index.php" class="text-primary text-decoration-none">
+                <i class="fas fa-home me-1"></i> Inicio
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="../admin_panel/admin_panel.php" class="text-primary text-decoration-none">
+                Panel de Administración
+            </a>
+        </li>
+        <li class="breadcrumb-item active text-dark" aria-current="page">
+            Recuperar Boletas
+        </li>
+    </ol>
+</nav>
 
+<!-- Fin Migajas de pan -->
+<style>
+    .breadcrumb {
+    background-color: #f9f9f9;
+    font-size: 0.9rem;
+}
+
+.breadcrumb .breadcrumb-item a {
+    transition: color 0.2s ease-in-out;
+}
+
+.breadcrumb .breadcrumb-item a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.breadcrumb .breadcrumb-item.active {
+    font-weight: bold;
+    color: #333;
+}
+</style>
     <!-- Contenedor Principal -->
     <div class="container">
         <div class="bg-light p-4 rounded shadow">

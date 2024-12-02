@@ -74,8 +74,10 @@ $result = $conexion->query($query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración de Postventa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -114,24 +116,90 @@ $result = $conexion->query($query);
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="../admin_panel/admin_panel.php">
-                <img src="../logoblanco.png" alt="Logo" style="width: auto; height: auto;" class="d-inline-block align-text-top">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin_panel/admin_panel.php">Volver al Panel</a>
-                    </li>
-                </ul>
-            </div>
+<<<<<<< Updated upstream
+=======
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="../admin_panel/admin_panel.php">
+            <img src="../logoblanco.png" alt="Logo" style="width: auto; height: auto;" class="d-inline-block align-text-top">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../admin_panel/admin_panel.php">Volver al Panel</a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
+<!-- Migajas de pan -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
+        <li class="breadcrumb-item">
+            <a href="../index.php" class="text-primary text-decoration-none">
+                <i class="fas fa-home me-1"></i> Inicio
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="../admin_panel/admin_panel.php" class="text-primary text-decoration-none">
+                Panel de Administración
+            </a>
+        </li>
+        <li class="breadcrumb-item active text-dark" aria-current="page">
+            Recuperar Boletas
+        </li>
+    </ol>
+</nav>
+<!-- Fin Migajas de pan -->
+
+<style>
+    .breadcrumb {
+        background-color: #f9f9f9;
+        font-size: 0.9rem;
+    }
+
+    .breadcrumb .breadcrumb-item a {
+        transition: color 0.2s ease-in-out;
+    }
+
+    .breadcrumb .breadcrumb-item a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    .breadcrumb .breadcrumb-item.active {
+        font-weight: bold;
+        color: #333;
+    }
+</style>
+
+
+<!-- Fin Migajas de pan -->
+<style>
+    .breadcrumb {
+    background-color: #f9f9f9;
+    font-size: 0.9rem;
+}
+
+.breadcrumb .breadcrumb-item a {
+    transition: color 0.2s ease-in-out;
+}
+
+.breadcrumb .breadcrumb-item a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.breadcrumb .breadcrumb-item.active {
+    font-weight: bold;
+    color: #333;
+}
+</style>
+>>>>>>> Stashed changes
 <div class="container mt-5">
     <h2 class="text-center mb-4">Administración de Postventa</h2>
     <div class="table-responsive">
