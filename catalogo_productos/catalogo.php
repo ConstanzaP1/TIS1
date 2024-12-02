@@ -31,7 +31,6 @@ function filtrarProductosPorTipo($tipo)
                 p.imagen_url, 
                 p.destacado, 
                 p.costo, 
-                p.nombre_categoria, 
                 m.nombre_marca AS marca
               FROM producto p
               INNER JOIN marca m ON p.marca = m.id_marca
@@ -57,7 +56,6 @@ function obtenerTodosLosProductos()
                 p.imagen_url, 
                 p.destacado, 
                 p.costo, 
-                p.nombre_categoria, 
                 m.nombre_marca AS marca
               FROM producto p
               INNER JOIN marca m ON p.marca = m.id_marca";
