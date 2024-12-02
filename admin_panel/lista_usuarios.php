@@ -99,8 +99,8 @@ $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin
                                 <!-- Acciones Responsivas -->
                                 <!-- Para pantallas grandes -->
                                 <div class="d-none d-lg-flex justify-content-start align-items-center gap-2">
-                                    <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseos</a>
-                                    <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial</a>
+                                <a href="../lista_deseos/lista_deseos.php?user_id=<?php echo $row['id']; ?>" class="btn btn-dark btn-sm">Lista de deseos</a>
+                                <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-dark btn-sm">Historial</a>
                                     <?php if ($row['status'] === 'activo'): ?>
                                         <button class="btn btn-danger btn-sm"
                                                 data-bs-toggle="modal"

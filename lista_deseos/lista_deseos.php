@@ -1,26 +1,7 @@
 <?php
 session_start();
 include '../conexion.php';
-// Obtener productos en la lista de deseos
-$nombre_lista = 'mi_lista_deseos';
-$query = "SELECT p.id_producto, p.nombre_producto, m.nombre_marca, p.precio, p.imagen_url 
-          FROM producto p 
-          JOIN lista_deseo_producto ldp ON p.id_producto = ldp.id_producto 
-          JOIN marca m ON p.marca = m.id_marca 
-          WHERE ldp.nombre_lista = ? AND ldp.user_id = ?";
-$stmt = $conexion->prepare($query);
-$stmt->bind_param("si", $nombre_lista, $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
 
-// Inicializar $productos_deseados como un array vacío si no hay resultados
-$productos_deseados = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $productos_deseados[] = $row;
-    }
-}
-$stmt->close();
 // Verificar si el usuario está autenticado
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login/login.php");
