@@ -54,7 +54,7 @@
 
     </head>
     <style>
-        @media (max-width: 576px) {
+     @media (max-width: 576px) {
     .btn-comparador, .btn-wishlist {
         opacity: 0.7; /* Cambia la opacidad */
         transition: opacity 0.3s ease; /* Transición suave */
@@ -284,12 +284,6 @@
         transform: scale(1); /* Restablecer escala al presionar */
         border-color: #494e52; /* Color del borde al presionar */
     }
-    .btn-cat:hover {
-        background-color: white; /* Cambia el fondo al pasar el mouse */
-        color: black; /* Cambia el color del texto/icono */
-        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
-        transition: all 0.3s ease; /* Suaviza la animación */
-    }
 
     /* Campos de formulario */
     .form-group label {
@@ -309,7 +303,6 @@
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
     }
-    
 
     /* Transición general */
     .modal-content {
@@ -326,7 +319,7 @@
             opacity: 1;
         }
     }
-    
+    <style>
     @media (max-width: 768px) {
     .producto-detalle {
         flex-direction: column; /* Cambiar la disposición a columna */
