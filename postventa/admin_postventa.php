@@ -2,7 +2,6 @@
 session_start();
 require('../conexion.php');
 require('../vendor/autoload.php');
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -41,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_consulta']) && iss
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'tisnology1@gmail.com'; // Correo del remitente
-                $mail->Password = 'ytfksqrqrginpvge'; // Contraseña de aplicación
+                $mail->Username = 'tisnology1@gmail.com';
+                $mail->Password = 'ytfksqrqrginpvge';
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
@@ -78,9 +77,20 @@ $result = $conexion->query($query);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
         .table th, .table td {
             vertical-align: middle;
             text-align: center;
+        }
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f2f2f2;
         }
         .pregunta {
             white-space: nowrap;
@@ -105,18 +115,18 @@ $result = $conexion->query($query);
 </head>
 <body>
 <div class="container mt-5">
-    <h2 class="mb-4">Administración de Postventa</h2>
+    <h2 class="text-center mb-4">Administración de Postventa</h2>
     <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <thead class="table-primary">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
                 <tr>
-                    <th class="col-2">Cliente</th>
-                    <th class="col-2">Correo</th>
-                    <th class="col-4">Pregunta</th>
-                    <th class="col-2">Respuesta</th>
-                    <th class="col-1">Fecha Pregunta</th>
-                    <th class="col-1">Fecha Respuesta</th>
-                    <th class="col-1">Acción</th>
+                    <th>Cliente</th>
+                    <th>Correo</th>
+                    <th>Pregunta</th>
+                    <th>Respuesta</th>
+                    <th>Fecha Pregunta</th>
+                    <th>Fecha Respuesta</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -203,7 +213,6 @@ $result = $conexion->query($query);
         const cliente = button.getAttribute('data-cliente');
         const pregunta = button.getAttribute('data-pregunta');
 
-        // Rellenar el modal con la información
         document.getElementById('modalCliente').textContent = cliente;
         document.getElementById('modalPregunta').textContent = pregunta;
         document.getElementById('modalIdConsulta').value = idConsulta;
@@ -232,5 +241,13 @@ $result = $conexion->query($query);
         });
     <?php endif; ?>
 </script>
+<div class="container mt-5">
+    <div class="mb-3">
+        <a href="../admin_panel/admin_panel.php" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-circle"></i> Volver al Panel
+        </a>
+    </div>
+</div>
+
 </body>
 </html>
