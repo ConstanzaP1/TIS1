@@ -577,7 +577,6 @@ function obtenerTiposDeProducto()
                                     <th>Cantidad</th>
                                     <th>Precio Unitario</th>
                                     <th>Total</th>
-                                    <th>Acciónes</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -587,12 +586,12 @@ function obtenerTiposDeProducto()
                                         <td><?php echo $item['cantidad']; ?></td>
                                         <td>$<?php echo number_format($item['precio_unitario'], 0, ',', '.'); ?></td>
                                         <td>$<?php echo number_format($item['total'], 0, ',', '.'); ?></td>
-                                        <td><a href="../postventa/postventa.php?id_boleta=<?php echo $row['id_boleta']; ?>" class="btn btn-primary">
-                                        Solicitar Postventa</a></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
+                        <a href="../postventa/postventa.php?id_boleta=<?php echo $row['id_boleta']; ?>" class="btn btn-primary">
+                                        Solicitar Postventa</a>
                     </div>
                 </div>
             </div>
