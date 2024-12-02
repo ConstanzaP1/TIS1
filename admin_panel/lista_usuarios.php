@@ -52,26 +52,6 @@ $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin
             </div>
         </div>
     </nav>
-<!-- Migajas de pan -->
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
-        <li class="breadcrumb-item">
-            <a href="../index.php" class="text-primary text-decoration-none">
-                <i class="fas fa-home me-1"></i> Inicio
-            </a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="admin_panel.php" class="text-primary text-decoration-none">
-                Panel de Administración
-            </a>
-        </li>
-        <li class="breadcrumb-item active text-dark" aria-current="page">
-            Lista de Usuarios
-        </li>
-    </ol>
-</nav>
-
-<!-- Fin Migajas de pan -->
 <style>
     .breadcrumb {
     background-color: #f9f9f9;
@@ -103,14 +83,18 @@ $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin
                     <div class="col-lg-6 col-md-8 col-12">
                         <input type="text" name="search" class="form-control" placeholder="Buscar por nombre o correo" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
                     </div>
-                    <div class="col-lg-2 col-md-4 col-6">
-                        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                    <div class="col-lg-1 col-md-4 col-6">
+                        <button type="submit" class="btn btn-dark w-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
-                        <a href="lista_usuarios.php" class="btn btn-secondary w-100">Restablecer</a>
+                        <a href="lista_usuarios.php" class="btn btn-dark w-100">Restablecer</a>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
-                        <a href="historial_compras.php" class="btn btn-secondary w-100">Historial</a>
+                        <a href="historial_compras.php" class="btn btn-dark w-100">Historial</a>
                     </div>
                 </div>
             </form>
@@ -156,8 +140,8 @@ $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin
                                     <?php endif; ?>
 
                 <!-- Botones adicionales -->
-                <a href="../lista_deseos/lista_deseos.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseos</a>
-                <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
+                <a href="../lista_deseos/lista_deseos.php?user_id=<?php echo $row['id']; ?>" class="btn btn-dark btn-sm">Lista de deseos</a>
+                <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-dark btn-sm">Historial de compras</a>
                 <?php if ($row['status'] === 'activo'): ?>
                     <!-- Botón para inhabilitar -->
                     <form method="POST" action="inhabilitar_usuario.php" class="d-inline">

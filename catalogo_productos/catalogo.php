@@ -316,7 +316,7 @@ function obtenerTodosLosProductos()
         </li>
         <li class="breadcrumb-item active text-dark" aria-current="page">
             <a href="catalogo.php" class="text-black text-decoration-none">
-                Catalogo
+                Catálogo
             </a>
         </li>
     </ol>
@@ -417,7 +417,7 @@ function obtenerTodosLosProductos()
                                         </div>
                                         <div class='texto card-body text-begin' style='width: 100%; height: 45%;'>
                                             <h6 class='text-black fw-bold'>$marca_producto</h6>                               
-                                            <h5 class='text-secondary-emphasis'>$nombre_producto</h5>
+                                            <h5 class='text-secondary-emphasis text-uppercase'>$nombre_producto</h5>
                                             <h5 class='text-secondary-emphasis'>$$precio</h5>
                                         </div>
                                     </div>
