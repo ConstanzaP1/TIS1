@@ -71,8 +71,10 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
         mysqli_query($conexion, $query_venta);
     }
 
-    // Actualizar el total de la boleta
-    $query_update_boleta = "UPDATE boletas SET total = '$total' WHERE id_boleta = '$id_boleta'";
+    // Actualizar el total y los detalles de la boleta
+    $query_update_boleta = "UPDATE boletas 
+    SET total = '$total', detalles = '" . json_encode($detalle_boleta) . "' 
+    WHERE id_boleta = '$id_boleta'";
     mysqli_query($conexion, $query_update_boleta);
 
     // Agregar el registro al historial de compras

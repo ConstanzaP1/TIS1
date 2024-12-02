@@ -5,7 +5,7 @@ require('../conexion.php');
 $userData = null;
 $showModal = false; // Variable para controlar si se muestra el modal
 // Consulta para obtener la URL de la imagen del usuario actual
-$user_id = $_SESSION['user_id']; // Asegúrate de tener el ID del usuario en sesión
+$user_id = $_SESSION['user_id']; 
 $query = "SELECT img FROM users WHERE id = ?";
 $stmt = $conexion->prepare($query);
 $stmt->bind_param("i", $user_id);
