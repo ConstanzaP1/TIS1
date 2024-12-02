@@ -284,6 +284,12 @@
         transform: scale(1); /* Restablecer escala al presionar */
         border-color: #494e52; /* Color del borde al presionar */
     }
+    .btn-cat:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: black; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
 
     /* Campos de formulario */
     .form-group label {
@@ -303,6 +309,7 @@
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
     }
+    
 
     /* Transición general */
     .modal-content {
@@ -444,9 +451,12 @@
                         </li>
                     </a>
                 <?php else: ?>
-                    <li class="nav-item">
-                        <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
-                    </li>
+                    <button 
+        class="btn btn-cat rounded-pill border px-3 py-3" 
+        style=" background-color:white; color: #white;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='../login/login.php'">
+        Iniciar Sesión
+    </button>
                 <?php endif; ?>
             </ul>
         </div>
@@ -460,31 +470,26 @@
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
-                            <li>
-                                <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
-                            </li>
-                        <?php endif; ?>
-                        <li>
-                            <a class="dropdown-item text-black" href="../perfil_usuario/perfil_usuario.php">Mi perfil</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
-                        </li>
-                    </ul>
+            <?php if (isset($_SESSION['username'])): ?>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
+                <li>
+                    <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
                 </li>
-                <li class="nav-item">
-                    <button 
-                        class="nav-link  bg-white rounded-pill p-3" 
-                        onclick="window.location.href='../catalogo_productos/catalogo.php'">
-                        Catálogo
-                    </button>
-                </li>
+            <?php endif; ?>
+            <li>
+                <a class="dropdown-item text-black" href="../perfil_usuario/perfil_usuario.php">Mi perfil</a>
+            </li>
+            <li>
+                <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
+            </li>
+        </ul>
+    </li>
+<?php endif; ?>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="d-flex">
                 <li class="nav-item">
@@ -517,9 +522,12 @@
                         Catálogo
                     </button>
                 </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
-                </li>
+                <button 
+        class="btn btn-cat rounded-pill border px-3 py-3" 
+        style=" background-color:white; color: #white;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='../login/login.php'">
+        Iniciar Sesión
+    </button>
                 <?php endif; ?>
             </ul>
         </div>
