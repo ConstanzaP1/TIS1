@@ -143,6 +143,12 @@ function obtenerTodosLosProductos()
     font-size: 30px;
     vertical-align: middle;
 }
+@media (max-width: 768px) {
+    .btn {
+        font-size: 14px; /* Ajustar el tamaño del texto */
+        padding: 8px;    /* Ajustar el padding de los botones */
+    }
+}
 
 </style>
 
@@ -366,10 +372,11 @@ function obtenerTodosLosProductos()
                         </select>
                     </div>
 
-                    <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-                        <button type="button" class="btn btn-secondary" onclick="resetFilters()">Limpiar Filtros</button>
-                    </div>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <button type="submit" class="btn btn-primary flex-grow-1">Aplicar Filtros</button>
+    <button type="button" class="btn btn-secondary flex-grow-1" onclick="resetFilters()">Limpiar Filtros</button>
+</div>
+
                 </form>
             </div>
         </div>
