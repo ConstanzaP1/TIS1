@@ -21,134 +21,134 @@ $result_boletas = mysqli_query($conexion, $sql_boletas);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Boletas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        .container-limited {
-            max-width: 90%; /* Limitar el ancho al 90% de la pantalla */
-            max-height: 90vh; /* Limitar la altura al 90% de la pantalla */
-            padding: 20px;
-            margin: 0 auto; /* Centrar horizontalmente */
-            box-sizing: border-box;
-        }
-        .table-responsive {
-            max-height: 60vh; /* Altura máxima de la tabla con scroll */
-            overflow-y: auto;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-<div class="container-limited">
-    <h2 class="text-center">Boletas Registradas</h2>
-
-    <!-- Campo de búsqueda -->
-    <div class="mb-3">
-        <input type="text" id="searchInput" class="form-control" placeholder="Buscar por ID Boleta">
-    </div>
-
-    <!-- Tabla con scroll vertical ocupando el espacio limitado -->
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID Boleta</th>
-                    <th>Fecha</th>
-                    <th>Total</th>
-                    <th>Código de Autorización</th>
-                    <th>Detalles</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="boletasTable">
-                <?php while ($boleta = mysqli_fetch_assoc($result_boletas)): ?>
-                    <tr>
-                        <td><?php echo $boleta['id_boleta']; ?></td>
-                        <td><?php echo $boleta['fecha']; ?></td>
-                        <td>$<?php echo number_format($boleta['total'], 0, ',', '.'); ?></td>
-                        <td><?php echo $boleta['codigo_autorizacion']; ?></td>
-                        <td><?php echo htmlspecialchars($boleta['detalles']); ?></td>
-                        <td>
-                            <button class="btn btn-info btn-sm" onclick="verBoleta(
-                                '<?php echo $boleta['id_boleta']; ?>',
-                                '<?php echo $boleta['fecha']; ?>',
-                                '<?php echo number_format($boleta['total'], 0, ',', '.'); ?>',
-                                '<?php echo $boleta['codigo_autorizacion']; ?>',
-                                `<?php echo htmlspecialchars($boleta['detalles']); ?>`
-                            )">Ver Boleta</button>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-    
-    <div class="text-center mt-3">
-        <a href="../admin_panel/admin_panel.php" class="btn btn-secondary">Volver al Panel de Administración</a>
-    </div>
-</div>
-
-<!-- Modal para ver los detalles de la boleta -->
-<div class="modal fade" id="boletaModal" tabindex="-1" aria-labelledby="boletaModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="boletaModalLabel">Detalles de la Boleta</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../admin_panel/admin_panel.php">
+                <img src="../logoblanco.png" alt="Logo" style="width: auto; height: auto;" class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin_panel/admin_panel.php">Volver al Panel</a>
+                    </li>
+                </ul>
             </div>
-            <div class="modal-body">
-                <p><strong>ID Boleta:</strong> <span id="modalBoletaId"></span></p>
-                <p><strong>Fecha:</strong> <span id="modalFecha"></span></p>
-                <p><strong>Total:</strong> $<span id="modalTotal"></span></p>
-                <p><strong>Código de Autorización:</strong> <span id="modalCodigoAutorizacion"></span></p>
-                <p><strong>Detalles:</strong></p>
-                <pre id="modalDetalles" style="white-space: pre-wrap;"></pre>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <a href="#" id="downloadBoleta" class="btn btn-primary">Descargar Boleta</a>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal -->
+    <div class="container">
+        <div class="bg-light p-4 rounded shadow">
+            <h2 class="text-center mb-4">Boletas Registradas</h2>
+
+            <!-- Campo de búsqueda -->
+            <form class="mb-3">
+                <div class="row g-2">
+                    <div class="col-md-12 col-12">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Buscar por ID Boleta">
+                    </div>
+
+                </div>
+            </form>
+
+            <!-- Tabla con Scroll -->
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID Boleta</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Código de Autorización</th>
+                            <th>Detalles</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="boletasTable">
+                        <?php while ($boleta = mysqli_fetch_assoc($result_boletas)): ?>
+                            <tr>
+                                <td><?php echo $boleta['id_boleta']; ?></td>
+                                <td><?php echo $boleta['fecha']; ?></td>
+                                <td>$<?php echo number_format($boleta['total'], 0, ',', '.'); ?></td>
+                                <td><?php echo $boleta['codigo_autorizacion']; ?></td>
+                                <td><?php echo htmlspecialchars($boleta['detalles']); ?></td>
+                                <td>
+                                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                                        <button class="btn btn-info btn-sm" onclick="verBoleta(
+                                            '<?php echo $boleta['id_boleta']; ?>',
+                                            '<?php echo $boleta['fecha']; ?>',
+                                            '<?php echo number_format($boleta['total'], 0, ',', '.'); ?>',
+                                            '<?php echo $boleta['codigo_autorizacion']; ?>',
+                                            `<?php echo htmlspecialchars($boleta['detalles']); ?>`
+                                        )">Ver</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Modal para Ver Boleta -->
+    <div class="modal fade" id="boletaModal" tabindex="-1" aria-labelledby="boletaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="boletaModalLabel">Detalles de la Boleta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>ID Boleta:</strong> <span id="modalBoletaId"></span></p>
+                    <p><strong>Fecha:</strong> <span id="modalFecha"></span></p>
+                    <p><strong>Total:</strong> $<span id="modalTotal"></span></p>
+                    <p><strong>Código de Autorización:</strong> <span id="modalCodigoAutorizacion"></span></p>
+                    <p><strong>Detalles:</strong></p>
+                    <pre id="modalDetalles" style="white-space: pre-wrap;"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <a href="#" id="downloadBoleta" class="btn btn-primary">Descargar Boleta</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script>
-function verBoleta(id, fecha, total, codigo, detalles) {
-    // Llenar el contenido del modal con los datos de la boleta
-    $('#modalBoletaId').text(id);
-    $('#modalFecha').text(fecha);
-    $('#modalTotal').text(total);
-    $('#modalCodigoAutorizacion').text(codigo);
-    $('#modalDetalles').text(detalles);
+    <script>
+        // Ver Boleta en Modal
+        function verBoleta(id, fecha, total, codigo, detalles) {
+            document.getElementById('modalBoletaId').textContent = id;
+            document.getElementById('modalFecha').textContent = fecha;
+            document.getElementById('modalTotal').textContent = total;
+            document.getElementById('modalCodigoAutorizacion').textContent = codigo;
+            document.getElementById('modalDetalles').textContent = detalles;
 
-    // Configurar el enlace de descarga
-    $('#downloadBoleta').attr('href', `descargar_boleta.php?id_boleta=${id}`);
+            document.getElementById('downloadBoleta').setAttribute('href', `descargar_boleta.php?id_boleta=${id}`);
 
-    // Mostrar el modal
-    var modal = new bootstrap.Modal(document.getElementById('boletaModal'));
-    modal.show();
-}
-// Filtrar las boletas
-document.getElementById("searchInput").addEventListener("input", function () {
-    const searchValue = this.value.toLowerCase(); // Convertir a minúsculas para búsqueda insensible a mayúsculas
-    const rows = document.querySelectorAll("#boletasTable tr");
-
-    rows.forEach(row => {
-        const idBoleta = row.cells[0]?.textContent.toLowerCase(); // Obtener el texto del ID Boleta
-        if (idBoleta && idBoleta.includes(searchValue)) {
-            row.style.display = ""; // Mostrar la fila si coincide
-        } else {
-            row.style.display = "none"; // Ocultar la fila si no coincide
+            const modal = new bootstrap.Modal(document.getElementById('boletaModal'));
+            modal.show();
         }
-    });
-});
 
-</script>
+        // Filtrar boletas
+        document.getElementById("searchInput").addEventListener("input", function () {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll("#boletasTable tr");
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+            rows.forEach(row => {
+                const idBoleta = row.cells[0]?.textContent.toLowerCase();
+                row.style.display = idBoleta && idBoleta.includes(searchValue) ? "" : "none";
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

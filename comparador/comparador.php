@@ -355,6 +355,9 @@ function obtenerTiposDeProducto()
         .navbar {
             background-color: rgba(0, 128, 255, 0.5); /* Fondo celeste */
         }
+        body {
+            background-color: #f8f9fa; /* Fondo claro */
+        }
         .product-img {
             height: 200px;
             object-fit: cover;
@@ -401,6 +404,12 @@ function obtenerTiposDeProducto()
             font-weight: bold;
             color: #333;
         }
+        .btn-cat:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: black; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
     </style>
 </head>
 <body>
@@ -429,6 +438,14 @@ function obtenerTiposDeProducto()
             <ul class="navbar-nav ms-auto align-items-center">
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
+                    <li class="nav-item">
+    <button 
+        class="btn btn-cat rounded-pill  px-3 py-3" 
+        style=" color: #black;;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+        Catálogo
+    </button>
+</li>
                     <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
@@ -507,26 +524,12 @@ function obtenerTiposDeProducto()
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorias
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
-                        <!-- Opción para todos los productos -->
-                        <li>
-                            <a class="dropdown-item" href="../catalogo_productos/catalogo.php">Todos los productos</a>
-                        </li>
-                        <?php 
-                        // Opciones dinámicas basadas en tipos de producto
-                        $tiposDeProducto = obtenerTiposDeProducto();
-                        foreach ($tiposDeProducto as $tipo): ?>
-                            <li>
-                                <a class="dropdown-item text-capitalize" href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
-                                    <?php echo htmlspecialchars($tipo); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                <li class="nav-item">
+                    <button 
+                        class="nav-link  bg-white rounded-pill p-3" 
+                        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                        Ir al Catálogo
+                    </button>
                 </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="d-flex">
