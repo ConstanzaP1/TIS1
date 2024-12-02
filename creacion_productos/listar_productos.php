@@ -25,10 +25,29 @@ if (!$resultado) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
 </head>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../admin_panel/admin_panel.php">
+                <img src="../logoblanco.png" alt="Logo" style="width: auto; height: auto;" class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin_panel/admin_panel.php">Volver al Panel</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 <body>
 <div class="container mt-5">
-    <h2 class="mb-4">Lista de Productos</h2>
-    
+    <h2 class="d-flex justify-content-between align-items-center mb-4">
+        <span>Modificar productos</span>
+    </h2>
     <!-- Comprobamos si hay productos en la consulta -->
     <?php if (mysqli_num_rows($resultado) > 0): ?>
         <div class="table-responsive">
@@ -48,20 +67,20 @@ if (!$resultado) {
                         <tr id="producto-<?php echo $producto['id_producto']; ?>">
                             <td><?php echo htmlspecialchars($producto['nombre_producto']); ?></td>
                             <td><?php echo htmlspecialchars($producto['nombre_marca']); ?></td> <!-- Mostrar nombre de la marca -->
-                            <td><?php echo htmlspecialchars($producto['costo']); ?></td>
-                            <td><?php echo htmlspecialchars($producto['precio']); ?></td>
+                            <td><?php echo '$' . number_format(htmlspecialchars($producto['costo']), 0, ',', '.'); ?></td>
+                            <td><?php echo '$' . number_format(htmlspecialchars($producto['precio']), 0, ',', '.'); ?></td>
                             <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
                             <td>
-                                <a href="modificar_productos.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-warning btn-sm mx-1">Modificar</a>
-                                <button onclick="eliminarProducto(<?php echo $producto['id_producto']; ?>)" class="btn btn-danger btn-sm mx-1">Eliminar</button>
+                                <a href="modificar_productos.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-primary btn-sm mx-1">Modificar</a>
                                 <form method="POST" action="../catalogo_productos/actualizar_destacados.php" class="d-inline">
                                     <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
                                     <?php if ($producto['destacado']): ?>
-                                        <button type="submit" name="quitar_destacado" class="btn btn-secondary btn-sm mx-1">Quitar Destacado</button>
+                                        <button type="submit" name="quitar_destacado" class="btn btn-secondary btn-sm mx-1">Quitar destacado</button>
                                     <?php else: ?>
-                                        <button type="submit" name="destacar" class="btn btn-success btn-sm mx-1">Marcar Destacado</button>
+                                        <button type="submit" name="destacar" class="btn btn-success btn-sm mx-1">Marcar destacado</button>
                                     <?php endif; ?>
                                 </form>
+                                <button onclick="eliminarProducto(<?php echo $producto['id_producto']; ?>)" class="btn btn-danger btn-sm mx-1">Eliminar</button>
                             </td>
                         </tr>
                     <?php endwhile; ?>
@@ -72,7 +91,6 @@ if (!$resultado) {
         <p>No hay productos disponibles.</p>
     <?php endif; ?>
 
-    <button type="button" class="btn btn-secondary mt-1 mb-3" onclick="window.location.href='../admin_panel/admin_panel.php';">Volver al Panel de Administración</button>
 </div>
 
 <script>

@@ -24,7 +24,6 @@ function obtenerProductosDestacados()
                 p.imagen_url, 
                 p.destacado, 
                 p.costo, 
-
                 m.nombre_marca AS marca
               FROM producto p
               INNER JOIN marca m ON p.marca = m.id_marca

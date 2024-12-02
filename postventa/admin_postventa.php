@@ -164,7 +164,7 @@ $result = $conexion->query($query);
                         <td><?php echo date('d/m/Y H:i', strtotime($row['fecha_pregunta'])); ?></td>
                         <td><?php echo $row['fecha_respuesta'] ? date('d/m/Y H:i', strtotime($row['fecha_respuesta'])) : 'Pendiente'; ?></td>
                         <td>
-                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#responderModal" 
+                            <button class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#responderModal" 
                                     data-id="<?php echo $row['id']; ?>" 
                                     data-cliente="<?php echo htmlspecialchars($row['cliente_nombre']); ?>"
                                     data-pregunta="<?php echo htmlspecialchars($row['pregunta']); ?>">

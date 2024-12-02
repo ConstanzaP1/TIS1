@@ -248,7 +248,14 @@ function obtenerTiposDeProducto()
             </form>
             <!-- Menú desplegable -->
             <ul class="navbar-nav ms-auto align-items-center">
-                
+                <li class="nav-item">
+                    <button 
+                        class="btn btn-cat rounded-pill  px-3 py-3" 
+                        style=" color: #black;;  font-size: 0.85rem; font-weight: 500;"
+                        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                        Catálogo
+                    </button>
+                </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">

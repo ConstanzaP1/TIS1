@@ -80,8 +80,8 @@ $result_boletas = mysqli_query($conexion, $sql_boletas);
                                 <td><?php echo $boleta['codigo_autorizacion']; ?></td>
                                 <td><?php echo htmlspecialchars($boleta['detalles']); ?></td>
                                 <td>
-                                    <div class="d-flex flex-wrap justify-content-center gap-2">
-                                        <button class="btn btn-info btn-sm" onclick="verBoleta(
+                                    <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+                                        <button class="btn-sm btn btn-dark p-2" style="border-radius:20%" onclick="verBoleta(
                                             '<?php echo $boleta['id_boleta']; ?>',
                                             '<?php echo $boleta['fecha']; ?>',
                                             '<?php echo number_format($boleta['total'], 0, ',', '.'); ?>',

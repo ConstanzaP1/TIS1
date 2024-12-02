@@ -573,7 +573,7 @@ if (isset($_GET['id_producto'])){
                 </li>
                 <li class="breadcrumb-item">
                     <a href="../catalogo_productos/catalogo.php" class="text-primary text-decoration-none">
-                        Catalogo
+                        Catálogo
                     </a>
                 </li>
                 
