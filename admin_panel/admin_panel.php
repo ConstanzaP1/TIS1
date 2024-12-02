@@ -748,21 +748,18 @@ $result_users = mysqli_query($conexion, $sql_users);
                                 // Consulta SQL para obtener los datos de ventas
                                 $sql_ventas = "
                                     SELECT 
-                                        p.id_producto AS ID_Producto,
                                         p.nombre_producto AS Nombre_Producto,
                                         p.costo AS Costo_Producto,
-                                        p.precio AS Precio_Venta,
-                                        SUM(vp.cantidad) AS Cantidad_Vendida,
-                                        SUM(vp.cantidad * p.precio) AS Total_Ventas,
-                                        SUM(vp.cantidad * (p.precio - p.costo)) AS Ganancia_Generada
+                                        v.precio_unitario AS Precio_Venta,
+                                        SUM(v.cantidad) AS Cantidad_Vendida,
+                                        SUM(v.precio_unitario * v.cantidad) AS Total_Ventas,
+                                        SUM((v.precio_unitario - p.costo) * v.cantidad) AS Ganancia_Generada
                                     FROM 
-                                        producto p
+                                        ventas v
                                     JOIN 
-                                        venta_producto vp ON p.id_producto = vp.id_producto
-                                    JOIN 
-                                        ventas v ON vp.id_venta = v.id_venta
+                                        producto p ON v.id_producto = p.id_producto
                                     GROUP BY 
-                                        p.id_producto, p.nombre_producto, p.costo, p.precio
+                                        p.id_producto, p.nombre_producto, p.costo, v.precio_unitario
                                     ORDER BY 
                                         Ganancia_Generada DESC
                                 ";

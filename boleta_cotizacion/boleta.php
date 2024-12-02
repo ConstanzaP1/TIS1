@@ -24,6 +24,23 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
     $total = 0;
     $detalle_boleta = [];
 
+    // Establecer la zona horaria de Santiago
+    date_default_timezone_set('America/Santiago');
+    $fecha = date('Y-m-d H:i:s');
+    $codigo_autorizacion = mysqli_real_escape_string($conexion, $_GET['auth_code']);
+
+    // Insertar la boleta en la base de datos
+    $query_boleta = "INSERT INTO boletas (id_usuario, fecha, total, codigo_autorizacion, detalles) 
+                     VALUES ('$id_usuario', '$fecha', '$total', '$codigo_autorizacion', '" . json_encode($detalle_boleta) . "')";
+    
+    if (!mysqli_query($conexion, $query_boleta)) {
+        die("Error al guardar la boleta en la base de datos: " . mysqli_error($conexion));
+    }
+
+    $id_boleta = mysqli_insert_id($conexion);  // Obtener el id_boleta recién insertado
+    $_SESSION['id_boleta'] = $id_boleta;
+
+    // Procesar los productos en el carrito y reducir stock
     foreach ($detalle_compra as $id_producto => $cantidad) {
         $id_producto = mysqli_real_escape_string($conexion, $id_producto);
         $cantidad = (int)$cantidad;
@@ -47,23 +64,18 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
             'precio_unitario' => $precio_unitario,
             'total' => $precio_total
         ];
+
+        // Insertar la venta en la tabla ventas
+        $query_venta = "INSERT INTO ventas (id_producto, nombre_producto, cantidad, precio_unitario, total, id_boleta) 
+                        VALUES ('$id_producto', '$nombre_producto', '$cantidad', '$precio_unitario', '$precio_total', '$id_boleta')";
+        mysqli_query($conexion, $query_venta);
     }
 
-    // Establecer la zona horaria de Santiago
-    date_default_timezone_set('America/Santiago');
-    $fecha = date('Y-m-d H:i:s');
-    $codigo_autorizacion = mysqli_real_escape_string($conexion, $_GET['auth_code']);
-
-    // Insertar la boleta en la base de datos
-    $query_boleta = "INSERT INTO boletas (id_usuario, fecha, total, codigo_autorizacion, detalles) 
-                     VALUES ('$id_usuario', '$fecha', '$total', '$codigo_autorizacion', '" . json_encode($detalle_boleta) . "')";
-    
-    if (!mysqli_query($conexion, $query_boleta)) {
-        die("Error al guardar la boleta en la base de datos: " . mysqli_error($conexion));
-    }
-
-    $id_boleta = mysqli_insert_id($conexion);
-    $_SESSION['id_boleta'] = $id_boleta;
+    // Actualizar el total y los detalles de la boleta
+    $query_update_boleta = "UPDATE boletas 
+    SET total = '$total', detalles = '" . json_encode($detalle_boleta) . "' 
+    WHERE id_boleta = '$id_boleta'";
+    mysqli_query($conexion, $query_update_boleta);
 
     // Agregar el registro al historial de compras
     $query_historial = "INSERT INTO historial_compras (id_usuario, id_boleta, total) VALUES ('$id_usuario', '$id_boleta', '$total')";
