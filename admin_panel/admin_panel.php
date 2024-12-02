@@ -133,6 +133,7 @@ $result_users = mysqli_query($conexion, $sql_users);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
@@ -379,9 +380,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                             <a href="../boleta_cotizacion/recuperar_boletas.php" class="nav-link text-white">
                                 Recuperar boletas
                             </a>
-                            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
-                                Registrar usuario
-                            </a>
+
                             <a href="../postventa/admin_postventa.php" class="nav-link text-white">
                                 Solicitudes postventa
                             </a>
@@ -467,6 +466,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                             <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuMantenedoresMobile" role="button">
                                 <i class="fas fa-tools"></i> Mantenedores
                             </a>
+<<<<<<< Updated upstream
                             <ul class="collapse list-unstyled ps-3" id="menuMantenedoresMobile">
                                 <li><a href="#" class="nav-link text-white">SSD</a></li>
                                 <li><a href="#" class="nav-link text-white">HDD</a></li>
@@ -475,6 +475,72 @@ $result_users = mysqli_query($conexion, $sql_users);
                     </ul>
                     <!-- Cerrar sesión -->
                     <button class="btn btn-danger mt-auto w-100" onclick="window.location.href='?logout=true'">Cerrar Sesión</button>
+=======
+
+                            <a href="../postventa/admin_postventa.php" class="nav-link text-white">
+                                Solicitudes postventa
+                            </a>
+                            <!-- Modal para el formulario de registro de usuario -->
+                            <div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content bg-dark text-white border-secondary">
+                                        <!-- Encabezado del Modal -->
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title" id="registrarUsuarioLabel">Registrar usuario</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <!-- Cuerpo del Modal -->
+                                        <div class="modal-body">
+                                            <form method="POST" action="">
+                                                <div class="mb-3">
+                                                    <label for="username" class="form-label">Nombre de usuario</label>
+                                                    <input type="text" class="form-control bg-secondary text-white border-0" name="username" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">Correo electrónico</label>
+                                                    <input type="email" class="form-control bg-secondary text-white border-0" name="email" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="password" class="form-label">Contraseña</label>
+                                                    <input type="password" class="form-control bg-secondary text-white border-0" name="password" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="role" class="form-label">Rol</label>
+                                                    <select name="role" class="form-select bg-secondary text-white border-0">
+                                                        <?php
+                                                        session_start();
+                                                        $current_role = $_SESSION['role'] ?? 'user'; 
+                                                        if ($current_role === 'superadmin') {
+                                                            echo '<option value="user">Usuario</option>';
+                                                            echo '<option value="admin">Administrador</option>';
+                                                        } elseif ($current_role === 'admin') {
+                                                            echo '<option value="user">Usuario</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary w-100">Registrar</button>
+                                            </form>
+                                            <div class="message mt-3">
+                                                <?php if (!empty($message)): ?>
+                                                    <div class="alert alert-success"><?php echo $message; ?></div>
+                                                <?php endif; ?>
+                                                <?php if (!empty($error_message)): ?>
+                                                    <div class="alert alert-danger"><?php echo $error_message; ?></div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </ul>
+                    </li>
+                </ul>
+                <button class="btn btn-secondary" onclick="window.location.href='../index.php'">Regresar al inicio</button>
+                <!-- Cerrar sesión -->
+                <button class="btn btn-danger" onclick="window.location.href='?logout=true'">Cerrar Sesión</button>
+>>>>>>> Stashed changes
                 </div>
             </div>
             <!-- Main Content -->
@@ -658,9 +724,9 @@ $result_users = mysqli_query($conexion, $sql_users);
             </main>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>       
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
             Swal.fire({
@@ -700,7 +766,6 @@ $result_users = mysqli_query($conexion, $sql_users);
             <?php endif; ?>
         });
     </script>
-
     <script>
         // Script para manejar el acordeón
         const headers = document.querySelectorAll('.accordion-header');
