@@ -1,50 +1,40 @@
 <?php
 session_start();
 require('../conexion.php');
+require('../funcion_filtros/filtrar_productos.php');
 
-// Inicializar variables de filtro
-$categoria = isset($_GET['categoria']) ? $_GET['categoria'] : "";
-$tituloPagina = !empty($categoria) ? "Categoría  " . htmlspecialchars($categoria) : "Productos destacados";
+// Valores predeterminados para los filtros de marca, precio y categoría
+$marca = isset($_POST['marca']) ? $_POST['marca'] : "";
+$precio_min = isset($_POST['precio_min']) ? $_POST['precio_min'] : "";
+$precio_max = isset($_POST['precio_max']) ? $_POST['precio_max'] : "";
+$categoria = isset($_POST['categoria']) ? $_POST['categoria'] : "";
 
-// Obtener tipo de producto desde el parámetro GET
-$tipoSeleccionado = isset($_GET['tipo_producto']) ? $_GET['tipo_producto'] : "";
-
-// Si se seleccionó un tipo de producto, filtrar productos por ese tipo
-if (!empty($tipoSeleccionado)) {
-    $productos = filtrarProductosPorTipo($tipoSeleccionado);
+// Mostrar todos los productos o aplicar filtros
+if ($marca || $precio_min || $precio_max || $categoria) {
+    $productos = filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria);
+} else {
+    $productos = obtenerTodosLosProductos();
 }
-// Lógica de productos
-if (!empty($categoria)) {
-    // Mostrar solo productos de la categoría seleccionada
-    $productos = filtrarProductosPorCategoria(categoria: $categoria);
-} 
+// Consulta para obtener la URL de la imagen del usuario actual
+// Comprobamos si el usuario ha iniciado sesión
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 
-function filtrarProductosPorTipo($tipo)
-{
-    global $conexion;
-    $query = "SELECT 
-                p.id_producto, 
-                p.nombre_producto, 
-                p.precio, 
-                p.cantidad, 
-                p.tipo_producto, 
-                p.imagen_url, 
-                p.destacado, 
-                p.costo, 
+    // Consulta para obtener la URL de la imagen del usuario actual
+    $query = "SELECT img FROM users WHERE id = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
 
-                m.nombre_marca AS marca
-              FROM producto p
-              INNER JOIN marca m ON p.marca = m.id_marca
-              WHERE p.tipo_producto = '" . mysqli_real_escape_string($conexion, $tipo) . "'";
-    $result = mysqli_query($conexion, $query);
-
-    if (!$result) {
-        die("Error en la consulta: " . mysqli_error($conexion));
-    }
-
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    // Verifica si se encontró la imagen
+    $img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay una en la BD
+} else {
+    // Usuario no está logeado, asignamos una imagen por defecto
+    $img_url = 'default-profile.png';
 }
-
+// Obtener todos los productos (función para obtener productos sin filtrar)
 function obtenerTodosLosProductos()
 {
     global $conexion;
@@ -70,95 +60,6 @@ function obtenerTodosLosProductos()
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-// Obtener tipo de producto desde el parámetro GET
-$tipoSeleccionado = isset($_GET['tipo_producto']) ? $_GET['tipo_producto'] : "";
-
-// Si se seleccionó un tipo de producto, filtrar productos por ese tipo
-if (!empty($tipoSeleccionado)) {
-    $productos = filtrarProductosPorTipo($tipoSeleccionado);
-} else {
-    // Si no se seleccionó un tipo, mostrar todos los productos
-    $productos = obtenerTodosLosProductos();
-}
-
-
-/**
- * Función para filtrar productos por categoría.
- */
-function filtrarProductosPorCategoria($categoria)
-{
-    global $conexion;
-    $query = "SELECT 
-                p.id_producto, 
-                p.nombre_producto, 
-                p.precio, 
-                p.cantidad, 
-                p.tipo_producto, 
-                p.imagen_url, 
-                p.destacado, 
-                p.costo, 
-                p.nombre_categoria, 
-                m.nombre_marca AS marca
-              FROM producto p
-              INNER JOIN marca m ON p.marca = m.id_marca
-              WHERE p.nombre_categoria = '" . mysqli_real_escape_string($conexion, $categoria) . "'";
-    $result = mysqli_query($conexion, $query);
-
-    if (!$result) {
-        die("Error en la consulta: " . mysqli_error($conexion));
-    }
-
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
-
-// Consulta para obtener la URL de la imagen del usuario actual
-// Comprobamos si el usuario ha iniciado sesión
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-
-    // Consulta para obtener la URL de la imagen del usuario actual
-    $query = "SELECT img FROM users WHERE id = ?";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-
-    // Verifica si se encontró la imagen
-    $img_url = $row['img'] ?? 'default-profile.png'; // Imagen por defecto si no hay una en la BD
-} else {
-    // Usuario no está logeado, asignamos una imagen por defecto
-    $img_url = 'default-profile.png';
-}
-function obtenerTiposDeProducto()
-{
-    global $conexion;
-    $query = "SELECT DISTINCT p.tipo_producto
-              FROM producto p";
-    $result = mysqli_query($conexion, $query);
-
-    if (!$result) {
-        die("Error en la consulta: " . mysqli_error($conexion));
-    }
-
-    // Almacenamos los tipos de productos únicos
-    $tiposDeProducto = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        $tiposDeProducto[] = $row['tipo_producto'];
-    }
-
-    return $tiposDeProducto;
-}
-// Obtener tipo de producto desde el parámetro GET
-$tipoSeleccionado = isset($_GET['tipo_producto']) ? $_GET['tipo_producto'] : "";
-
-// Si se seleccionó un tipo de producto, filtrar productos por ese tipo
-if (!empty($tipoSeleccionado)) {
-    $productos = filtrarProductosPorTipo($tipoSeleccionado);
-} else {
-    // Si no se seleccionó un tipo, mostrar productos destacados
-    $productos = obtenerTodosLosProductos();
-}
 
 ?>
 
@@ -173,7 +74,7 @@ if (!empty($tipoSeleccionado)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=tune" />
 </head>
 <style>
     .navbar {
@@ -221,6 +122,12 @@ if (!empty($tipoSeleccionado)) {
         transform: scale(1.1); /* Hace que el botón crezca ligeramente */
         transition: all 0.3s ease; /* Suaviza la animación */
     }
+    .btn-cat:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: black; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
     .breadcrumb {
         background-color: #f9f9f9;
         font-size: 0.9rem;
@@ -238,7 +145,17 @@ if (!empty($tipoSeleccionado)) {
         font-weight: bold;
         color: #333;
     }
-    
+    .material-symbols-outlined {
+    font-size: 30px;
+    vertical-align: middle;
+}
+@media (max-width: 768px) {
+    .btn {
+        font-size: 14px; /* Ajustar el tamaño del texto */
+        padding: 8px;    /* Ajustar el padding de los botones */
+    }
+}
+
 </style>
 
 <body>
@@ -271,6 +188,7 @@ if (!empty($tipoSeleccionado)) {
             <ul class="navbar-nav ms-auto align-items-center">
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
+                    
                 <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
@@ -312,9 +230,12 @@ if (!empty($tipoSeleccionado)) {
                     </li>
                 </a>
                 <?php else: ?>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
-                </li>
+                    <button 
+        class="btn btn-cat rounded-pill border px-3 py-3" 
+        style=" background-color:white; color: #white;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='../login/login.php'">
+        Iniciar Sesión
+    </button>
                 <?php endif; ?>
             </ul>
         </div>
@@ -327,45 +248,28 @@ if (!empty($tipoSeleccionado)) {
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
-                            <li>
-                                <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
-                            </li>
-                        <?php endif; ?>
-                        <li>
-                            <a class="dropdown-item text-black" href="../perfil_usuario/perfil_usuario.php">Mi perfil</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
-                        </li>
-                    </ul>
+            <?php if (isset($_SESSION['username'])): ?>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <?php if (in_array($_SESSION['role'], ['admin', 'superadmin'])): ?>
+                <li>
+                    <a class="dropdown-item" href="../admin_panel/admin_panel.php">Panel Admin</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorias
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
-                        <!-- Opción para todos los productos -->
-                        <li>
-                            <a class="dropdown-item" href="../catalogo_productos/catalogo.php">Todos los productos</a>
-                        </li>
-                        <?php 
-                        // Opciones dinámicas basadas en tipos de producto
-                        $tiposDeProducto = obtenerTiposDeProducto();
-                        foreach ($tiposDeProducto as $tipo): ?>
-                            <li>
-                                <a class="dropdown-item text-capitalize" href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
-                                    <?php echo htmlspecialchars($tipo); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
+            <?php endif; ?>
+            <li>
+                <a class="dropdown-item text-black" href="../perfil_usuario/perfil_usuario.php">Mi perfil</a>
+            </li>
+            <li>
+                <a class="dropdown-item text-danger" href="../login/logout.php">Cerrar Sesión</a>
+            </li>
+        </ul>
+    </li>
+<?php endif; ?>
+
+                
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="d-flex">
                 <li class="nav-item">
@@ -391,9 +295,13 @@ if (!empty($tipoSeleccionado)) {
                 
                 
                 <?php else: ?>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
-                </li>
+                   
+                    <button 
+        class="btn btn-cat rounded-pill border px-3 py-3" 
+        style=" background-color:white; color: #white;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='../login/login.php'">
+        Iniciar Sesión
+    </button>
                 <?php endif; ?>
             </ul>
         </div>
@@ -417,20 +325,33 @@ if (!empty($tipoSeleccionado)) {
 <!-- Fin Migajas de pan -->
 <div class="container my-4">
     <div class="row">
-        <!-- Columna de filtros a la izquierda -->
-        <div class="col-md-3 d-none d-md-block">
-            <form method="post" action="index.php" id="filterForm" class="border p-3 card-body rounded">
-                <h5>Filtros</h5>
-                
-                <!-- Campos de filtro de precios -->
-                <div class="mb-3">
-                    <label for="precio_min" class="form-label">Precio Mínimo</label>
-                    <input type="number" class="form-control" id="precio_min" name="precio_min" placeholder="ej:0" value="<?php echo htmlspecialchars($precio_min); ?>">
-                </div>
-                <div class="mb-3">
-                    <label for="precio_max" class="form-label">Precio Máximo</label>
-                    <input type="number" class="form-control" id="precio_max" name="precio_max" placeholder="ej:1000" value="<?php echo htmlspecialchars($precio_max); ?>">
-                </div>
+        <!-- Botón para mostrar/ocultar filtros en pantallas pequeñas -->
+        <div class="col-12 d-md-none mb-3">
+            <button class="btn btn-primary btn-sm w-100 d-flex align-items-center justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
+                <span class="material-symbols-outlined me-2" style="font-size: 16px;">tune</span>
+                Filtros
+            </button>
+        </div>
+
+        <!-- Filtros en un Collapse para pantallas pequeñas -->
+        <div class="col-md-3">
+            <div class="collapse d-md-block" id="filterCollapse">
+                <form method="post" action="catalogo.php" id="filterForm" class="border p-3 rounded">
+                    <h5>Filtros</h5>
+
+                    <!-- Filtro de precios -->
+                    <div class="mb-3">
+                        <label for="precio_min" class="form-label">Precio Mínimo</label>
+                        <input type="number" class="form-control" id="precio_min" name="precio_min" 
+                            value="<?php echo htmlspecialchars($precio_min); ?>" 
+                            placeholder="Ejemplo: 100">
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio_max" class="form-label">Precio Máximo</label>
+                        <input type="number" class="form-control" id="precio_max" name="precio_max" 
+                            value="<?php echo htmlspecialchars($precio_max); ?>" 
+                            placeholder="Ejemplo: 1000">
+                    </div>
 
                     <!-- Filtro de marca -->
                     <div class="mb-3">
@@ -447,101 +368,118 @@ if (!empty($tipoSeleccionado)) {
                             ?>
                         </select>
                     </div>
-                    
+
                     <!-- Filtro de categoría -->
                     <div class="mb-3">
                         <label for="categoria" class="form-label">Categoría</label>
                         <select name="categoria" id="categoria" class="form-select">
                             <option value="">Selecciona una categoría</option>
-                            <option value="audifono">Audífono</option>
-                            <option value="cpu">Procesador</option>
-                            <option value="fuente">Fuente de Poder</option>
-                            <option value="gabinete">Gabinete</option>
-                            <option value="gpu">Tarjeta de Video</option>
-                            <option value="monitor">Monitor</option>
-                            <option value="mouse">Mouse</option>
-                            <option value="notebook">Notebook</option>
-                            <option value="placa">Placa Madre</option>
-                            <option value="ram">Memoria RAM</option>
-                            <option value="teclado">Teclado</option>
+                            <option value="audifono" <?php echo ($categoria == 'audifono') ? 'selected' : ''; ?>>Audífono</option>
+                            <option value="cpu" <?php echo ($categoria == 'cpu') ? 'selected' : ''; ?>>Procesador</option>
+                            <option value="fuente" <?php echo ($categoria == 'fuente') ? 'selected' : ''; ?>>Fuente de Poder</option>
+                            <option value="gabinete" <?php echo ($categoria == 'gabinete') ? 'selected' : ''; ?>>Gabinete</option>
+                            <option value="gpu" <?php echo ($categoria == 'gpu') ? 'selected' : ''; ?>>Tarjeta de Video</option>
+                            <option value="monitor" <?php echo ($categoria == 'monitor') ? 'selected' : ''; ?>>Monitor</option>
+                            <option value="mouse" <?php echo ($categoria == 'mouse') ? 'selected' : ''; ?>>Mouse</option>
+                            <option value="notebook" <?php echo ($categoria == 'notebook') ? 'selected' : ''; ?>>Notebook</option>
+                            <option value="placa" <?php echo ($categoria == 'placa') ? 'selected' : ''; ?>>Placa Madre</option>
+                            <option value="ram" <?php echo ($categoria == 'ram') ? 'selected' : ''; ?>>Memoria RAM</option>
+                            <option value="teclado" <?php echo ($categoria == 'teclado') ? 'selected' : ''; ?>>Teclado</option>
                         </select>
                     </div>
 
-                    <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-                        <button type="button" class="btn btn-secondary" onclick="resetFilters()">Limpiar Filtros</button>
-                    </div>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <button type="submit" class="btn btn-primary flex-grow-1">Aplicar Filtros</button>
+    <button type="button" class="btn btn-secondary flex-grow-1" onclick="resetFilters()">Limpiar Filtros</button>
+</div>
+
                 </form>
             </div>
+        </div>
 
-            <div class="col-12 col-md-9">
-                <div class="row gx-3 gy-3">
-                    <?php
-                    if (!empty($productos)) {
-                        foreach ($productos as $producto) {
-                            $id_producto = $producto['id_producto'];
-                            $nombre_producto = $producto['nombre_producto'];
-                            $marca_producto = $producto['marca'];
-                            $precio = number_format($producto['precio'], 0, ',', '.');
-                            $imagen_url = $producto['imagen_url'];
+        <!-- Productos -->
+        <div class="col-12 col-md-9">
+            <div class="row gx-3 gy-3">
+                <?php
+                if (!empty($productos)) {
+                    foreach ($productos as $producto) {
+                        $id_producto = $producto['id_producto'];
+                        $nombre_producto = $producto['nombre_producto'];
+                        $marca_producto = $producto['marca'];
+                        $precio = number_format($producto['precio'], 0, ',', '.');
+                        $imagen_url = $producto['imagen_url'];
 
-                            echo "
-                                <div class='col-6 col-md-4'>
-                                    <a href='../catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
-                                        <div class='card p-0 shadow' style='width: 100%; height: 100%;'>
-                                            <div class='image-container imagen' style='width: 100%; height: 100%; position: relative; overflow: hidden;'>
-                                                <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
-                                            </div>
-                                            <div class='texto card-body text-begin' style='width: 100%; height: 45%;'>
-                                                <h6 class='text-black fw-bold'>$marca_producto</h6>                               
-                                                <h5 class='text-secondary-emphasis'>$nombre_producto</h5>
-                                                <h5 class='text-secondary-emphasis'>$$precio</h5>
-                                            </div>
+                        echo "
+                            <div class='col-6 col-md-4'>
+                                <a href='../catalogo_productos/detalle_producto.php?id_producto=$id_producto' class='text-decoration-none'>
+                                    <div class='card p-0 shadow' style='width: 100%; height: 100%;'>
+                                        <div class='image-container imagen' style='width: 100%; height: 100%; position: relative; overflow: hidden;'>
+                                            <img src='$imagen_url' alt='$nombre_producto' class='card-img-top img-fluid product-image' style='object-fit: contain; width: 100%; height: 100%;'>
                                         </div>
-                                    </a>
-                                </div>
-                            ";
-                        }
-                    } else {
-                        echo "<p>No se encontraron productos para la categoría seleccionada.</p>";
+                                        <div class='texto card-body text-begin' style='width: 100%; height: 45%;'>
+                                            <h6 class='text-black fw-bold'>$marca_producto</h6>                               
+                                            <h5 class='text-secondary-emphasis'>$nombre_producto</h5>
+                                            <h5 class='text-secondary-emphasis'>$$precio</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        ";
                     }
-                    ?>
-                </div>
+                } else {
+                    echo "<p>No se encontraron productos para la categoría seleccionada.</p>";
+                }
+                ?>
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function resetFilters() {
         document.getElementById("filterForm").reset();
-        window.location.href = 'index.php';
+        window.location.href = 'catalogo.php';
     }
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.form-control[type="search"]');
-    const productContainer = document.querySelector('.row.gx-2.gy-3');
+    const productContainer = document.querySelector('.row.gx-3.gy-3');
 
-   // Función para cargar productos según la búsqueda
-   function cargarProductos(query = '') {
+    function cargarProductos(query = '') {
+        const marca = document.getElementById('marca').value;
+        const precioMin = document.getElementById('precio_min').value;
+        const precioMax = document.getElementById('precio_max').value;
+        const categoria = document.getElementById('categoria').value;
+
         $.ajax({
-            url: 'funcion_busqueda/buscar_productos.php',
+            url: '../funcion_busqueda/buscar_productos.php',
             method: 'GET',
-            data: { query: query },
+            data: {
+                query: query,
+                marca: marca,
+                precio_min: precioMin,
+                precio_max: precioMax,
+                categoria: categoria
+            },
             success: function(response) {
                 productContainer.innerHTML = response;
             }
         });
     }
+
     searchInput.addEventListener('input', function() {
         const query = searchInput.value;
         cargarProductos(query);
     });
 });
 </script>
+
 <?php include "../footer.php"?>
 </body>
 

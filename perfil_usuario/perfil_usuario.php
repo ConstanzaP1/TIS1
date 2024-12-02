@@ -138,6 +138,9 @@ function obtenerTiposDeProducto()
 
 </head>
 <style>
+    body {
+            background-color: #f8f9fa; /* Fondo claro */
+        }
     .user-info-card {
         background-color: #ffffff;
         border-radius: 15px;

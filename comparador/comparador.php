@@ -355,6 +355,9 @@ function obtenerTiposDeProducto()
         .navbar {
             background-color: rgba(0, 128, 255, 0.5); /* Fondo celeste */
         }
+        body {
+            background-color: #f8f9fa; /* Fondo claro */
+        }
         .product-img {
             height: 200px;
             object-fit: cover;
@@ -401,6 +404,12 @@ function obtenerTiposDeProducto()
             font-weight: bold;
             color: #333;
         }
+        .btn-cat:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: black; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
     </style>
 </head>
 <body>
@@ -429,6 +438,14 @@ function obtenerTiposDeProducto()
             <ul class="navbar-nav ms-auto align-items-center">
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
+                    <li class="nav-item">
+    <button 
+        class="btn btn-cat rounded-pill  px-3 py-3" 
+        style=" color: #black;;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+        Catálogo
+    </button>
+</li>
                     <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
@@ -507,26 +524,12 @@ function obtenerTiposDeProducto()
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorias
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
-                        <!-- Opción para todos los productos -->
-                        <li>
-                            <a class="dropdown-item" href="../catalogo_productos/catalogo.php">Todos los productos</a>
-                        </li>
-                        <?php 
-                        // Opciones dinámicas basadas en tipos de producto
-                        $tiposDeProducto = obtenerTiposDeProducto();
-                        foreach ($tiposDeProducto as $tipo): ?>
-                            <li>
-                                <a class="dropdown-item text-capitalize" href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
-                                    <?php echo htmlspecialchars($tipo); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                <li class="nav-item">
+                    <button 
+                        class="nav-link  bg-white rounded-pill p-3" 
+                        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                        Ir al Catálogo
+                    </button>
                 </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="d-flex">
@@ -586,28 +589,27 @@ function obtenerTiposDeProducto()
         <?php if (!empty($_SESSION['productos'])): ?>
             <?php foreach ($_SESSION['productos'] as $producto): ?>
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card p-0 shadow">
-                        <div class="image-container" style="width: 100%; position: relative; padding-top: 100%; overflow: hidden;">
-                            <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" style="width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0;">
-                        </div>
-                        <div class="card-body text-begin">
-                            <h5 class="card-title text-center"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h5>
-                            <p class="card-text text-center">Precio: $<?php echo number_format($producto['precio'], 0, ',', '.'); ?></p>
-                            <h6 class="text-center mt-3">Características:</h6>
-                            <ul class="list-unstyled">
-                                <?php foreach ($_SESSION['caracteristicas_producto'][$producto['id_producto']] as $caracteristica): ?>
-                                    <?php if (!empty($caracteristica)): ?>
-                                        <li><i class="fas fa-check-circle text-success"></i> <?php echo htmlspecialchars($caracteristica); ?></li>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </ul>
-                            <form method="POST" action="comparador.php" class="text-center mt-3">
-                                <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
-                                <button type="submit" name="eliminar_comparador" class="btn btn-danger btn-eliminar">Eliminar</button>
-                            </form>
-                        </div>
+                    <a href="../catalogo_productos/detalle_producto.php?id_producto=<?php echo $producto['id_producto']; ?>" class="text-decoration-none text-dark">
+                        <div class="card p-0 shadow">
+                            <div class="image-container" style="width: 100%; position: relative; padding-top: 100%; overflow: hidden;">
+                                <img src="<?php echo htmlspecialchars($producto['imagen_url']); ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" style="width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0;">
+                            </div>
+                    <div class="card-body text-begin">
+                        <h5 class="card-title text-center"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h5>
+                        <p class="card-text text-center">Precio: $<?php echo number_format($producto['precio'], 0, ',', '.'); ?></p>
+                        <h6 class="text-center mt-3">Características:</h6>
+                        <ul class="list-unstyled">
+                            <?php foreach ($_SESSION['caracteristicas_producto'][$producto['id_producto']] as $caracteristica): ?>
+                                <?php if (!empty($caracteristica)): ?>
+                                    <li><i class="fas fa-check-circle text-success"></i> <?php echo htmlspecialchars($caracteristica); ?></li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </ul>
                     </div>
                 </div>
+            </a>
+        </div>
+
             <?php endforeach; ?>
         <?php else: ?>
             <div class="text-center py-5">

@@ -2,18 +2,12 @@
 session_start();
 require('conexion.php');
 
+
 // Inicializar variables de filtro
 $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : "";
 $tituloPagina = !empty($categoria) ? "Categoría  " . htmlspecialchars($categoria) : "Productos destacados";
 
-// Lógica de productos
-if (!empty($categoria)) {
-    // Mostrar solo productos de la categoría seleccionada
-    $productos = filtrarProductosPorCategoria(categoria: $categoria);
-} else {
-    // Mostrar productos destacados
-    $productos = obtenerProductosDestacados();
-}
+
 
 /**
  * Función para obtener productos destacados.
@@ -211,6 +205,12 @@ function filtrarProductosPorTipo($tipo)
         transform: scale(1.1); /* Hace que el botón crezca ligeramente */
         transition: all 0.3s ease; /* Suaviza la animación */
     }
+    .btn-cat:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: black; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
     .carousel-inner {
         position: relative;
         width: 100%;
@@ -274,33 +274,23 @@ function filtrarProductosPorTipo($tipo)
         <div class="collapse navbar-collapse" id="navbarNav">
             
             <!-- Barra de búsqueda -->
-            <form class="d-flex ms-auto col-4 shadow" role="search">
+            <form class="d-flex ms-auto col-4 shadow" style="visibility: hidden; role="search">
                 <input class="form-control" type="search" placeholder="Buscar en Tisnology" aria-label="Buscar">
             </form>
             <!-- Menú  -->
             <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item dropdown">
-                    <button class="btn btn-bienvenido dropdown-toggle" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorias
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="productosDropdown">
-                        <!-- Opción para todos los productos -->
-                        <li>
-                            <a class="dropdown-item" href="catalogo_productos/catalogo.php">Todos los productos</a>
-                        </li>
 
-                        <?php 
-                        // Opciones dinámicas basadas en tipos de producto
-                        $tiposDeProducto = obtenerTiposDeProducto();
-                        foreach ($tiposDeProducto as $tipo): ?>
-                            <li>
-                                <a class="dropdown-item text-capitalize" href="catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
-                                    <?php echo htmlspecialchars($tipo); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
+            <li class="nav-item">
+    <button 
+        class="btn btn-cat rounded-pill  me-2 px-3 py-3" 
+        style=" color: #black;;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='catalogo_productos/catalogo.php'">
+        Catálogo
+    </button>
+</li>
+
+
+        </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='carrito/carrito.php'">
@@ -343,9 +333,14 @@ function filtrarProductosPorTipo($tipo)
                     </li>
                 </a>
                 <?php else: ?>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
-                </li>
+                    <li class="nav-item">
+    <button 
+        class="btn btn-cat rounded-pill  px-3 py-3" 
+        style=" background-color:white; color: #white;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='login/login.php'">
+        Iniciar Sesión
+    </button>
+</li>
                 <?php endif; ?>
             </ul>
         </div>
@@ -377,26 +372,12 @@ function filtrarProductosPorTipo($tipo)
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            Categorias
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
-                            <!-- Opción para todos los productos -->
-                            <li>
-                                <a class="dropdown-item" href="catalogo_productos/catalogo.php">Todos los productos</a>
-                            </li>
-                            <?php 
-                            // Opciones dinámicas basadas en tipos de producto
-                            $tiposDeProducto = obtenerTiposDeProducto();
-                            foreach ($tiposDeProducto as $tipo): ?>
-                                <li>
-                                    <a class="dropdown-item text-capitalize" href="catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
-                                        <?php echo htmlspecialchars($tipo); ?>
-                                    </a>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
+                    <li class="nav-item">
+                        <button 
+                            class="nav-link  bg-white rounded-pill p-3" 
+                            onclick="window.location.href='catalogo_productos/catalogo.php'">
+                            Catálogo
+                        </button>
                     </li>
                     <div class="d-flex">
                         <li class="nav-item">
@@ -421,8 +402,18 @@ function filtrarProductosPorTipo($tipo)
                     </div>       
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="btn btn-primary col-12" href="login/login.php">Iniciar Sesión</a>
+                        <button 
+                            class="nav-link  bg-white rounded-pill p-3" 
+                            onclick="window.location.href='catalogo_productos/catalogo.php'">
+                            Catálogo
+                        </button>
                     </li>
+                    <button 
+        class="btn btn-cat rounded-pill border px-3 py-3" 
+        style=" background-color:white; color: #white;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='login/login.php'">
+        Iniciar Sesión
+    </button>
                 <?php endif; ?>
             </ul>
         </div>
@@ -538,10 +529,10 @@ function filtrarProductosPorTipo($tipo)
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.form-control[type="search"]');
-    const productContainer = document.querySelector('.row.gx-2.gy-3');
+    const productContainer = document.querySelector('.row.gx-3.gy-3');
 
-   // Función para cargar productos según la búsqueda
-   function cargarProductos(query = '') {
+    // Function to fetch and display products
+    function cargarProductos(query = '') {
         $.ajax({
             url: 'funcion_busqueda/buscar_productos.php',
             method: 'GET',
@@ -551,11 +542,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Listen for input changes in the search bar
     searchInput.addEventListener('input', function() {
-        const query = searchInput.value;
+        const query = searchInput.value.trim();
         cargarProductos(query);
     });
 });
+
 </script>
 <?php include "footer.php"?>
 </body>

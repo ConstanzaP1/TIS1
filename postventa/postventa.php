@@ -94,6 +94,31 @@ if ($boletaId) {
     <style>
         .navbar { background-color: rgba(0, 128, 255, 0.5); }
         .rounded-circle { object-fit: cover; width: 50px; height: 50px; }
+        body {
+            background-color: #f8f9fa; /* Fondo claro */
+        }
+        .breadcrumb {
+            background-color: #f9f9f9;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb .breadcrumb-item a {
+            transition: color 0.2s ease-in-out;
+        }
+        
+        .breadcrumb .breadcrumb-item a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb .breadcrumb-item.active {
+            font-weight: bold;
+            color: #333;
+        }
+        .empty-comparator {
+            margin-top: 50px;
+        }
+        
     </style>
 </head>
 <body>
@@ -199,6 +224,23 @@ if ($boletaId) {
         </div>
     </div>
 </nav>
+<nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="../index.php" class="text-primary text-decoration-none">
+                    <i class="fas fa-home me-1"></i>Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="../perfil_usuario/perfil_usuario.php" class="text-primary text-decoration-none">
+                    Perfil Usuario
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">
+                Lista de deseos
+            </li>
+        </ol>
+    </nav>
 <div class="container mt-5">
     <h2>Atención Postventa</h2>
 

@@ -136,72 +136,49 @@ $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin
                                 <!-- Acciones Responsive -->
                                 <!-- Para pantallas grandes -->
                                 <div class="d-none d-lg-flex justify-content-start align-items-center gap-2">
-                                    <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseos</a>
-                                    <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial</a>
-                                    <?php if ($row['status'] === 'activo'): ?>
-                                        <button class="btn btn-danger btn-sm" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#inhabilitarModal" 
-                                                data-user-id="<?php echo $row['id']; ?>" 
-                                                data-username="<?php echo $row['username']; ?>">
-                                            Inhabilitar
-                                        </button>
-                                    <?php else: ?>
-                                        <form method="POST" action="inhabilitar_usuario.php" class="d-inline-block">
-                                            <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
-                                            <input type="hidden" name="action" value="habilitar">
-                                            <button type="submit" class="btn btn-success btn-sm">Habilitar</button>
-                                        </form>
+                                    <!-- Cambiar Rol -->
+                                    <?php if ($role === 'superadmin'): ?>
+                                    <form method="POST" action="" class="d-inline-block">
+                                        <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                                        <div class="input-group">
+                                            <select name="new_role" class="form-select form-select-sm">
+                                                <?php foreach ($roles as $role_key => $role_name): ?>
+                                                    <?php if ($role_key !== 'superadmin'): ?>
+                                                        <option value="<?php echo $role_key; ?>" <?php if ($role_key == $row['role']) echo 'selected'; ?>>
+                                                            <?php echo $role_name; ?>
+                                                        </option>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <button type="submit" class="btn btn-warning btn-sm ms-1">Cambiar</button>
+                                        </div>
+                                    </form>
                                     <?php endif; ?>
-                                </div>
-                                
-                                <!-- Para pantallas medianas -->
-                                <div class="d-none d-md-flex d-lg-none flex-wrap justify-content-start gap-2 mt-2">
-                                    <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm w-100">Lista de deseos</a>
-                                    <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm w-100">Historial</a>
-                                    <?php if ($row['status'] === 'activo'): ?>
-                                        <button class="btn btn-danger btn-sm w-100" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#inhabilitarModal" 
-                                                data-user-id="<?php echo $row['id']; ?>" 
-                                                data-username="<?php echo $row['username']; ?>">
-                                            Inhabilitar
-                                        </button>
-                                    <?php else: ?>
-                                        <form method="POST" action="inhabilitar_usuario.php" class="d-inline-block w-100">
-                                            <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
-                                            <input type="hidden" name="action" value="habilitar">
-                                            <button type="submit" class="btn btn-success btn-sm w-100">Habilitar</button>
-                                        </form>
-                                    <?php endif; ?>
-                                </div>
 
-                                <!-- Para pantallas pequeñas -->
-                                <div class="d-flex d-md-none flex-column gap-2 mt-2">
-                                    <a href="EN_PROCESO.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm w-100">Lista de deseos</a>
-                                    <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm w-100">Historial</a>
-                                    <?php if ($row['status'] === 'activo'): ?>
-                                        <button class="btn btn-danger btn-sm w-100" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#inhabilitarModal" 
-                                                data-user-id="<?php echo $row['id']; ?>" 
-                                                data-username="<?php echo $row['username']; ?>">
-                                            Inhabilitar
-                                        </button>
-                                    <?php else: ?>
-                                        <form method="POST" action="inhabilitar_usuario.php" class="d-inline-block w-100">
-                                            <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
-                                            <input type="hidden" name="action" value="habilitar">
-                                            <button type="submit" class="btn btn-success btn-sm w-100">Habilitar</button>
-                                        </form>
-                                    <?php endif; ?>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            </div>
+                <!-- Botones adicionales -->
+                <a href="../lista_deseos/lista_deseos.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Lista de deseos</a>
+                <a href="historial_compras.php?user_id=<?php echo $row['id']; ?>" class="btn btn-info btn-sm">Historial de compras</a>
+                <?php if ($row['status'] === 'activo'): ?>
+                    <!-- Botón para inhabilitar -->
+                    <form method="POST" action="inhabilitar_usuario.php" class="d-inline">
+                        <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                        <input type="hidden" name="action" value="inhabilitar">
+                        <button type="button" class="btn btn-danger btn-sm btn-inhabilitar">Inhabilitar</button>
+                    </form>
+                <?php else: ?>
+                    <!-- Botón para habilitar -->
+                    <form method="POST" action="inhabilitar_usuario.php" class="d-inline">
+                        <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                        <input type="hidden" name="action" value="habilitar">
+                        <button type="submit" class="btn btn-success btn-sm">Habilitar</button>
+                    </form>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <?php endwhile; ?>
+    </tbody>
+</table>
+
         </div>
     </div>
 
