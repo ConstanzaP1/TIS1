@@ -9,7 +9,7 @@ if (!defined('BASE_URL')) {
 <footer class="bg-light py-4">
     <div class="container-fluid text-center">
         <div class="mb-4">
-            <a href="../index.php">
+            <a href="<?php echo BASE_URL; ?>index.php">
                 <img src="<?php echo BASE_URL; ?>logopng.png" alt="Logo Tisnology" class="img-fluid" style="max-width: 150px;">
             </a>
         </div>
