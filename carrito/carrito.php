@@ -265,6 +265,12 @@ if (isset($_POST['pagar'])) {
             display: inline-flex;
             align-items: center;
         }
+        .btn-cat:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: black; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
     </style>
 </head>
 <body>
@@ -295,13 +301,13 @@ if (isset($_POST['pagar'])) {
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item">
-            <button 
-                class="btn btn-light rounded-pill px-4 py-2 ms-1 me-1 border shadow-sm" 
-                style="background-color: white; color: #000; border-color: #ddd;"
-                onclick="window.location.href='../catalogo_productos/catalogo.php'">
-                Ir al Catálogo
-            </button>
-        </li>
+    <button 
+        class="btn btn-cat rounded-pill  px-3 py-3" 
+        style=" color: #black;;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+        Catálogo
+    </button>
+</li>
                 <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">

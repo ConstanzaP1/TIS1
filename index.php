@@ -206,6 +206,12 @@ function filtrarProductosPorTipo($tipo)
         transform: scale(1.1); /* Hace que el botón crezca ligeramente */
         transition: all 0.3s ease; /* Suaviza la animación */
     }
+    .btn-cat:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: black; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
     .carousel-inner {
         position: relative;
         width: 100%;
@@ -274,15 +280,16 @@ function filtrarProductosPorTipo($tipo)
             </form>
             <!-- Menú  -->
             <ul class="navbar-nav ms-auto align-items-center">
+
             <li class="nav-item">
-        <li class="nav-item">
-            <button 
-                class="btn btn-light rounded-pill px-4 py-2 ms-1 me-1 border shadow-sm" 
-                style="background-color: white; color: #000; border-color: #ddd;"
-                onclick="window.location.href='catalogo_productos/catalogo.php'">
-                Ir al Catálogo
-            </button>
-        </li>
+    <button 
+        class="btn btn-cat rounded-pill  me-2 px-3 py-3" 
+        style=" color: #black;;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='catalogo_productos/catalogo.php'">
+        Catálogo
+    </button>
+</li>
+
 
         </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
@@ -327,9 +334,14 @@ function filtrarProductosPorTipo($tipo)
                     </li>
                 </a>
                 <?php else: ?>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href="login/login.php">Iniciar Sesión</a>
-                </li>
+                    <li class="nav-item">
+    <button 
+        class="btn btn-cat rounded-pill  px-3 py-3" 
+        style=" background-color:white; color: #white;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='login/login.php'">
+        Iniciar Sesión
+    </button>
+</li>
                 <?php endif; ?>
             </ul>
         </div>
@@ -365,7 +377,7 @@ function filtrarProductosPorTipo($tipo)
                         <button 
                             class="nav-link  bg-white rounded-pill p-3" 
                             onclick="window.location.href='catalogo_productos/catalogo.php'">
-                            Ir al Catálogo
+                            Catálogo
                         </button>
                     </li>
                     <div class="d-flex">
@@ -391,8 +403,18 @@ function filtrarProductosPorTipo($tipo)
                     </div>       
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="btn btn-primary col-12" href="login/login.php">Iniciar Sesión</a>
+                        <button 
+                            class="nav-link  bg-white rounded-pill p-3" 
+                            onclick="window.location.href='catalogo_productos/catalogo.php'">
+                            Catálogo
+                        </button>
                     </li>
+                    <button 
+        class="btn btn-cat rounded-pill border px-3 py-3" 
+        style=" background-color:white; color: #white;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='login/login.php'">
+        Iniciar Sesión
+    </button>
                 <?php endif; ?>
             </ul>
         </div>

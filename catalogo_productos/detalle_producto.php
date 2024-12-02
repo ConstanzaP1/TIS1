@@ -482,7 +482,7 @@
                     <button 
                         class="nav-link  bg-white rounded-pill p-3" 
                         onclick="window.location.href='../catalogo_productos/catalogo.php'">
-                        Ir al Catálogo
+                        Catálogo
                     </button>
                 </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
@@ -510,6 +510,13 @@
                 
                 
                 <?php else: ?>
+                    <li class="nav-item">
+                    <button 
+                        class="nav-link  bg-white rounded-pill p-3" 
+                        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                        Catálogo
+                    </button>
+                </li>
                 <li class="nav-item">
                     <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
                 </li>

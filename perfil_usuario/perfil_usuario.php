@@ -240,21 +240,13 @@ function obtenerTiposDeProducto()
         <!-- Contenido de la navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Barra de búsqueda -->
-            <form class="d-flex ms-auto col-4 shadow"  style="visibility: hidden; role="search">
+            <form class="d-flex ms-auto col-4 shadow" role="search">
                 <input class="form-control" type="search" placeholder="Buscar en Tisnology" aria-label="Buscar">
             </form>
             <!-- Menú desplegable -->
             <ul class="navbar-nav ms-auto align-items-center">
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <li class="nav-item">
-                        <button 
-                            class="btn btn-light rounded-pill px-4 py-2 ms-1 me-1 border shadow-sm" 
-                            style="background-color: white; color: #000; border-color: #ddd;"
-                            onclick="window.location.href='../catalogo_productos/catalogo.php'">
-                            Ir al Catálogo
-                        </button>
-                    </li>
                 <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
@@ -329,12 +321,26 @@ function obtenerTiposDeProducto()
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <button 
-                        class="nav-link  bg-white rounded-pill p-3" 
-                        onclick="window.location.href='../catalogo_productos/catalogo.php'">
-                        Ir al Catálogo
-                    </button>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Categorias
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
+                        <!-- Opción para todos los productos -->
+                        <li>
+                            <a class="dropdown-item" href="../catalogo_productos/catalogo.php">Todos los productos</a>
+                        </li>
+                        <?php 
+                        // Opciones dinámicas basadas en tipos de producto
+                        $tiposDeProducto = obtenerTiposDeProducto();
+                        foreach ($tiposDeProducto as $tipo): ?>
+                            <li>
+                                <a class="dropdown-item text-capitalize" href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
+                                    <?php echo htmlspecialchars($tipo); ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
                 </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="d-flex">

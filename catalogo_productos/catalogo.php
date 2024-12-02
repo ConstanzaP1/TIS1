@@ -122,6 +122,12 @@ function obtenerTodosLosProductos()
         transform: scale(1.1); /* Hace que el botón crezca ligeramente */
         transition: all 0.3s ease; /* Suaviza la animación */
     }
+    .btn-cat:hover {
+        background-color: white; /* Cambia el fondo al pasar el mouse */
+        color: black; /* Cambia el color del texto/icono */
+        transform: scale(1.1); /* Hace que el botón crezca ligeramente */
+        transition: all 0.3s ease; /* Suaviza la animación */
+    }
     .breadcrumb {
         background-color: #f9f9f9;
         font-size: 0.9rem;
@@ -224,9 +230,12 @@ function obtenerTodosLosProductos()
                     </li>
                 </a>
                 <?php else: ?>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
-                </li>
+                    <button 
+        class="btn btn-cat rounded-pill border px-3 py-3" 
+        style=" background-color:white; color: #white;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='login/login.php'">
+        Iniciar Sesión
+    </button>
                 <?php endif; ?>
             </ul>
         </div>
@@ -239,7 +248,7 @@ function obtenerTodosLosProductos()
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown">
+            <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Bienvenid@, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                     </a>
@@ -283,9 +292,13 @@ function obtenerTodosLosProductos()
                 
                 
                 <?php else: ?>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
-                </li>
+                   
+                    <button 
+        class="btn btn-cat rounded-pill border px-3 py-3" 
+        style=" background-color:white; color: #white;  font-size: 0.85rem; font-weight: 500;"
+        onclick="window.location.href='../login/login.php'">
+        Iniciar Sesión
+    </button>
                 <?php endif; ?>
             </ul>
         </div>
