@@ -49,37 +49,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_role']) && $ro
     $stmt->bind_param("si", $new_role, $user_id);
 
     if ($stmt->execute()) {
-        echo "<script>
-            document.addEventListener('DOMContentLoaded', () => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Rol actualizado correctamente.',
-                    toast: true,
-                    position: 'top-end',
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.href = 'lista_usuarios.php';
-                });
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Rol actualizado correctamente.',
+                toast: true,
+                position: 'top-end',
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = 'lista_usuarios.php';
             });
-        </script>";
-    } else {
-        echo "<script>
-            document.addEventListener('DOMContentLoaded', () => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'No se pudo actualizar el rol. Intenta nuevamente más tarde.',
-                    toast: true,
-                    position: 'top-end',
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                });
+        });
+    </script>";
+} else {
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo actualizar el rol. Intenta nuevamente más tarde.',
+                toast: true,
+                position: 'top-end',
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
             });
-        </script>";
-    }
+        });
+    </script>";
+}
     $stmt->close();
 }
 
