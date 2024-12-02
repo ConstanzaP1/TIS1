@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $mail->addAddress($user_email);
                 $mail->CharSet = 'UTF-8';
                 $mail->Subject = 'Notificación de cuenta inhabilitada';
-                $mail->Body = "Hola,\nTu cuenta ha sido inhabilitada por la siguiente razón:\n$reason\n\nSi tienes dudas, contacta con el soporte en tisnology1@gmail.com.\nEl equipo de Tisnology";
+                $mail->Body = "Hola,\nTu cuenta ha sido inhabilitada por la siguiente razón:\n$reason\nSi tienes dudas, contacta con el soporte en tisnology1@gmail.com.\nEl equipo de Tisnology";
 
                 $mail->send();
 
