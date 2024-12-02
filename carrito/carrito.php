@@ -303,7 +303,7 @@ if (isset($_POST['pagar'])) {
                     <li class="nav-item">
     <button 
         class="btn btn-cat rounded-pill  px-3 py-3" 
-        style=" color: #black;;  font-size: 0.85rem; font-weight: 500;"
+        style=" color: #black; font-size: 0.85rem; font-weight: 500;"
         onclick="window.location.href='../catalogo_productos/catalogo.php'">
         Catálogo
     </button>
