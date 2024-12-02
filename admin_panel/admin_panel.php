@@ -374,16 +374,16 @@ $result_users = mysqli_query($conexion, $sql_users);
                         </a>
                         <ul class="collapse list-unstyled ps-3" id="menuAcciones">
                             <!-- Botón para redirigir a lista_usuarios.php -->
-                            <a href="lista_usuarios.php" class="nav-link text-white">Lista de Usuarios</a>
+                            <a href="lista_usuarios.php" class="nav-link text-white">Lista de usuarios</a>
                             <!-- Nuevo botón para recuperar boletas -->
                             <a href="../boleta_cotizacion/recuperar_boletas.php" class="nav-link text-white">
-                                Recuperar Boletas
+                                Recuperar boletas
                             </a>
                             <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
-                                Registrar Usuario
+                                Registrar usuario
                             </a>
                             <a href="../postventa/admin_postventa.php" class="nav-link text-white">
-                                Solicitudes Postventa
+                                Solicitudes postventa
                             </a>
                             <!-- Modal para el formulario de registro de usuario -->
                             <div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
@@ -391,18 +391,18 @@ $result_users = mysqli_query($conexion, $sql_users);
                                     <div class="modal-content bg-dark text-white border-secondary">
                                         <!-- Encabezado del Modal -->
                                         <div class="modal-header border-0">
-                                            <h5 class="modal-title" id="registrarUsuarioLabel">Registrar Usuario</h5>
+                                            <h5 class="modal-title" id="registrarUsuarioLabel">Registrar usuario</h5>
                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <!-- Cuerpo del Modal -->
                                         <div class="modal-body">
                                             <form method="POST" action="">
                                                 <div class="mb-3">
-                                                    <label for="username" class="form-label">Nombre de Usuario</label>
+                                                    <label for="username" class="form-label">Nombre de usuario</label>
                                                     <input type="text" class="form-control bg-secondary text-white border-0" name="username" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                                    <label for="email" class="form-label">Correo electrónico</label>
                                                     <input type="email" class="form-control bg-secondary text-white border-0" name="email" required>
                                                 </div>
                                                 <div class="mb-3">
@@ -441,7 +441,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                         </ul>
                     </li>
                 </ul>
-                <button class="btn btn-secondary mt-auto" onclick="window.location.href='../index.php'">Volver al catalogo</button>
+                <button class="btn btn-secondary mt-auto" onclick="window.location.href='../index.php'">Regresar al inicio</button>
                 <!-- Cerrar sesión -->
                 <button class="btn btn-danger mt-2" onclick="window.location.href='?logout=true'">Cerrar Sesión</button>
             </nav>

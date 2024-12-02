@@ -62,11 +62,18 @@ $roles = ['admin' => 'Administrador', 'user' => 'Usuario estándar', 'superadmin
                     <div class="col-lg-6 col-md-8 col-12">
                         <input type="text" name="search" class="form-control" placeholder="Buscar por nombre o correo" value="<?php echo htmlspecialchars($search); ?>">
                     </div>
-                    <div class="col-lg-2 col-md-4 col-6">
-                        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                    <div class="col-lg-1 col-md-4 col-6">
+                        <button type="submit" class="btn btn-dark w-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
-                        <a href="lista_usuarios.php" class="btn btn-secondary w-100">Restablecer</a>
+                        <a href="lista_usuarios.php" class="btn btn-dark w-100">Restablecer</a>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <a href="historial_compras.php" class="btn btn-dark w-100">Historial</a>
                     </div>
                 </div>
             </form>

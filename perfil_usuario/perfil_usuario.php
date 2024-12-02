@@ -248,7 +248,14 @@ function obtenerTiposDeProducto()
             </form>
             <!-- Menú desplegable -->
             <ul class="navbar-nav ms-auto align-items-center">
-                
+                <li class="nav-item">
+                    <button 
+                        class="btn btn-cat rounded-pill  px-3 py-3" 
+                        style=" color: #black;;  font-size: 0.85rem; font-weight: 500;"
+                        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                        Catálogo
+                    </button>
+                </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
@@ -324,27 +331,13 @@ function obtenerTiposDeProducto()
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorias
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
-                        <!-- Opción para todos los productos -->
-                        <li>
-                            <a class="dropdown-item" href="../catalogo_productos/catalogo.php">Todos los productos</a>
-                        </li>
-                        <?php 
-                        // Opciones dinámicas basadas en tipos de producto
-                        $tiposDeProducto = obtenerTiposDeProducto();
-                        foreach ($tiposDeProducto as $tipo): ?>
-                            <li>
-                                <a class="dropdown-item text-capitalize" href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
-                                    <?php echo htmlspecialchars($tipo); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
+                <li class="nav-item">
+                        <button 
+                            class="nav-link  bg-white rounded-pill p-3" 
+                            onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                            Catálogo
+                        </button>
+                    </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="d-flex">
                 <li class="nav-item">
@@ -577,7 +570,6 @@ function obtenerTiposDeProducto()
                                     <th>Cantidad</th>
                                     <th>Precio Unitario</th>
                                     <th>Total</th>
-                                    <th>Acciónes</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -587,12 +579,12 @@ function obtenerTiposDeProducto()
                                         <td><?php echo $item['cantidad']; ?></td>
                                         <td>$<?php echo number_format($item['precio_unitario'], 0, ',', '.'); ?></td>
                                         <td>$<?php echo number_format($item['total'], 0, ',', '.'); ?></td>
-                                        <td><a href="../postventa/postventa.php?id_boleta=<?php echo $row['id_boleta']; ?>" class="btn btn-primary">
-                                        Solicitar Postventa</a></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
+                        <a href="../postventa/postventa.php?id_boleta=<?php echo $row['id_boleta']; ?>" class="btn btn-primary">
+                                        Solicitar Postventa</a>
                     </div>
                 </div>
             </div>

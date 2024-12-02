@@ -43,46 +43,6 @@ $result_boletas = mysqli_query($conexion, $sql_boletas);
             </div>
         </div>
     </nav>
-<!-- Migajas de pan -->
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
-        <li class="breadcrumb-item">
-            <a href="../index.php" class="text-primary text-decoration-none">
-                <i class="fas fa-home me-1"></i> Inicio
-            </a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="../admin_panel/admin_panel.php" class="text-primary text-decoration-none">
-                Panel de Administración
-            </a>
-        </li>
-        <li class="breadcrumb-item active text-dark" aria-current="page">
-            Recuperar Boletas
-        </li>
-    </ol>
-</nav>
-
-<!-- Fin Migajas de pan -->
-<style>
-    .breadcrumb {
-    background-color: #f9f9f9;
-    font-size: 0.9rem;
-}
-
-.breadcrumb .breadcrumb-item a {
-    transition: color 0.2s ease-in-out;
-}
-
-.breadcrumb .breadcrumb-item a:hover {
-    color: #0056b3;
-    text-decoration: underline;
-}
-
-.breadcrumb .breadcrumb-item.active {
-    font-weight: bold;
-    color: #333;
-}
-</style>
     <!-- Contenedor Principal -->
     <div class="container">
         <div class="bg-light p-4 rounded shadow">
@@ -120,8 +80,8 @@ $result_boletas = mysqli_query($conexion, $sql_boletas);
                                 <td><?php echo $boleta['codigo_autorizacion']; ?></td>
                                 <td><?php echo htmlspecialchars($boleta['detalles']); ?></td>
                                 <td>
-                                    <div class="d-flex flex-wrap justify-content-center gap-2">
-                                        <button class="btn btn-info btn-sm" onclick="verBoleta(
+                                    <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+                                        <button class="btn-sm btn btn-dark p-2" style="border-radius:20%" onclick="verBoleta(
                                             '<?php echo $boleta['id_boleta']; ?>',
                                             '<?php echo $boleta['fecha']; ?>',
                                             '<?php echo number_format($boleta['total'], 0, ',', '.'); ?>',

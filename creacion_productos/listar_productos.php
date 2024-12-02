@@ -25,9 +25,8 @@ if (!$resultado) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container-fluid">
             <a class="navbar-brand" href="../admin_panel/admin_panel.php">
                 <img src="../logoblanco.png" alt="Logo" style="width: auto; height: auto;" class="d-inline-block align-text-top">
@@ -44,44 +43,7 @@ if (!$resultado) {
             </div>
         </div>
     </nav>
-
-    <!-- Migajas de pan -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
-            <li class="breadcrumb-item">
-                <a href="../index.php" class="text-primary text-decoration-none">
-                    <i class="fas fa-home me-1"></i> Inicio
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="../admin_panel/admin_panel.php" class="text-primary text-decoration-none">
-                    Panel de Administración
-                </a>
-            </li>
-            <li class="breadcrumb-item active text-dark" aria-current="page">
-                Modificar Productos
-            </li>
-        </ol>
-    </nav>
-
-    <style>
-        .breadcrumb {
-            background-color: #f9f9f9;
-            font-size: 0.9rem;
-        }
-        .breadcrumb .breadcrumb-item a {
-            transition: color 0.2s ease-in-out;
-        }
-        .breadcrumb .breadcrumb-item a:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
-        .breadcrumb .breadcrumb-item.active {
-            font-weight: bold;
-            color: #333;
-        }
-    </style>
-
+<body>
     <!-- Contenedor Principal -->
     <div class="container mt-4">
         <h2 class="text-center mb-4">Modificar Productos</h2>
@@ -103,14 +65,14 @@ if (!$resultado) {
                         <?php while ($producto = mysqli_fetch_assoc($resultado)): ?>
                         <tr id="producto-<?php echo $producto['id_producto']; ?>">
                             <td><?php echo htmlspecialchars($producto['nombre_producto']); ?></td>
-                            <td><?php echo htmlspecialchars($producto['nombre_marca']); ?></td>
-                            <td><?php echo htmlspecialchars($producto['costo']); ?></td>
-                            <td><?php echo htmlspecialchars($producto['precio']); ?></td>
+                            <td><?php echo htmlspecialchars($producto['nombre_marca']); ?></td> <!-- Mostrar nombre de la marca -->
+                            <td><?php echo '$' . number_format(htmlspecialchars($producto['costo']), 0, ',', '.'); ?></td>
+                            <td><?php echo '$' . number_format(htmlspecialchars($producto['precio']), 0, ',', '.'); ?></td>
                             <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
                             <td>
                                 <div class="d-none d-lg-flex gap-2">
                                     <a href="modificar_productos.php?id_producto=<?php echo $producto['id_producto']; ?>" class="btn btn-warning btn-sm">Modificar</a>
-                                    <button onclick="eliminarProducto(<?php echo $producto['id_producto']; ?>)" class="btn btn-danger btn-sm">Eliminar</button>
+                                    
                                     <form method="POST" action="../catalogo_productos/actualizar_destacados.php" class="d-inline">
                                         <input type="hidden" name="id_producto" value="<?php echo $producto['id_producto']; ?>">
                                         <?php if ($producto['destacado']): ?>
@@ -119,6 +81,7 @@ if (!$resultado) {
                                             <button type="submit" name="destacar" class="btn btn-success btn-sm">Marcar Destacado</button>
                                         <?php endif; ?>
                                     </form>
+                                    <button onclick="eliminarProducto(<?php echo $producto['id_producto']; ?>)" class="btn btn-danger btn-sm">Eliminar</button>
                                 </div>
                                 <!-- Acciones para pantallas medianas -->
                                 <div class="d-none d-md-flex d-lg-none flex-column gap-2 mt-2">
