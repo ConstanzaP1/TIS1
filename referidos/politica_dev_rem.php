@@ -2,17 +2,20 @@
 session_start();
 require('../conexion.php');
 // Consulta para obtener la URL de la imagen del usuario actual
-$user_id = $_SESSION['user_id']; // ID del usuario en sesión
-$query = "SELECT img FROM users WHERE id = ?";
-$stmt = $conexion->prepare($query);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
+$img_url = 'default-profile.png'; // Imagen por defecto
+if (isset($_SESSION['user_id'])) {
+    // Consulta para obtener la URL de la imagen del usuario actual
+    $user_id = $_SESSION['user_id']; // ID del usuario en sesión
+    $query = "SELECT img FROM users WHERE id = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
 
-// Imagen por defecto si no hay ninguna en la BD
-$img_url = $row['img'] ?? 'default-profile.png'; 
-    
+    // Asignar la URL de la imagen o usar la imagen por defecto
+    $img_url = $row['img'] ?? 'default-profile.png';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,6 +29,24 @@ $img_url = $row['img'] ?? 'default-profile.png';
         <style>
         .navbar { background-color: rgba(0, 128, 255, 0.5); }
         .rounded-circle { object-fit: cover; width: 50px; height: 50px; }
+        .breadcrumb {
+            background-color: #f9f9f9;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb .breadcrumb-item a {
+            transition: color 0.2s ease-in-out;
+        }
+        
+        .breadcrumb .breadcrumb-item a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb .breadcrumb-item.active {
+            font-weight: bold;
+            color: #333;
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -131,9 +152,22 @@ $img_url = $row['img'] ?? 'default-profile.png';
         </div>
     </div>
 </nav>
-    <header class="bg-primary text-white text-center py-3">
-        <h1>Política de Devoluciones y Reembolsos</h1>
+<nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="../index.php" class="text-primary text-decoration-none">
+                    <i class="fas fa-home me-1"></i>Inicio
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">
+                Politica de Reembolso
+            </li>
+        </ol>
+    </nav>
+    <header class="bg-light text-black text-center py-3">
+    <h1>Política de Devoluciones y Reembolsos</h1>
     </header>
+
 
     <div class="container my-5 bg-white p-4 shadow-sm rounded">
         <p class="lead">

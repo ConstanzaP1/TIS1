@@ -2,11 +2,12 @@
 session_start();
 require_once '../conexion.php';
 
-// Verificar si el usuario ha iniciado sesión y es admin
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+// Verificar si el usuario ha iniciado sesión y es admin o superadmin
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
     header('Location: ../login/login.php');
     exit;
 }
+
 
 // Recuperar todas las boletas desde la base de datos
 $sql_boletas = "SELECT id_boleta, fecha, total, codigo_autorizacion, detalles FROM boletas";

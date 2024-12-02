@@ -2,15 +2,15 @@
 session_start();
 require('../conexion.php');
 require('../vendor/autoload.php');
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Verificar si el usuario es administrador
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+// Verificar si el usuario ha iniciado sesión y es admin o superadmin
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
     header('Location: ../login/login.php');
     exit;
 }
+
 
 // Procesar la respuesta del formulario (cuando se envía desde el modal)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_consulta']) && isset($_POST['respuesta'])) {
@@ -40,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_consulta']) && iss
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'tisnology1@gmail.com'; // Correo del remitente
-                $mail->Password = 'ytfksqrqrginpvge'; // Contraseña de aplicación
+                $mail->Username = 'tisnology1@gmail.com';
+                $mail->Password = 'ytfksqrqrginpvge';
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
@@ -77,9 +77,20 @@ $result = $conexion->query($query);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
         .table th, .table td {
             vertical-align: middle;
             text-align: center;
+        }
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f2f2f2;
         }
         .pregunta {
             white-space: nowrap;
@@ -103,19 +114,37 @@ $result = $conexion->query($query);
     </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../admin_panel/admin_panel.php">
+                <img src="../logoblanco.png" alt="Logo" style="width: auto; height: auto;" class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin_panel/admin_panel.php">Volver al Panel</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
 <div class="container mt-5">
-    <h2 class="mb-4">Administración de Postventa</h2>
+    <h2 class="text-center mb-4">Administración de Postventa</h2>
     <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <thead class="table-primary">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
                 <tr>
-                    <th class="col-2">Cliente</th>
-                    <th class="col-2">Correo</th>
-                    <th class="col-4">Pregunta</th>
-                    <th class="col-2">Respuesta</th>
-                    <th class="col-1">Fecha Pregunta</th>
-                    <th class="col-1">Fecha Respuesta</th>
-                    <th class="col-1">Acción</th>
+                    <th>Cliente</th>
+                    <th>Correo</th>
+                    <th>Pregunta</th>
+                    <th>Respuesta</th>
+                    <th>Fecha Pregunta</th>
+                    <th>Fecha Respuesta</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -202,7 +231,6 @@ $result = $conexion->query($query);
         const cliente = button.getAttribute('data-cliente');
         const pregunta = button.getAttribute('data-pregunta');
 
-        // Rellenar el modal con la información
         document.getElementById('modalCliente').textContent = cliente;
         document.getElementById('modalPregunta').textContent = pregunta;
         document.getElementById('modalIdConsulta').value = idConsulta;
