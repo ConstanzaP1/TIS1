@@ -54,7 +54,7 @@
 
     </head>
     <style>
-    @media (max-width: 576px) {
+        @media (max-width: 576px) {
     .btn-comparador, .btn-wishlist {
         opacity: 0.7; /* Cambia la opacidad */
         transition: opacity 0.3s ease; /* Transición suave */
@@ -478,26 +478,12 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorias
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
-                        <!-- Opción para todos los productos -->
-                        <li>
-                            <a class="dropdown-item" href="../catalogo_productos/catalogo.php">Todos los productos</a>
-                        </li>
-                        <?php 
-                        // Opciones dinámicas basadas en tipos de producto
-                        $tiposDeProducto = obtenerTiposDeProducto();
-                        foreach ($tiposDeProducto as $tipo): ?>
-                            <li>
-                                <a class="dropdown-item text-capitalize" href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
-                                    <?php echo htmlspecialchars($tipo); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                <li class="nav-item">
+                    <button 
+                        class="nav-link  bg-white rounded-pill p-3" 
+                        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                        Catálogo
+                    </button>
                 </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="d-flex">
@@ -524,6 +510,13 @@
                 
                 
                 <?php else: ?>
+                    <li class="nav-item">
+                    <button 
+                        class="nav-link  bg-white rounded-pill p-3" 
+                        onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                        Catálogo
+                    </button>
+                </li>
                 <li class="nav-item">
                     <a class="btn btn-primary" href="../login/login.php">Iniciar Sesión</a>
                 </li>
@@ -575,11 +568,7 @@ if (isset($_GET['id_producto'])){
                         Catalogo
                     </a>
                 </li>
-                <li class="breadcrumb-item">
-                    <a href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($producto['tipo_producto']); ?>" class="text-primary text-decoration-none">
-                        <?php echo ucfirst(htmlspecialchars($producto['tipo_producto'])); ?>
-                    </a>
-                </li>
+                
                 <li class="breadcrumb-item active text-dark" aria-current="page">
                     <?php echo htmlspecialchars($producto['nombre_producto']); ?>
                 </li>
