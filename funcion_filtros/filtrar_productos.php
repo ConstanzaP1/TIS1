@@ -1,6 +1,6 @@
 <?php
 function filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria) {
-    // Conexión a la base de datos
+
     require('../conexion.php');
 
     // Consulta base para seleccionar productos y aplicar filtros
