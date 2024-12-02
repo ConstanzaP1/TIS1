@@ -531,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.querySelector('.form-control[type="search"]');
     const productContainer = document.querySelector('.row.gx-3.gy-3');
 
-    // Function to fetch and display products
+
     function cargarProductos(query = '') {
         $.ajax({
             url: 'funcion_busqueda/buscar_productos.php',
@@ -543,7 +543,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Listen for input changes in the search bar
+
     searchInput.addEventListener('input', function() {
         const query = searchInput.value.trim();
         cargarProductos(query);

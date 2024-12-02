@@ -112,7 +112,7 @@ $result = $stmt->get_result();
             transition: all 0.3s ease; /* Suaviza la animación */
         }
 
-        /* Estilo para el botón de comparar */
+
         .btn-comparar:hover {
             background-color: white; /* Cambia el fondo al pasar el mouse */
             color: #155724; /* Cambia el color del texto/icono */
@@ -381,6 +381,7 @@ $result = $stmt->get_result();
     <?php else: ?>
         <div class="text-center py-5">
             <h3 class="mt-4">No hay productos en la lista de deseos</h3>
+            <br>
             <a href="../index.php" class="btn btn-secondary">Regresar al catálogo</a>
         </div>
     <?php endif; ?>
@@ -402,7 +403,7 @@ $result = $stmt->get_result();
             item.remove();
         }
     })
-    .catch(error => console.error('Error:', error)); // Esto solo se mostrará en caso de error
+    .catch(error => console.error('Error:', error)); 
 }
 
 </script>

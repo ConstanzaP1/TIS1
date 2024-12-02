@@ -745,7 +745,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                             <section>
                                 <h2 class="text-center mt-4">Reporte de Ventas por Producto</h2>
                                 <?php
-                                // Consulta SQL para obtener los datos de ventas
+                                // Consulta SQL para obtener los datos de ventas utilizando las tablas ventas y producto
                                 $sql_ventas = "
                                     SELECT 
                                         p.nombre_producto AS Nombre_Producto,
@@ -781,12 +781,12 @@ $result_users = mysqli_query($conexion, $sql_users);
                                             <?php if (mysqli_num_rows($result_ventas) > 0): ?>
                                                 <?php while ($row = mysqli_fetch_assoc($result_ventas)): ?>
                                                     <tr>
-                                                        <td><?php echo $row['Nombre_Producto']; ?></td>
-                                                        <td><?php echo '$' . number_format($row['Costo_Producto']); ?></td>
-                                                        <td><?php echo '$' . number_format($row['Precio_Venta']); ?></td>
+                                                        <td><?php echo htmlspecialchars($row['Nombre_Producto']); ?></td>
+                                                        <td><?php echo '$' . number_format($row['Costo_Producto'], 0, ',', '.'); ?></td>
+                                                        <td><?php echo '$' . number_format($row['Precio_Venta'], 0, ',', '.'); ?></td>
                                                         <td><?php echo $row['Cantidad_Vendida']; ?></td>
-                                                        <td><?php echo '$' . number_format($row['Total_Ventas']); ?></td>
-                                                        <td><?php echo '$' . number_format($row['Ganancia_Generada']); ?></td>
+                                                        <td><?php echo '$' . number_format($row['Total_Ventas'], 0, ',', '.'); ?></td>
+                                                        <td><?php echo '$' . number_format($row['Ganancia_Generada'], 0, ',', '.'); ?></td>
                                                     </tr>
                                                 <?php endwhile; ?>
                                             <?php else: ?>
@@ -799,6 +799,8 @@ $result_users = mysqli_query($conexion, $sql_users);
                                 </div>
                             </section>
                         </div>
+
+
 
                         <!-- Columna 2: Stock y Atención Postventa -->
                         <div class="col-md-6">
