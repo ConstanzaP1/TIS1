@@ -324,27 +324,13 @@ function obtenerTiposDeProducto()
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle bg-white rounded-pill p-3" type="button" id="productosDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Categorias
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
-                        <!-- Opción para todos los productos -->
-                        <li>
-                            <a class="dropdown-item" href="../catalogo_productos/catalogo.php">Todos los productos</a>
-                        </li>
-                        <?php 
-                        // Opciones dinámicas basadas en tipos de producto
-                        $tiposDeProducto = obtenerTiposDeProducto();
-                        foreach ($tiposDeProducto as $tipo): ?>
-                            <li>
-                                <a class="dropdown-item text-capitalize" href="../catalogo_productos/catalogo.php?tipo_producto=<?php echo urlencode($tipo); ?>">
-                                    <?php echo htmlspecialchars($tipo); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
+                <li class="nav-item">
+                        <button 
+                            class="nav-link  bg-white rounded-pill p-3" 
+                            onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                            Catálogo
+                        </button>
+                    </li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="d-flex">
                 <li class="nav-item">
