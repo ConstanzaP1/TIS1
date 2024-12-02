@@ -38,6 +38,11 @@ function get_ws($data, $method, $type, $endpoint) {
     ));
 
     $response = curl_exec($curl);
+    if (curl_errno($curl)) {
+        // Si hay un error en la conexión, redirigir al index.php con un mensaje
+        header("Location: ../index.php?error=Error en la conexión con Webpay");
+        exit;
+    }
     curl_close($curl);
     return json_decode($response);
 }
@@ -49,7 +54,8 @@ $url_tbk = "";
 
 // Verificar que el total esté configurado en la sesión antes de proceder
 if (!isset($_SESSION['total']) || $_SESSION['total'] <= 0) {
-    die("Error: No se encontraron datos de compra o el total es inválido.");
+    header("Location: ../index.php?error=No se encontraron datos de compra o el total es inválido");
+    exit;
 }
 
 switch ($action) {
@@ -79,7 +85,8 @@ switch ($action) {
             echo "</form>";
             echo "<script>document.getElementById('webpay_form').submit();</script>";
         } else {
-            $message .= "Error al iniciar la transacción con Webpay.";
+            header("Location: ../index.php?error=Error al iniciar la transacción con Webpay");
+            exit;
         }
         break;
 
@@ -87,8 +94,8 @@ switch ($action) {
         $token = $_POST['token_ws'] ?? $_GET['token_ws'] ?? null;
         
         if (!$token) {
-            $message .= "No se recibió el token de Webpay.";
-            break;
+            header("Location: ../index.php?error=No se recibió el token de Webpay");
+            exit;
         }
 
         $data = '';
@@ -100,12 +107,16 @@ switch ($action) {
         // Redirigir a boleta con mensaje de transacción exitosa
         if (isset($response->status) && $response->status == 'AUTHORIZED') {
             $_SESSION['detalle_compra'] = $_SESSION['carrito']; // Almacena el carrito actual en la sesión para usar en boleta.php
-            // Redirigir a la página de boleta con estado de éxito
             header("Location: ../boleta_cotizacion/boleta.php?status=success&auth_code={$response->authorization_code}");
             exit;
         } else {
-            $message .= "Error: La transacción no fue autorizada.";
+            header("Location: ../index.php?error=La transacción no fue autorizada");
+            exit;
         }
         break;
+
+    default:
+        header("Location: ../index.php?error=Acción no reconocida");
+        exit;
 }
 ?>

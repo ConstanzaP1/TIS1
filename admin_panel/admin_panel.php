@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-require_once '../conexion.php'; // Asegúrate de que el archivo conexion.php esté en la ruta correcta
+require_once '../conexion.php';
 
 // Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
     header('Location: ../login/login.php');
     exit;
 }
@@ -20,6 +20,25 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
+// Definir el límite de stock bajo (puede hacerse configurable)
+$stock_limite = 10;
+
+// Consulta para obtener productos con bajo stock
+$sql_stock_bajo = "SELECT nombre_producto, cantidad FROM producto WHERE cantidad < ?";
+$stmt_stock = mysqli_prepare($conexion, $sql_stock_bajo);
+mysqli_stmt_bind_param($stmt_stock, 'i', $stock_limite);
+mysqli_stmt_execute($stmt_stock);
+$result_stock = mysqli_stmt_get_result($stmt_stock);
+
+// Generar notificaciones para cada producto con bajo stock
+$notificaciones_stock = [];
+while ($row = mysqli_fetch_assoc($result_stock)) {
+    $notificaciones_stock[] = $row;
+}
+
+mysqli_stmt_close($stmt_stock);
+
+
 // Manejar la acción de registro
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['update'])) {
     $username = $_POST['username'];
@@ -30,23 +49,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['update'])) {
     // Validar si el correo electrónico ya existe
     $sql_check_email = "SELECT * FROM users WHERE email = ?";
     $stmt_check_email = mysqli_prepare($conexion, $sql_check_email);
-    mysqli_stmt_bind_param($stmt_check_email, 's', $email); 
+    mysqli_stmt_bind_param($stmt_check_email, 's', $email);
     mysqli_stmt_execute($stmt_check_email);
     mysqli_stmt_store_result($stmt_check_email);
-    
+
     if (mysqli_stmt_num_rows($stmt_check_email) > 0) {
         $error_message = 'El correo electrónico ya está en uso.';
     } else {
         // Insertar el nuevo usuario
         $sql_insert = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
         $stmt_insert = mysqli_prepare($conexion, $sql_insert);
-        
+
         // Verificar si la preparación fue exitosa
         if ($stmt_insert) {
             // Hashear la contraseña antes de almacenarla
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             mysqli_stmt_bind_param($stmt_insert, 'ssss', $username, $email, $hashed_password, $role);
-            
+
             if (mysqli_stmt_execute($stmt_insert)) {
                 $message = 'Usuario registrado exitosamente.';
             } else {
@@ -57,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['update'])) {
             $error_message = 'Error al preparar la consulta de inserción.';
         }
     }
-    
+
     mysqli_stmt_close($stmt_check_email);
 }
 
@@ -93,13 +112,13 @@ if (isset($_POST['update'])) {
     $sql_update = "UPDATE users SET username = ?, email = ?, role = ? WHERE id = ?";
     $stmt_update = mysqli_prepare($conexion, $sql_update);
     mysqli_stmt_bind_param($stmt_update, 'sssi', $username, $email, $role, $user_id);
-    
+
     if (mysqli_stmt_execute($stmt_update)) {
         $message = 'Usuario actualizado exitosamente.';
     } else {
         $error_message = 'Error al actualizar el usuario. Inténtalo de nuevo.';
     }
-    
+
     mysqli_stmt_close($stmt_update);
 }
 
@@ -110,476 +129,844 @@ $result_users = mysqli_query($conexion, $sql_users);
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración</title>
-    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <style>
-        body {
-        display: flex;
-        height: 100vh;
-        margin: 0;
-    }
-
-    #sidebar {
-        width: 50%;
-        background: #f8f9fa;
-        border-right: 1px solid #ddd;
-        padding: 10px;
-        margin-left: 25%;
-        
-    }
-
-    #content {
-        flex: 1;
-        padding: 20px;
-        overflow-y: auto;
-    }
-    
-
-    /* Estilo del botón "Lista de Usuarios" */
-    .lista-usuarios-btn {
-        display: block; /* Para que ocupe todo el ancho como en el acordeón */
-        cursor: pointer;
-        padding: 10px;
-        background-color: #e9ecef;
-        border: 1px solid #ddd;
-        color: #000;
-        text-decoration: none;
-        border-radius: 4px;
-        margin-bottom: 5px;
-        text-align: left; 
-
-    }
-
-    .lista-usuarios-btn:hover {
-        background-color: #d3d3d3;
-    }
-
-    .accordion-item {
-        margin-bottom: 5px;
-    }
-
-    .accordion-header {
-        cursor: pointer;
-        padding: 10px;
-        background-color: #e9ecef;
-        border: 1px solid #ddd;
-    }
-
-    .accordion-content {
-        display: none;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-top: none;
-        background: #f1f1f1;
-    }
-
-    .active {
-        background-color: #d3d3d3;
-    }
-
-    .logout {
-        margin-top: 20px;
-    }
-
-    .registro {
-        margin-bottom: 20px;
-        background-color: #f8f9fa;
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .message {
-        margin-top: 10px;
-    }
-    .logo-container {
-        display: flex;
-        justify-content: center; /* Centrar horizontalmente */
-        align-items: center; /* Centrar verticalmente */
-        width: 100%; /* Para que ocupe todo el ancho del sidebar */
-    }
-
-    .logo {
-        width: 50%; /* Ajusta el ancho de la imagen según sea necesario */
-    }
-</style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-
+<style>
+    main {
+    margin-left: 16.6667%; /* Ancho de la barra lateral (2 columnas en un grid de 12) */
+}
+</style>
 <body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Botón para abrir el menú en pantallas pequeñas -->
 
-    <aside id="sidebar">
-    <div class="logo-container">
-    <img class="logo img-fluid" src="../logo.jpg" alt="Logo">
-</div>
-
-        <h4>Panel de Administración</h4>
-        
-        <div class="accordion-item">
-    <div class="accordion-header">Hardware</div>
-    <div class="accordion-content">
-        <ul>
-            <!-- Subcategoría: Almacenamiento -->
-            <li>
-            <a href="#" class="sub-category-header">SSD</a>
-                        <ul class="sub-category-content" style="display: none;">
-                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
-                            <li><a href="../mantenedores_hardware/bus_ssd.php">Bus SSD</a></li>
-                            <li><a href="../mantenedores_hardware/formato_ssd.php">Formato SSD</a></li>
-
-                        </ul>
-                    </li>
-            </li>
-            <li>
-            <a href="#" class="sub-category-header">HDD</a>
-                        <ul class="sub-category-content" style="display: none;">
-                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php">Capacidad Almacenamiento</a></li>
-                            <li><a href="../mantenedores_hardware/bus_hdd.php">Bus HDD</a></li>
-                            <li><a href="../mantenedores_hardware/rpm_hdd.php">RPM HDD</a></li>
-                            <li><a href="../mantenedores_hardware/tamanio_hdd.php">Tamaño HDD</a></li>
-                        </ul>
-                    </li>
-
-            </li>
-
-            <!-- Subcategoría: RAM -->
-            <li>
-                <a href="#" class="sub-category-header">RAM</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_hardware/tipo_ram.php">Tipo RAM</a></li>
-                    <li><a href="../mantenedores_hardware/velocidad_ram.php">Velocidad RAM</a></li>
-                    <li><a href="../mantenedores_hardware/capacidad_ram.php">Capacidad RAM</a></li>
-                    <li><a href="../mantenedores_hardware/formato_ram.php">Formato RAM</a></li>
-                </ul>
-            </li>
-
-            <!-- Subcategoría: CPU -->
-            <li>
-                <a href="#" class="sub-category-header">CPU</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_hardware/frecuencia_cpu.php">Frecuencia CPU</a></li>
-                    <li><a href="../mantenedores_hardware/nucleo_hilo_cpu.php">Núcleo/Hilo CPU</a></li>
-                    <li><a href="../mantenedores_hardware/socket_cpu.php">Socket CPU</a></li>
-                </ul>
-            </li>
-
-            <!-- Subcategoría: GPU -->
-            <li>
-                <a href="#" class="sub-category-header">GPU</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_hardware/frecuencia_gpu.php">Frecuencia GPU</a></li>
-                    <li><a href="../mantenedores_hardware/memoria_gpu.php">Memoria GPU</a></li>
-                    <li><a href="../mantenedores_hardware/chipset_gpu.php">Chipset GPU</a></li>
-                    <li><a href="../mantenedores_hardware/bus_de_entrada_gpu.php">Bus de Entrada GPU</a></li>
-                </ul>
-            </li>
-
-            <!-- Subcategoría: Placas -->
-            <li>
-                <a href="#" class="sub-category-header">Placas</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_hardware/formato_placa.php">Formato Placa</a></li>
-                    <li><a href="../mantenedores_hardware/slot_memoria_placa.php">Slot Memoria Placa</a></li>
-                    <li><a href="../mantenedores_hardware/socket_placa.php">Socket Placa</a></li>
-                    <li><a href="../mantenedores_hardware/chipset_placa.php">Chipset Placa</a></li>
-                </ul>
-            </li>
-
-            <!-- Subcategoría: Fuentes -->
-            <li>
-                <a href="#" class="sub-category-header">Fuentes</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_hardware/certificacion_fuente.php">Certificación Fuente</a></li>
-                    <li><a href="../mantenedores_hardware/potencia_fuente.php">Potencia Fuente</a></li>
-                    <li><a href="../mantenedores_hardware/tamanio_fuente.php">Tamaño Fuente</a></li>
-                </ul>
-            </li>
-
-            <!-- Subcategoría: Gabinetes -->
-            <li>
-                <a href="#" class="sub-category-header">Gabinetes</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_hardware/tamanio_max_gabinete.php">Tamaño Max Gabinete</a></li>
-                </ul>
-            </li>
-
-        </ul>
-    </div>
-</div>
-
-<style>
-    .sub-category-header {
-        cursor: pointer;
-        font-weight: bold;
-    }
-    .sub-category-content {
-        padding-left: 20px; /* Indentación para la subcategoría */
-    }
-</style>
-
-</script>
-</script>
-<div class="accordion-item">
-    <div class="accordion-header">Periféricos</div>
-    <div class="accordion-content">
-        <ul>
-            <!-- Subcategoría: Monitores -->
-            <li>
-                <a href="#" class="sub-category-header">Monitores</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_periferico/resolucion_monitor.php">Resolución Monitor</a></li>
-                    <li><a href="../mantenedores_periferico/tamanio_monitor.php">Tamaño Monitor</a></li>
-                    <li><a href="../mantenedores_periferico/tasa_refresco.php">Tasa de Refresco</a></li>
-                    <li><a href="../mantenedores_periferico/tiempo_respuesta.php">Tiempo de Respuesta</a></li>
-                    <li><a href="../mantenedores_periferico/soporte_monitor.php">Soporte Monitor</a></li>
-                    <li><a href="../mantenedores_periferico/tipo_panel.php">Tipo Panel</a></li>
-                    <li><a href="../mantenedores_periferico/tipo_curvatura.php">Tipo Curvatura</a></li>
-                </ul>
-            </li>
-
-            <!-- Subcategoría: Mouse -->
-            <li>
-                <a href="#" class="sub-category-header">Mouse</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_periferico/dpi_mouse.php">DPI Mouse</a></li>
-                    <li><a href="../mantenedores_periferico/peso_mouse.php">Peso Mouse</a></li>
-                    <li><a href="../mantenedores_periferico/sensor_mouse.php">Sensor Mouse</a></li>
-                </ul>
-            </li>
-
-            <!-- Subcategoría: Audio -->
-            <li>
-                <a href="#" class="sub-category-header">Audifonos</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_periferico/tipo_audifono.php">Tipo Audífono</a></li>
-                    <li><a href="../mantenedores_periferico/tipo_microfono.php">Tipo Micrófono</a></li>
-                    <li><a href="../mantenedores_periferico/anc.php">ANC</a></li>
-                    <li><a href="../mantenedores_periferico/iluminacion.php">Iluminación</a></li>
-                    <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
-                </ul>
-            </li>
-
-
-            <!-- Subcategoría: Teclados -->
-            <li>
-                <a href="#" class="sub-category-header">Teclados</a>
-                <ul class="sub-category-content" style="display: none;">
-                    <li><a href="../mantenedores_periferico/tipo_teclado.php">Tipo Teclado</a></li>
-                    <li><a href="../mantenedores_periferico/tipo_switch.php">Tipo Switch</a></li>
-                    <li><a href="../mantenedores_periferico/categoria_teclado.php">Categoria</a></li>
-                    <li><a href="../mantenedores_periferico/iluminacion.php">Iluminación</a></li>
-                    <li><a href="../mantenedores_periferico/conectividad.php">Conectividad</a></li>
-                </ul>
-            </li>
-
-            <!-- Subcategoría: Otros Periféricos -->
-
-        </ul>
-    </div>
-</div>
-
-<div class="accordion-item">
-    <div class="accordion-header">Notebook</div>
-    <div class="accordion-content">
-        <ul>
-            <!-- Subcategoría: Batería -->
-            <li><a href="../mantenedores_notebook/bateria_notebook.php">Batería</a></li>
-
-            <!-- Subcategoría: Procesador -->
-            <li><a href="../mantenedores_notebook/cpu_notebook.php">Procesador</a></li>
-
-            <!-- Subcategoría: Tarjeta de video -->
-            <li><a href="../mantenedores_notebook/gpu_notebook.php">Tarjeta de video</a></li>
-
-            <!-- Subcategoría: Pantalla -->
-            <li><a href="../mantenedores_notebook/pantalla_notebook.php">Pantalla</a></li>
-        </ul>
-    </div>
-</div>
-<div class="accordion-item">
-    <div class="accordion-header">Marcas</div>
-        <div class="accordion-content">
-            <ul>
-                <li><a href="../mantenedores_marcas/nombres_marcas.php">Agregar Marcas</a></li>
-            
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="acordion-item">
-    <div class="accordion-header">Gestionar productos</div>
-        <div class="accordion-content">
-            <ul>
-                <li><a href="../creacion_productos/index_crear_producto.php">Crear producto</a></li>
-                <li><a href="../creacion_productos/listar_productos.php">Modificar productos</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-<style>
-    .sub-category-header {
-        cursor: pointer;
-        font-weight: bold;
-    }
-    .sub-category-content {
-        padding-left: 20px; /* Indentación para la subcategoría */
-    }
-</style>
-<script>
-
-    document.querySelectorAll('.sub-category-header').forEach(header => {
-        header.addEventListener('click', function () {
-            const subCategory = this.nextElementSibling;
-            subCategory.style.display = subCategory.style.display === 'none' ? 'block' : 'none';
-        });
-    });
-</script>
-<hr>
-
-<div class="sidebar-container p-3">
-<div class="d-flex flex-column gap-2">
-    <!-- Botón para redirigir a lista_usuarios.php -->
-    <a href="lista_usuarios.php" class="btn lista-usuarios-btn">Lista de Usuarios</a>
-    
-    <!-- Botón en el sidebar para abrir el modal de registro de usuario -->
-    <button type="button" class="btn lista-usuarios-btn" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
-        Registrar Usuario
-    </button>
-
-    <!-- Nuevo botón para recuperar boletas -->
-    <a href="../boleta_cotizacion/recuperar_boletas.php" class="btn lista-usuarios-btn">
-        Recuperar Boletas
-    </a>
-
-    <!-- Botón para el catálogo de productos -->
-    <a href="../index.php" class="btn lista-usuarios-btn">
-        Catálogo productos
-    </a>
-
-        <!-- Botón para cerrar sesión -->
-        <a href="?logout" class="btn btn-danger flex-grow-1 d-flex align-items-center justify-content-center">
-            Cerrar Sesión
-        </a>
-    </div>
-</div>
-
-
-<!-- Modal para el formulario de registro de usuario -->
-<div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="registrarUsuarioLabel">Registrar Usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="d-lg-none d-flex justify-content-between align-items-center w-100">
+                <!-- Botón para abrir el menú lateral -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar" style="background-color: black; color: white; border: none;">
+                    <span class="navbar-toggler-icon" style="background-image: none; width: 24px; height: 2px; background-color: white; display: block; margin: 4px 0;"></span>
+                    <span class="navbar-toggler-icon" style="background-image: none; width: 24px; height: 2px; background-color: white; display: block; margin: 4px 0;"></span>
+                    <span class="navbar-toggler-icon" style="background-image: none; width: 24px; height: 2px; background-color: white; display: block; margin: 4px 0;"></span>
+                </button>
+                <!-- Logo centrado -->
+                <img class="logo img-fluid mx-auto" src="../logopng.png" alt="Logo" style="width: 180px;">
             </div>
-            <div class="modal-body">
-                <form method="POST" action="">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" name="username" required>
+
+            <!-- Sidebar  -->
+            <nav class="col-lg-2 col-md-4 bg-dark text-white vh-100 d-flex flex-column p-3 d-none d-lg-flex position-fixed">
+                <!-- Logo -->
+                <div class="text-center mb-4">
+                    <a href="../index.php">
+                        <img class="logo img-fluid w-75 rounded-pill" src="../logoblanco.png" alt="Logo">
+                    </a>
+                </div>
+                <h4 class="text-center">Panel de Administración</h4>
+                <!-- Menú principal -->
+                <ul class="nav flex-column">
+                    <!-- Mantenedores -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuMantenedores" role="button">
+                            <i class="fas fa-tools"></i> Mantenedores
+                        </a>
+                        <ul class="collapse list-unstyled ps-3" id="menuMantenedores">
+                            <!-- Hardware -->
+                            <li>
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuHardware" role="button">
+                                    <i class="fas fa-microchip"></i> Hardware
+                                </a>
+                                <ul class="collapse list-unstyled ps-3" id="menuHardware">
+                                    <!-- SSD -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuSSD" role="button">
+                                            SSD
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuSSD">
+                                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php" class="nav-link text-white">Capacidad Almacenamiento</a></li>
+                                            <li><a href="../mantenedores_hardware/bus_ssd.php" class="nav-link text-white">Bus SSD</a></li>
+                                            <li><a href="../mantenedores_hardware/formato_ssd.php" class="nav-link text-white">Formato SSD</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- HDD -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuHDD" role="button">
+                                            HDD
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuHDD">
+                                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php" class="nav-link text-white">Capacidad Almacenamiento</a></li>
+                                            <li><a href="../mantenedores_hardware/bus_hdd.php" class="nav-link text-white">Bus HDD</a></li>
+                                            <li><a href="../mantenedores_hardware/rpm_hdd.php" class="nav-link text-white">RPM HDD</a></li>
+                                            <li><a href="../mantenedores_hardware/tamanio_hdd.php" class="nav-link text-white">Tamaño HDD</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- RAM -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuRAM" role="button">
+                                            RAM
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuRAM">
+                                            <li><a href="../mantenedores_hardware/tipo_ram.php" class="nav-link text-white">Tipo RAM</a></li>
+                                            <li><a href="../mantenedores_hardware/velocidad_ram.php" class="nav-link text-white">Velocidad RAM</a></li>
+                                            <li><a href="../mantenedores_hardware/capacidad_ram.php" class="nav-link text-white">Capacidad RAM</a></li>
+                                            <li><a href="../mantenedores_hardware/formato_ram.php" class="nav-link text-white">Formato RAM</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- CPU -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuCPU" role="button">
+                                            CPU
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuCPU">
+                                            <li><a href="../mantenedores_hardware/frecuencia_cpu.php" class="nav-link text-white">Frecuencia CPU</a></li>
+                                            <li><a href="../mantenedores_hardware/nucleo_hilo_cpu.php" class="nav-link text-white">Núcleo/Hilo CPU</a></li>
+                                            <li><a href="../mantenedores_hardware/socket_cpu.php" class="nav-link text-white">Socket CPU</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- GPU -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuGPU" role="button">
+                                        GPU
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuGPU">
+                                            <li><a href="../mantenedores_hardware/frecuencia_gpu.php" class="nav-link text-white">Frecuencia GPU</a></li>
+                                            <li><a href="../mantenedores_hardware/memoria_gpu.php" class="nav-link text-white">Memoria GPU</a></li>
+                                            <li><a href="../mantenedores_hardware/chipset_gpu.php" class="nav-link text-white">Chipset GPU</a></li>
+                                            <li><a href="../mantenedores_hardware/bus_de_entrada_gpu.php" class="nav-link text-white">Bus de Entrada GPU</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- PLACAS -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuPLACAS" role="button">
+                                        PLACAS MADRE
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuPLACAS">
+                                            <li><a href="../mantenedores_hardware/formato_placa.php" class="nav-link text-white">Formato Placa</a></li>
+                                            <li><a href="../mantenedores_hardware/slot_memoria_placa.php" class="nav-link text-white">Slot Memoria Placa</a></li>
+                                            <li><a href="../mantenedores_hardware/socket_placa.php" class="nav-link text-white">Socket Placa</a></li>
+                                            <li><a href="../mantenedores_hardware/chipset_placa.php" class="nav-link text-white">Chipset Placa</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- FUENTES -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuFUENTE" role="button">
+                                        FUENTE
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuFUENTE">
+                                            <li><a href="../mantenedores_hardware/certificacion_fuente.php" class="nav-link text-white">Certificación Fuente</a></li>
+                                            <li><a href="../mantenedores_hardware/potencia_fuente.php" class="nav-link text-white">Potencia Fuente</a></li>
+                                            <li><a href="../mantenedores_hardware/tamanio_fuente.php" class="nav-link text-white">Tamaño Fuente</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- GABINETE -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuGABINETE" role="button">
+                                        GABINETE
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuGABINETE">
+                                            <li><a href="../mantenedores_hardware/tamanio_max_gabinete.php" class="nav-link text-white">Tamaño Max Gabinete</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Periféricos -->
+                            <li>
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuPeriferico" role="button">
+                                    <i class="fas fa-microchip"></i> Periféricos
+                                </a>
+                                <ul class="collapse list-unstyled ps-3" id="menuPeriferico">
+                                    <!-- Monitores -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuMONITORES" role="button">
+                                        Monitores
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuMONITORES">
+                                            <li><a href="../mantenedores_periferico/resolucion_monitor.php" class="nav-link text-white">Resolución Monitor</a></li>
+                                            <li><a href="../mantenedores_periferico/tamanio_monitor.php" class="nav-link text-white">Tamaño Monitor</a></li>
+                                            <li><a href="../mantenedores_periferico/tasa_refresco.php" class="nav-link text-white">Tasa de Refresco</a></li>
+                                            <li><a href="../mantenedores_periferico/tiempo_respuesta.php" class="nav-link text-white">Tiempo de Respuesta</a></li>
+                                            <li><a href="../mantenedores_periferico/soporte_monitor.php" class="nav-link text-white">Soporte Monitor</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_panel.php" class="nav-link text-white">Tipo Panel</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_curvatura.php" class="nav-link text-white">Tipo Curvatura</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Mouse -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuMouse" role="button">
+                                        Mouse
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuMouse">
+                                            <li><a href="../mantenedores_periferico/dpi_mouse.php" class="nav-link text-white">DPI Mouse</a></li>
+                                            <li><a href="../mantenedores_periferico/peso_mouse.php" class="nav-link text-white">Peso Mouse</a></li>
+                                            <li><a href="../mantenedores_periferico/sensor_mouse.php" class="nav-link text-white">Sensor Mouse</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Audio -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuAudio" role="button">
+                                        Audio
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuAudio">
+                                            <li><a href="../mantenedores_periferico/tipo_audifono.php" class="nav-link text-white">Tipo Audífono</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_microfono.php" class="nav-link text-white">Tipo Micrófono</a></li>
+                                            <li><a href="../mantenedores_periferico/anc.php" class="nav-link text-white">ANC</a></li>
+                                            <li><a href="../mantenedores_periferico/iluminacion.php" class="nav-link text-white">Iluminación</a></li>
+                                            <li><a href="../mantenedores_periferico/conectividad.php" class="nav-link text-white">Conectividad</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Teclados -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuTeclados" role="button">
+                                        Teclados
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuTeclados">
+                                            <li><a href="../mantenedores_periferico/tipo_teclado.php" class="nav-link text-white">Tipo Teclado</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_switch.php" class="nav-link text-white">Tipo Switch</a></li>
+                                            <li><a href="../mantenedores_periferico/categoria_teclado.php" class="nav-link text-white">Categoria</a></li>
+                                            <li><a href="../mantenedores_periferico/iluminacion.php" class="nav-link text-white">Iluminación</a></li>
+                                            <li><a href="../mantenedores_periferico/conectividad.php" class="nav-link text-white">Conectividad</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Notebook -->
+                            <li>
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuNotebook" role="button">
+                                    <i class="fas fa-microchip"></i> Notebook
+                                </a>
+                                <ul class="collapse list-unstyled ps-3" id="menuNotebook">
+                                    <!-- Subcategoría: Batería -->
+                                    <li><a href="../mantenedores_notebook/bateria_notebook.php" class="nav-link text-white">Batería</a></li>
+
+                                    <!-- Subcategoría: Procesador -->
+                                    <li><a href="../mantenedores_notebook/cpu_notebook.php" class="nav-link text-white">Procesador</a></li>
+
+                                    <!-- Subcategoría: Tarjeta de video -->
+                                    <li><a href="../mantenedores_notebook/gpu_notebook.php" class="nav-link text-white">Tarjeta de video</a></li>
+
+                                    <!-- Subcategoría: Pantalla -->
+                                    <li><a href="../mantenedores_notebook/pantalla_notebook.php" class="nav-link text-white">Pantalla</a></li>
+                                    
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Gestion productos -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuGestion_producto" role="button">
+                            <i class="fas fa-tools"></i> Gestionar productos
+                        </a>
+                        <ul class="collapse list-unstyled ps-3" id="menuGestion_producto">
+                            <li><a href="../creacion_productos/index_crear_producto.php" class="nav-link text-white">Crear producto</a></li>
+                            <li><a href="../creacion_productos/listar_productos.php" class="nav-link text-white">Modificar productos</a></li>
+                        </ul>
+                    </li>
+                    <!-- Acciones -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuAcciones" role="button">
+                            <i class="fas fa-tools"></i> Acciones
+                        </a>
+                        <ul class="collapse list-unstyled ps-3" id="menuAcciones">
+                            <!-- Botón para redirigir a lista_usuarios.php -->
+                            <a href="lista_usuarios.php" class="nav-link text-white">Lista de usuarios</a>
+                            <!-- Nuevo botón para recuperar boletas -->
+                            <a href="../boleta_cotizacion/recuperar_boletas.php" class="nav-link text-white">
+                                Recuperar boletas
+                            </a>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
+                                Registrar usuario
+                            </a>
+                            <a href="../postventa/admin_postventa.php" class="nav-link text-white">
+                                Solicitudes postventa
+                            </a>
+                            <!-- Modal para el formulario de registro de usuario -->
+                            <div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content bg-dark text-white border-secondary">
+                                        <!-- Encabezado del Modal -->
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title" id="registrarUsuarioLabel">Registrar usuario</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <!-- Cuerpo del Modal -->
+                                        <div class="modal-body">
+                                            <form method="POST" action="">
+                                                <div class="mb-3">
+                                                    <label for="username" class="form-label">Nombre de usuario</label>
+                                                    <input type="text" class="form-control bg-secondary text-white border-0" name="username" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">Correo electrónico</label>
+                                                    <input type="email" class="form-control bg-secondary text-white border-0" name="email" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="password" class="form-label">Contraseña</label>
+                                                    <input type="password" class="form-control bg-secondary text-white border-0" name="password" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="role" class="form-label">Rol</label>
+                                                    <select name="role" class="form-select bg-secondary text-white border-0">
+                                                        <?php
+                                                        session_start();
+                                                        $current_role = $_SESSION['role'] ?? 'user'; 
+                                                        if ($current_role === 'superadmin') {
+                                                            echo '<option value="user">Usuario</option>';
+                                                            echo '<option value="admin">Administrador</option>';
+                                                        } elseif ($current_role === 'admin') {
+                                                            echo '<option value="user">Usuario</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary w-100">Registrar</button>
+                                            </form>
+                                            <div class="message mt-3">
+                                                <?php if (!empty($message)): ?>
+                                                    <div class="alert alert-success"><?php echo $message; ?></div>
+                                                <?php endif; ?>
+                                                <?php if (!empty($error_message)): ?>
+                                                    <div class="alert alert-danger"><?php echo $error_message; ?></div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+                <button class="btn btn-secondary mt-auto" onclick="window.location.href='../index.php'">Regresar al inicio</button>
+                <!-- Cerrar sesión -->
+                <button class="btn btn-danger mt-2" onclick="window.location.href='?logout=true'">Cerrar Sesión</button>
+            </nav>
+            <!-- Sidebar para móviles -->
+            <div class="offcanvas offcanvas-start bg-dark text-white d-lg-none" id="sidebar" tabindex="-1" aria-labelledby="sidebarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="sidebarLabel">Panel de Administración</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body p-3">
+                    <!-- Logo -->
+                    <div class="text-center mb-4">
+                        <a href="../index.php">
+                            <img class="logo img-fluid w-75 rounded-pill" src="../logopng.png" alt="Logo">
+                        </a>
                     </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" name="password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="role" class="form-label">Rol</label>
-                        <select name="role" class="form-select">
-                            <option value="user">Usuario</option>
-                            <option value="admin">Administrador</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                </form>
-                <div class="message mt-3">
-                    <?php if (!empty($message)): ?>
-                        <div class="alert alert-success"><?php echo $message; ?></div>
-                    <?php endif; ?>
-                    <?php if (!empty($error_message)): ?>
-                        <div class="alert alert-danger"><?php echo $error_message; ?></div>
-                    <?php endif; ?>
+                    <h4 class="text-center">Panel de Administración</h4>
+                <!-- Menú principal -->
+                <ul class="nav flex-column">
+                    <!-- Mantenedores -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuMantenedores" role="button">
+                            <i class="fas fa-tools"></i> Mantenedores
+                        </a>
+                        <ul class="collapse list-unstyled ps-3" id="menuMantenedores">
+                            <!-- Hardware -->
+                            <li>
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuHardware" role="button">
+                                    <i class="fas fa-microchip"></i> Hardware
+                                </a>
+                                <ul class="collapse list-unstyled ps-3" id="menuHardware">
+                                    <!-- SSD -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuSSD" role="button">
+                                            SSD
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuSSD">
+                                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php" class="nav-link text-white">Capacidad Almacenamiento</a></li>
+                                            <li><a href="../mantenedores_hardware/bus_ssd.php" class="nav-link text-white">Bus SSD</a></li>
+                                            <li><a href="../mantenedores_hardware/formato_ssd.php" class="nav-link text-white">Formato SSD</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- HDD -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuHDD" role="button">
+                                            HDD
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuHDD">
+                                            <li><a href="../mantenedores_hardware/capacidad_almacenamiento.php" class="nav-link text-white">Capacidad Almacenamiento</a></li>
+                                            <li><a href="../mantenedores_hardware/bus_hdd.php" class="nav-link text-white">Bus HDD</a></li>
+                                            <li><a href="../mantenedores_hardware/rpm_hdd.php" class="nav-link text-white">RPM HDD</a></li>
+                                            <li><a href="../mantenedores_hardware/tamanio_hdd.php" class="nav-link text-white">Tamaño HDD</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- RAM -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuRAM" role="button">
+                                            RAM
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuRAM">
+                                            <li><a href="../mantenedores_hardware/tipo_ram.php" class="nav-link text-white">Tipo RAM</a></li>
+                                            <li><a href="../mantenedores_hardware/velocidad_ram.php" class="nav-link text-white">Velocidad RAM</a></li>
+                                            <li><a href="../mantenedores_hardware/capacidad_ram.php" class="nav-link text-white">Capacidad RAM</a></li>
+                                            <li><a href="../mantenedores_hardware/formato_ram.php" class="nav-link text-white">Formato RAM</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- CPU -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuCPU" role="button">
+                                            CPU
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuCPU">
+                                            <li><a href="../mantenedores_hardware/frecuencia_cpu.php" class="nav-link text-white">Frecuencia CPU</a></li>
+                                            <li><a href="../mantenedores_hardware/nucleo_hilo_cpu.php" class="nav-link text-white">Núcleo/Hilo CPU</a></li>
+                                            <li><a href="../mantenedores_hardware/socket_cpu.php" class="nav-link text-white">Socket CPU</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- GPU -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuGPU" role="button">
+                                        GPU
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuGPU">
+                                            <li><a href="../mantenedores_hardware/frecuencia_gpu.php" class="nav-link text-white">Frecuencia GPU</a></li>
+                                            <li><a href="../mantenedores_hardware/memoria_gpu.php" class="nav-link text-white">Memoria GPU</a></li>
+                                            <li><a href="../mantenedores_hardware/chipset_gpu.php" class="nav-link text-white">Chipset GPU</a></li>
+                                            <li><a href="../mantenedores_hardware/bus_de_entrada_gpu.php" class="nav-link text-white">Bus de Entrada GPU</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- PLACAS -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuPLACAS" role="button">
+                                        PLACAS MADRE
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuPLACAS">
+                                            <li><a href="../mantenedores_hardware/formato_placa.php" class="nav-link text-white">Formato Placa</a></li>
+                                            <li><a href="../mantenedores_hardware/slot_memoria_placa.php" class="nav-link text-white">Slot Memoria Placa</a></li>
+                                            <li><a href="../mantenedores_hardware/socket_placa.php" class="nav-link text-white">Socket Placa</a></li>
+                                            <li><a href="../mantenedores_hardware/chipset_placa.php" class="nav-link text-white">Chipset Placa</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- FUENTES -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuFUENTE" role="button">
+                                        FUENTE
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuFUENTE">
+                                            <li><a href="../mantenedores_hardware/certificacion_fuente.php" class="nav-link text-white">Certificación Fuente</a></li>
+                                            <li><a href="../mantenedores_hardware/potencia_fuente.php" class="nav-link text-white">Potencia Fuente</a></li>
+                                            <li><a href="../mantenedores_hardware/tamanio_fuente.php" class="nav-link text-white">Tamaño Fuente</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- GABINETE -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuGABINETE" role="button">
+                                        GABINETE
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuGABINETE">
+                                            <li><a href="../mantenedores_hardware/tamanio_max_gabinete.php" class="nav-link text-white">Tamaño Max Gabinete</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Periféricos -->
+                            <li>
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuPeriferico" role="button">
+                                    <i class="fas fa-microchip"></i> Periféricos
+                                </a>
+                                <ul class="collapse list-unstyled ps-3" id="menuPeriferico">
+                                    <!-- Monitores -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuMONITORES" role="button">
+                                        Monitores
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuMONITORES">
+                                            <li><a href="../mantenedores_periferico/resolucion_monitor.php" class="nav-link text-white">Resolución Monitor</a></li>
+                                            <li><a href="../mantenedores_periferico/tamanio_monitor.php" class="nav-link text-white">Tamaño Monitor</a></li>
+                                            <li><a href="../mantenedores_periferico/tasa_refresco.php" class="nav-link text-white">Tasa de Refresco</a></li>
+                                            <li><a href="../mantenedores_periferico/tiempo_respuesta.php" class="nav-link text-white">Tiempo de Respuesta</a></li>
+                                            <li><a href="../mantenedores_periferico/soporte_monitor.php" class="nav-link text-white">Soporte Monitor</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_panel.php" class="nav-link text-white">Tipo Panel</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_curvatura.php" class="nav-link text-white">Tipo Curvatura</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Mouse -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuMouse" role="button">
+                                        Mouse
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuMouse">
+                                            <li><a href="../mantenedores_periferico/dpi_mouse.php" class="nav-link text-white">DPI Mouse</a></li>
+                                            <li><a href="../mantenedores_periferico/peso_mouse.php" class="nav-link text-white">Peso Mouse</a></li>
+                                            <li><a href="../mantenedores_periferico/sensor_mouse.php" class="nav-link text-white">Sensor Mouse</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Audio -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuAudio" role="button">
+                                        Audio
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuAudio">
+                                            <li><a href="../mantenedores_periferico/tipo_audifono.php" class="nav-link text-white">Tipo Audífono</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_microfono.php" class="nav-link text-white">Tipo Micrófono</a></li>
+                                            <li><a href="../mantenedores_periferico/anc.php" class="nav-link text-white">ANC</a></li>
+                                            <li><a href="../mantenedores_periferico/iluminacion.php" class="nav-link text-white">Iluminación</a></li>
+                                            <li><a href="../mantenedores_periferico/conectividad.php" class="nav-link text-white">Conectividad</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Teclados -->
+                                    <li>
+                                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#submenuTeclados" role="button">
+                                        Teclados
+                                        </a>
+                                        <ul class="collapse list-unstyled ps-3" id="submenuTeclados">
+                                            <li><a href="../mantenedores_periferico/tipo_teclado.php" class="nav-link text-white">Tipo Teclado</a></li>
+                                            <li><a href="../mantenedores_periferico/tipo_switch.php" class="nav-link text-white">Tipo Switch</a></li>
+                                            <li><a href="../mantenedores_periferico/categoria_teclado.php" class="nav-link text-white">Categoria</a></li>
+                                            <li><a href="../mantenedores_periferico/iluminacion.php" class="nav-link text-white">Iluminación</a></li>
+                                            <li><a href="../mantenedores_periferico/conectividad.php" class="nav-link text-white">Conectividad</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Notebook -->
+                            <li>
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuNotebook" role="button">
+                                    <i class="fas fa-microchip"></i> Notebook
+                                </a>
+                                <ul class="collapse list-unstyled ps-3" id="menuNotebook">
+                                    <!-- Subcategoría: Batería -->
+                                    <li><a href="../mantenedores_notebook/bateria_notebook.php" class="nav-link text-white">Batería</a></li>
+
+                                    <!-- Subcategoría: Procesador -->
+                                    <li><a href="../mantenedores_notebook/cpu_notebook.php" class="nav-link text-white">Procesador</a></li>
+
+                                    <!-- Subcategoría: Tarjeta de video -->
+                                    <li><a href="../mantenedores_notebook/gpu_notebook.php" class="nav-link text-white">Tarjeta de video</a></li>
+
+                                    <!-- Subcategoría: Pantalla -->
+                                    <li><a href="../mantenedores_notebook/pantalla_notebook.php" class="nav-link text-white">Pantalla</a></li>
+                                    
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Gestion productos -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuGestion_producto" role="button">
+                            <i class="fas fa-tools"></i> Gestionar productos
+                        </a>
+                        <ul class="collapse list-unstyled ps-3" id="menuGestion_producto">
+                            <li><a href="../creacion_productos/index_crear_producto.php" class="nav-link text-white">Crear producto</a></li>
+                            <li><a href="../creacion_productos/listar_productos.php" class="nav-link text-white">Modificar productos</a></li>
+                        </ul>
+                    </li>
+                    <!-- Acciones -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#menuAcciones" role="button">
+                            <i class="fas fa-tools"></i> Acciones
+                        </a>
+                        <ul class="collapse list-unstyled ps-3" id="menuAcciones">
+                            <!-- Botón para redirigir a lista_usuarios.php -->
+                            <a href="lista_usuarios.php" class="nav-link text-white">Lista de usuarios</a>
+                            <!-- Nuevo botón para recuperar boletas -->
+                            <a href="../boleta_cotizacion/recuperar_boletas.php" class="nav-link text-white">
+                                Recuperar boletas
+                            </a>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#registrarUsuarioModal">
+                                Registrar usuario
+                            </a>
+                            <a href="../postventa/admin_postventa.php" class="nav-link text-white">
+                                Solicitudes postventa
+                            </a>
+                            <!-- Modal para el formulario de registro de usuario -->
+                            <div class="modal fade" id="registrarUsuarioModal" tabindex="-1" aria-labelledby="registrarUsuarioLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content bg-dark text-white border-secondary">
+                                        <!-- Encabezado del Modal -->
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title" id="registrarUsuarioLabel">Registrar usuario</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <!-- Cuerpo del Modal -->
+                                        <div class="modal-body">
+                                            <form method="POST" action="">
+                                                <div class="mb-3">
+                                                    <label for="username" class="form-label">Nombre de usuario</label>
+                                                    <input type="text" class="form-control bg-secondary text-white border-0" name="username" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">Correo electrónico</label>
+                                                    <input type="email" class="form-control bg-secondary text-white border-0" name="email" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="password" class="form-label">Contraseña</label>
+                                                    <input type="password" class="form-control bg-secondary text-white border-0" name="password" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="role" class="form-label">Rol</label>
+                                                    <select name="role" class="form-select bg-secondary text-white border-0">
+                                                        <?php
+                                                        session_start();
+                                                        $current_role = $_SESSION['role'] ?? 'user'; 
+                                                        if ($current_role === 'superadmin') {
+                                                            echo '<option value="user">Usuario</option>';
+                                                            echo '<option value="admin">Administrador</option>';
+                                                        } elseif ($current_role === 'admin') {
+                                                            echo '<option value="user">Usuario</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary w-100">Registrar</button>
+                                            </form>
+                                            <div class="message mt-3">
+                                                <?php if (!empty($message)): ?>
+                                                    <div class="alert alert-success"><?php echo $message; ?></div>
+                                                <?php endif; ?>
+                                                <?php if (!empty($error_message)): ?>
+                                                    <div class="alert alert-danger"><?php echo $error_message; ?></div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+                <button class="btn btn-secondary" onclick="window.location.href='../index.php'">Regresar al inicio</button>
+                <!-- Cerrar sesión -->
+                <button class="btn btn-danger" onclick="window.location.href='?logout=true'">Cerrar Sesión</button>
                 </div>
             </div>
+            <!-- Main Content -->
+            <main class="col-lg-10 border col-md-12 p-4">
+                <header class="mb-4">
+                    <h1 class="text-center">Dashboard</h1>
+                </header>
+                <body>
+                    <div class="row mt-4">
+                        <!-- Columna 1: Reporte de Ventas por Producto -->
+                        <div class="col-md-6">
+                            <section>
+                                <h2 class="text-center mt-4">Reporte de Ventas por Producto</h2>
+                                <?php
+                                // Consulta SQL para obtener los datos de ventas utilizando las tablas ventas y producto
+                                $sql_ventas = "
+                                    SELECT 
+                                        p.nombre_producto AS Nombre_Producto,
+                                        p.costo AS Costo_Producto,
+                                        v.precio_unitario AS Precio_Venta,
+                                        SUM(v.cantidad) AS Cantidad_Vendida,
+                                        SUM(v.precio_unitario * v.cantidad) AS Total_Ventas,
+                                        SUM((v.precio_unitario - p.costo) * v.cantidad) AS Ganancia_Generada
+                                    FROM 
+                                        ventas v
+                                    JOIN 
+                                        producto p ON v.id_producto = p.id_producto
+                                    GROUP BY 
+                                        p.id_producto, p.nombre_producto, p.costo, v.precio_unitario
+                                    ORDER BY 
+                                        Ganancia_Generada DESC
+                                ";
+                                $result_ventas = mysqli_query($conexion, $sql_ventas);
+                                ?>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Nombre Producto</th>
+                                                <th>Costo Producto</th>
+                                                <th>Precio Venta</th>
+                                                <th>Cantidad Vendida</th>
+                                                <th>Total Ventas</th>
+                                                <th>Ganancia Generada</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (mysqli_num_rows($result_ventas) > 0): ?>
+                                                <?php while ($row = mysqli_fetch_assoc($result_ventas)): ?>
+                                                    <tr>
+                                                        <td><?php echo htmlspecialchars($row['Nombre_Producto']); ?></td>
+                                                        <td><?php echo '$' . number_format($row['Costo_Producto'], 0, ',', '.'); ?></td>
+                                                        <td><?php echo '$' . number_format($row['Precio_Venta'], 0, ',', '.'); ?></td>
+                                                        <td><?php echo $row['Cantidad_Vendida']; ?></td>
+                                                        <td><?php echo '$' . number_format($row['Total_Ventas'], 0, ',', '.'); ?></td>
+                                                        <td><?php echo '$' . number_format($row['Ganancia_Generada'], 0, ',', '.'); ?></td>
+                                                    </tr>
+                                                <?php endwhile; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No se encontraron datos de ventas.</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Columna 2: Stock y Atención Postventa -->
+                        <div class="col-md-6">
+                            <!-- Tabla 2: Productos con Bajo Stock -->
+                            <section>
+                                <h2 class="text-center mt-4">Productos con Bajo Stock</h2>
+                                <?php
+                                // Consulta SQL para productos con bajo stock
+                                $sql_bajo_stock = "
+                                    SELECT 
+                                        id_producto, 
+                                        nombre_producto, 
+                                        cantidad 
+                                    FROM 
+                                        producto 
+                                    WHERE 
+                                        cantidad <= 20 
+                                    ORDER BY 
+                                        cantidad ASC 
+                                    LIMIT 10
+                                ";
+
+                                $result_bajo_stock = mysqli_query($conexion, $sql_bajo_stock);
+                                ?>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Nombre Producto</th>
+                                                <th>Stock</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (mysqli_num_rows($result_bajo_stock) > 0): ?>
+                                                <?php while ($row = mysqli_fetch_assoc($result_bajo_stock)): ?>
+                                                    <tr>
+                                                        <td><?php echo $row['nombre_producto']; ?></td>
+                                                        <td><?php echo $row['cantidad']; ?></td>
+                                                    </tr>
+                                                <?php endwhile; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="2" class="text-center">No hay productos con stock bajo.</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                            <!-- Tabla 3: Atención Postventa -->
+                            <section>
+                                <h2 class="text-center mt-4">Atención Postventa</h2>
+                                <?php
+                                // Consulta SQL para obtener las solicitudes de atención postventa
+                                $sql_postventa = "
+                                    SELECT 
+                                        id, 
+                                        cliente_nombre, 
+                                        cliente_email, 
+                                        pregunta, 
+                                        respuesta, 
+                                        fecha_pregunta, 
+                                        fecha_respuesta 
+                                    FROM 
+                                        atencion_postventa 
+                                    ORDER BY 
+                                        fecha_pregunta DESC
+                                ";
+
+                                $result_postventa = mysqli_query($conexion, $sql_postventa);
+                                ?>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Cliente Nombre</th>
+                                                <th>Cliente Email</th>
+                                                <th>Pregunta</th>
+                                                <th>Respuesta</th>
+                                                <th>Fecha Pregunta</th>
+                                                <th>Fecha Respuesta</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (mysqli_num_rows($result_postventa) > 0): ?>
+                                                <?php while ($row = mysqli_fetch_assoc($result_postventa)): ?>
+                                                    <tr>
+                                                        <td><?php echo $row['cliente_nombre']; ?></td>
+                                                        <td><?php echo $row['cliente_email']; ?></td>
+                                                        <td><?php echo $row['pregunta']; ?></td>
+                                                        <td><?php echo $row['respuesta'] ? $row['respuesta'] : 'Sin respuesta'; ?></td>
+                                                        <td><?php echo date('d-m-Y', strtotime($row['fecha_pregunta'])); ?></td>
+                                                        <td><?php echo $row['fecha_respuesta'] ? date('d-m-Y', strtotime($row['fecha_respuesta'])) : 'Pendiente'; ?></td>
+                                                    </tr>
+                                                <?php endwhile; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="7" class="text-center">No hay solicitudes de atención postventa.</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </body>
+            </main>
         </div>
     </div>
-</div>
 
-<?php if (!empty($message)): ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: '<?php echo $message; ?>',
-            confirmButtonText: 'Aceptar'
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '<?php echo $error_message; ?>',
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
+    <script>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: '<?php echo $message; ?>',
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
+ 
+
+    <script>
+        $(document).ready(function() {
+            toastr.options = {
+                'closeButton': true,
+                'positionClass': 'toast-top-right',
+                'timeOut': '50000'
+            };
+
+            // Generar notificaciones dinámicamente desde PHP
+            <?php if (!empty($notificaciones_stock)): ?>
+                <?php foreach ($notificaciones_stock as $producto): ?>
+                    toastr.warning(
+                        'El producto "<?php echo $producto['nombre_producto']; ?>" tiene un stock bajo (<?php echo $producto['cantidad']; ?> unidades).'
+                    );
+                <?php endforeach; ?>
+            <?php else: ?>
+                console.log('No hay productos con stock bajo.');
+            <?php endif; ?>
         });
     </script>
-<?php endif; ?>
 
-<?php if (!empty($error_message)): ?>
     <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: '<?php echo $error_message; ?>',
-            confirmButtonText: 'Aceptar'
+        // Script para manejar el acordeón
+        const headers = document.querySelectorAll('.accordion-header');
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                header.classList.toggle('active');
+            });
         });
     </script>
-<?php endif; ?>
-
-
-</aside>
-
-<style>
-    .registro {
-        max-height: 55vh; /* Ajustar la altura máxima */
-        overflow-y: auto; /* Habilitar scroll vertical */
-        padding: 5px; /* Espaciado interno */
-        border: 1px solid #ccc; /* Borde para el contenedor */
-        background-color: #f9f9f9; /* Color de fondo */
-        box-sizing: border-box; /* Incluir padding y borde en el tamaño total */
-    }
-
-    .mb-3 {
-        margin-bottom: 1px; /* Espacio entre los elementos */
-    }
-
-    .form-control, .form-select {
-        width: 100%; /* Hacer los campos de formulario ocupar el ancho completo */
-    }
-
-    .message {
-        margin-top: 1px; /* Espacio superior para el mensaje */
-    }
-
-    /* Limitar la altura del contenedor de mensajes */
-    .message .alert {
-        max-height: 50px; /* Altura máxima para los mensajes */
-        overflow: hidden; /* Ocultar contenido que se salga */
-    }
-</style>
-
-<script>
-    // Script para manejar el acordeón
-    const headers = document.querySelectorAll('.accordion-header');
-    headers.forEach(header => {
-        header.addEventListener('click', () => {
-            const content = header.nextElementSibling;
-            content.style.display = content.style.display === 'block' ? 'none' : 'block';
-            header.classList.toggle('active');
-        });
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -9,9 +9,10 @@ $precio = $_POST['precio'];
 $cantidad = $_POST['cantidad'];
 $categoria_producto = $_POST['categoria_producto'];
 $imagen_url = $_POST['imagen_url'];
+$costo = $_POST['costo'];
 
 // Actualizar los datos generales del producto
-$query_actualizar_producto = "UPDATE producto SET nombre_producto='$nombre_producto', marca='$nombre_marca', precio='$precio', cantidad='$cantidad', tipo_producto='$categoria_producto', imagen_url='$imagen_url' WHERE id_producto='$id_producto'";
+$query_actualizar_producto = "UPDATE producto SET nombre_producto='$nombre_producto', marca='$nombre_marca', precio='$precio', cantidad='$cantidad', tipo_producto='$categoria_producto', imagen_url='$imagen_url', costo='$costo' WHERE id_producto='$id_producto'";
 mysqli_query($conexion, $query_actualizar_producto);
 
 // Características según el tipo de producto

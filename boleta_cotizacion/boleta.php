@@ -10,6 +10,13 @@ use PHPMailer\PHPMailer\Exception;
 $correoE = $_SESSION['email'];
 $username = $_SESSION['username'];
 
+// Verificar si el usuario está en sesión y obtener el ID del usuario
+$id_usuario = $_SESSION['user_id'] ?? null; // Cambiado a 'user_id'
+
+if ($id_usuario === null) {
+    die("Error: El ID del usuario no está definido en la sesión.");
+}
+
 // Verificar si la transacción fue exitosa y si el carrito tiene datos
 $detalle_compra = $_SESSION['detalle_compra'] ?? null;
 
@@ -17,6 +24,23 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
     $total = 0;
     $detalle_boleta = [];
 
+    // Establecer la zona horaria de Santiago
+    date_default_timezone_set('America/Santiago');
+    $fecha = date('Y-m-d H:i:s');
+    $codigo_autorizacion = mysqli_real_escape_string($conexion, $_GET['auth_code']);
+
+    // Insertar la boleta en la base de datos
+    $query_boleta = "INSERT INTO boletas (id_usuario, fecha, total, codigo_autorizacion, detalles) 
+                     VALUES ('$id_usuario', '$fecha', '$total', '$codigo_autorizacion', '" . json_encode($detalle_boleta) . "')";
+    
+    if (!mysqli_query($conexion, $query_boleta)) {
+        die("Error al guardar la boleta en la base de datos: " . mysqli_error($conexion));
+    }
+
+    $id_boleta = mysqli_insert_id($conexion);  // Obtener el id_boleta recién insertado
+    $_SESSION['id_boleta'] = $id_boleta;
+
+    // Procesar los productos en el carrito y reducir stock
     foreach ($detalle_compra as $id_producto => $cantidad) {
         $id_producto = mysqli_real_escape_string($conexion, $id_producto);
         $cantidad = (int)$cantidad;
@@ -40,32 +64,48 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
             'precio_unitario' => $precio_unitario,
             'total' => $precio_total
         ];
+
+        // Insertar la venta en la tabla ventas
+        $query_venta = "INSERT INTO ventas (id_producto, nombre_producto, cantidad, precio_unitario, total, id_boleta) 
+                        VALUES ('$id_producto', '$nombre_producto', '$cantidad', '$precio_unitario', '$precio_total', '$id_boleta')";
+        mysqli_query($conexion, $query_venta);
     }
 
-    // Establecer la zona horaria de Santiago
-    date_default_timezone_set('America/Santiago');
-    $fecha = date('Y-m-d H:i:s');
-    $codigo_autorizacion = mysqli_real_escape_string($conexion, $_GET['auth_code']);
-    $query_boleta = "INSERT INTO boletas (fecha, total, codigo_autorizacion, detalles) VALUES ('$fecha', '$total', '$codigo_autorizacion', '" . json_encode($detalle_boleta) . "')";
+    // Actualizar el total y los detalles de la boleta
+    $query_update_boleta = "UPDATE boletas 
+    SET total = '$total', detalles = '" . json_encode($detalle_boleta) . "' 
+    WHERE id_boleta = '$id_boleta'";
+    mysqli_query($conexion, $query_update_boleta);
 
-    if (!mysqli_query($conexion, $query_boleta)) {
-        die("Error al guardar la boleta en la base de datos: " . mysqli_error($conexion));
+    // Agregar el registro al historial de compras
+    $query_historial = "INSERT INTO historial_compras (id_usuario, id_boleta, total) VALUES ('$id_usuario', '$id_boleta', '$total')";
+    if (!mysqli_query($conexion, $query_historial)) {
+        die("Error al guardar en el historial de compras: " . mysqli_error($conexion));
     }
-
-    $id_boleta = mysqli_insert_id($conexion);
-    $_SESSION['id_boleta'] = $id_boleta;
-
-    // Crear el PDF en memoria
+   // Crear el PDF
     $pdf = new FPDF();
     $pdf->AddPage();
+    $pdf->SetFont('Arial', 'B', 18);
+
+    // Insertar logo de Tisnology (asegúrate de que la ruta al logo sea correcta)
+    $pdf->Image('../logopng.png', 10, 10, 50); // Ajusta la posición y tamaño del logo
+    $pdf->Ln(30); // Salto de línea para dar espacio al contenido principal
+
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(0, 10, 'Boleta de Compra Tisnology', 0, 1, 'C');
+    $pdf->Cell(0, 10, utf8_decode('¡Gracias por tu compra, ' . $username . '!'), 0, 1, 'C');
+    $pdf->Ln(5);
+
     $pdf->SetFont('Arial', '', 12);
-    $pdf->Cell(0, 10, 'ID Boleta: ' . $id_boleta, 0, 1);
-    $pdf->Cell(0, 10, 'Fecha: ' . date('d/m/Y H:i', strtotime($fecha)), 0, 1);
-    $pdf->Cell(0, 10, 'Codigo de Autorizacion: ' . $codigo_autorizacion, 0, 1);
+    $pdf->MultiCell(0, 10, utf8_decode("Hemos recibido tu pedido y te enviamos la boleta de compra. A continuación, los detalles de tu pedido:"), 0, 'C');
     $pdf->Ln(10);
 
+
+    // Detalles de la boleta
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->Cell(0, 10, 'Detalle de tu compra', 0, 1, 'L');
+    $pdf->Ln(5);
+
+    // Tabla de productos
     $pdf->SetFont('Arial', 'B', 12);
     $pdf->Cell(80, 10, 'Producto', 1);
     $pdf->Cell(30, 10, 'Cantidad', 1, 0, 'C');
@@ -83,27 +123,36 @@ if (isset($_GET['status']) && $_GET['status'] === 'success' && $detalle_compra) 
     $pdf->SetFont('Arial', 'B', 12);
     $pdf->Cell(150, 10, 'Total a Pagar', 1, 0, 'R');
     $pdf->Cell(40, 10, "$" . number_format($total, 0, ',', '.'), 1, 1, 'R');
+    $pdf->Ln(10);
+
+    // Agregar mensaje final
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->MultiCell(0, 10, "Gracias por elegir Tisnology. Si tienes alguna consulta, no dudes en contactarnos.", 0, 'C');
+
+    // Guardar el PDF en memoria
     $pdf_content = $pdf->Output('S');
 
     // Enviar PDF por correo
     $mail = new PHPMailer(true);
     try {
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'tisnology1@gmail.com';
-        $mail->Password = 'kkayajvlxqjtelsn';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+    // Configuración SMTP y envío
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'tisnology1@gmail.com';
+    $mail->Password = 'ytfksqrqrginpvge';
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
 
-        $mail->setFrom('tisnology1@gmail.com', 'Tisnology');
-        $mail->addAddress($correoE);
+    $mail->setFrom('tisnology1@gmail.com', 'Tisnology');
+    $mail->addAddress($correoE);
 
-        $mail->Subject = 'Boleta de Compra - Tisnology';
-        $mail->Body = 'Estimado usuario, adjuntamos su boleta de compra . ¡Gracias por su preferencia!';
-        $mail->addStringAttachment($pdf_content, "Boleta_Compra_$id_boleta.pdf");
+    $mail->Subject = 'Boleta de Compra - Tisnology';
+    $mail->Body = "Estimado $username,\n\nGracias por su compra.\n\nAdjuntamos su boleta de compra en formato PDF.¡Gracias por su preferencia!";
+    $mail->addStringAttachment($pdf_content, "Boleta_Compra_$id_boleta.pdf");
 
-        $mail->send();
+    $mail->send();
+
 
         echo "
         <script>

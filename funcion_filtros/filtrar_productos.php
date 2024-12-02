@@ -1,7 +1,7 @@
 <?php
 function filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_max, $categoria) {
-    // Conexión a la base de datos
-    require('conexion.php');
+
+    require('../conexion.php');
 
     // Consulta base para seleccionar productos y aplicar filtros
     $query = "
@@ -23,30 +23,30 @@ function filtrarProductosPorMarcaYRangoYCategoria($marca, $precio_min, $precio_m
     $types = "";
 
     // Filtro de marca
-    if ($marca !== "") {
+    if (!empty($marca)) {
         $query .= " AND m.nombre_marca = ?";
         $params[] = $marca;
         $types .= "s";
     }
 
     // Filtro de precio mínimo
-    if ($precio_min !== "") {
+    if (!empty($precio_min)) {
         $query .= " AND p.precio >= ?";
         $params[] = $precio_min;
         $types .= "d";
     }
 
     // Filtro de precio máximo
-    if ($precio_max !== "") {
+    if (!empty($precio_max)) {
         $query .= " AND p.precio <= ?";
         $params[] = $precio_max;
         $types .= "d";
     }
 
-    // Filtro de categoría (buscando la palabra en el nombre del producto)
-    if ($categoria !== "") {
-        $query .= " AND p.tipo_producto LIKE ?";
-        $params[] = "%" . $categoria . "%";
+    // Filtro de categoría
+    if (!empty($categoria)) {
+        $query .= " AND p.tipo_producto = ?";
+        $params[] = $categoria;
         $types .= "s";
     }
 
