@@ -679,14 +679,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                 confirmButtonText: 'Aceptar'
             });
         </script>
-    <script>
-        document.querySelectorAll('.sub-category-header').forEach(header => {
-            header.addEventListener('click', function() {
-                const subCategory = this.nextElementSibling;
-                subCategory.style.display = subCategory.style.display === 'none' ? 'block' : 'none';
-            });
-        });
-    </script>
+ 
 
     <script>
         $(document).ready(function() {
