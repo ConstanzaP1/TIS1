@@ -319,7 +319,7 @@
             opacity: 1;
         }
     }
-    <style>
+    
     @media (max-width: 768px) {
     .producto-detalle {
         flex-direction: column; /* Cambiar la disposición a columna */
@@ -1013,7 +1013,7 @@ if (isset($_GET['id_producto'])){
                 $media_valoracion = round(mysqli_fetch_assoc($result_media_valoracion)['media_valoracion'], 1);
             }
         
-            echo "<div class='row bg-white px-5 py-3 shadow border'>";
+            echo "<div class='row bg-white px-5 py-3 shadow border mt-4'>";
             echo "<div class='row mt-4'>";
             echo "<div class='col-12'>";
             echo "<h3 class='me-2'>Reseñas</h3>";
