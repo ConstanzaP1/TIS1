@@ -6,11 +6,12 @@ require('../vendor/autoload.php');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Verificar si el usuario es administrador
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+// Verificar si el usuario ha iniciado sesión y es admin o superadmin
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'superadmin'])) {
     header('Location: ../login/login.php');
     exit;
 }
+
 
 // Procesar la respuesta del formulario (cuando se envía desde el modal)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_consulta']) && isset($_POST['respuesta'])) {

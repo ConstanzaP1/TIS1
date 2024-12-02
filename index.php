@@ -445,7 +445,6 @@ function filtrarProductosPorTipo($tipo)
         <div class="carousel-item active">
             <img src="https://i.postimg.cc/q7Cfvmc9/1.png" class="d-block w-100" alt="Banner 1">
             <div class="carousel-caption d-none d-md-block">
-                <a href="#" class="btn btn-primary">Ver más</a>
             </div>
         </div>
 
@@ -453,7 +452,6 @@ function filtrarProductosPorTipo($tipo)
         <div class="carousel-item">
             <img src="https://i.postimg.cc/52ydZ9X9/2.png" class="d-block w-100" alt="Banner 2">
             <div class="carousel-caption d-none d-md-block">
-                <a href="#" class="btn btn-primary">Explorar</a>
             </div>
         </div>
 
@@ -461,7 +459,6 @@ function filtrarProductosPorTipo($tipo)
         <div class="carousel-item">
             <img src="https://i.postimg.cc/SxPFq096/3.png" class="d-block w-100" alt="Banner 3">
             <div class="carousel-caption d-none d-md-block">
-                <a href="#" class="btn btn-primary">Descubre más</a>
             </div>
         </div>
     </div>
