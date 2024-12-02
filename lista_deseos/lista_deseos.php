@@ -212,13 +212,13 @@ $result = $stmt->get_result();
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li class="nav-item">
-    <button 
-        class="btn btn-cat rounded-pill  px-3 py-3" 
-        style=" color: #black;;  font-size: 0.85rem; font-weight: 500;"
-        onclick="window.location.href='../catalogo_productos/catalogo.php'">
-        Catálogo
-    </button>
-</li>
+                        <button 
+                            class="btn btn-cat rounded-pill  px-3 py-3" 
+                            style=" color: #black;;  font-size: 0.85rem; font-weight: 500;"
+                            onclick="window.location.href='../catalogo_productos/catalogo.php'">
+                            Catálogo
+                        </button>
+                    </li>
                 <li class="nav-item">
                     <button type="button" class="btn btn-cart p-3 ms-2 rounded-pill" onclick="window.location.href='../carrito/carrito.php'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
@@ -347,7 +347,7 @@ $result = $stmt->get_result();
             </li>
             <li class="breadcrumb-item">
                 <a href="../catalogo_productos/catalogo.php" class="text-primary text-decoration-none">
-                    Catalogo
+                    Catálogo
                 </a>
             </li>
             <li class="breadcrumb-item active text-dark" aria-current="page">

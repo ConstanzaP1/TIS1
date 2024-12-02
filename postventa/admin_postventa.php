@@ -116,8 +116,6 @@ $result = $conexion->query($query);
     </style>
 </head>
 <body>
-<<<<<<< Updated upstream
-=======
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0">
     <div class="container-fluid">
         <a class="navbar-brand" href="../admin_panel/admin_panel.php">
@@ -136,70 +134,6 @@ $result = $conexion->query($query);
     </div>
 </nav>
 
-<!-- Migajas de pan -->
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white p-3 rounded shadow-sm">
-        <li class="breadcrumb-item">
-            <a href="../index.php" class="text-primary text-decoration-none">
-                <i class="fas fa-home me-1"></i> Inicio
-            </a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="../admin_panel/admin_panel.php" class="text-primary text-decoration-none">
-                Panel de Administración
-            </a>
-        </li>
-        <li class="breadcrumb-item active text-dark" aria-current="page">
-            Recuperar Boletas
-        </li>
-    </ol>
-</nav>
-<!-- Fin Migajas de pan -->
-
-<style>
-    .breadcrumb {
-        background-color: #f9f9f9;
-        font-size: 0.9rem;
-    }
-
-    .breadcrumb .breadcrumb-item a {
-        transition: color 0.2s ease-in-out;
-    }
-
-    .breadcrumb .breadcrumb-item a:hover {
-        color: #0056b3;
-        text-decoration: underline;
-    }
-
-    .breadcrumb .breadcrumb-item.active {
-        font-weight: bold;
-        color: #333;
-    }
-</style>
-
-
-<!-- Fin Migajas de pan -->
-<style>
-    .breadcrumb {
-    background-color: #f9f9f9;
-    font-size: 0.9rem;
-}
-
-.breadcrumb .breadcrumb-item a {
-    transition: color 0.2s ease-in-out;
-}
-
-.breadcrumb .breadcrumb-item a:hover {
-    color: #0056b3;
-    text-decoration: underline;
-}
-
-.breadcrumb .breadcrumb-item.active {
-    font-weight: bold;
-    color: #333;
-}
-</style>
->>>>>>> Stashed changes
 <div class="container mt-5">
     <h2 class="text-center mb-4">Administración de Postventa</h2>
     <div class="table-responsive">
@@ -232,7 +166,7 @@ $result = $conexion->query($query);
                         <td><?php echo date('d/m/Y H:i', strtotime($row['fecha_pregunta'])); ?></td>
                         <td><?php echo $row['fecha_respuesta'] ? date('d/m/Y H:i', strtotime($row['fecha_respuesta'])) : 'Pendiente'; ?></td>
                         <td>
-                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#responderModal" 
+                            <button class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#responderModal" 
                                     data-id="<?php echo $row['id']; ?>" 
                                     data-cliente="<?php echo htmlspecialchars($row['cliente_nombre']); ?>"
                                     data-pregunta="<?php echo htmlspecialchars($row['pregunta']); ?>">
