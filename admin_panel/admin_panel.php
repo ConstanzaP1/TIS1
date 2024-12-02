@@ -441,7 +441,7 @@ $result_users = mysqli_query($conexion, $sql_users);
                         </ul>
                     </li>
                 </ul>
-                <button class="btn btn-secondary mt-auto" onclick="window.location.href='../index.php'">Volver al catalogo</button>
+                <button class="btn btn-secondary mt-auto" onclick="window.location.href='../index.php'">Volver al inicio</button>
                 <!-- Cerrar sesión -->
                 <button class="btn btn-danger mt-2" onclick="window.location.href='?logout=true'">Cerrar Sesión</button>
             </nav>

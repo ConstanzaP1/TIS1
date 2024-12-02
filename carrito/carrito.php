@@ -454,7 +454,7 @@ if (isset($_POST['pagar'])) {
             <img src="../icono_carrito.png" alt="Carrito vacío" class="img-fluid mb-4">
             <h3 class="mt-4">Aún no tienes productos agregados</h3>
             <p class="text-muted">¡Puedes ver nuestras categorías destacadas y hacer tu primera compra con nosotros!</p>
-            <a href="../index.php" class="btn btn-secondary">Regresar al catálogo</a>
+            <a href="../catalogo_productos/catalogo.php" class="btn btn-secondary">Regresar al catálogo</a>
         </div>
     <?php else: ?>
         <div class="row">

@@ -176,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                     <p class="mt-3">¿No tienes una cuenta? <a href="#" onclick="toggleForms()" class="text-white">Regístrate aquí</a></p>
                 </div>
             </div>
-        </div>>
+        </div>
         
         <!-- Contenedor de Registro -->
         <div class="row justify-content-center" id="register-container" style="display: none;">
