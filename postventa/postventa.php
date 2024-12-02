@@ -94,6 +94,9 @@ if ($boletaId) {
     <style>
         .navbar { background-color: rgba(0, 128, 255, 0.5); }
         .rounded-circle { object-fit: cover; width: 50px; height: 50px; }
+        body {
+            background-color: #f8f9fa; /* Fondo claro */
+        }
     </style>
 </head>
 <body>

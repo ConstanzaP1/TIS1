@@ -355,6 +355,9 @@ function obtenerTiposDeProducto()
         .navbar {
             background-color: rgba(0, 128, 255, 0.5); /* Fondo celeste */
         }
+        body {
+            background-color: #f8f9fa; /* Fondo claro */
+        }
         .product-img {
             height: 200px;
             object-fit: cover;
