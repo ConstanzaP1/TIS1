@@ -614,6 +614,7 @@ function obtenerTiposDeProducto()
         <?php else: ?>
             <div class="text-center py-5">
                 <h3 class="mt-4">No hay productos en el comparador</h3>
+                <br>
                 <a href="../index.php" class="btn btn-secondary">Regresar al catálogo</a>
             </div>
         <?php endif; ?>

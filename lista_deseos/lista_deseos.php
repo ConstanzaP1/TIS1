@@ -381,6 +381,7 @@ $result = $stmt->get_result();
     <?php else: ?>
         <div class="text-center py-5">
             <h3 class="mt-4">No hay productos en la lista de deseos</h3>
+            <br>
             <a href="../index.php" class="btn btn-secondary">Regresar al catálogo</a>
         </div>
     <?php endif; ?>
